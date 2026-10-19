@@ -1,0 +1,1603 @@
+[
+  {
+    "id": "SQL-L1-001",
+    "skill": "sql",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "sql-null",
+      "sql-select-filter"
+    ],
+    "question": "An orders table has a discount column that is NULL when no discount was recorded. Does WHERE discount > 10 OR discount <= 10 return every order? Does WHERE discount <> 0 return the orders whose discount is NULL? How would you write a condition that does return them?",
+    "model_answer": "No. Any comparison with NULL gives UNKNOWN rather than true or false, so for a NULL discount both discount > 10 and discount <= 10 are UNKNOWN, the OR is UNKNOWN, and WHERE keeps only rows where the condition is TRUE. For the same reason discount <> 0 is UNKNOWN for a NULL discount, so those orders are left out. To include them you must test for NULL explicitly, e.g. WHERE discount <> 0 OR discount IS NULL; writing discount = NULL would not work because it is also UNKNOWN.",
+    "key_points": [
+      "Comparisons with NULL are UNKNOWN, not true or false",
+      "WHERE keeps only TRUE rows, so NULL-discount orders are missing from both queries",
+      "IS NULL (not = NULL) is needed to include them"
+    ],
+    "rubric": {
+      "0": "Says the first query returns every order, or that NULL discounts satisfy discount <> 0, or suggests discount = NULL as the fix",
+      "1": "Correctly says NULL rows are missing from one query but not the other, or gives the right answer without explaining UNKNOWN",
+      "2": "Both queries miss the NULL rows because comparisons are UNKNOWN, and the fix uses IS NULL"
+    },
+    "misconceptions": [
+      "sql.null.not-equal-includes-null",
+      "sql.null.equals-null-matches"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L1-002",
+    "skill": "sql",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "sql-select-filter",
+      "sql-schema-constraints"
+    ],
+    "question": "A products table has 6 rows and a primary key column id. SELECT DISTINCT category FROM products returns 3 rows. How many rows could SELECT DISTINCT category, supplier return, and how many will SELECT DISTINCT id, category return? Explain what DISTINCT actually compares.",
+    "model_answer": "DISTINCT compares whole result rows: it removes a row only when every selected column matches another row, and it keeps one row for each different combination. So DISTINCT category, supplier returns between 3 and 6 rows: at least one per category, and at most the 6 rows in the table. DISTINCT id, category returns exactly 6 rows, because id is the primary key, so every (id, category) pair is already unique and DISTINCT removes nothing.",
+    "key_points": [
+      "DISTINCT works on the combination of all selected columns, not on one column",
+      "DISTINCT category, supplier gives between 3 and 6 rows",
+      "DISTINCT id, category gives exactly 6 rows because the primary key is unique",
+      "DISTINCT keeps every different combination, not just one value or the first row"
+    ],
+    "rubric": {
+      "0": "Says DISTINCT category, supplier still gives 3 rows (DISTINCT only on the first column), or that DISTINCT returns a single value/first row",
+      "1": "Understands that DISTINCT compares combinations but gets one of the counts wrong (e.g. thinks DISTINCT id, category could return fewer than 6)",
+      "2": "Gives 3 to 6 rows and exactly 6 rows, explaining that DISTINCT compares whole rows and that id is unique"
+    },
+    "misconceptions": [
+      "sql.select-filter.distinct-per-column",
+      "sql.select-filter.distinct-returns-first",
+      "sql.schema-constraints.pk-needs-distinct"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L1-003",
+    "skill": "sql",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "sql-select-filter"
+    ],
+    "question": "A support dashboard should show tickets whose status is 'open' or 'pending' and whose priority is 'high'. Query A uses WHERE status IN ('open', 'pending') AND priority = 'high'. Query B uses WHERE status = 'open' OR status = 'pending' AND priority = 'high'. Do they return the same tickets? Explain, and say how you would fix B.",
+    "model_answer": "They do not. AND is evaluated before OR, so B means status = 'open' OR (status = 'pending' AND priority = 'high'), which returns every open ticket whatever its priority, plus the high-priority pending ones. Query A is correct, because IN ('open', 'pending') is a single condition that is then ANDed with the priority test. B is fixed by adding parentheses: WHERE (status = 'open' OR status = 'pending') AND priority = 'high'.",
+    "key_points": [
+      "AND binds more tightly than OR",
+      "Query B returns all open tickets, including low-priority ones",
+      "Parentheses (or IN) make the OR happen first"
+    ],
+    "rubric": {
+      "0": "Says A and B are the same because conditions are applied left to right",
+      "1": "Knows they differ but cannot say which extra tickets B returns, or gives the fix without the reason",
+      "2": "Explains that AND is applied first, that B adds all open tickets of any priority, and fixes it with parentheses"
+    },
+    "misconceptions": [
+      "sql.select-filter.and-or-precedence"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L1-004",
+    "skill": "sql",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "sql-aggregation",
+      "sql-select-filter"
+    ],
+    "question": "To list the products priced above the average price, a colleague writes SELECT name FROM products WHERE price > AVG(price). Why does the database reject this, and how would you write the query instead?",
+    "model_answer": "WHERE is checked one row at a time, before any aggregation happens, while AVG(price) needs the whole set of rows, so an aggregate is not allowed inside WHERE. Moving it to HAVING does not help either, because HAVING filters groups, not individual products. The usual fix is to compute the average separately in a subquery: SELECT name FROM products WHERE price > (SELECT AVG(price) FROM products), so each product is compared with that single value.",
+    "key_points": [
+      "WHERE filters individual rows before aggregates are computed, so aggregates cannot appear there",
+      "HAVING is for filtering groups, not single rows",
+      "Compute the average in a subquery and compare each price with it"
+    ],
+    "rubric": {
+      "0": "Says the query works, or that WHERE and HAVING are interchangeable so it just needs HAVING",
+      "1": "Knows aggregates are not allowed in WHERE but gives no working rewrite, or the reason is vague",
+      "2": "Explains that WHERE runs per row before aggregation and rewrites it with a scalar subquery"
+    },
+    "misconceptions": [
+      "sql.aggregation.aggregate-in-where"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L1-005",
+    "skill": "sql",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "sql-schema-constraints"
+    ],
+    "question": "Explain what a primary key and a foreign key are, using a customers table and an orders table where each order belongs to one customer. Which of the key columns may contain repeated values, and would SELECT DISTINCT id FROM customers ever differ from SELECT id FROM customers?",
+    "model_answer": "A primary key uniquely identifies each row: customers.id must be unique and not NULL, so selecting it never gives duplicates and DISTINCT changes nothing. A foreign key such as orders.customer_id must refer to an existing customers.id, but it does not have to be unique: the same customer id appears on every order that customer placed, which is how a one-to-many relationship is stored.",
+    "key_points": [
+      "Primary key: unique and not NULL, identifies each row",
+      "DISTINCT on a primary-key column changes nothing",
+      "Foreign key: must match an existing primary-key value but may repeat (one customer, many orders)"
+    ],
+    "rubric": {
+      "0": "Says primary-key values can repeat (so DISTINCT is needed), or that a foreign key must be unique",
+      "1": "Defines both keys correctly but is unsure which values may repeat or what DISTINCT would do",
+      "2": "Defines both keys, says DISTINCT is unnecessary on the primary key, and explains that the foreign key repeats for one-to-many"
+    },
+    "misconceptions": [
+      "sql.schema-constraints.pk-needs-distinct",
+      "sql.schema-constraints.fk-must-be-unique"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L1-006",
+    "skill": "sql",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "sql-aggregation",
+      "sql-null"
+    ],
+    "question": "A survey table has a score column from 1 to 5, which is NULL when the respondent skipped the question. What do AVG(score) and COUNT(score) * 100.0 / COUNT(*) each tell you? A colleague first 'cleans' the data by replacing NULL scores with COALESCE(score, 0). What happens to both numbers, and why is that misleading?",
+    "model_answer": "AVG(score) is the average of the answers actually given: NULLs are skipped, so it divides by the number of answers, not by all respondents. COUNT(score) also skips NULLs while COUNT(*) counts every row, so COUNT(score) * 100.0 / COUNT(*) is the percentage of people who answered. After COALESCE(score, 0), every skipped answer becomes a score of 0, which is not even on the 1 to 5 scale: the average drops and the response rate jumps to 100%, so both numbers misreport what respondents said.",
+    "key_points": [
+      "AVG(score) ignores NULLs and averages only the given answers",
+      "COUNT(score) skips NULLs and COUNT(*) does not, so the ratio is the response rate",
+      "Replacing NULL with 0 lowers the average and makes the response rate 100%"
+    ],
+    "rubric": {
+      "0": "Says AVG already counts skipped answers as 0, or that COUNT(score) equals COUNT(*) so the ratio is always 100%",
+      "1": "Explains the two expressions but not the effect of COALESCE, or explains COALESCE for only one of the numbers",
+      "2": "Explains both expressions and that COALESCE drags the average down and fakes a 100% response rate"
+    },
+    "misconceptions": [
+      "sql.null.aggregates-treat-null-as-zero",
+      "sql.aggregation.count-column-counts-nulls"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L1-007",
+    "skill": "sql",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "sql-select-filter"
+    ],
+    "question": "An analyst wants the customers who have a refunded or cancelled order worth more than 100. What does this query actually return, and why?",
+    "code": "SELECT DISTINCT customer\nFROM orders\nWHERE status = 'refunded' OR status = 'cancelled' AND amount > 100\nORDER BY customer;",
+    "tables": [
+      {
+        "name": "orders",
+        "columns": [
+          "id",
+          "customer",
+          "status",
+          "amount"
+        ],
+        "rows": [
+          [
+            1,
+            "Asha",
+            "refunded",
+            40
+          ],
+          [
+            2,
+            "Ben",
+            "cancelled",
+            250
+          ],
+          [
+            3,
+            "Chen",
+            "cancelled",
+            80
+          ],
+          [
+            4,
+            "Dana",
+            "paid",
+            500
+          ],
+          [
+            5,
+            "Eli",
+            "refunded",
+            20
+          ],
+          [
+            6,
+            "Ben",
+            "refunded",
+            300
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        "Asha"
+      ],
+      [
+        "Ben"
+      ],
+      [
+        "Eli"
+      ]
+    ],
+    "model_answer": "It returns Asha, Ben and Eli. AND is applied before OR, so the condition means status = 'refunded' OR (status = 'cancelled' AND amount > 100): every refunded order passes whatever its amount (Asha 40, Eli 20, Ben 300), plus Ben's cancelled order of 250. Ben passes twice, but DISTINCT keeps each different customer once. The intended query needs parentheses: (status = 'refunded' OR status = 'cancelled') AND amount > 100, which would return only Ben.",
+    "key_points": [
+      "Returns Asha, Ben and Eli",
+      "AND is applied before OR, so small refunded orders pass",
+      "DISTINCT lists Ben once and keeps every other different customer",
+      "Parentheses around the OR give the intended result (only Ben)"
+    ],
+    "rubric": {
+      "0": "Returns only Ben (left-to-right reading), or a single customer because of DISTINCT",
+      "1": "Right precedence idea but a customer wrong or duplicated, or no explanation of the fix",
+      "2": "Asha, Ben and Eli, explaining AND-before-OR, the role of DISTINCT, and the parenthesised fix"
+    },
+    "misconceptions": [
+      "sql.select-filter.and-or-precedence",
+      "sql.select-filter.distinct-returns-first"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L1-008",
+    "skill": "sql",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "sql-null",
+      "sql-select-filter"
+    ],
+    "question": "A colleague wrote this query to list every customer who is not in Pune, including customers with no city recorded. What does it return, and why?",
+    "code": "SELECT name\nFROM customers\nWHERE city <> 'Pune' OR city = NULL\nORDER BY name;",
+    "tables": [
+      {
+        "name": "customers",
+        "columns": [
+          "id",
+          "name",
+          "city"
+        ],
+        "rows": [
+          [
+            1,
+            "Asha",
+            "Pune"
+          ],
+          [
+            2,
+            "Ben",
+            null
+          ],
+          [
+            3,
+            "Chen",
+            "Delhi"
+          ],
+          [
+            4,
+            "Dana",
+            "Mumbai"
+          ],
+          [
+            5,
+            "Eli",
+            null
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        "Chen"
+      ],
+      [
+        "Dana"
+      ]
+    ],
+    "model_answer": "Only Chen and Dana. For Ben and Eli the city is NULL, so city <> 'Pune' is UNKNOWN rather than true, and city = NULL is never true either, so WHERE drops them. To include them the condition should be city <> 'Pune' OR city IS NULL.",
+    "key_points": [
+      "Returns only Chen and Dana",
+      "city <> 'Pune' is UNKNOWN when city is NULL, so Ben and Eli are dropped",
+      "city = NULL never matches; IS NULL is needed"
+    ],
+    "rubric": {
+      "0": "Includes Ben and/or Eli, believing <> 'Pune' or = NULL matches a NULL city",
+      "1": "Correct rows but explains only one of the two conditions, or explanation is vague",
+      "2": "Chen and Dana, explaining that both comparisons with NULL are UNKNOWN and that IS NULL is the fix"
+    },
+    "misconceptions": [
+      "sql.null.not-equal-includes-null",
+      "sql.null.equals-null-matches"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L1-009",
+    "skill": "sql",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "sql-select-filter",
+      "sql-schema-constraints"
+    ],
+    "question": "What does this query return? What does the result tell you about storing the customer's city on every order row?",
+    "code": "SELECT DISTINCT customer, city\nFROM orders_flat\nORDER BY customer, city;",
+    "tables": [
+      {
+        "name": "orders_flat",
+        "columns": [
+          "order_id",
+          "customer",
+          "city"
+        ],
+        "rows": [
+          [
+            101,
+            "Asha",
+            "Pune"
+          ],
+          [
+            102,
+            "Asha",
+            "Pune"
+          ],
+          [
+            103,
+            "Ben",
+            "Delhi"
+          ],
+          [
+            104,
+            "Asha",
+            "Mumbai"
+          ],
+          [
+            105,
+            "Ben",
+            "Delhi"
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        "Asha",
+        "Mumbai"
+      ],
+      [
+        "Asha",
+        "Pune"
+      ],
+      [
+        "Ben",
+        "Delhi"
+      ]
+    ],
+    "model_answer": "Three rows: (Asha, Mumbai), (Asha, Pune) and (Ben, Delhi). DISTINCT removes rows only when the whole (customer, city) pair repeats, so Asha appears twice because she has two different cities. That shows an inconsistency: her city was changed on one order but not the others, the kind of update anomaly that storing the city once in a customers table prevents.",
+    "key_points": [
+      "Three rows, with Asha appearing twice",
+      "DISTINCT works on the combination of both columns",
+      "Asha's inconsistent city is an update anomaly, a reason to normalise"
+    ],
+    "rubric": {
+      "0": "Returns one row per customer (DISTINCT on customer only) or a single row, or sees no problem beyond wasted space",
+      "1": "Correct three rows but does not connect the result to the repeated-data design, or the design point is right but a row is wrong",
+      "2": "Correct three rows, explains DISTINCT on the pair, and identifies the inconsistent copies of Asha's city as an update anomaly"
+    },
+    "misconceptions": [
+      "sql.select-filter.distinct-per-column",
+      "sql.select-filter.distinct-returns-first",
+      "sql.schema-constraints.normalisation-only-saves-space"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L1-010",
+    "skill": "sql",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "sql-aggregation",
+      "sql-null"
+    ],
+    "question": "What does this query return? Explain each of the four values.",
+    "code": "SELECT COUNT(*) AS n_rows,\n       COUNT(bonus) AS n_bonus,\n       SUM(bonus) AS total,\n       AVG(bonus) AS avg_bonus\nFROM staff;",
+    "tables": [
+      {
+        "name": "staff",
+        "columns": [
+          "name",
+          "bonus"
+        ],
+        "rows": [
+          [
+            "Asha",
+            100
+          ],
+          [
+            "Ben",
+            null
+          ],
+          [
+            "Chen",
+            200
+          ],
+          [
+            "Dana",
+            null
+          ],
+          [
+            "Eli",
+            300
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        5,
+        3,
+        600,
+        200.0
+      ]
+    ],
+    "model_answer": "One row: 5, 3, 600, 200. COUNT(*) counts all five rows, COUNT(bonus) counts only the three non-NULL bonuses, SUM adds 100 + 200 + 300 = 600, and AVG divides by the number of non-NULL bonuses, 600 / 3 = 200, not by 5.",
+    "key_points": [
+      "COUNT(*) = 5 but COUNT(bonus) = 3",
+      "SUM ignores NULLs: 600",
+      "AVG = 600 / 3 = 200, because NULLs are not counted as zero"
+    ],
+    "rubric": {
+      "0": "Gives COUNT(bonus) = 5 or AVG = 120 (treating NULLs as rows or zeros)",
+      "1": "Three of the four values right, or all right with no explanation of NULL handling",
+      "2": "All four values correct (5, 3, 600, 200) with the reason NULLs are skipped"
+    },
+    "misconceptions": [
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.null.aggregates-treat-null-as-zero"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L2-001",
+    "skill": "sql",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "sql-indexes-performance",
+      "sql-schema-constraints"
+    ],
+    "question": "orders.customer_id is a foreign key to customers.id, and orders has an index on (customer_id, created_at). Does that index help joins to customers and queries like WHERE customer_id = 7? Could it be declared UNIQUE on customer_id alone? Would a query that filters only on created_at use it efficiently?",
+    "model_answer": "Yes: the index is sorted by customer_id first, so it can find all rows for one customer quickly, which serves both WHERE customer_id = 7 and the join on customer_id. It could not be UNIQUE on customer_id, because a foreign-key column normally repeats: one customer has many orders. A filter on created_at alone cannot seek in it, because created_at is only sorted within each customer_id; that query needs an index that starts with created_at, or it scans.",
+    "key_points": [
+      "The leading column customer_id can be used on its own (lookups and joins)",
+      "Foreign-key values repeat, so the column cannot be unique",
+      "A filter on only the second column (created_at) cannot use the index efficiently"
+    ],
+    "rubric": {
+      "0": "Says the index helps a created_at-only filter just as well, or that a foreign key column must be unique",
+      "1": "Gets the leading-column part right but is wrong or unsure about uniqueness or the created_at-only query",
+      "2": "Explains leading-column use, why the foreign key repeats, and why created_at alone needs its own index"
+    },
+    "misconceptions": [
+      "sql.indexes-performance.composite-any-column",
+      "sql.schema-constraints.fk-must-be-unique"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L2-002",
+    "skill": "sql",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "sql-aggregation"
+    ],
+    "question": "To show each department's highest-paid employee, a colleague writes SELECT dept, name, MAX(salary) FROM staff GROUP BY dept. PostgreSQL rejects it. Why? How could you get the right names, and how would you then keep only departments whose top salary is above 100000?",
+    "model_answer": "GROUP BY collapses each department into a single output row, and a department has many names, so name is ambiguous unless it is grouped or aggregated; MAX(salary) does not bring along the name from the row it came from. One fix is to compute each department's maximum in a subquery and join it back to staff on dept and salary (or rank the rows with a window function). The salary threshold is a condition on a group, so it belongs in HAVING MAX(salary) > 100000, not in WHERE, which filters single rows before grouping.",
+    "key_points": [
+      "GROUP BY returns one row per group, so a non-grouped column like name is ambiguous",
+      "MAX does not return the matching row's other columns; join back or use a window function",
+      "Group conditions go in HAVING, not WHERE"
+    ],
+    "rubric": {
+      "0": "Thinks GROUP BY keeps every row so name is fine, or puts MAX(salary) > 100000 in WHERE",
+      "1": "Explains why the query is rejected but gives no working fix, or misplaces the threshold",
+      "2": "Explains the collapse to one row per department, gives a join-back or window fix, and uses HAVING for the threshold"
+    },
+    "misconceptions": [
+      "sql.aggregation.group-by-only-sorts",
+      "sql.aggregation.aggregate-in-where"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L2-003",
+    "skill": "sql",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "sql-indexes-performance"
+    ],
+    "question": "orders.amount has an index. WHERE amount > 1000 is fast, but WHERE amount * 1.18 > 1180 (the same rows, with tax added) scans the whole table. Why, and how would you rewrite it? A teammate suggests indexing every column of orders so that nothing is slow again. What is wrong with that idea?",
+    "model_answer": "The index stores the amount values in sorted order, but amount * 1.18 is a computed value that is not in the index, so the database has to calculate it for every row and cannot seek. Keeping the column bare fixes it: WHERE amount > 1000 (1180 / 1.18), or an expression index if the database supports one. Indexing every column is not free: each index takes storage and must be updated on every INSERT, UPDATE and DELETE, which slows writes, and the planner will ignore indexes that do not suit a query anyway.",
+    "key_points": [
+      "An expression on the indexed column prevents the index from being used",
+      "Rewrite so the column stands alone (or use an expression index)",
+      "Every index costs storage and slows writes, and may not be used"
+    ],
+    "rubric": {
+      "0": "Says the index is still used for amount * 1.18, or that more indexes only make things faster",
+      "1": "Explains the expression problem but not the cost of extra indexes, or the reverse",
+      "2": "Explains why the expression blocks the index, gives the bare-column rewrite, and the costs of indexing everything"
+    },
+    "misconceptions": [
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L2-004",
+    "skill": "sql",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "sql-transactions"
+    ],
+    "question": "A nightly job runs in one transaction: DELETE every row from daily_sales, then INSERT the fresh rows. Halfway through the INSERT the job crashes and the transaction is rolled back. While the job was running, what did analysts querying daily_sales see, and what do they see after the rollback? What would be different if each statement committed on its own?",
+    "model_answer": "While the transaction is open, other sessions keep seeing the last committed data, the old rows, not the deletion or the half-finished inserts. The rollback undoes the whole transaction, including the DELETE, so afterwards the table is exactly as it was before the job started. If each statement committed on its own, the DELETE would be permanent and visible straight away, and after the crash analysts would see a half-loaded table.",
+    "key_points": [
+      "Other sessions do not see uncommitted changes; they see the old rows",
+      "ROLLBACK undoes every statement in the transaction, including the earlier DELETE",
+      "With autocommit the table would be left empty or half-loaded"
+    ],
+    "rubric": {
+      "0": "Says analysts saw the empty or half-loaded table during the job, or that the DELETE stays after the rollback",
+      "1": "Gets either the visibility or the rollback part right but not both, or misses the autocommit contrast",
+      "2": "Old rows visible during the job, table fully restored after rollback, and a half-loaded table without the transaction"
+    },
+    "misconceptions": [
+      "sql.transactions.uncommitted-visible",
+      "sql.transactions.rollback-partial"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L2-005",
+    "skill": "sql",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "sql-joins"
+    ],
+    "question": "customers has 3 rows: Asha, Ben and Chen. orders has 3 rows: two orders by Asha (amounts 50 and 200) and one by Chen (amount 300); Ben has none. How many rows does each of these return, and why: (a) FROM customers, orders with no WHERE clause; (b) customers INNER JOIN orders ON orders.customer_id = customers.id; (c) the same with LEFT JOIN; (d) that LEFT JOIN plus WHERE orders.amount > 100?",
+    "model_answer": "(a) 9 rows: listing two tables with no condition pairs every customer with every order (3 x 3); nothing is matched automatically. (b) 3 rows, one per matching pair, so Asha appears twice and Ben not at all. (c) 4 rows: the same 3 plus Ben with NULLs for the order columns. (d) 2 rows (Asha's 200 and Chen's 300): WHERE runs after the join, Asha's 50 fails it, and Ben's NULL amount is not > 100, so his row is removed and the query behaves like an inner join.",
+    "key_points": [
+      "No join condition gives every combination (9 rows)",
+      "A join returns one row per matching pair, so Asha appears twice (3 rows)",
+      "LEFT JOIN adds Ben with NULLs (4 rows)",
+      "A WHERE on the right table removes the NULL row, leaving 2"
+    ],
+    "rubric": {
+      "0": "Says (a) matches orders to customers automatically, or that Asha appears once in the join, or that Ben survives (d)",
+      "1": "Two or three of the four counts right with reasons",
+      "2": "9, 3, 4 and 2, each with the correct reason"
+    },
+    "misconceptions": [
+      "sql.joins.auto-join-on-shared-column",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.where-filter-keeps-left-rows"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L2-006",
+    "skill": "sql",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "sql-transactions"
+    ],
+    "question": "Explain the four ACID properties of a database transaction in a sentence each. Does 'isolation' mean that concurrent transactions always behave exactly as if they had run one after another?",
+    "model_answer": "Atomicity means all of a transaction's changes happen or none do; consistency means it moves the database from one valid state to another, respecting constraints; isolation means concurrent transactions do not interfere beyond what the isolation level allows; durability means committed changes survive a crash. Isolation is not automatically one-at-a-time behaviour: most databases default to a weaker level such as READ COMMITTED, which still allows anomalies like non-repeatable reads and lost updates, and only SERIALIZABLE guarantees results equivalent to running the transactions one after another.",
+    "key_points": [
+      "Atomicity: all or nothing, even if a later statement fails",
+      "Consistency and durability: constraints hold; committed data survives crashes",
+      "Isolation depends on the level; the default (e.g. READ COMMITTED) is not serial and allows some anomalies"
+    ],
+    "rubric": {
+      "0": "Says that statements before a failure stay applied, or that any transaction behaves as if run alone",
+      "1": "Defines most properties correctly but does not explain the isolation-level caveat, or one definition is wrong",
+      "2": "Defines all four properties and explains that only SERIALIZABLE gives one-at-a-time behaviour, while the default level allows anomalies"
+    },
+    "misconceptions": [
+      "sql.transactions.rollback-partial",
+      "sql.transactions.default-isolation-prevents-all"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L2-007",
+    "skill": "sql",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "sql-joins",
+      "sql-null"
+    ],
+    "question": "The goal was every customer with their paid orders, showing NULL for customers who have no paid order. What does this query actually return, and why is Chen missing?",
+    "code": "SELECT c.name, o.id AS order_id\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nWHERE o.status = 'paid' OR o.id IS NULL\nORDER BY c.name, o.id;",
+    "tables": [
+      {
+        "name": "customers",
+        "columns": [
+          "id",
+          "name"
+        ],
+        "rows": [
+          [
+            1,
+            "Asha"
+          ],
+          [
+            2,
+            "Ben"
+          ],
+          [
+            3,
+            "Chen"
+          ],
+          [
+            4,
+            "Dana"
+          ]
+        ]
+      },
+      {
+        "name": "orders",
+        "columns": [
+          "id",
+          "customer_id",
+          "status"
+        ],
+        "rows": [
+          [
+            10,
+            1,
+            "paid"
+          ],
+          [
+            11,
+            1,
+            "cancelled"
+          ],
+          [
+            12,
+            3,
+            "cancelled"
+          ],
+          [
+            13,
+            4,
+            null
+          ],
+          [
+            14,
+            4,
+            "paid"
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        "Asha",
+        10
+      ],
+      [
+        "Ben",
+        null
+      ],
+      [
+        "Dana",
+        14
+      ]
+    ],
+    "model_answer": "Three rows: Asha with 10, Ben with NULL and Dana with 14. WHERE is applied after the LEFT JOIN: Ben has no orders, so his NULL-extended row passes o.id IS NULL, but Chen's only joined row is his cancelled order 12, which fails both tests, so Chen disappears completely. Dana's order 13 has a NULL status, so o.status = 'paid' is UNKNOWN and that row is dropped too. Putting the status test in the ON clause (ON o.customer_id = c.id AND o.status = 'paid') would keep every customer, with Chen shown as NULL.",
+    "key_points": [
+      "Returns Asha 10, Ben NULL, Dana 14",
+      "Ben is kept: the LEFT JOIN gives him a NULL row that matches o.id IS NULL",
+      "Chen is removed because WHERE filters after the join and his only row is a cancelled order",
+      "Moving the status condition into ON gives the intended result"
+    ],
+    "rubric": {
+      "0": "Drops Ben (LEFT JOIN treated as inner join), or keeps Chen with NULL",
+      "1": "Correct rows but no clear reason for Chen, or one row wrong (e.g. includes Dana's order 13)",
+      "2": "All three rows, explaining Ben, Chen and Dana's NULL status, and the ON-clause fix"
+    },
+    "misconceptions": [
+      "sql.joins.where-filter-keeps-left-rows",
+      "sql.joins.left-join-drops-unmatched"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L2-008",
+    "skill": "sql",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "sql-aggregation",
+      "sql-schema-constraints",
+      "sql-null"
+    ],
+    "question": "Each product row stores its supplier's phone number. What does this query return, and what does the result tell you about this table design?",
+    "code": "SELECT supplier, supplier_phone,\n       COUNT(supplier) AS n_rows,\n       COUNT(supplier_phone) AS n_phone\nFROM products\nGROUP BY supplier, supplier_phone\nORDER BY supplier, supplier_phone NULLS LAST;",
+    "tables": [
+      {
+        "name": "products",
+        "columns": [
+          "name",
+          "supplier",
+          "supplier_phone"
+        ],
+        "rows": [
+          [
+            "Pen",
+            "Acme",
+            "555-0101"
+          ],
+          [
+            "Ink",
+            "Acme",
+            "555-0101"
+          ],
+          [
+            "Pad",
+            "Acme",
+            "555-0199"
+          ],
+          [
+            "Cup",
+            "Bolt",
+            null
+          ],
+          [
+            "Mug",
+            "Bolt",
+            null
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        "Acme",
+        "555-0101",
+        2,
+        2
+      ],
+      [
+        "Acme",
+        "555-0199",
+        1,
+        1
+      ],
+      [
+        "Bolt",
+        null,
+        2,
+        0
+      ]
+    ],
+    "model_answer": "Three rows: (Acme, 555-0101, 2, 2), (Acme, 555-0199, 1, 1) and (Bolt, NULL, 2, 0). Groups are formed by the supplier and phone together, so Acme splits into two groups: its phone was changed on one row but not the others, an update anomaly caused by repeating the phone on every product. COUNT(supplier) counts the rows in each group, not 1, and COUNT(supplier_phone) skips NULLs, so Bolt's two NULL-phone products form one group with n_phone 0. Storing each supplier's phone once, in a suppliers table, would prevent the inconsistency.",
+    "key_points": [
+      "Acme appears in two groups because its phone differs between rows",
+      "COUNT(supplier) gives the group size, not 1",
+      "COUNT(supplier_phone) is 0 for Bolt: NULLs are grouped together but not counted",
+      "The repeated phone column causes an update anomaly; a suppliers table fixes it"
+    ],
+    "rubric": {
+      "0": "One row per supplier, n_rows of 1 everywhere, or n_phone 2 for Bolt; or says the repeated phone only wastes space",
+      "1": "Rows mostly right but one count wrong, or no comment on the design problem",
+      "2": "All three rows and counts correct, explaining the split Acme group as an update anomaly"
+    },
+    "misconceptions": [
+      "sql.aggregation.count-group-column-is-one",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.schema-constraints.normalisation-only-saves-space"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L2-009",
+    "skill": "sql",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "sql-joins",
+      "sql-aggregation",
+      "sql-null"
+    ],
+    "question": "Each order has one shipping fee, and items lists the products in each order. What does this query return? Is Asha's shipping total correct?",
+    "code": "SELECT o.customer,\n       SUM(o.shipping_fee) AS shipping,\n       COUNT(i.product) AS n_items\nFROM orders o\nLEFT JOIN items i ON i.order_id = o.id\nGROUP BY o.customer\nORDER BY o.customer;",
+    "tables": [
+      {
+        "name": "orders",
+        "columns": [
+          "id",
+          "customer",
+          "shipping_fee"
+        ],
+        "rows": [
+          [
+            1,
+            "Asha",
+            5
+          ],
+          [
+            2,
+            "Asha",
+            10
+          ],
+          [
+            3,
+            "Ben",
+            8
+          ],
+          [
+            4,
+            "Chen",
+            null
+          ]
+        ]
+      },
+      {
+        "name": "items",
+        "columns": [
+          "order_id",
+          "product"
+        ],
+        "rows": [
+          [
+            1,
+            "pen"
+          ],
+          [
+            1,
+            "ink"
+          ],
+          [
+            1,
+            "pad"
+          ],
+          [
+            2,
+            "cup"
+          ],
+          [
+            4,
+            "mug"
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        "Asha",
+        25,
+        4
+      ],
+      [
+        "Ben",
+        8,
+        0
+      ],
+      [
+        "Chen",
+        null,
+        1
+      ]
+    ],
+    "model_answer": "Three rows: Asha 25 and 4, Ben 8 and 0, Chen NULL and 1. The join produces one row per order-item pair, so order 1's fee of 5 appears three times and Asha's shipping becomes 5 + 5 + 5 + 10 = 25 instead of the real 15. Ben's order has no items, but the LEFT JOIN keeps it with a NULL product, so his fee is counted once and COUNT(i.product) is 0. Chen's fee is NULL, so SUM gives NULL; to get correct shipping totals, sum the fees before joining to items.",
+    "key_points": [
+      "Asha's shipping is 25, not 15, because the join repeats order 1 for each item",
+      "Ben is kept by the LEFT JOIN with 0 items, since COUNT(i.product) skips NULL",
+      "Chen's shipping is NULL and he has 1 item",
+      "Aggregate shipping before joining (or in a subquery) to avoid double counting"
+    ],
+    "rubric": {
+      "0": "Gives Asha 15 (assumes one row per order), drops Ben, or gives Ben 1 item",
+      "1": "Spots the fan-out but gets Ben or Chen wrong",
+      "2": "All three rows right, explaining the repeated fee, Ben's 0 and Chen's NULL, and how to fix the total"
+    },
+    "misconceptions": [
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.aggregation.count-column-counts-nulls"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L2-010",
+    "skill": "sql",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "sql-joins",
+      "sql-subqueries-cte",
+      "sql-aggregation"
+    ],
+    "question": "A teammate wants the number of employees in each department. What does this query return, and why?",
+    "code": "WITH staff_per_dept AS (\n  SELECT d.name, e.id\n  FROM departments d\n  JOIN employees e ON e.dept_id = d.id\n)\nSELECT d.name, COUNT(d.name) AS n_rows, COUNT(e.dept_id) AS n_staff\nFROM departments d, employees e\nGROUP BY d.name\nORDER BY d.name;",
+    "tables": [
+      {
+        "name": "departments",
+        "columns": [
+          "id",
+          "name"
+        ],
+        "rows": [
+          [
+            1,
+            "Sales"
+          ],
+          [
+            2,
+            "IT"
+          ],
+          [
+            3,
+            "HR"
+          ]
+        ]
+      },
+      {
+        "name": "employees",
+        "columns": [
+          "id",
+          "name",
+          "dept_id"
+        ],
+        "rows": [
+          [
+            1,
+            "Asha",
+            1
+          ],
+          [
+            2,
+            "Ben",
+            1
+          ],
+          [
+            3,
+            "Chen",
+            2
+          ],
+          [
+            4,
+            "Dana",
+            null
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        "HR",
+        4,
+        3
+      ],
+      [
+        "IT",
+        4,
+        3
+      ],
+      [
+        "Sales",
+        4,
+        3
+      ]
+    ],
+    "model_answer": "Every department gets n_rows 4 and n_staff 3: HR, IT and Sales all look identical. The main query never uses the CTE, so its join has no effect, and FROM departments d, employees e with no join condition pairs every department with all 4 employees. COUNT(d.name) therefore counts 4 rows per group, and COUNT(e.dept_id) is 3 because Dana's dept_id is NULL. The fix is to select from staff_per_dept, or to join with ON e.dept_id = d.id (a LEFT JOIN to keep HR with 0).",
+    "key_points": [
+      "Each department shows 4 and 3",
+      "The CTE is never referenced, so it changes nothing",
+      "No join condition gives every department-employee combination",
+      "COUNT(d.name) counts rows in the group; COUNT(e.dept_id) skips Dana's NULL"
+    ],
+    "rubric": {
+      "0": "Gives per-department counts such as Sales 2, IT 1 (assumes the CTE or the shared key links the tables), or n_rows of 1",
+      "1": "Sees the cross join but gets a count wrong, or does not mention the unused CTE",
+      "2": "4 and 3 for every department, explaining the unused CTE, the missing join condition and both counts"
+    },
+    "misconceptions": [
+      "sql.joins.auto-join-on-shared-column",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.aggregation.count-group-column-is-one"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L3-001",
+    "skill": "sql",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "sql-window-functions"
+    ],
+    "question": "A daily_sales table has one row per day. Explain what SUM(amount) OVER (ORDER BY day) returns on each row, and how AVG(amount) OVER (ORDER BY day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) differs. How many rows does each query return compared with the table?",
+    "model_answer": "With ORDER BY inside OVER, the frame runs from the first day up to the current row, so SUM gives a running total that grows day by day; only SUM(amount) OVER () with no ORDER BY gives the grand total on every row. The ROWS BETWEEN 6 PRECEDING AND CURRENT ROW frame slides: each row averages itself and the six rows before it, a 7-day moving average (over fewer days at the start). Both return exactly one row per day, the same number as the table, because window functions add a column instead of collapsing rows like GROUP BY.",
+    "key_points": [
+      "ORDER BY in OVER gives a cumulative (running) total, not the grand total",
+      "The ROWS frame gives a sliding 7-row moving average",
+      "Window functions keep one output row per input row"
+    ],
+    "rubric": {
+      "0": "Says every row shows the overall total, or that the query returns one summary row",
+      "1": "Explains the running total but not the moving frame, or the reverse",
+      "2": "Running total, 7-day moving average, and the same number of rows as the table"
+    },
+    "misconceptions": [
+      "sql.window-functions.running-sum-is-total",
+      "sql.window-functions.collapses-rows"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L3-002",
+    "skill": "sql",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "sql-indexes-performance"
+    ],
+    "question": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+    "model_answer": "First, if the condition matches a large share of the table (or the table is small), the planner estimates that reading it sequentially is cheaper than many random index lookups, so an index is not automatically faster. Second, wrapping the column in a function or expression, such as EXTRACT(YEAR FROM order_date) = 2024 or customer_id + 0 = 42, hides the stored values from the index; rewriting it as a range on the bare column fixes that. Third, a filter on order_date alone skips the leading column, and since entries are sorted by customer_id first the index cannot be searched for a date; that needs an index that starts with order_date.",
+    "key_points": [
+      "Low selectivity or small tables: the planner may prefer a full scan",
+      "A function or expression on the column prevents index use",
+      "A composite index cannot be searched on its second column alone"
+    ],
+    "rubric": {
+      "0": "Insists the index is always used or always faster, or says a filter on order_date alone uses it fine",
+      "1": "Gives one or two valid reasons",
+      "2": "Gives all three reasons (selectivity, expression on the column, non-leading column) with how to fix the last two"
+    },
+    "misconceptions": [
+      "sql.indexes-performance.index-always-helps",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.composite-any-column"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L3-003",
+    "skill": "sql",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "sql-subqueries-cte",
+      "sql-window-functions"
+    ],
+    "question": "What is a CTE (a WITH clause), and why is it a common way to get the highest-paid employee per department with ROW_NUMBER()? If a query defines such a CTE but the main SELECT then reads from the original employees table, does the CTE affect the result?",
+    "model_answer": "A CTE is a named, temporary result defined at the start of a statement that the main query can use like a table; it exists only for that statement. ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) keeps every row and cannot be filtered in the WHERE of the same query, so you compute it in a CTE and then keep rn = 1 in the outer query. A CTE only matters where it is referenced: if the main SELECT reads from employees, the CTE is ignored and the result is the same as without it.",
+    "key_points": [
+      "A CTE is a named temporary result for one statement, used like a table",
+      "The window function keeps every row, so the rank is filtered in an outer query over the CTE",
+      "An unreferenced CTE has no effect on the result"
+    ],
+    "rubric": {
+      "0": "Says the unused CTE still filters the result, or that ROW_NUMBER alone returns one row per department",
+      "1": "Explains what a CTE is but not why it is needed for the top-per-group filter, or not what happens when it is unused",
+      "2": "Defines a CTE, explains filtering the window result in the outer query, and says an unreferenced CTE has no effect"
+    },
+    "misconceptions": [
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.window-functions.collapses-rows"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L3-004",
+    "skill": "sql",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "sql-transactions"
+    ],
+    "question": "Under READ COMMITTED, the default in PostgreSQL, a reporting transaction runs SELECT SUM(balance) FROM accounts twice. Between the two reads, another session deposits 500 into an account and commits. Can the two sums differ? Could the report ever see the deposit before it was committed? Which isolation level would make both reads agree?",
+    "model_answer": "Yes, they can differ: under READ COMMITTED each statement sees the data committed before that statement started, so the second SUM includes the 500 (a non-repeatable read). Being inside one transaction does not freeze the data at this level. The report can never see the deposit before it commits, because READ COMMITTED does not allow dirty reads. Under REPEATABLE READ (or SERIALIZABLE) the whole transaction reads from one snapshot, so both sums would match.",
+    "key_points": [
+      "The two sums can differ (non-repeatable read) under READ COMMITTED",
+      "Uncommitted changes are never visible (no dirty reads)",
+      "REPEATABLE READ or SERIALIZABLE gives a stable snapshot"
+    ],
+    "rubric": {
+      "0": "Says the sums must be equal because they are in one transaction, or that the report could see the uncommitted deposit",
+      "1": "Right about one of the two reads but unsure about dirty reads or the fixing level",
+      "2": "Sums can differ, no dirty reads, and REPEATABLE READ or SERIALIZABLE fixes it"
+    },
+    "misconceptions": [
+      "sql.transactions.default-isolation-prevents-all",
+      "sql.transactions.uncommitted-visible"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L3-005",
+    "skill": "sql",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "sql-transactions"
+    ],
+    "question": "Two transactions run at the same time under READ COMMITTED. Each reads a product's stock (10), subtracts 1 in the application, writes back 9 and commits. What is the final stock, why, and how could you prevent this?",
+    "model_answer": "The final stock is 9, not 8: this is a lost update. Neither transaction sees the other's uncommitted write, so both read 10, and READ COMMITTED does not stop the second write from overwriting the first. You can prevent it with a single atomic statement (UPDATE products SET stock = stock - 1 ...), by locking the row first with SELECT ... FOR UPDATE, or by running at SERIALIZABLE and retrying when the database reports a conflict.",
+    "key_points": [
+      "Final stock is 9 (a lost update), not 8",
+      "Both read 10 because uncommitted changes are invisible, and READ COMMITTED does not prevent the overwrite",
+      "Fixes: atomic UPDATE, SELECT ... FOR UPDATE, or a stricter isolation level"
+    ],
+    "rubric": {
+      "0": "Says the stock ends at 8 because transactions cannot interfere, or because the second one sees the first's change",
+      "1": "Gets 9 but explains it poorly, or explains the cause without a workable fix",
+      "2": "Final stock 9, explains the lost update under READ COMMITTED, and gives at least one valid fix"
+    },
+    "misconceptions": [
+      "sql.transactions.default-isolation-prevents-all",
+      "sql.transactions.uncommitted-visible"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L3-006",
+    "skill": "sql",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "sql-subqueries-cte",
+      "sql-null",
+      "sql-joins"
+    ],
+    "question": "For 'customers who have placed an order', compare joining customers to orders with WHERE id IN (SELECT customer_id FROM orders). For 'customers who have never ordered', why can WHERE id NOT IN (SELECT customer_id FROM orders) go wrong when NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id) does not?",
+    "model_answer": "The join returns one row per matching order, so a customer with three orders appears three times unless you add DISTINCT, while IN only tests membership and returns each customer at most once. NOT IN breaks if the subquery returns any NULL: id NOT IN (1, 3, NULL) means id <> 1 AND id <> 3 AND id <> NULL, and the last part is UNKNOWN, so no customer is returned. NOT EXISTS is a correlated subquery checked for each customer and only asks whether a matching order exists, so a NULL customer_id simply never matches and does not affect the result.",
+    "key_points": [
+      "The join repeats a customer per order; IN returns each customer at most once",
+      "A NULL in the NOT IN list makes the condition UNKNOWN for every row, giving an empty result",
+      "NOT EXISTS is evaluated per customer and is not broken by NULLs"
+    ],
+    "rubric": {
+      "0": "Says IN duplicates customers like a join, or that NOT IN works normally with a NULL in the list",
+      "1": "Explains the NOT IN problem but not the IN/join difference (or vice versa), or gives the wrong reason",
+      "2": "Explains the duplicate difference between join and IN, the NULL problem with NOT IN, and why NOT EXISTS is safe"
+    },
+    "misconceptions": [
+      "sql.subqueries-cte.in-subquery-duplicates",
+      "sql.null.not-in-with-null",
+      "sql.subqueries-cte.correlated-runs-once"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L3-007",
+    "skill": "sql",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "sql-window-functions",
+      "sql-subqueries-cte"
+    ],
+    "question": "The goal is exactly one current address per customer: the most recent one. What does this query return, and why? Would ROW_NUMBER() fix it?",
+    "code": "WITH ranked AS (\n  SELECT customer_id, city,\n         RANK() OVER (PARTITION BY customer_id\n                      ORDER BY updated_on DESC NULLS LAST) AS rk\n  FROM addresses\n)\nSELECT customer_id, city\nFROM ranked\nWHERE rk = 1\nORDER BY customer_id, city;",
+    "tables": [
+      {
+        "name": "addresses",
+        "columns": [
+          "customer_id",
+          "city",
+          "updated_on"
+        ],
+        "rows": [
+          [
+            1,
+            "Pune",
+            "2024-01-10"
+          ],
+          [
+            1,
+            "Delhi",
+            "2024-03-02"
+          ],
+          [
+            1,
+            "Goa",
+            "2024-03-02"
+          ],
+          [
+            2,
+            "Agra",
+            "2023-12-01"
+          ],
+          [
+            2,
+            "Kochi",
+            null
+          ],
+          [
+            3,
+            "Surat",
+            "2024-02-14"
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        1,
+        "Delhi"
+      ],
+      [
+        1,
+        "Goa"
+      ],
+      [
+        2,
+        "Agra"
+      ],
+      [
+        3,
+        "Surat"
+      ]
+    ],
+    "model_answer": "Four rows: customer 1 twice (Delhi and Goa), customer 2 with Agra and customer 3 with Surat. RANK numbers rows within each customer, and Delhi and Goa tie on the latest date, so both get rank 1; Kochi's NULL date is sorted last, so Agra is customer 2's rank 1. The window function itself keeps every row; only the outer WHERE rk = 1 reduces them. ROW_NUMBER would return exactly one row per customer, but it would pick Delhi or Goa arbitrarily unless a tie-breaker is added to the ORDER BY.",
+    "key_points": [
+      "Customer 1 appears twice because RANK gives tied rows the same rank",
+      "NULLS LAST makes Agra, not Kochi, customer 2's latest address",
+      "ROW_NUMBER gives one row per customer but needs a tie-breaker to be deterministic"
+    ],
+    "rubric": {
+      "0": "One row per customer (treats RANK like ROW_NUMBER), or picks Kochi for customer 2",
+      "1": "Rows right but cannot explain the tie, or wrong about what ROW_NUMBER would do",
+      "2": "All four rows, explaining the RANK tie, the NULL date, and ROW_NUMBER with a tie-breaker"
+    },
+    "misconceptions": [
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.collapses-rows"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L3-008",
+    "skill": "sql",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "sql-subqueries-cte",
+      "sql-joins",
+      "sql-aggregation"
+    ],
+    "question": "What does this query return, and why? Does the WITH clause limit which orders are counted?",
+    "code": "WITH big AS (\n  SELECT customer_id FROM orders WHERE amount >= 100\n)\nSELECT c.name, COUNT(o.id) AS n_orders\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE c.id IN (SELECT customer_id FROM big)\nGROUP BY c.name\nORDER BY c.name;",
+    "tables": [
+      {
+        "name": "customers",
+        "columns": [
+          "id",
+          "name"
+        ],
+        "rows": [
+          [
+            1,
+            "Asha"
+          ],
+          [
+            2,
+            "Ben"
+          ],
+          [
+            3,
+            "Chen"
+          ],
+          [
+            4,
+            "Dana"
+          ]
+        ]
+      },
+      {
+        "name": "orders",
+        "columns": [
+          "id",
+          "customer_id",
+          "amount"
+        ],
+        "rows": [
+          [
+            10,
+            1,
+            150
+          ],
+          [
+            11,
+            1,
+            40
+          ],
+          [
+            12,
+            1,
+            120
+          ],
+          [
+            13,
+            2,
+            30
+          ],
+          [
+            14,
+            3,
+            null
+          ],
+          [
+            15,
+            3,
+            200
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        "Asha",
+        3
+      ],
+      [
+        "Chen",
+        2
+      ]
+    ],
+    "model_answer": "Two rows: Asha with 3 and Chen with 2. The CTE is only used inside the IN test, so it decides which customers qualify (those with an order of at least 100: Asha and Chen), but the main query joins to the full orders table, so all of their orders are counted, including Asha's 40 and Chen's NULL-amount order. IN only checks membership, so Asha's two big orders do not duplicate her rows, and GROUP BY then collapses each customer to a single row.",
+    "key_points": [
+      "Only Asha and Chen qualify (an order of at least 100)",
+      "All their orders are counted (3 and 2), because the CTE does not filter the joined orders table",
+      "IN does not multiply rows even though Asha appears twice in big; GROUP BY gives one row per customer"
+    ],
+    "rubric": {
+      "0": "Counts only big orders (Asha 2, Chen 1), doubles Asha's count because of IN, or lists one row per order",
+      "1": "Right customers but one count wrong, or correct numbers without explaining the CTE's role",
+      "2": "Asha 3 and Chen 2, explaining that the CTE only picks customers and that IN does not duplicate rows"
+    },
+    "misconceptions": [
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.subqueries-cte.in-subquery-duplicates",
+      "sql.aggregation.group-by-only-sorts"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L3-009",
+    "skill": "sql",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "sql-subqueries-cte",
+      "sql-null"
+    ],
+    "question": "Both columns are meant to answer 'does nobody report to this person?'. What does the query return, and why do the two columns disagree?",
+    "code": "SELECT s.name,\n       CASE WHEN s.id NOT IN (SELECT manager_id FROM staff)\n            THEN 'yes' ELSE 'no' END AS not_in_check,\n       CASE WHEN NOT EXISTS (SELECT 1 FROM staff r WHERE r.manager_id = s.id)\n            THEN 'yes' ELSE 'no' END AS not_exists_check\nFROM staff s\nORDER BY s.id;",
+    "tables": [
+      {
+        "name": "staff",
+        "columns": [
+          "id",
+          "name",
+          "manager_id"
+        ],
+        "rows": [
+          [
+            1,
+            "Asha",
+            null
+          ],
+          [
+            2,
+            "Ben",
+            1
+          ],
+          [
+            3,
+            "Chen",
+            1
+          ],
+          [
+            4,
+            "Dana",
+            2
+          ],
+          [
+            5,
+            "Eli",
+            2
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        "Asha",
+        "no",
+        "no"
+      ],
+      [
+        "Ben",
+        "no",
+        "no"
+      ],
+      [
+        "Chen",
+        "no",
+        "yes"
+      ],
+      [
+        "Dana",
+        "no",
+        "yes"
+      ],
+      [
+        "Eli",
+        "no",
+        "yes"
+      ]
+    ],
+    "model_answer": "not_in_check is 'no' for all five people, while not_exists_check is 'no' for Asha and Ben and 'yes' for Chen, Dana and Eli. The subquery's list of manager_ids contains Asha's NULL, so for Chen, Dana and Eli id NOT IN (1, 1, 2, 2, NULL) is UNKNOWN rather than true, and CASE falls through to 'no'. NOT EXISTS is correlated: it is re-evaluated for each person with that person's id, and it simply checks whether any row has them as manager, so NULLs do not matter.",
+    "key_points": [
+      "not_in_check is 'no' on every row because the list contains NULL",
+      "id NOT IN (..., NULL) is UNKNOWN, never true, so CASE takes ELSE",
+      "NOT EXISTS is evaluated per person and correctly says 'yes' for Chen, Dana and Eli"
+    ],
+    "rubric": {
+      "0": "Says NOT IN gives 'yes' for Chen, Dana and Eli, or that NOT EXISTS gives the same value on every row",
+      "1": "Correct NOT EXISTS column but wrong or unexplained NOT IN column, or the reverse",
+      "2": "Both columns right, explaining the NULL in the NOT IN list and the per-row NOT EXISTS check"
+    },
+    "misconceptions": [
+      "sql.null.not-in-with-null",
+      "sql.subqueries-cte.correlated-runs-once"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "SQL-L3-010",
+    "skill": "sql",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "sql-window-functions",
+      "sql-aggregation"
+    ],
+    "question": "What does this query return? Explain the values in the running and rnk columns.",
+    "code": "SELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;",
+    "tables": [
+      {
+        "name": "sales",
+        "columns": [
+          "day",
+          "amount"
+        ],
+        "rows": [
+          [
+            1,
+            100
+          ],
+          [
+            2,
+            50
+          ],
+          [
+            2,
+            30
+          ],
+          [
+            3,
+            null
+          ],
+          [
+            4,
+            20
+          ]
+        ]
+      }
+    ],
+    "expected_output": [
+      [
+        1,
+        100,
+        100,
+        1
+      ],
+      [
+        2,
+        30,
+        180,
+        2
+      ],
+      [
+        2,
+        50,
+        180,
+        2
+      ],
+      [
+        3,
+        null,
+        180,
+        4
+      ],
+      [
+        4,
+        20,
+        200,
+        5
+      ]
+    ],
+    "model_answer": "Five rows: (1, 100, 100, 1), (2, 30, 180, 2), (2, 50, 180, 2), (3, NULL, 180, 4), (4, 20, 200, 5). With ORDER BY inside OVER, the default frame runs from the first row to the current row and includes every row tied on day, so both day-2 rows show 180, and the NULL on day 3 adds nothing. RANK gives the tied day-2 rows the same rank and then skips, so day 3 is rank 4.",
+    "key_points": [
+      "Every input row is kept (five rows)",
+      "running is a cumulative sum, not the grand total; tied day-2 rows both show 180",
+      "SUM ignores the NULL amount, so day 3 stays at 180",
+      "RANK ties the day-2 rows at 2 and skips to 4"
+    ],
+    "rubric": {
+      "0": "Shows 200 on every row, collapses the rows per day, or gives the day-2 rows different ranks or running values",
+      "1": "Running totals correct but tie handling wrong in one column (e.g. 130 then 180, or rank 3 for day 3)",
+      "2": "All five rows correct, explaining the running frame with peers, the ignored NULL and the gap after the tied rank"
+    },
+    "misconceptions": [
+      "sql.window-functions.running-sum-is-total",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.collapses-rows"
+    ],
+    "source": "generated",
+    "status": "draft"
+  }
+]

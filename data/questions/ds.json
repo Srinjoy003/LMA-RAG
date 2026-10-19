@@ -1,0 +1,881 @@
+[
+  {
+    "id": "DS-L1-001",
+    "skill": "ds",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "ds-stacks-queues"
+    ],
+    "question": "What is the difference between a stack and a queue? What do push, pop and peek do on a stack? Which of the two would you use for an editor's undo feature, and which for a line of print jobs waiting for a printer?",
+    "model_answer": "A stack is last-in, first-out: you push and pop at the same end (the top), so the most recently added item comes out first. A queue is first-in, first-out: items join at the back and leave from the front, so the oldest item is served first. On a stack, push adds an item on top, pop removes and returns the top item, and peek only looks at the top without removing it. Undo must reverse the most recent action first, so it uses a stack; print jobs should be printed in arrival order, so they use a queue.",
+    "key_points": [
+      "A stack is LIFO (last in, first out); a queue is FIFO (first in, first out)",
+      "pop removes and returns the top item; peek only reads it without removing it",
+      "Undo uses a stack; print jobs use a queue"
+    ],
+    "rubric": {
+      "0": "Swaps LIFO and FIFO (e.g. a stack for print jobs so the first job prints first), or says pop leaves the item on the stack like peek",
+      "1": "Correct LIFO/FIFO distinction but misses pop versus peek, or gets one of the two use cases wrong",
+      "2": "Correct LIFO/FIFO, correct push/pop/peek, and stack for undo, queue for print jobs, with reasons"
+    },
+    "misconceptions": [
+      "ds.stacks-queues.lifo-fifo-swapped",
+      "ds.stacks-queues.pop-does-not-remove"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L1-002",
+    "skill": "ds",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "ds-complexity",
+      "ds-sorting-searching"
+    ],
+    "question": "A teammate needs to check whether a customer ID is in an unsorted Python list of one million IDs. They say: \"`if cid in ids:` is O(1) because it is a single line, so it beats any loop I could write; and if it ever got slow, I would just run binary search on the list instead.\" What is wrong with each of these two claims?",
+    "model_answer": "`cid in ids` is a linear search hidden inside one line: Python compares cid with the items one by one, so it is O(n), the same complexity as an explicit for loop (it is only faster by a constant factor because the loop runs in C). Binary search cannot simply be run on this list, because it relies on sorted order to throw away half of the remaining items after each comparison; on unsorted data it can discard the half that holds the ID and wrongly report it missing. To make repeated lookups fast you would sort once (O(n log n)) and then binary search, or put the IDs in a set.",
+    "key_points": [
+      "`in` on a list is a linear scan, O(n), even though it is one line",
+      "A built-in call has the same Big-O as the equivalent loop; only the constant factor differs",
+      "Binary search needs sorted data; on an unsorted list it can miss an ID that is present",
+      "Fix: sort once and then binary search, or use a set for membership tests"
+    ],
+    "rubric": {
+      "0": "Accepts that `in` on a list is O(1), or that binary search works on the unsorted list",
+      "1": "Rejects one claim correctly but not the other, or says `in` is slow without explaining that it scans the list",
+      "2": "Explains that `in` is an O(n) scan just like a loop and that binary search needs sorted data, with a sensible fix"
+    },
+    "misconceptions": [
+      "ds.complexity.short-code-is-fast",
+      "ds.sorting-searching.binary-search-unsorted"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L1-003",
+    "skill": "ds",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "ds-linked-lists",
+      "ds-arrays-strings"
+    ],
+    "question": "You need to delete the item at position k from a sequence of n items. Compare doing this on a Python list (`del lst[k]`) and on a singly linked list that you walk from the head. In each case, how much work goes into reaching position k, and how much into removing the item?",
+    "model_answer": "In a Python list, reaching index k is O(1) because the element's address is computed directly, but removing it shifts every later element one place left, which is O(n - k), O(n) in the worst case. In a singly linked list you must follow k next pointers from the head to reach the node before position k, which is O(k), but removing it is O(1): you set prev.next = prev.next.next and nothing else moves. So the list finds cheaply and removes expensively, while the linked list does the opposite.",
+    "key_points": [
+      "Python list: reaching index k is O(1) (direct address calculation)",
+      "Python list: removal shifts every later element, O(n - k)",
+      "Linked list: reaching position k means following k next pointers, O(k)",
+      "Linked list: unlinking is O(1) by changing the previous node's next pointer; nothing moves"
+    ],
+    "rubric": {
+      "0": "Says the linked list can jump straight to position k, that list indexing scans from the start, or that deleting from the middle of a list is O(1)",
+      "1": "Gets one structure right but not the other, or mixes up the cost of reaching k with the cost of removing",
+      "2": "Correct reach and removal costs for both structures, with reasons"
+    },
+    "misconceptions": [
+      "ds.linked-lists.index-constant-time",
+      "ds.arrays-strings.index-needs-scan",
+      "ds.arrays-strings.front-insert-constant"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L1-004",
+    "skill": "ds",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "ds-stacks-queues",
+      "ds-arrays-strings",
+      "ds-complexity"
+    ],
+    "question": "A script keeps pending jobs in a Python list: it adds jobs with `jobs.append(job)` and takes the next one with `jobs.pop(0)`. It works fine with 100 jobs, but draining a backlog of one million jobs with `while jobs: handle(jobs.pop(0))` is extremely slow. Why? What is the total cost of draining the list, and what would you use instead?",
+    "model_answer": "A Python list is a dynamic array, so `pop(0)` removes the first slot and shifts every remaining element one place to the left: each call is O(n) even though it is one short call. The loop is a single visible loop, but it does n pops that each cost up to n steps, so draining is O(n²) in total. `collections.deque` supports O(1) `append` and `popleft`, so the same queue drains in O(n).",
+    "key_points": [
+      "`pop(0)` shifts every remaining element left, so it is O(n) per call",
+      "One loop of n such pops costs O(n²) in total, not O(n)",
+      "`collections.deque` gives O(1) append and popleft, so draining is O(n)"
+    ],
+    "rubric": {
+      "0": "Thinks `pop(0)` is O(1) like `append` or `pop()`, or that a single loop means O(n) total",
+      "1": "Explains the shifting but gets the total cost wrong, or does not offer a better structure",
+      "2": "Explains the shift, the O(n²) total and proposes deque (or an equivalent O(1) queue)"
+    },
+    "misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.complexity.short-code-is-fast",
+      "ds.complexity.count-loops-for-big-o"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L1-005",
+    "skill": "ds",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "ds-arrays-strings"
+    ],
+    "question": "Python strings are immutable. What does that mean for `s.upper()` and for `s += 'x'`, and what happens if you run `s[0] = 'X'`? If you build a 100,000-character string one character at a time, compare doing `s += ch` in a loop with appending each character to a list and calling `''.join(chars)` at the end.",
+    "model_answer": "Immutable means a string object can never change once created: `s.upper()` returns a new string and leaves s unchanged, `s += 'x'` builds a new string and rebinds s to it, and `s[0] = 'X'` raises a TypeError. Repeated `s += ch` may copy the whole growing string each time, which can add up to O(n²) work. Appending to a list does not copy the list each time, because the list keeps spare capacity and grows occasionally (amortised O(1) per append), and `join` then builds the final string once in O(n).",
+    "key_points": [
+      "`upper()` and similar methods return new strings; the original is unchanged",
+      "`s += 'x'` creates a new string and rebinds s; `s[0] = 'X'` raises TypeError",
+      "Repeated `+=` can copy the growing string every time, up to O(n²) work",
+      "List appends are amortised O(1) (no full copy each time) and `join` builds the result once, O(n) overall"
+    ],
+    "rubric": {
+      "0": "Says `upper()` or `+=` modify the existing string in place, or that `s[0] = 'X'` works",
+      "1": "Correct about immutability but cannot explain the cost difference, or claims every list append copies the whole list",
+      "2": "Explains immutability for all three operations and why list-plus-join is linear while repeated += can be quadratic"
+    },
+    "misconceptions": [
+      "ds.arrays-strings.strings-mutable",
+      "ds.arrays-strings.append-always-copies"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L1-006",
+    "skill": "ds",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "ds-complexity"
+    ],
+    "question": "Algorithm A always takes 50n steps and algorithm B takes n² steps on an input of size n. What is the Big-O of each? Which one needs fewer steps when n = 10, and which when n = 1,000? What does this tell you about what Big-O does and does not promise?",
+    "model_answer": "A is O(n), because the constant factor 50 is dropped, and B is O(n²). For n = 10, A takes 500 steps and B only 100, so B is faster; for n = 1,000, A takes 50,000 steps and B 1,000,000, so A is far faster (they cross at n = 50). Big-O describes how the cost grows as n gets large, ignoring constants, so it does not give exact running times and an algorithm in a worse class can still win on small inputs.",
+    "key_points": [
+      "A is O(n) and B is O(n²); the constant 50 does not change the class",
+      "n = 10: B is faster (100 vs 500 steps); n = 1,000: A is faster (50,000 vs 1,000,000)",
+      "Big-O describes growth for large n, not exact times; a worse class can win on small inputs"
+    ],
+    "rubric": {
+      "0": "Calls A 'O(50n)' as a different or worse class than O(n), or claims the O(n) algorithm is faster for every n",
+      "1": "Correct Big-O classes but the comparison at n = 10 or n = 1,000 is wrong or missing, or no explanation of what Big-O promises",
+      "2": "Correct classes, both comparisons, and the point that Big-O is about growth rather than exact time"
+    },
+    "misconceptions": [
+      "ds.complexity.constants-change-class",
+      "ds.complexity.big-o-is-exact-time"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L1-007",
+    "skill": "ds",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "ds-arrays-strings",
+      "ds-sorting-searching"
+    ],
+    "question": "What does this code print, and why? Pay attention to the words that have the same length.",
+    "code": "words = [\"kiwi\", \"fig\", \"apple\", \"pear\", \"date\"]\nwords.sort(key=len)\nfirst = words[0]\nfirst.upper()\nprint(words)\nprint(first)\n",
+    "expected_output": "['fig', 'kiwi', 'pear', 'date', 'apple']\nfig\n",
+    "model_answer": "It prints `['fig', 'kiwi', 'pear', 'date', 'apple']` and then `fig`. Sorting by length puts 'fig' (3 letters) first and 'apple' (5) last; 'kiwi', 'pear' and 'date' all have length 4, and because Python's sort is stable they keep their original relative order. `first.upper()` returns a new string 'FIG' that is thrown away: strings are immutable, so `first` is still 'fig'.",
+    "key_points": [
+      "Sorted by length: 'fig' first, 'apple' last",
+      "Python's sort is stable, so the equal-length words stay in their original order: kiwi, pear, date",
+      "upper() returns a new string; `first` is unchanged because strings are immutable"
+    ],
+    "rubric": {
+      "0": "Says `first` becomes 'FIG' (string changed in place), or puts the equal-length words in a different order such as alphabetical (date, kiwi, pear)",
+      "1": "Gets one of the two lines right but misses stability or immutability",
+      "2": "Exact output for both lines, explained by stable sorting and string immutability"
+    },
+    "misconceptions": [
+      "ds.arrays-strings.strings-mutable",
+      "ds.sorting-searching.sort-not-stable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L1-008",
+    "skill": "ds",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "ds-stacks-queues"
+    ],
+    "question": "This function uses a list as a stack to check whether brackets are properly nested. What does it print, and why is each result True or False?",
+    "code": "def balanced(s):\n    stack = []\n    pairs = {\")\": \"(\", \"]\": \"[\"}\n    for ch in s:\n        if ch in \"([\":\n            stack.append(ch)\n        elif stack and stack[-1] == pairs[ch]:\n            stack.pop()\n        else:\n            return False\n    return not stack\n\nprint(balanced(\"([])\"), balanced(\"([)]\"), balanced(\"(()\"))",
+    "expected_output": "True False False\n",
+    "model_answer": "Prints `True False False`. For \"([])\" it pushes ( and [, then ] matches the top [ and is popped, ) matches the top ( and is popped, and the empty stack gives True. For \"([)]\" the ) is compared with the top of the stack, which is [, the most recently pushed bracket, so it returns False. For \"(()\" the inner pair is matched and popped, but one ( is left on the stack, so the result is False.",
+    "key_points": [
+      "Prints True False False",
+      "\"([)]\" fails because ')' is compared with the top item '[', the most recently pushed bracket",
+      "pop removes each matched bracket; \"(()\" leaves one '(' on the stack, so it returns False"
+    ],
+    "rubric": {
+      "0": "Says \"([)]\" is True (matching against the oldest bracket), or that pop leaves items on the stack so \"([])\" fails",
+      "1": "Correct output but the explanation misses why one of the False cases fails",
+      "2": "Correct output with the LIFO matching and leftover-bracket reasons"
+    },
+    "misconceptions": [
+      "ds.stacks-queues.lifo-fifo-swapped",
+      "ds.stacks-queues.pop-does-not-remove"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L1-009",
+    "skill": "ds",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "ds-linked-lists",
+      "ds-arrays-strings"
+    ],
+    "question": "Each new node is added at the front of this linked list. What does this code print, and how does the cost of `get(head, k)` grow with k, compared with `lst[k]` on a Python list?",
+    "code": "class Node:\n    def __init__(self, val, nxt=None):\n        self.val, self.next = val, nxt\n\ndef get(head, k):\n    node, hops = head, 0\n    for _ in range(k):\n        node = node.next\n        hops += 1\n    return node.val, hops\n\nhead = None\nfor v in [10, 20, 30, 40]:\n    head = Node(v, head)\nprint(get(head, 0), get(head, 3))",
+    "expected_output": "(40, 0) (10, 3)\n",
+    "model_answer": "Prints `(40, 0) (10, 3)`. Adding at the front reverses the order, so the list is 40 -> 30 -> 20 -> 10; get(head, 0) returns the head without any hops, and get(head, 3) follows next three times to reach 10. Reaching position k in a linked list takes k hops, so it is O(k) and O(n) in the worst case, whereas `lst[k]` on a Python list is O(1) because the element's address is computed directly from k.",
+    "key_points": [
+      "Prints (40, 0) (10, 3)",
+      "Front insertion reverses the order: 40 -> 30 -> 20 -> 10",
+      "get must follow k next pointers, so it is O(k) (O(n) worst case)",
+      "lst[k] on a Python list is O(1) because the position is computed directly"
+    ],
+    "rubric": {
+      "0": "Claims get reaches any node in a constant number of steps, or that lst[k] also has to walk from the start",
+      "1": "Correct cost comparison but wrong printed values (e.g. wrong order), or correct output with the cost comparison missing",
+      "2": "Correct output and the O(k) versus O(1) comparison with reasons"
+    },
+    "misconceptions": [
+      "ds.linked-lists.index-constant-time",
+      "ds.arrays-strings.index-needs-scan"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L1-010",
+    "skill": "ds",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "ds-complexity",
+      "ds-sorting-searching"
+    ],
+    "question": "What does this code print? How does the number of loop iterations grow as n grows, and how is that related to binary search?",
+    "code": "def halvings(n):\n    count = 0\n    while n > 1:\n        n = n // 2\n        count += 1\n    return count\n\nprint(halvings(8), halvings(16), halvings(1000000))",
+    "expected_output": "3 4 19\n",
+    "model_answer": "Prints `3 4 19`. Each iteration halves n, so the loop runs about log2(n) times: 3 for 8, 4 for 16 and 19 for a million. Even though there is a single loop, it is O(log n), not O(n): doubling n adds only one more iteration. Binary search halves the remaining range in the same way, so on a million sorted items it needs only about 20 comparisons, not hundreds of thousands.",
+    "key_points": [
+      "Prints 3 4 19",
+      "The loop halves n each time, so it runs about log2(n) times: O(log n), not O(n)",
+      "Doubling n adds only one iteration",
+      "Binary search halves its range the same way: about 20 comparisons for a million items"
+    ],
+    "rubric": {
+      "0": "Calls it O(n) because there is one loop, or says binary search needs about n/2 comparisons",
+      "1": "Correct output but the growth explanation is vague or the link to binary search is missing",
+      "2": "Correct output, O(log n) with the halving reason, and the binary-search connection"
+    },
+    "misconceptions": [
+      "ds.complexity.count-loops-for-big-o",
+      "ds.sorting-searching.binary-search-half-of-linear"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L2-001",
+    "skill": "ds",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "ds-trees-bst",
+      "ds-hash-tables",
+      "ds-arrays-strings"
+    ],
+    "question": "A game leaderboard receives frequent new scores and must often list all players in score order. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+    "model_answer": "A hash table gives fast inserts and lookups by key but keeps no useful order, so listing by score would need a full sort each time, O(n log n). A sorted array is easy to list in order, but each new score must be placed in its correct position and every later element shifted, O(n) per insert. A balanced BST inserts in O(log n) and an in-order traversal returns the scores already sorted in O(n), so it handles both operations well and is the best fit.",
+    "key_points": [
+      "Hash table: fast inserts but no ordering, so listing needs a full sort",
+      "Sorted array: ordered, but each insert shifts elements, O(n)",
+      "Balanced BST: O(log n) inserts, and in-order traversal lists scores in sorted order"
+    ],
+    "rubric": {
+      "0": "Claims the hash table keeps scores sorted, that inserting into the middle of a sorted array is O(1), or that a BST's in-order traversal is not sorted",
+      "1": "Chooses the BST but misjudges one of the alternatives, or reasons about only one of the two operations",
+      "2": "Chooses the balanced BST and correctly weighs insert and ordered-listing costs for all three structures"
+    },
+    "misconceptions": [
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.arrays-strings.front-insert-constant",
+      "ds.trees-bst.inorder-not-sorted"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L2-002",
+    "skill": "ds",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "ds-hash-tables",
+      "ds-complexity",
+      "ds-sorting-searching"
+    ],
+    "question": "A service receives 100,000 user IDs and must report whether any ID appears twice. Compare three approaches: keep a list of seen IDs and check `if uid in seen_list`; keep a set of seen IDs; or sort all the IDs and compare neighbours. What is the time complexity of each?",
+    "model_answer": "With a list, each `in` check is a linear scan, so n checks cost O(n²) in total, even though the code is a single short loop. With a set, each membership check and insert is O(1) on average because a set is a hash table, so the whole job is O(n). Sorting first costs O(n log n), and one pass comparing adjacent IDs is then O(n), so that approach is O(n log n) overall: it needs no hash table but is slower than the set for large n.",
+    "key_points": [
+      "List: each `in` check is O(n), so the total is O(n²)",
+      "Set: O(1) average membership and insert, so the total is O(n)",
+      "Sort then compare neighbours: O(n log n), dominated by the sort"
+    ],
+    "rubric": {
+      "0": "Says the list approach is O(n) (one loop, or `in` treated as a single step), that set membership is linear, or that sorting is O(n)",
+      "1": "Gets two of the three complexities right with reasons",
+      "2": "All three complexities correct with reasons: O(n²), O(n), O(n log n)"
+    },
+    "misconceptions": [
+      "ds.hash-tables.lookup-is-linear",
+      "ds.complexity.short-code-is-fast",
+      "ds.sorting-searching.sorting-is-linear"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L2-003",
+    "skill": "ds",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "ds-trees-bst"
+    ],
+    "question": "What property must every node of a binary search tree satisfy? Is it enough that each node is larger than its left child and smaller than its right child? How do you search for or insert a key, and how fast is that?",
+    "model_answer": "Every key in a node's whole left subtree must be smaller than the node's key, and every key in its whole right subtree larger; checking only the direct children is not enough, because a deeper descendant can break the rule. To search or insert, start at the root and go left or right depending on the comparison, following a single root-to-leaf path without looking at the other keys. The cost is proportional to the tree's height: about O(log n) if the tree is balanced, but O(n) if it has degenerated into a chain, for example after inserting keys in sorted order.",
+    "key_points": [
+      "The ordering rule applies to whole subtrees, not just direct children",
+      "Search and insert follow one path from the root, comparing at each node",
+      "Cost is O(height): O(log n) when balanced, O(n) in the worst (degenerate) case"
+    ],
+    "rubric": {
+      "0": "Says comparing each node with its children is enough, that insertion inspects every key, or that BST operations are always O(log n)",
+      "1": "Correct property and search procedure but misses the height/worst-case point, or correct cost discussion with a vague property",
+      "2": "Subtree-wide property, single-path search/insert, and O(height) cost with balanced and degenerate cases"
+    },
+    "misconceptions": [
+      "ds.trees-bst.only-check-children",
+      "ds.trees-bst.insert-scans-all-keys",
+      "ds.trees-bst.always-balanced"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L2-004",
+    "skill": "ds",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "ds-hash-tables"
+    ],
+    "question": "You keep a Python dict that maps about 100,000 product names to their prices. What does it cost to (a) get one product's price, (b) list all products in alphabetical order, and (c) find the cheapest product? Explain each.",
+    "model_answer": "(a) `d[name]` is O(1) on average: the name's hash leads directly to its slot, so the dict does not compare against every key. (b) A dict iterates in insertion order, not sorted order, so you need `sorted(d)`, which is O(n log n). (c) The dict is organised by the hash of the name, not by price, so finding the cheapest means scanning every value, for example `min(d, key=d.get)`, which is O(n); if it is needed often, keep a separate structure such as a heap ordered by price.",
+    "key_points": [
+      "Lookup by name is O(1) on average: the hash leads straight to the slot, with no scan of the keys",
+      "A dict iterates in insertion order, not alphabetical order, so listing alphabetically needs sorted(): O(n log n)",
+      "Finding the cheapest needs a scan of all values, O(n), because the dict is organised by key hash, not by price"
+    ],
+    "rubric": {
+      "0": "Says lookup is O(n) because keys are checked one by one, or that the dict already lists products alphabetically",
+      "1": "Two of the three costs correct with reasons",
+      "2": "All three costs correct with reasons"
+    },
+    "misconceptions": [
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L2-005",
+    "skill": "ds",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "ds-sorting-searching"
+    ],
+    "question": "You have a list of `(name, grade)` records and need them ordered by grade, highest first, with students of equal grade in alphabetical order. One approach sorts twice: first by name, then by grade in descending order. Why does that give the right result, and which property of Python's sort does it rely on? How could you do it with a single sort?",
+    "model_answer": "Python's sort is stable: records with equal keys keep the relative order they had before the sort. After the first sort the records are alphabetical; the second sort reorders them by grade only, and among students with the same grade it keeps that alphabetical order. So you sort by the least important key first and the most important key last. With one sort you can use a tuple key such as `key=lambda r: (-r[1], r[0])`.",
+    "key_points": [
+      "Python's sort is stable: items with equal keys keep their existing relative order",
+      "After sorting by name, the grade sort keeps equal-grade students alphabetical, so sort by the secondary key first",
+      "Alternative: one sort with a tuple key such as (-grade, name)"
+    ],
+    "rubric": {
+      "0": "Thinks the second sort scrambles or alphabetises ties on its own, so the first sort is wasted or the result is unpredictable",
+      "1": "Says it works but cannot name stability, or gets the order of the two sorts backwards",
+      "2": "Explains stability, why the secondary key is sorted first, and gives the single tuple-key sort"
+    },
+    "misconceptions": [
+      "ds.sorting-searching.sort-not-stable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L2-006",
+    "skill": "ds",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "ds-hash-tables",
+      "ds-linked-lists"
+    ],
+    "question": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+    "model_answer": "The hash map maps each key to its node in the linked list, so finding an entry is O(1) on average: the key's hash leads straight to it instead of scanning entries. The doubly linked list keeps entries in recency order, most recent at the front and the eviction candidate at the tail. On a hit, the map gives k's node, which is unlinked by pointing its neighbours at each other and then spliced in at the front, setting its own pointers before redirecting the head so no reference is lost. Nothing shifts, so moving and evicting (remove the tail and its map entry) are O(1).",
+    "key_points": [
+      "The hash map gives average O(1) access from a key to its list node, with no scan",
+      "The doubly linked list keeps recency order; the tail is the least recently used entry to evict",
+      "On a hit, the node is unlinked by rewiring its neighbours and re-inserted at the front; nothing shifts",
+      "Pointer updates must be ordered so no reference is overwritten before it is saved"
+    ],
+    "rubric": {
+      "0": "Says finding a key requires checking entries one by one, or that moving a node shifts the other nodes",
+      "1": "Explains the role of only one part, or the hit walkthrough is vague about which pointers change",
+      "2": "Explains both parts, the pointer-level move to the front, and why every step is O(1) on average"
+    },
+    "misconceptions": [
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L2-007",
+    "skill": "ds",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "ds-hash-tables"
+    ],
+    "question": "This is a tiny hash table with 4 buckets: it uses `key % 4` as the hash function and keeps a list (chain) of [key, value] pairs in each bucket. What does it print? How many key comparisons does looking up 13 take, and what would happen to lookups if every key had the form 4k + 1?",
+    "code": "buckets = [[] for _ in range(4)]\n\ndef put(key, val):\n    bucket = buckets[key % 4]\n    for pair in bucket:\n        if pair[0] == key:\n            pair[1] = val\n            return\n    bucket.append([key, val])\n\nfor k, v in [(5, \"a\"), (9, \"b\"), (13, \"c\"), (6, \"d\"), (9, \"e\")]:\n    put(k, v)\nprint(buckets)\nprint([len(b) for b in buckets])",
+    "expected_output": "[[], [[5, 'a'], [9, 'e'], [13, 'c']], [[6, 'd']], []]\n[0, 3, 1, 0]\n",
+    "model_answer": "It prints `[[], [[5, 'a'], [9, 'e'], [13, 'c']], [[6, 'd']], []]` and then `[0, 3, 1, 0]`. Keys 5, 9 and 13 all hash to bucket 1; the collision is handled by chaining them in the same bucket, so none overwrites another, and only the second put for key 9 updates its existing value to 'e'. Looking up 13 goes to bucket 1 and compares against 5, 9 and 13, so 3 comparisons. If every key were 4k + 1, all n keys would land in one chain and each lookup would scan it, O(n) rather than O(1).",
+    "key_points": [
+      "Bucket 1 holds [5, 'a'], [9, 'e'], [13, 'c']; the lengths are [0, 3, 1, 0]",
+      "Colliding keys are chained in the same bucket, none is overwritten; only the repeated key 9 has its value updated",
+      "Looking up 13 compares against 5, 9 and 13: 3 comparisons",
+      "If all keys collide, every lookup scans one long chain: O(n), not O(1)"
+    ],
+    "rubric": {
+      "0": "Says colliding keys replace each other (e.g. bucket 1 ends up with only 13), or that lookups stay O(1) even when all keys collide",
+      "1": "Correct printed buckets but the comparison count or the all-collide cost is wrong or missing",
+      "2": "Correct output, the chaining explanation, 3 comparisons and the O(n) worst case"
+    },
+    "misconceptions": [
+      "ds.hash-tables.collision-overwrites",
+      "ds.hash-tables.worst-case-constant"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L2-008",
+    "skill": "ds",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "ds-trees-bst"
+    ],
+    "question": "`ok` is meant to check whether a tree, stored as nested `(key, left, right)` tuples, is a valid binary search tree. What does this print, and is the tree actually a valid BST?",
+    "code": "def ok(node):\n    if node is None:\n        return True\n    key, left, right = node\n    if left and left[0] > key:\n        return False\n    if right and right[0] < key:\n        return False\n    return ok(left) and ok(right)\n\ndef inorder(node):\n    return inorder(node[1]) + [node[0]] + inorder(node[2]) if node else []\n\ntree = (50, (30, (20, None, None), (60, None, None)), (70, None, None))\nprint(ok(tree), inorder(tree))\n",
+    "expected_output": "True [20, 30, 60, 50, 70]\n",
+    "model_answer": "It prints `True [20, 30, 60, 50, 70]`. `ok` only compares each node with its direct children, and every parent-child pair passes (30 < 50, 70 > 50, 20 < 30, 60 > 30). But the tree is not a valid BST: 60 sits in the left subtree of 50, where every key must be smaller than 50. The in-order traversal confirms it, because a valid BST always gives its keys in sorted order and here 60 comes before 50.",
+    "key_points": [
+      "Output `True [20, 30, 60, 50, 70]`",
+      "The check only compares parents with children, so it misses 60 in 50's left subtree",
+      "An in-order traversal of a valid BST is sorted; this one is not, so the tree is invalid"
+    ],
+    "rubric": {
+      "0": "Concludes the tree is a valid BST because every node fits its children, or does not connect the unsorted in-order output with the tree being invalid",
+      "1": "Correct output, but the explanation of why the tree is invalid is incomplete",
+      "2": "Exact output, says the tree is invalid, and explains both the subtree rule and the unsorted in-order traversal"
+    },
+    "misconceptions": [
+      "ds.trees-bst.only-check-children",
+      "ds.trees-bst.inorder-not-sorted"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L2-009",
+    "skill": "ds",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "ds-sorting-searching"
+    ],
+    "question": "`bsearch` is a standard binary search that also counts how many elements it compares. What does this code print, and why are the two results different?",
+    "code": "def bsearch(a, x):\n    lo, hi, steps = 0, len(a) - 1, 0\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        steps += 1\n        if a[mid] == x:\n            return mid, steps\n        if a[mid] < x:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1, steps\n\ndata = [7, 3, 9, 1, 5, 8, 2]\nprint(bsearch(data, 9), bsearch(sorted(data), 9))",
+    "expected_output": "(-1, 3) (6, 3)\n",
+    "model_answer": "Prints `(-1, 3) (6, 3)`. On the unsorted list the search compares 1 at the middle, decides 9 must be to the right and discards the left half, then compares 8 and 2 and gives up, although 9 is at index 2 in a half it already threw away. Discarding half the list is only valid when the data is sorted. On the sorted list [1, 2, 3, 5, 7, 8, 9] it finds 9 at index 6 after 3 comparisons; in general binary search needs about log2(n) comparisons, so about 20 for a million items.",
+    "key_points": [
+      "Prints (-1, 3) (6, 3)",
+      "On the unsorted list, 9 lies in a half that gets discarded, so it is reported missing",
+      "Binary search is only correct on sorted data",
+      "It needs about log2(n) comparisons (3 for 7 items, about 20 for a million), not about n/2"
+    ],
+    "rubric": {
+      "0": "Says the first search also finds 9, or that binary search needs about n/2 comparisons",
+      "1": "Correct output but the reason the unsorted search fails, or the comparison count, is not explained",
+      "2": "Correct output, why the unsorted search misses 9, and the log2(n) comparison count"
+    },
+    "misconceptions": [
+      "ds.sorting-searching.binary-search-unsorted",
+      "ds.sorting-searching.binary-search-half-of-linear"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L2-010",
+    "skill": "ds",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "ds-linked-lists"
+    ],
+    "question": "`reverse` is meant to reverse a singly linked list in place and return the new head. What does this code print, what went wrong, and how would you fix the loop?",
+    "code": "class Node:\n    def __init__(self, val, nxt=None):\n        self.val, self.next = val, nxt\n\ndef reverse(head):\n    prev, node = None, head\n    while node:\n        node.next = prev\n        prev, node = node, node.next\n    return prev\n\nhead = Node(1, Node(2, Node(3)))\nsecond = head.next\nnew_head = reverse(head)\nprint(new_head.val, new_head.next, second.next.val)",
+    "expected_output": "1 None 3\n",
+    "model_answer": "Prints `1 None 3`. In the first iteration `node.next = prev` overwrites node 1's only link to the rest of the list before it has been saved, and the right-hand side `node.next` is then read after that overwrite, so it is None and the loop stops after one node. The returned head is node 1 with next None; nodes 2 and 3 are still linked to each other (second.next is 3) but nothing points to them any more, and they do not reattach automatically. The fix is to save the next node first: `nxt = node.next`, then `node.next = prev`, then `prev, node = node, nxt`, which reverses the list in O(n) time with O(1) extra memory.",
+    "key_points": [
+      "Prints 1 None 3",
+      "node.next = prev destroys the link to node 2 before it is saved, so the loop ends after one node",
+      "Nodes 2 and 3 still point to each other but are unreachable from the returned head; nothing reattaches them",
+      "Fix: save nxt = node.next before overwriting node.next, then advance with prev, node = node, nxt"
+    ],
+    "rubric": {
+      "0": "Predicts 3 2 1 / a fully reversed list (as if the order of the pointer updates did not matter), or says the lost nodes reconnect automatically",
+      "1": "Sees that the reversal stops early but misreads the printed values or cannot give the fix",
+      "2": "Correct output, the overwritten link as the cause, and the save-next-first fix"
+    },
+    "misconceptions": [
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.linked-lists.insert-shifts-nodes"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L3-001",
+    "skill": "ds",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "ds-hash-tables",
+      "ds-complexity"
+    ],
+    "question": "Hash table lookups are usually described as O(1). When can a lookup become O(n), and what does the table do to keep operations fast as more and more keys are added?",
+    "model_answer": "O(1) is the average case and assumes the hash function spreads keys evenly over the slots. If many keys collide into the same slot (a poor hash function, or keys deliberately chosen to collide), they are all kept but must be compared one by one, so a lookup degrades towards O(n) in the worst case. To keep chains or probe sequences short, the table tracks its load factor and, when it gets too full, allocates a larger array and re-inserts (rehashes) every key; that resize is O(n) but rare, so inserts stay amortised O(1).",
+    "key_points": [
+      "O(1) is average-case and relies on a hash function that spreads keys well",
+      "Many collisions force comparing keys one by one: worst case O(n)",
+      "Resizing and rehashing when the load factor gets high keeps operations fast (amortised O(1))"
+    ],
+    "rubric": {
+      "0": "Says hash lookups are O(1) even in the worst case, or that colliding keys overwrite each other",
+      "1": "Identifies collisions as the cause of O(n) but misses resizing, or explains resizing without the worst case",
+      "2": "Average versus worst case explained via collisions, plus load factor and resizing"
+    },
+    "misconceptions": [
+      "ds.hash-tables.worst-case-constant",
+      "ds.hash-tables.collision-overwrites"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L3-002",
+    "skill": "ds",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "ds-graphs"
+    ],
+    "question": "A flight network connects airports, and each flight has a fare. A user wants (a) the route with the fewest flights and (b) the cheapest route. Which algorithm would you use for each, and why? Would a depth-first search that stops at the first route it finds answer either question?",
+    "model_answer": "(a) Breadth-first search from the origin, using a FIFO queue: it explores airports in order of the number of flights needed, so the first time it reaches the destination it has used the fewest flights. (b) Dijkstra's algorithm with a priority queue keyed by total fare, because the route with the fewest flights is not necessarily the cheapest (two cheap flights can beat one expensive one) and BFS ignores the fares. A DFS that stops at its first route answers neither: it follows one branch as deep as it can, so the first route it finds depends on the order it explores flights and may have many legs and a high total fare.",
+    "key_points": [
+      "Fewest flights: BFS with a queue, which explores airports in order of the number of hops",
+      "Cheapest route: Dijkstra with a priority queue, since fewest flights is not the same as lowest total fare",
+      "DFS's first route is simply the first deep path it explores; it guarantees neither fewest flights nor lowest fare"
+    ],
+    "rubric": {
+      "0": "Uses BFS for the cheapest route, claims DFS finds the shortest route, or describes BFS as going deep or using a stack",
+      "1": "Correct algorithm for one question only, or the right algorithms without reasons",
+      "2": "BFS and Dijkstra with reasons, and why the first DFS route answers neither question"
+    },
+    "misconceptions": [
+      "ds.graphs.dfs-finds-shortest",
+      "ds.graphs.bfs-weighted-shortest",
+      "ds.graphs.bfs-dfs-swapped"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L3-003",
+    "skill": "ds",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "ds-heaps",
+      "ds-arrays-strings"
+    ],
+    "question": "A hospital triage system must repeatedly add patients with a priority and remove the most urgent one. Compare an unsorted list, a list kept in sorted order, and a binary heap: what do insert and remove-most-urgent cost in each? Why is the heap usually chosen even though it is not kept sorted?",
+    "model_answer": "An unsorted list inserts in O(1) by appending, but removing the most urgent patient needs an O(n) scan. A sorted list with the most urgent at the end removes in O(1), but each insert must shift later elements to open a slot, which is O(n) even if binary search finds the position in O(log n). A binary heap does both in O(log n): insert sifts the new item up, and removal takes the root, moves the last item to the root and sifts it down along one path. The heap only keeps each parent more urgent than its children, which is enough to keep the most urgent patient at the root and far cheaper to maintain than full sorted order.",
+    "key_points": [
+      "Unsorted list: insert O(1), remove most urgent O(n)",
+      "Sorted list: remove O(1) at the end, but insert O(n) because later elements shift",
+      "Heap: insert and remove both O(log n); removal is not O(1) because the heap must sift down",
+      "A heap is only partially ordered (parent before children), which is enough to keep the most urgent at the root"
+    ],
+    "rubric": {
+      "0": "Treats the heap as a fully sorted array, says removing from a heap is O(1), or says inserting into a sorted list is O(1)",
+      "1": "Correct costs for only two of the structures, or no reason why the heap's partial order is enough",
+      "2": "Correct costs for all three and why the heap's partial order is the best trade-off"
+    },
+    "misconceptions": [
+      "ds.heaps.pop-min-constant",
+      "ds.heaps.heap-is-sorted",
+      "ds.arrays-strings.front-insert-constant"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L3-004",
+    "skill": "ds",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "ds-graphs",
+      "ds-stacks-queues"
+    ],
+    "question": "A data pipeline has jobs that depend on other jobs, forming a directed graph. How would you find an order in which to run the jobs so that each job runs after everything it depends on? Why must the algorithm keep track of visited (and in-progress) jobs, and why could a recursive version crash on a pipeline that is one long chain of 50,000 jobs?",
+    "model_answer": "This is a topological sort: either Kahn's algorithm (repeatedly run a job whose dependencies are all done, using a queue of such jobs and decrementing the counts of its dependents) or a DFS that outputs each job after all its dependencies have finished. Without visited marks, a job reachable along several paths is processed again and again, and a cycle would make the traversal loop forever; in-progress marks let DFS detect a cycle, which means no valid order exists. A recursive DFS keeps one stack frame per nested call, so a 50,000-job chain needs 50,000 frames and exceeds Python's recursion limit (RecursionError); Kahn's algorithm or an explicit stack avoids that.",
+    "key_points": [
+      "Topological sort: Kahn's algorithm (queue of jobs whose dependencies are done) or DFS post-order",
+      "Visited marks stop jobs being processed repeatedly; in-progress marks detect cycles, which make a valid order impossible",
+      "Recursive DFS keeps one call-stack frame per nested call, so a 50,000-job chain hits Python's recursion limit",
+      "An iterative approach (queue or explicit stack) avoids the deep recursion"
+    ],
+    "rubric": {
+      "0": "Says visited tracking is unnecessary (cycles are harmless), or that recursion uses no extra memory",
+      "1": "Gives a valid ordering method but misses either the visited/cycle reasoning or the recursion-depth problem",
+      "2": "Valid ordering method, the role of visited and in-progress marks, and the call-stack explanation"
+    },
+    "misconceptions": [
+      "ds.graphs.visited-unneeded",
+      "ds.stacks-queues.recursion-free-memory"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L3-005",
+    "skill": "ds",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "ds-heaps",
+      "ds-sorting-searching"
+    ],
+    "question": "A job streams 10 million log records and must report the 100 with the highest latency. Why is keeping a min-heap of at most 100 latencies better than sorting all the records? In that heap, where are the smallest and the largest of the current top 100? What is the total cost of each approach?",
+    "model_answer": "Sorting everything costs O(n log n) time and O(n) memory. With a min-heap of size k = 100, the root heap[0] is the smallest of the current top 100, the threshold a new record must beat; if it does, you replace the root and sift down in O(log k), so the whole stream costs O(n log k) time and O(k) memory. Removing or replacing the root is not O(1), because the heap must be restored. The largest of the 100 is somewhere among the leaves, not necessarily at the last index, so you sort the 100 survivors at the end if you need them in order.",
+    "key_points": [
+      "The min-heap root heap[0] is the smallest of the current top 100: the threshold a new record must beat",
+      "Each replace costs O(log k) because the heap sifts down, so O(n log k) time and O(k) memory in total",
+      "Sorting everything costs O(n log n) time and O(n) memory",
+      "The largest of the 100 is somewhere among the leaves, not necessarily at the last index"
+    ],
+    "rubric": {
+      "0": "Thinks sorting all records is linear and therefore just as cheap, that heap removal is O(1), or that the heap's last element is the largest",
+      "1": "Right approach but the cost of one of the two approaches is wrong, or the positions of the smallest and largest are not explained",
+      "2": "Explains the threshold role of the root, both total costs with memory, and where the largest lives"
+    },
+    "misconceptions": [
+      "ds.heaps.max-at-last-index",
+      "ds.heaps.pop-min-constant",
+      "ds.sorting-searching.sorting-is-linear"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L3-006",
+    "skill": "ds",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "ds-trees-bst",
+      "ds-complexity"
+    ],
+    "question": "You insert the keys 1, 2, 3, …, n in that order into a plain (not self-balancing) binary search tree. What shape does the tree take, and what do search and insert cost? How do self-balancing trees such as AVL or red-black trees avoid this, and what do their operations cost?",
+    "model_answer": "Each new key is larger than every key so far, so it always goes to the right: the tree degenerates into a chain of height n, essentially a linked list. Search and insert then walk that chain and cost O(n) each, so building the whole tree costs O(n²). Self-balancing trees perform rotations after inserts and deletes to keep the height O(log n), so search, insert and delete each follow a single root-to-leaf path and cost O(log n) in the worst case.",
+    "key_points": [
+      "Sorted insertions produce a chain of height n (a degenerate tree)",
+      "Search and insert become O(n) in this worst case",
+      "Self-balancing trees use rotations to keep the height O(log n), so each operation follows one short path: O(log n)"
+    ],
+    "rubric": {
+      "0": "Says the BST stays balanced on its own so operations remain O(log n), or that inserting into a balanced tree must look at every key",
+      "1": "Recognises the chain shape but gives wrong costs, or does not explain how balancing helps",
+      "2": "Chain shape with O(n) operations, and rotations keeping height O(log n) so operations are O(log n)"
+    },
+    "misconceptions": [
+      "ds.trees-bst.always-balanced",
+      "ds.trees-bst.insert-scans-all-keys"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L3-007",
+    "skill": "ds",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "ds-arrays-strings",
+      "ds-complexity"
+    ],
+    "question": "This class simulates how a dynamic array such as a Python list grows: when it is full, it moves every item into a new block twice as large and counts the moved items. What does it print? What do the numbers tell you about the cost of a single append and of n appends?",
+    "code": "class DynArray:\n    def __init__(self):\n        self.size, self.cap, self.copies = 0, 1, 0\n\n    def append(self, x):\n        if self.size == self.cap:\n            self.copies += self.size  # move every item to a bigger block\n            self.cap *= 2\n        self.size += 1\n\nfor n in [16, 17, 1000]:\n    arr = DynArray()\n    for i in range(n):\n        arr.append(i)\n    print(n, arr.cap, arr.copies)",
+    "expected_output": "16 16 15\n17 32 31\n1000 1024 1023\n",
+    "model_answer": "Prints `16 16 15`, `17 32 31` and `1000 1024 1023`. Most appends copy nothing; only an append that finds the block full copies every current item, so the 17th append alone copies 16. The total number of copies always stays below 2n, so n appends cost O(n) overall, which is amortised O(1) per append, not O(n²); 2n is still O(n). Individual appends are not all equally cheap, though: a resizing append is O(n).",
+    "key_points": [
+      "Prints 16 16 15, then 17 32 31, then 1000 1024 1023",
+      "Most appends copy nothing; a resizing append copies every current item (the 17th copies 16)",
+      "Total copies stay below 2n, so n appends cost O(n): amortised O(1) per append",
+      "Amortised O(1) does not mean every append costs the same; an occasional resize is O(n)"
+    ],
+    "rubric": {
+      "0": "Claims every append copies all items so n appends cost O(n²), says every append costs exactly the same, or treats the ~2n total as a worse class than O(n)",
+      "1": "Correct output but the amortised reasoning is missing or incomplete",
+      "2": "Correct output, the below-2n total, amortised O(1) and the occasional expensive resize"
+    },
+    "misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.complexity.big-o-is-exact-time",
+      "ds.complexity.constants-change-class"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L3-008",
+    "skill": "ds",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "ds-graphs",
+      "ds-heaps"
+    ],
+    "question": "This is Dijkstra's algorithm with `heapq` as the priority queue. What does it print? Why is the distance to C 3 and not 5, even though there is a direct edge A -> C? Would BFS, or a DFS that keeps the first path it finds, give the same distances? What does each `heappop` cost?",
+    "code": "import heapq\ngraph = {\"A\": [(\"C\", 5), (\"B\", 1)], \"B\": [(\"D\", 1)], \"C\": [(\"E\", 1)], \"D\": [(\"C\", 1)], \"E\": []}\n\ndef dijkstra(src):\n    dist, pq = {src: 0}, [(0, src)]\n    while pq:\n        d, u = heapq.heappop(pq)\n        if d > dist[u]:\n            continue\n        for v, w in graph[u]:\n            if d + w < dist.get(v, float(\"inf\")):\n                dist[v] = d + w\n                heapq.heappush(pq, (d + w, v))\n    return dist\nprint(dijkstra(\"A\"))",
+    "expected_output": "{'A': 0, 'C': 3, 'B': 1, 'D': 2, 'E': 4}\n",
+    "model_answer": "Prints `{'A': 0, 'C': 3, 'B': 1, 'D': 2, 'E': 4}`. The direct edge A -> C costs 5, but A -> B -> D -> C costs 1 + 1 + 1 = 3; Dijkstra always expands the smallest tentative distance, so it settles B (1) and D (2) and lowers C to 3 before C is popped, and the stale (5, 'C') entry is skipped; E is then 3 + 1 = 4. BFS counts edges, so it would take the one-edge route to C (cost 5), and a DFS exploring A's edges in order would also reach C first by the direct edge, giving C = 5 and E = 6. Each heappop is O(log n), because the heap must sift down after the root is removed.",
+    "key_points": [
+      "Prints {'A': 0, 'C': 3, 'B': 1, 'D': 2, 'E': 4}",
+      "A -> B -> D -> C costs 3, less than the direct edge of 5; Dijkstra expands the smallest tentative distance and skips the stale (5, 'C') entry",
+      "BFS minimises the number of edges and DFS's first path depends on exploration order, so neither gives least-weight distances here",
+      "Each heappop is O(log n) because the heap sifts down after removing the root"
+    ],
+    "rubric": {
+      "0": "Says C is 5 (fewest edges means shortest), claims BFS or DFS's first path gives the same distances, or says heappop is O(1)",
+      "1": "Correct output but incomplete reasoning about BFS/DFS or about the cost of heappop",
+      "2": "Correct output, why C is 3, why BFS/DFS fail on weights, and O(log n) per pop"
+    },
+    "misconceptions": [
+      "ds.graphs.bfs-weighted-shortest",
+      "ds.graphs.dfs-finds-shortest",
+      "ds.heaps.pop-min-constant"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L3-009",
+    "skill": "ds",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "ds-heaps"
+    ],
+    "question": "`heapq` keeps a min-heap inside a plain Python list. What does this code print, and why?",
+    "code": "import heapq\n\nh = []\nfor x in [5, 3, 8, 1, 9, 2]:\n    heapq.heappush(h, x)\nprint(h[0], h[-1], h == sorted(h))\nprint([heapq.heappop(h) for _ in range(3)], len(h))\n",
+    "expected_output": "1 8 False\n[1, 2, 3] 3\n",
+    "model_answer": "It prints `1 8 False` and then `[1, 2, 3] 3`. After the pushes the list is [1, 3, 2, 5, 9, 8]: the smallest item is always at index 0, but the list only satisfies parent ≤ children, so it is not sorted and the largest value, 9, is not at the end. Each heappop removes the current minimum and restores the heap, so three pops return 1, 2 and 3 and leave three items.",
+    "key_points": [
+      "h[0] is the minimum, 1",
+      "The heap list is not fully sorted; its last element is 8, not the maximum 9",
+      "heappop returns items in increasing order, [1, 2, 3], leaving 3 items"
+    ],
+    "rubric": {
+      "0": "Assumes the heap list is sorted (e.g. predicts `1 9 True`) or that the last element must be the maximum",
+      "1": "Correct output but a vague explanation of why the list is not sorted, or one small slip such as the remaining length",
+      "2": "Exact output on both lines, explained by the heap property (parent ≤ children) rather than full sorting"
+    },
+    "misconceptions": [
+      "ds.heaps.heap-is-sorted",
+      "ds.heaps.max-at-last-index"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "DS-L3-010",
+    "skill": "ds",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "ds-graphs",
+      "ds-stacks-queues"
+    ],
+    "question": "What does this code print? What would happen if the `if node in seen: continue` check were removed, and why might this explicit-stack version be preferred over a recursive DFS on a graph containing a path of a million nodes?",
+    "code": "graph = {1: [2, 3], 2: [4], 3: [4], 4: [1]}\n\ndef dfs(start):\n    seen, stack, order = set(), [start], []\n    while stack:\n        node = stack.pop()\n        if node in seen:\n            continue\n        seen.add(node)\n        order.append(node)\n        for nb in graph[node]:\n            stack.append(nb)\n    return order\n\nprint(dfs(1))\n",
+    "expected_output": "[1, 3, 4, 2]\n",
+    "model_answer": "It prints `[1, 3, 4, 2]`. The list is used as a stack, so the last neighbour pushed (3) is explored first, going deep along 1→3→4 before backtracking to 2: this is depth-first, not breadth-first. Without the seen check, the cycle back from 4 to 1 would keep pushing the same nodes and the loop would never end. A recursive DFS on a million-node path would need a million nested calls on the call stack and exceed Python's recursion limit, whereas the explicit stack is an ordinary list that can grow as needed.",
+    "key_points": [
+      "Output `[1, 3, 4, 2]`: the stack pops the last-pushed neighbour first (depth-first)",
+      "Without the seen check, the cycle 4→1 makes the loop run forever",
+      "Recursion uses one call-stack frame per level, so deep graphs hit the recursion limit; an explicit stack avoids that"
+    ],
+    "rubric": {
+      "0": "Gives the breadth-first order [1, 2, 3, 4], says it would still terminate without the seen check, or says recursion has no memory cost",
+      "1": "Correct output but one of the two follow-up parts is wrong or missing",
+      "2": "Exact output with the depth-first reason, plus both follow-ups answered correctly"
+    },
+    "misconceptions": [
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.visited-unneeded",
+      "ds.stacks-queues.recursion-free-memory"
+    ],
+    "source": "generated",
+    "status": "draft"
+  }
+]

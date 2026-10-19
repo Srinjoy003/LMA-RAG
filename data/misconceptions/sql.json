@@ -1,0 +1,242 @@
+[
+  {
+    "id": "sql.select-filter.distinct-per-column",
+    "skill": "sql",
+    "topic": "sql-select-filter",
+    "description": "Believes DISTINCT applies only to the first column after it (or to each column separately), instead of removing rows whose whole combination of selected columns repeats",
+    "example_wrong_answer": "SELECT DISTINCT customer, city gives one row per customer, because the DISTINCT is on customer.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.select-filter.distinct-returns-first",
+    "skill": "sql",
+    "topic": "sql-select-filter",
+    "description": "Believes DISTINCT reduces a column to a single value, keeping the first row it finds, rather than keeping every different value",
+    "example_wrong_answer": "If I put DISTINCT on the price I get just one price back, the first one it finds.",
+    "source": "Adapted from Miedema, Aivaloglou & Fletcher, ICER 2021 (DISTINCT believed to take the first item)"
+  },
+  {
+    "id": "sql.select-filter.and-or-precedence",
+    "skill": "sql",
+    "topic": "sql-select-filter",
+    "description": "Believes AND and OR in a WHERE clause have equal priority and are applied left to right, not knowing that AND is evaluated before OR",
+    "example_wrong_answer": "dept = 'IT' OR dept = 'HR' AND salary > 50000 gives the IT and HR people who earn more than 50000.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.null.equals-null-matches",
+    "skill": "sql",
+    "topic": "sql-null",
+    "description": "Believes col = NULL (or col <> NULL) tests whether a value is missing, the same way IS NULL / IS NOT NULL does",
+    "example_wrong_answer": "WHERE city = NULL returns the customers whose city is missing.",
+    "source": "Adapted from Miedema, Aivaloglou & Fletcher, ICER 2021 (confusing IS / IS NOT with the = / <> comparison operators)"
+  },
+  {
+    "id": "sql.null.not-equal-includes-null",
+    "skill": "sql",
+    "topic": "sql-null",
+    "description": "Believes a row whose column is NULL satisfies col <> 'x', because a missing value is 'not equal' to 'x'",
+    "example_wrong_answer": "Ben has no city, so city <> 'Pune' is true for him and he is returned.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.null.aggregates-treat-null-as-zero",
+    "skill": "sql",
+    "topic": "sql-null",
+    "description": "Believes SUM and AVG treat NULL as 0, so AVG divides by the number of all rows including those with NULL",
+    "example_wrong_answer": "The bonuses are 100, 200, 300 and two NULLs, so the average is 600 / 5 = 120.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.null.not-in-with-null",
+    "skill": "sql",
+    "topic": "sql-null",
+    "description": "Believes x NOT IN (subquery) works normally even when the subquery returns a NULL, not realising the condition can then never be true",
+    "example_wrong_answer": "Ben's id 2 is not in the list (1, 3, NULL), so NOT IN returns Ben; the NULL in the list doesn't matter.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.joins.left-join-drops-unmatched",
+    "skill": "sql",
+    "topic": "sql-joins",
+    "description": "Believes LEFT JOIN drops left-table rows that have no match, like INNER JOIN",
+    "example_wrong_answer": "Ben has no orders, so he won't appear in the result.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.joins.join-never-duplicates",
+    "skill": "sql",
+    "topic": "sql-joins",
+    "description": "Believes a join returns at most one row per row of the left table, rather than one row for every matching pair",
+    "example_wrong_answer": "Asha is one customer, so she appears once in the join even though she has two orders.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.joins.auto-join-on-shared-column",
+    "skill": "sql",
+    "topic": "sql-joins",
+    "description": "Believes that listing two tables in FROM without a join condition makes the database match rows on their related key automatically, instead of producing every combination of rows",
+    "example_wrong_answer": "FROM customers, orders already links each order to its own customer because both tables have the customer id.",
+    "source": "Adapted from Miedema, Aivaloglou & Fletcher, ICER 2021 (DBMS treated as a black box; missing join condition)"
+  },
+  {
+    "id": "sql.joins.where-filter-keeps-left-rows",
+    "skill": "sql",
+    "topic": "sql-joins",
+    "description": "Believes a WHERE condition on a right-table column after a LEFT JOIN still keeps the unmatched left rows, not realising it removes the NULL-extended rows and makes the query behave like an inner join",
+    "example_wrong_answer": "It's a LEFT JOIN, so Ben is still listed with NULL; WHERE o.status = 'paid' only removes the unpaid orders.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.aggregation.count-column-counts-nulls",
+    "skill": "sql",
+    "topic": "sql-aggregation",
+    "description": "Believes COUNT(column) counts every row, including rows where that column is NULL, exactly like COUNT(*)",
+    "example_wrong_answer": "COUNT(bonus) is 5 because there are five staff rows.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.aggregation.aggregate-in-where",
+    "skill": "sql",
+    "topic": "sql-aggregation",
+    "description": "Believes conditions on aggregates (such as COUNT(*) >= 2) can go in WHERE, treating WHERE and HAVING as interchangeable, not realising WHERE filters individual rows before any grouping",
+    "example_wrong_answer": "You can just write WHERE COUNT(*) >= 2; WHERE and HAVING both filter, so it is the same thing.",
+    "source": "Adapted from Miedema, Aivaloglou & Fletcher, ICER 2021 (aggregates used in the WHERE clause)"
+  },
+  {
+    "id": "sql.aggregation.group-by-only-sorts",
+    "skill": "sql",
+    "topic": "sql-aggregation",
+    "description": "Believes GROUP BY only sorts or clusters rows and keeps every row, so adding it to a query cannot change the number of rows returned",
+    "example_wrong_answer": "GROUP BY city just puts the stores of the same city next to each other; all the stores are still listed.",
+    "source": "Adapted from Miedema, Aivaloglou & Fletcher, ICER 2021 (believing an added GROUP BY 'can't hurt' an ordering query)"
+  },
+  {
+    "id": "sql.aggregation.count-group-column-is-one",
+    "skill": "sql",
+    "topic": "sql-aggregation",
+    "description": "Believes that counting the column you grouped by (GROUP BY city with COUNT(city)) always gives 1 per group, because each group contains only one distinct city",
+    "example_wrong_answer": "COUNT(city) will be 1 for every row, since each group has just one city in it.",
+    "source": "Adapted from Miedema, Aivaloglou & Fletcher, ICER 2021 (counting the column that is grouped on)"
+  },
+  {
+    "id": "sql.subqueries-cte.cte-unused-still-applies",
+    "skill": "sql",
+    "topic": "sql-subqueries-cte",
+    "description": "Believes that defining a CTE with WITH changes the result even when the main query never references it, as if the CTE filtered the underlying table",
+    "example_wrong_answer": "The WITH clause already removed the NULL customer ids, so the main query no longer sees them.",
+    "source": "Adapted from Miedema, Aivaloglou & Fletcher, ICER 2021 (defining a WITH query but not using it in the main query)"
+  },
+  {
+    "id": "sql.subqueries-cte.correlated-runs-once",
+    "skill": "sql",
+    "topic": "sql-subqueries-cte",
+    "description": "Believes a correlated subquery is evaluated once for the whole query and gives the same value on every outer row, rather than being re-evaluated for each outer row",
+    "example_wrong_answer": "The subquery counts the orders once, so every customer gets the same number, the total number of orders.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.subqueries-cte.in-subquery-duplicates",
+    "skill": "sql",
+    "topic": "sql-subqueries-cte",
+    "description": "Believes WHERE id IN (subquery) returns an outer row once for every matching subquery row, like a join, so duplicates in the subquery duplicate the output",
+    "example_wrong_answer": "Asha has three orders, so she appears three times in the result of the IN query.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.window-functions.collapses-rows",
+    "skill": "sql",
+    "topic": "sql-window-functions",
+    "description": "Believes window functions collapse rows into one per partition like GROUP BY, rather than keeping every input row and adding a computed column",
+    "example_wrong_answer": "SUM(amount) OVER (PARTITION BY customer_id) returns one row per customer with their total.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.window-functions.rank-functions-identical",
+    "skill": "sql",
+    "topic": "sql-window-functions",
+    "description": "Believes ROW_NUMBER, RANK and DENSE_RANK treat tied rows the same way (for example that RANK never leaves gaps, or that ROW_NUMBER gives tied rows the same number)",
+    "example_wrong_answer": "Asha and Ben both earn 90000, so they both get 1 and Chen gets 2 in all three columns.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.window-functions.running-sum-is-total",
+    "skill": "sql",
+    "topic": "sql-window-functions",
+    "description": "Believes SUM(x) OVER (ORDER BY y) returns the grand total on every row, not knowing that ORDER BY inside OVER produces a running total in which tied rows share a value",
+    "example_wrong_answer": "The ORDER BY only sorts the rows, so every row shows the overall total of 200.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.indexes-performance.index-always-helps",
+    "skill": "sql",
+    "topic": "sql-indexes-performance",
+    "description": "Believes adding an index always makes the database faster with no downside, ignoring the extra storage, the slower INSERT/UPDATE/DELETE, and that the planner may not use it",
+    "example_wrong_answer": "Just put an index on every column; indexes only make things faster.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.indexes-performance.composite-any-column",
+    "skill": "sql",
+    "topic": "sql-indexes-performance",
+    "description": "Believes a composite index on (a, b) speeds up a query that filters only on b just as well as one that filters on a",
+    "example_wrong_answer": "There is an index on (last_name, first_name), so searching by first_name alone is fast too.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.indexes-performance.function-on-column-uses-index",
+    "skill": "sql",
+    "topic": "sql-indexes-performance",
+    "description": "Believes a plain index on a column is still used when the WHERE clause wraps that column in a function or expression, such as LOWER(email) or extracting the year from a date",
+    "example_wrong_answer": "created_at is indexed, so filtering on the year of created_at uses the index.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.schema-constraints.pk-needs-distinct",
+    "skill": "sql",
+    "topic": "sql-schema-constraints",
+    "description": "Believes primary-key values can repeat in a table, so DISTINCT is needed when selecting the primary-key column",
+    "example_wrong_answer": "I'd write SELECT DISTINCT id FROM customers to be safe, in case an id appears twice.",
+    "source": "Adapted from Miedema, Aivaloglou & Fletcher, ICER 2021 (uncertainty about primary keys; DISTINCT applied to key columns)"
+  },
+  {
+    "id": "sql.schema-constraints.fk-must-be-unique",
+    "skill": "sql",
+    "topic": "sql-schema-constraints",
+    "description": "Believes a foreign-key column must hold unique values like a primary key, so the same parent row cannot be referenced by several child rows",
+    "example_wrong_answer": "orders.customer_id is a foreign key, so each customer id can appear only once in orders.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.schema-constraints.normalisation-only-saves-space",
+    "skill": "sql",
+    "topic": "sql-schema-constraints",
+    "description": "Believes normalisation is only about saving disk space, missing that repeated copies of a fact can become inconsistent when only some of them are updated (update anomalies)",
+    "example_wrong_answer": "Repeating the city on every order just wastes a bit of space; otherwise it is harmless.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.transactions.rollback-partial",
+    "skill": "sql",
+    "topic": "sql-transactions",
+    "description": "Believes that when a later statement in a transaction fails and the transaction is rolled back, the earlier statements stay saved (ROLLBACK only undoes the last statement)",
+    "example_wrong_answer": "The first update already ran, so A has lost the 100 even though the transaction was rolled back.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.transactions.uncommitted-visible",
+    "skill": "sql",
+    "topic": "sql-transactions",
+    "description": "Believes other sessions see a transaction's changes as soon as each statement runs, before COMMIT",
+    "example_wrong_answer": "Right after the first UPDATE, anyone querying account A sees the reduced balance.",
+    "source": "generated"
+  },
+  {
+    "id": "sql.transactions.default-isolation-prevents-all",
+    "skill": "sql",
+    "topic": "sql-transactions",
+    "description": "Believes that wrapping statements in a transaction at the default isolation level (such as READ COMMITTED) makes concurrent transactions behave as if they ran one after another, so lost updates and non-repeatable reads cannot happen",
+    "example_wrong_answer": "Both decrements are inside transactions, so they can't interfere and the stock ends at 8.",
+    "source": "generated"
+  }
+]

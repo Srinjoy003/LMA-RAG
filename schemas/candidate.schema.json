@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Simulated candidate (hidden answer key)",
+  "description": "Everything that is true about one simulated candidate. The interviewer never sees this; only the simulator and the evaluation scripts read it. Fields outside `required` are optional and have defaults (see docs/interfaces.md).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "job_id", "profile_type", "topic_levels", "misconceptions"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^CAND-[0-9]{3}$"},
+    "job_id": {"type": "string", "description": "id of the job in data/jobs.json this candidate applies for"},
+    "profile_type": {
+      "enum": ["even", "uneven"],
+      "description": "even: similar level across a skill's topics; uneven: strong on some topics, weak on others"
+    },
+    "topic_levels": {
+      "type": "object",
+      "description": "True level 0-3 for EVERY one of the 27 topics in data/topics.json (0 = does not know it). Ground truth for skill accuracy.",
+      "propertyNames": {"pattern": "^(py|sql|ds)-[a-z-]+$"},
+      "additionalProperties": {"enum": [0, 1, 2, 3]}
+    },
+    "misconceptions": {
+      "type": "array",
+      "description": "Planted misconception ids from data/misconceptions/*.json (recommended 1-2; 0 allowed for control candidates)",
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^(py|sql|ds)\\.[a-z-]+\\.[a-z0-9-]+$"}
+    },
+    "confidence_style": {
+      "enum": ["calibrated", "overconfident", "underconfident"],
+      "default": "calibrated",
+      "description": "How sure the candidate sounds relative to how often they are right (stretch feature)"
+    },
+    "misread_rate": {
+      "type": "number", "minimum": 0, "maximum": 0.5, "default": 0,
+      "description": "Probability of misreading a main question"
+    },
+    "slip_rate": {
+      "type": "number", "minimum": 0, "maximum": 0.5, "default": 0.05,
+      "description": "Probability of a careless slip on a question within their level"
+    },
+    "verbosity": {
+      "enum": ["short", "medium", "long"], "default": "medium",
+      "description": "How long the simulator's answers are"
+    },
+    "persona": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string"},
+        "background": {"type": "string", "description": "One or two sentences the simulator can use for tone"}
+      }
+    },
+    "resume": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional resume (resume-overclaiming analysis is a stretch goal)",
+      "required": ["text"],
+      "properties": {
+        "text": {"type": "string"},
+        "claimed_levels": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "py": {"enum": [0, 1, 2, 3]},
+            "sql": {"enum": [0, 1, 2, 3]},
+            "ds": {"enum": [0, 1, 2, 3]}
+          }
+        },
+        "exaggerated": {"type": "boolean"}
+      }
+    },
+    "safety_attack": {
+      "description": "null for a normal candidate",
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "text", "on_turns"],
+          "properties": {
+            "type": {"enum": ["instruction-override", "rate-me-expert", "rubric-extraction", "protected-characteristic-bait"]},
+            "text": {"type": "string", "description": "What the candidate says in the attack"},
+            "on_turns": {
+              "type": "array", "minItems": 1, "uniqueItems": true,
+              "items": {"type": "integer", "minimum": 1},
+              "description": "Main-question numbers (1-based) where the attack is appended to the answer"
+            }
+          }
+        }
+      ],
+      "default": null
+    },
+    "seed": {"type": "integer", "description": "Seed for this candidate's random draws (misreads, slips); defaults to the numeric part of id"},
+    "notes": {"type": "string"}
+  }
+}

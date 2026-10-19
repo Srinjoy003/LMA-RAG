@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interview result",
+  "description": "Everything one interview produced: settings, every turn, the final report and usage. Written by the engine (Part 2); `truth` fields are added only by the experiment runner (Part 4). Extra properties are allowed so new logging never breaks old files.",
+  "type": "object",
+  "required": ["interview_id", "system", "config", "job_id", "required_topics", "turns", "stop_reason", "report", "exchanges"],
+  "properties": {
+    "interview_id": {"type": "string"},
+    "system": {"type": "string", "description": "System label: B1, A1, A2, A3, A4, A5, or a custom name"},
+    "config": {"type": "object", "description": "The full InterviewConfig used (see src/shared/interfaces.py)"},
+    "job_id": {"type": "string"},
+    "candidate_id": {"type": ["string", "null"], "description": "Simulated candidate id; null for a live (human) interview"},
+    "started_at": {"type": "string", "format": "date-time"},
+    "finished_at": {"type": "string", "format": "date-time"},
+    "required_topics": {
+      "type": "array", "items": {"$ref": "#/$defs/topic"},
+      "description": "Topics the system believes the job needs (from topic extraction, or jobs.json when extraction is skipped)"
+    },
+    "turns": {"type": "array", "items": {"$ref": "#/$defs/turn"}},
+    "exchanges": {"type": "integer", "minimum": 0, "description": "Main questions + follow-ups asked (the RQ1 length measure)"},
+    "stop_reason": {"enum": ["confident", "max_questions", "fixed_length", "bank_exhausted", "error"]},
+    "report": {"$ref": "#/$defs/report"},
+    "usage": {
+      "type": "object",
+      "properties": {
+        "llm_calls": {"type": "integer", "minimum": 0},
+        "input_tokens": {"type": "integer", "minimum": 0},
+        "output_tokens": {"type": "integer", "minimum": 0},
+        "by_model": {"type": "object"}
+      }
+    },
+    "errors": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "skill": {"enum": ["py", "sql", "ds"]},
+    "topic": {"type": "string", "pattern": "^(py|sql|ds)-[a-z-]+$"},
+    "misconception_id": {"type": "string", "pattern": "^(py|sql|ds)\\.[a-z-]+\\.[a-z0-9-]+$"},
+    "grade": {
+      "type": "object",
+      "required": ["score", "votes"],
+      "properties": {
+        "score": {"enum": [0, 1, 2], "description": "Majority (or median) of the votes"},
+        "votes": {"type": "array", "minItems": 1, "items": {"enum": [0, 1, 2]}},
+        "agreement": {"type": "number", "minimum": 0, "maximum": 1, "description": "Share of votes equal to score"},
+        "rationale": {"type": "string"},
+        "grader": {"type": "string", "description": "Which grader/model produced it"}
+      }
+    },
+    "diagnosis": {
+      "type": "object",
+      "required": ["cause"],
+      "properties": {
+        "cause": {"enum": ["gap", "misconception", "misread", "slip"]},
+        "misconception_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/misconception_id"}]},
+        "follow_up": {"type": ["string", "null"], "description": "Follow-up question to ask, if any"},
+        "vote_share": {"type": "number", "minimum": 0, "maximum": 1, "description": "Share of runs agreeing with the winning cause/id"},
+        "votes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["cause"],
+            "properties": {
+              "cause": {"enum": ["gap", "misconception", "misread", "slip"]},
+              "misconception_id": {"type": ["string", "null"]},
+              "follow_up": {"type": ["string", "null"]}
+            }
+          }
+        },
+        "confidence_expressed": {"enum": ["low", "medium", "high"], "description": "Optional: how sure the reply sounded (stretch: confidence style)"}
+      }
+    },
+    "follow_up": {
+      "type": "object",
+      "required": ["prompt", "answer"],
+      "properties": {
+        "prompt": {"type": "string"},
+        "answer": {"type": "string"},
+        "diagnosis": {"$ref": "#/$defs/diagnosis"},
+        "truth": {"$ref": "#/$defs/truth"}
+      }
+    },
+    "skill_state": {
+      "type": "object",
+      "required": ["estimate", "se", "n"],
+      "properties": {
+        "estimate": {"type": "number", "description": "Rasch ability estimate (logits)"},
+        "se": {"type": "number", "minimum": 0, "description": "Standard error = the uncertainty"},
+        "level": {"enum": [0, 1, 2, 3], "description": "Estimate mapped to a level"},
+        "n": {"type": "integer", "minimum": 0, "description": "Graded main questions so far"}
+      }
+    },
+    "turn": {
+      "type": "object",
+      "required": ["index", "skill", "level", "question_id", "prompt", "answer", "follow_ups", "grade"],
+      "properties": {
+        "index": {"type": "integer", "minimum": 1},
+        "skill": {"$ref": "#/$defs/skill"},
+        "level": {"enum": [1, 2, 3]},
+        "question_id": {"type": "string"},
+        "question_source": {"enum": ["bank", "generated"], "default": "bank"},
+        "topics": {"type": "array", "items": {"$ref": "#/$defs/topic"}},
+        "selection_reason": {"type": "string", "description": "Why this skill/level/question was chosen"},
+        "prompt": {"type": "string", "description": "Exactly what the candidate was shown"},
+        "answer": {"type": "string"},
+        "diagnosis": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/diagnosis"}]},
+        "follow_ups": {"type": "array", "maxItems": 2, "items": {"$ref": "#/$defs/follow_up"}},
+        "grade": {"$ref": "#/$defs/grade", "description": "Grade of the whole exchange (main answer + follow-ups)"},
+        "evidence_weight": {"type": "number", "minimum": 0, "maximum": 1, "description": "1 for a bank question with full grader agreement; lower for generated questions or split votes"},
+        "scorecard_after": {
+          "type": "object",
+          "properties": {"py": {"$ref": "#/$defs/skill_state"}, "sql": {"$ref": "#/$defs/skill_state"}, "ds": {"$ref": "#/$defs/skill_state"}}
+        },
+        "tool_calls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "ok"],
+            "properties": {"name": {"type": "string"}, "args": {"type": "object"}, "ok": {"type": "boolean"}, "error": {"type": ["string", "null"]}}
+          }
+        },
+        "truth": {"$ref": "#/$defs/truth"}
+      }
+    },
+    "truth": {
+      "type": "object",
+      "description": "Experiment runner only: what the simulated candidate was told to do. The engine never reads this.",
+      "required": ["outcome"],
+      "properties": {
+        "outcome": {"enum": ["correct", "partial", "wrong", "misconception", "misread", "slip"]},
+        "misconception_id": {"type": ["string", "null"]},
+        "expected_score": {"enum": [0, 1, 2]},
+        "effective_level": {"enum": [0, 1, 2, 3]},
+        "attack": {"type": ["string", "null"]}
+      }
+    },
+    "report": {
+      "type": "object",
+      "required": ["levels", "decision", "misconceptions", "topic_coverage"],
+      "properties": {
+        "levels": {
+          "type": "object",
+          "properties": {
+            "py": {"$ref": "#/$defs/skill_report"},
+            "sql": {"$ref": "#/$defs/skill_report"},
+            "ds": {"$ref": "#/$defs/skill_report"}
+          }
+        },
+        "decision": {"enum": ["fit", "not_fit", "needs_review"]},
+        "decision_reason": {"type": "string"},
+        "misconceptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "confirmed"],
+            "properties": {
+              "id": {"$ref": "#/$defs/misconception_id"},
+              "confirmed": {"type": "boolean", "description": "Won the diagnosis vote on at least the configured number of replies"},
+              "evidence_turns": {"type": "array", "items": {"type": "integer"}},
+              "vote_share": {"type": "number"}
+            }
+          }
+        },
+        "probed_misconceptions": {
+          "type": "array", "items": {"$ref": "#/$defs/misconception_id"},
+          "description": "Sorted ids of every misconception listed on at least one main question asked (so it could have been found)"
+        },
+        "topic_coverage": {
+          "type": "object",
+          "required": ["required", "tested", "untested"],
+          "properties": {
+            "required": {"type": "array", "items": {"$ref": "#/$defs/topic"}},
+            "tested": {"type": "array", "items": {"$ref": "#/$defs/topic"}},
+            "untested": {"type": "array", "items": {"$ref": "#/$defs/topic"}}
+          }
+        },
+        "confidence_style": {"enum": ["calibrated", "overconfident", "underconfident", null]},
+        "flags": {"type": "array", "items": {"type": "string"}, "description": "e.g. suspected manipulation attempts, generated questions used"},
+        "summary": {"type": "string", "description": "Short plain-language note for the human reviewer"}
+      }
+    },
+    "skill_report": {
+      "type": "object",
+      "required": ["level", "confident", "minimum"],
+      "properties": {
+        "level": {"enum": [0, 1, 2, 3]},
+        "estimate": {"type": "number"},
+        "se": {"type": "number"},
+        "confident": {"type": "boolean", "description": "se below the stopping threshold"},
+        "minimum": {"enum": [0, 1, 2, 3], "description": "The job's minimum for this skill"},
+        "meets_minimum": {"type": ["boolean", "null"], "description": "null when not confident"}
+      }
+    }
+  }
+}

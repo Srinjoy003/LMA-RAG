@@ -1,0 +1,78 @@
+{
+  "interview_id": "A2-data-analyst-CAND-001-0",
+  "system": "A2",
+  "config": {"system": "A2", "mode": "adaptive", "retrieval": "job-aware", "stop_rule": "uncertainty", "uncertainty_threshold": 0.6, "max_questions": 15, "diagnosis": "structured", "seed": 0},
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-001",
+  "started_at": "2026-10-20T10:00:00Z",
+  "finished_at": "2026-10-20T10:04:12Z",
+  "required_topics": ["py-collections", "py-comprehensions-generators", "py-functions-scope", "py-pandas", "sql-select-filter", "sql-null", "sql-joins", "sql-aggregation", "sql-subqueries-cte", "sql-window-functions", "ds-complexity", "ds-arrays-strings", "ds-hash-tables"],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-007",
+      "question_source": "bank",
+      "topics": ["sql-joins", "sql-null"],
+      "selection_reason": "All skills tied on uncertainty; level 2 = prior; prefers required topics sql-joins, sql-null",
+      "prompt": "The goal was every customer with their paid orders, showing NULL for customers without one. What does this query return, and why?",
+      "answer": "It returns only Asha and Chen, because a LEFT JOIN drops the customers who have no matching order.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.left-join-drops-unmatched",
+        "follow_up": "Suppose the WHERE clause were removed. Would Ben appear in the result?",
+        "vote_share": 1.0,
+        "votes": [
+          {"cause": "misconception", "misconception_id": "sql.joins.left-join-drops-unmatched"},
+          {"cause": "misconception", "misconception_id": "sql.joins.left-join-drops-unmatched"},
+          {"cause": "misconception", "misconception_id": "sql.joins.left-join-drops-unmatched"}
+        ]
+      },
+      "follow_ups": [
+        {
+          "prompt": "Suppose the WHERE clause were removed. Would Ben appear in the result?",
+          "answer": "No, Ben has no orders, so the LEFT JOIN leaves him out either way.",
+          "diagnosis": {"cause": "misconception", "misconception_id": "sql.joins.left-join-drops-unmatched", "vote_share": 1.0},
+          "truth": {"outcome": "misconception", "misconception_id": "sql.joins.left-join-drops-unmatched", "expected_score": 0, "effective_level": 1, "attack": null}
+        }
+      ],
+      "grade": {"score": 0, "votes": [0, 0, 0], "agreement": 1.0, "rationale": "Claims LEFT JOIN removes unmatched customers.", "grader": "finetuned-grader"},
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {"estimate": 0.0, "se": 2.0, "level": 2, "n": 0},
+        "sql": {"estimate": -0.9, "se": 1.6, "level": 1, "n": 1},
+        "ds": {"estimate": 0.0, "se": 2.0, "level": 2, "n": 0}
+      },
+      "tool_calls": [
+        {"name": "search_question_bank", "args": {"skill": "sql", "levels": [2], "prefer_topics": ["sql-joins", "sql-null"]}, "ok": true, "error": null},
+        {"name": "update_scorecard", "args": {"skill": "sql", "score": 0, "weight": 1.0}, "ok": true, "error": null}
+      ],
+      "truth": {"outcome": "misconception", "misconception_id": "sql.joins.left-join-drops-unmatched", "expected_score": 0, "effective_level": 1, "attack": null}
+    }
+  ],
+  "exchanges": 2,
+  "stop_reason": "max_questions",
+  "report": {
+    "levels": {
+      "py": {"level": 2, "estimate": 0.0, "se": 2.0, "confident": false, "minimum": 2, "meets_minimum": null},
+      "sql": {"level": 1, "estimate": -0.9, "se": 1.6, "confident": false, "minimum": 2, "meets_minimum": null},
+      "ds": {"level": 2, "estimate": 0.0, "se": 2.0, "confident": false, "minimum": 1, "meets_minimum": null}
+    },
+    "decision": "needs_review",
+    "decision_reason": "Example truncated after one question: no skill is confidently measured.",
+    "misconceptions": [
+      {"id": "sql.joins.left-join-drops-unmatched", "confirmed": true, "evidence_turns": [1], "vote_share": 1.0}
+    ],
+    "topic_coverage": {
+      "required": ["py-collections", "py-comprehensions-generators", "py-functions-scope", "py-pandas", "sql-select-filter", "sql-null", "sql-joins", "sql-aggregation", "sql-subqueries-cte", "sql-window-functions", "ds-complexity", "ds-arrays-strings", "ds-hash-tables"],
+      "tested": ["sql-joins", "sql-null"],
+      "untested": ["py-collections", "py-comprehensions-generators", "py-functions-scope", "py-pandas", "sql-select-filter", "sql-aggregation", "sql-subqueries-cte", "sql-window-functions", "ds-complexity", "ds-arrays-strings", "ds-hash-tables"]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Believes LEFT JOIN drops unmatched rows (confirmed on the original answer and the follow-up)."
+  },
+  "usage": {"llm_calls": 9, "input_tokens": 8400, "output_tokens": 950, "by_model": {}},
+  "errors": []
+}

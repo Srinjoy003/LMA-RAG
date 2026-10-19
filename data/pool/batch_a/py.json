@@ -1,0 +1,852 @@
+[
+  {
+    "id": "PY-L1-001",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-variables-mutability",
+      "py-collections"
+    ],
+    "question": "What does it mean for a Python type to be mutable or immutable? Say which of list, tuple, str and dict are mutable, and explain what happens to a string s when you call s.upper().",
+    "model_answer": "A mutable object can be changed in place after it is created; an immutable one cannot, so any 'change' produces a new object. Lists and dicts are mutable; tuples and strings are immutable. s.upper() does not change s: it returns a new uppercase string, which you must assign (for example s = s.upper()) to keep it.",
+    "key_points": [
+      "Mutable objects can be changed in place; immutable ones cannot",
+      "list and dict are mutable; tuple and str are immutable",
+      "s.upper() returns a new string and leaves s unchanged"
+    ],
+    "rubric": {
+      "0": "Says strings or tuples can be changed in place, or that s.upper() modifies s",
+      "1": "Correct definition but misclassifies one type, or does not explain that upper() returns a new string",
+      "2": "Correct definition, all four types classified correctly, and explains that upper() returns a new string that must be assigned"
+    },
+    "misconceptions": [
+      "py.variables-mutability.string-method-mutates",
+      "py.collections.tuple-mutable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-002",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-collections"
+    ],
+    "question": "Which of these can be used as a dictionary key: an int, a string, a tuple of ints, a list? Explain why the ones that cannot be used are not allowed.",
+    "model_answer": "An int, a string and a tuple of ints can be keys; a list cannot. Dictionary keys must be hashable, which in practice means immutable: the dict stores each key by its hash, and if the key could change after being stored its hash would change and the dict could no longer find it. Trying to use a list as a key raises a TypeError (unhashable type: 'list').",
+    "key_points": [
+      "int, str and a tuple of ints are valid keys; a list is not",
+      "Keys must be hashable (effectively immutable)",
+      "Using a list as a key raises a TypeError"
+    ],
+    "rubric": {
+      "0": "Says a list can be a key, or says tuples cannot be keys because they can be changed",
+      "1": "Picks the right types but cannot explain why (hashing or immutability), or explains it only vaguely",
+      "2": "Picks the right types and explains that keys must be hashable/immutable, mentioning the TypeError"
+    },
+    "misconceptions": [
+      "py.collections.unhashable-key",
+      "py.collections.tuple-mutable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-003",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-functions-scope"
+    ],
+    "question": "What is the difference between a function that prints a value and a function that returns it? What does the caller get back from a function that only prints?",
+    "model_answer": "print() shows a value on the screen but gives nothing back to the code that called the function; return sends the value back so the caller can store it or use it in further calculations. A function with no return statement returns None. So x = f() for a function that only prints sets x to None, even though something appeared on screen.",
+    "key_points": [
+      "print only displays output; return passes a value back to the caller",
+      "A function without a return statement returns None",
+      "Only a returned value can be stored or used in later code"
+    ],
+    "rubric": {
+      "0": "Treats printing and returning as the same, or says the caller receives the printed value",
+      "1": "Explains the difference but does not know a print-only function returns None",
+      "2": "Clearly distinguishes printing from returning and states that the caller gets None"
+    },
+    "misconceptions": [
+      "py.functions-scope.print-is-return"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-004",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-control-flow"
+    ],
+    "question": "How does Python evaluate 'and' and 'or'? Explain why 'if user is not None and user.age > 18:' is safe when user is None, and what the condition 'if colour == \"red\" or \"blue\":' actually tests.",
+    "model_answer": "'and' and 'or' short-circuit: 'and' stops at the first falsy operand and 'or' stops at the first truthy one, so the right side is evaluated only if it is needed. When user is None the left side is False, so user.age is never evaluated and no error is raised. 'colour == \"red\" or \"blue\"' is read as '(colour == \"red\") or \"blue\"'; a non-empty string is truthy, so the condition is always true. It should be written colour == \"red\" or colour == \"blue\", or colour in (\"red\", \"blue\").",
+    "key_points": [
+      "and/or short-circuit: the right side is evaluated only when needed",
+      "user.age is never evaluated when user is None",
+      "colour == \"red\" or \"blue\" is always true because \"blue\" is truthy",
+      "Correct form: colour in (\"red\", \"blue\") or two comparisons"
+    ],
+    "rubric": {
+      "0": "Says both sides are always evaluated, or says the colour condition checks red or blue",
+      "1": "Explains short-circuiting but misreads the colour condition, or the reverse",
+      "2": "Explains short-circuiting, why the user check is safe, and why the colour condition is always true, with the fix"
+    },
+    "misconceptions": [
+      "py.control-flow.no-short-circuit",
+      "py.control-flow.or-distributes"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-005",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-collections"
+    ],
+    "question": "What is the difference between sorted(nums) and nums.sort() for a list nums? What does each one return, and could you call .sort() on a tuple?",
+    "model_answer": "sorted(nums) returns a new sorted list and leaves nums unchanged; it works on any iterable. nums.sort() sorts the list in place and returns None, so result = nums.sort() sets result to None. Tuples are immutable and have no sort() method; to sort one you use sorted(t), which returns a list.",
+    "key_points": [
+      "sorted() returns a new list and leaves the original unchanged",
+      "list.sort() sorts in place and returns None",
+      "Tuples are immutable, have no sort(); use sorted() instead"
+    ],
+    "rubric": {
+      "0": "Says nums.sort() returns the sorted list, or that a tuple can be sorted in place",
+      "1": "Knows one sorts in place and one returns a new list, but gets the return value of sort() or the tuple part wrong",
+      "2": "Correct on both functions, including that sort() returns None, and on tuples"
+    },
+    "misconceptions": [
+      "py.collections.sort-returns-list",
+      "py.collections.tuple-mutable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-006",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-control-flow"
+    ],
+    "question": "What is the difference between an if/elif/else chain and several separate if statements? Give an example where they behave differently.",
+    "model_answer": "In an if/elif/else chain Python checks the conditions from top to bottom and runs only the first branch whose condition is true; the rest are skipped. Separate if statements are each checked independently, so several of them can run. For example, with score = 95, 'if score > 90: grade A' followed by 'elif score > 80: grade B' gives only A, but two separate ifs would run both and the second would overwrite the grade with B.",
+    "key_points": [
+      "An if/elif chain runs at most one branch: the first whose condition is true",
+      "Separate if statements are all checked, so several can run",
+      "A concrete example where overlapping conditions give different results"
+    ],
+    "rubric": {
+      "0": "Says an elif chain runs every branch whose condition is true, or that the two forms are equivalent",
+      "1": "Correct idea but no valid example, or the example is confused",
+      "2": "Explains that elif stops at the first true condition, contrasts with separate ifs, and gives a correct example"
+    },
+    "misconceptions": [
+      "py.control-flow.elif-checks-all"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-007",
+    "skill": "py",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "py-collections",
+      "py-control-flow",
+      "py-variables-mutability"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "nums = [3, 1, 2]\ncount = len(nums)\nresult = nums.sort()\nnums.append(0)\nprint(result, count)\nprint(nums)\nfor i in range(1, 3):\n    print(nums[i])",
+    "expected_output": "None 3\n[1, 2, 3, 0]\n2\n3\n",
+    "model_answer": "Prints 'None 3', then '[1, 2, 3, 0]', then 2 and 3 on separate lines. nums.sort() sorts in place and returns None. count was computed as 3 before the append and does not update. range(1, 3) gives 1 and 2 only, so it prints nums[1] and nums[2].",
+    "key_points": [
+      "result is None because sort() sorts in place and returns None",
+      "count stays 3: it holds the value computed at assignment",
+      "range(1, 3) stops before 3, so only indexes 1 and 2 are printed"
+    ],
+    "rubric": {
+      "0": "Says result is the sorted list, or that count becomes 4, or that range(1, 3) includes 3",
+      "1": "Gets most lines right but makes one smaller slip (e.g. the position of 0 in the list) or cannot explain why",
+      "2": "Exact output with the reasons: sort() returns None, count is fixed at 3, range excludes its end"
+    },
+    "misconceptions": [
+      "py.collections.sort-returns-list",
+      "py.control-flow.range-inclusive",
+      "py.variables-mutability.variable-holds-expression"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-008",
+    "skill": "py",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "py-variables-mutability",
+      "py-collections"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "a = [1, 2, 3]\nb = a\nn = len(a)\nb.append(4)\ns = \"hi\"\ns.upper()\nprint(a, n, s)",
+    "expected_output": "[1, 2, 3, 4] 3 hi\n",
+    "model_answer": "Prints '[1, 2, 3, 4] 3 hi'. b = a makes b a second name for the same list, so appending through b changes a too. n was set to 3 when len(a) was evaluated and does not change later. s.upper() returns a new string that is thrown away; strings are immutable, so s is still 'hi'.",
+    "key_points": [
+      "a and b refer to the same list, so a shows the appended 4",
+      "n keeps the value 3 computed at assignment",
+      "s.upper() does not change s because strings are immutable"
+    ],
+    "rubric": {
+      "0": "Says a is unchanged ([1, 2, 3]), or n is 4, or s is 'HI'",
+      "1": "Right output for two of the three values, or right output with a wrong explanation",
+      "2": "Exact output '[1, 2, 3, 4] 3 hi' with all three reasons"
+    },
+    "misconceptions": [
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.variable-holds-expression",
+      "py.variables-mutability.string-method-mutates"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-009",
+    "skill": "py",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "py-functions-scope",
+      "py-control-flow"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "count = 0\n\ndef show_squares(n):\n    count = n\n    for i in range(1, n):\n        print(i * i)\n\nresult = show_squares(3)\nprint(result, count)",
+    "expected_output": "1\n4\nNone 0\n",
+    "model_answer": "Prints 1 and 4 on separate lines, then 'None 0'. range(1, 3) gives 1 and 2, so the loop prints 1 and 4. The function prints but has no return statement, so result is None. The assignment count = n inside the function creates a local variable; the global count stays 0.",
+    "key_points": [
+      "range(1, 3) gives only 1 and 2, so 1 and 4 are printed",
+      "The function has no return, so result is None",
+      "count = n inside the function is local; the global count stays 0"
+    ],
+    "rubric": {
+      "0": "Says result holds a printed value, or the global count becomes 3, or the loop also prints 9",
+      "1": "Gets the loop right but makes one error on result or count, or gives correct output without reasons",
+      "2": "Exact output with all three reasons"
+    },
+    "misconceptions": [
+      "py.functions-scope.print-is-return",
+      "py.control-flow.range-inclusive",
+      "py.functions-scope.assign-updates-global"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-010",
+    "skill": "py",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "py-control-flow"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "def check(label, result):\n    print(\"checking\", label)\n    return result\n\nx = 15\nif x > 10:\n    print(\"big\")\nelif check(\"medium\", x > 5):\n    print(\"medium\")\nif check(\"a\", False) and check(\"b\", True):\n    print(\"both\")\ncolour = \"green\"\nif colour == \"red\" or \"blue\":\n    print(\"warm\")",
+    "expected_output": "big\nchecking a\nwarm\n",
+    "model_answer": "Prints 'big', then 'checking a', then 'warm'. The elif is skipped because the first branch already matched, so check('medium', ...) is never called. In the 'and', check('a', False) returns False, so the right side is not evaluated and 'both' is not printed. colour == \"red\" or \"blue\" is always true because the non-empty string \"blue\" is truthy, so 'warm' is printed.",
+    "key_points": [
+      "Only the first true branch of if/elif runs, so the elif check never runs",
+      "'and' short-circuits: check('b', ...) is never called",
+      "colour == \"red\" or \"blue\" is always true, so 'warm' is printed"
+    ],
+    "rubric": {
+      "0": "Prints 'medium' or 'checking medium', or 'checking b', or says 'warm' is not printed",
+      "1": "Gets two of the three parts right, or the right lines in the wrong order",
+      "2": "Exact output 'big', 'checking a', 'warm' with all three reasons"
+    },
+    "misconceptions": [
+      "py.control-flow.elif-checks-all",
+      "py.control-flow.no-short-circuit",
+      "py.control-flow.or-distributes"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-001",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-variables-mutability"
+    ],
+    "question": "Suppose a is a list of lists. Explain the difference between b = a, b = a.copy() and b = copy.deepcopy(a). After each one, would changing b[0][0] affect a?",
+    "model_answer": "b = a copies nothing: b is a second name for the same list, so any change through b is visible through a. a.copy() is a shallow copy: it makes a new outer list, but the inner lists are shared, so changing b[0][0] still changes a, while replacing b[0] with a new list does not. copy.deepcopy(a) recursively copies the inner lists as well, so b is fully independent and changing b[0][0] leaves a alone.",
+    "key_points": [
+      "b = a creates an alias to the same list, not a copy",
+      "a.copy() is shallow: new outer list, shared inner lists",
+      "deepcopy copies nested objects, so only it makes b fully independent"
+    ],
+    "rubric": {
+      "0": "Says b = a makes a copy, or that a.copy() makes the inner lists independent",
+      "1": "Knows the alias case but is unsure or partly wrong about shallow versus deep copy",
+      "2": "Correct on all three, including that b[0][0] changes a for both b = a and a.copy()"
+    },
+    "misconceptions": [
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.shallow-copy-is-deep"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-002",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-comprehensions-generators"
+    ],
+    "question": "What is the difference between [x * x for x in data] and (x * x for x in data)? Talk about when the values are computed, memory use, and whether you can loop over the result twice.",
+    "model_answer": "The square-bracket version is a list comprehension: it computes every value straight away and stores them all in a list, which you can index and loop over as many times as you like. The round-bracket version is a generator expression: it computes nothing up front and produces one value each time the next one is asked for, so it uses almost no memory even for huge inputs. A generator can only be consumed once; after a full loop it is exhausted and a second loop gives nothing.",
+    "key_points": [
+      "The list comprehension builds the whole list immediately",
+      "The generator expression is lazy: one value at a time, little memory",
+      "A generator can only be iterated once; a list can be reused"
+    ],
+    "rubric": {
+      "0": "Says the generator computes all values up front, or that it can be looped over again like a list",
+      "1": "Explains laziness or memory correctly but misses or gets wrong the single-use point",
+      "2": "Covers eager versus lazy, memory, and that a generator is exhausted after one pass"
+    },
+    "misconceptions": [
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.generator-reusable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-003",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-oop"
+    ],
+    "question": "What happens when you write c = Cart(\"Ann\")? Explain what __init__ does and what self is, and whether a method could replace the object c by assigning a new object to self.",
+    "model_answer": "Python first creates a new, empty Cart object, then calls __init__ on it with self bound to that new object and \"Ann\" as the argument. __init__ only initialises the object, for example setting self.owner; it does not create it and must return None. The new object is then assigned to c. self is just a parameter that refers to the object the method was called on, so writing self = Cart(...) inside a method only rebinds that local name and does not change c.",
+    "key_points": [
+      "Python creates the object first; __init__ only initialises it and returns None",
+      "self is the instance the method was called on, passed in automatically",
+      "Assigning to self inside a method only rebinds a local name; it does not replace c"
+    ],
+    "rubric": {
+      "0": "Says __init__ creates and returns the object, or that self = ... replaces c",
+      "1": "Correct on __init__ and self but wrong or unsure about reassigning self, or vague about who creates the object",
+      "2": "Explains creation then initialisation, what self is, and why self = ... does not affect c"
+    },
+    "misconceptions": [
+      "py.oop.init-creates-object",
+      "py.oop.self-reassign-replaces-object"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-004",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-exceptions"
+    ],
+    "question": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+    "model_answer": "try holds code that might raise; except handles a matching exception; else runs only if the try block finished without an exception; finally always runs, whether there was an exception, a return or neither. When an exception is raised, the rest of the try block is skipped and Python jumps to the first except clause, from top to bottom, whose type matches; after the handler it continues after the whole try statement, not back inside try. finally runs even when try or except returns, just before the function actually returns.",
+    "key_points": [
+      "After a raise, the rest of the try block is skipped; execution continues after the try statement",
+      "The first matching except clause in order runs, not the most specific",
+      "else runs only if no exception occurred",
+      "finally always runs, even when try returns"
+    ],
+    "rubric": {
+      "0": "Says execution resumes inside try after the handler, or that finally is skipped on return",
+      "1": "Knows the basic roles but gets one detail wrong (e.g. which except runs, or what else does)",
+      "2": "All four blocks explained correctly, including first-match order and finally running on return"
+    },
+    "misconceptions": [
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.resumes-after-raise",
+      "py.exceptions.most-specific-except-wins"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-005",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-pandas"
+    ],
+    "question": "A colleague runs df.dropna() and then df[\"price\"].mean(). They are surprised that the rows with missing prices are still in df. Explain why, how to fix it, and how mean() treats the missing values anyway.",
+    "model_answer": "dropna() does not change df; like most pandas methods it returns a new DataFrame, which was thrown away. The fix is to assign the result, df = df.dropna() (or df = df.dropna(subset=[\"price\"])). mean() skips NaN by default (skipna=True), so it averages only the prices that are present; the NaNs are not counted as zero and do not add to the count.",
+    "key_points": [
+      "dropna() returns a new DataFrame and leaves df unchanged",
+      "Fix: assign the result, e.g. df = df.dropna()",
+      "mean() skips NaN by default; NaN is not treated as 0"
+    ],
+    "rubric": {
+      "0": "Says dropna() changes df in place, or that mean() treats NaN as 0",
+      "1": "Explains the return-a-copy issue but is wrong or unsure about how mean handles NaN, or the reverse",
+      "2": "Explains why df is unchanged, gives the fix, and states that mean() ignores NaN"
+    },
+    "misconceptions": [
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-006",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-concurrency"
+    ],
+    "question": "In Python, what is the difference between using threads, processes and asyncio? Which would you choose to download 200 web pages, and which to resize 10,000 images in pure Python code, and why?",
+    "model_answer": "Threads run in one process and share memory, but in standard CPython the GIL lets only one thread run Python bytecode at a time, so threads help with I/O waiting but not with CPU-heavy Python code. Processes each have their own interpreter and memory, so they run in parallel on several cores and suit CPU-bound work, at the cost of more overhead. asyncio runs many coroutines on a single thread, switching between them only at await points, which suits large numbers of network waits. Downloading pages is I/O-bound, so asyncio or threads; resizing images in pure Python is CPU-bound, so multiprocessing.",
+    "key_points": [
+      "Threads share memory but the GIL stops them speeding up CPU-bound Python code",
+      "Processes give true parallelism on several cores for CPU-bound work",
+      "asyncio is single-threaded concurrency that switches at await points; good for I/O",
+      "Downloads: asyncio or threads; image resizing: processes"
+    ],
+    "rubric": {
+      "0": "Recommends threads for CPU-bound speed-up, or describes asyncio as running coroutines in parallel threads",
+      "1": "Picks sensible tools but explains the reasons (GIL, single-threaded event loop) incompletely",
+      "2": "Correct choice for both tasks with reasons covering the GIL, processes and how asyncio works"
+    },
+    "misconceptions": [
+      "py.concurrency.threads-cpu-parallel",
+      "py.concurrency.async-multithreaded"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-007",
+    "skill": "py",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "py-variables-mutability",
+      "py-functions-scope"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "def add_row(table, row):\n    table.append(row)\n    table = []\n    return table\n\ngrid = [[1, 2]]\nbackup = grid.copy()\nresult = add_row(grid, [3, 4])\nbackup[0][0] = 99\nprint(grid)\nprint(result, len(backup))",
+    "expected_output": "[[99, 2], [3, 4]]\n[] 1\n",
+    "model_answer": "Prints '[[99, 2], [3, 4]]' and then '[] 1'. The parameter table refers to the same list as grid, so table.append(row) adds [3, 4] to grid; then table = [] only rebinds the local name, and the empty list is returned. backup = grid.copy() was a shallow copy made before the append, so it has one element, but that element is the same inner list [1, 2] as grid[0]; setting backup[0][0] = 99 therefore shows up in grid.",
+    "key_points": [
+      "Passing grid to the function does not copy it: append changes grid",
+      "table = [] rebinds only the local name, so the function returns []",
+      "grid.copy() is shallow: backup has 1 element, but shares the inner list, so 99 appears in grid"
+    ],
+    "rubric": {
+      "0": "Says grid is unchanged by the function, or that backup[0][0] = 99 does not affect grid",
+      "1": "Right about one of the two effects but wrong about the other, or wrong length of backup",
+      "2": "Exact output with both reasons: aliasing through the parameter and the shallow copy"
+    },
+    "misconceptions": [
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.shallow-copy-is-deep"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-008",
+    "skill": "py",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "py-comprehensions-generators"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "def numbers():\n    print(\"start\")\n    yield 1\n    print(\"middle\")\n    yield 2\n\ngen = numbers()\nprint(\"made\")\nprint(list(gen))\nprint(list(gen))",
+    "expected_output": "made\nstart\nmiddle\n[1, 2]\n[]\n",
+    "model_answer": "Prints 'made', 'start', 'middle', '[1, 2]' and then '[]'. Calling numbers() only creates a generator; none of the body runs until values are requested, so 'made' comes first. list(gen) runs the body to the end: yield pauses rather than ends the function, so both 1 and 2 are produced and 'middle' is printed in between. The generator is then exhausted, so the second list(gen) is empty.",
+    "key_points": [
+      "Calling a generator function runs none of its body, so 'made' is printed first",
+      "yield pauses the function and resumes later, so both values are produced",
+      "A generator is exhausted after one pass, so the second list is empty"
+    ],
+    "rubric": {
+      "0": "Prints 'start' before 'made', or gives [1] for the first list, or [1, 2] for the second",
+      "1": "Mostly right with one ordering slip, or right output without explaining why",
+      "2": "Exact output with laziness, pause-and-resume of yield, and exhaustion explained"
+    },
+    "misconceptions": [
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.generator-reusable",
+      "py.comprehensions-generators.yield-is-return"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-009",
+    "skill": "py",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "py-pandas"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "import pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+    "expected_output": "['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10.0, nan, 30.0, 25.0]\n",
+    "model_answer": "Prints \"['Ann', 'Bo', 'Cy', 'Di']\", then \"['Bo', 'Cy']\", then '[10.0, nan, 30.0, 25.0]'. sort_values returns a new DataFrame that is discarded, so df keeps its original order. .loc[1:2] slices by label and includes both ends, giving rows 1 and 2. passed holds rows 0, 2 and 3; assigning passed[\"score\"] - 60 to a new column aligns on the index labels, so Bo (label 1) gets NaN and the column becomes float.",
+    "key_points": [
+      "sort_values does not change df unless the result is assigned",
+      ".loc slicing is label-based and includes the end label",
+      "Assigning a Series to a column aligns by index label; the missing label 1 gets NaN"
+    ],
+    "rubric": {
+      "0": "Says df is sorted, or that loc[1:2] gives only 'Bo', or that the bonus values fill rows by position",
+      "1": "Gets two of the three lines right, or the right values with an unclear reason",
+      "2": "All three lines correct with the reasons: no in-place sort, inclusive loc, index alignment"
+    },
+    "misconceptions": [
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.positional-alignment"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-010",
+    "skill": "py",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "py-exceptions",
+      "py-collections"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "def store(d, key, value):\n    try:\n        d[key] = value\n        print(\"stored\", key)\n    except TypeError:\n        print(\"cannot use\", key)\n    finally:\n        print(\"done\")\n\nd = {}\nstore(d, (1, 2), \"a\")\nstore(d, [3, 4], \"b\")\nprint(len(d))",
+    "expected_output": "stored (1, 2)\ndone\ncannot use [3, 4]\ndone\n1\n",
+    "model_answer": "Prints 'stored (1, 2)', 'done', 'cannot use [3, 4]', 'done', then 1. The tuple is hashable, so it is stored. A list is unhashable, so d[key] = value raises TypeError; the rest of the try block (the 'stored' print) is skipped, the except prints 'cannot use [3, 4]', and finally runs both times. Only one key was stored, so len(d) is 1.",
+    "key_points": [
+      "A tuple can be a key; a list cannot and raises TypeError",
+      "After the exception the rest of the try block is skipped",
+      "finally runs on both calls, and len(d) is 1"
+    ],
+    "rubric": {
+      "0": "Says the list is stored, or prints 'stored [3, 4]', or gives len(d) as 2",
+      "1": "Right about the TypeError but misses a 'done' line or misorders lines",
+      "2": "Exact output with the reasons: unhashable list, try block skipped after raise, finally always runs"
+    },
+    "misconceptions": [
+      "py.collections.unhashable-key",
+      "py.exceptions.resumes-after-raise"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-001",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-comprehensions-generators"
+    ],
+    "question": "Explain what happens, step by step, when you call a function that contains yield and then loop over the result. Why is a generator a good fit for processing a 10 GB log file line by line?",
+    "model_answer": "Calling the function does not run its body; it returns a generator object. Each time the loop asks for the next value, the body runs until the next yield, hands that value out, and pauses with its local state saved; the next request resumes right after the yield. When the body finishes, StopIteration ends the loop. For a 10 GB file this means only one line is in memory at a time and processing can start immediately, instead of loading everything into a list first.",
+    "key_points": [
+      "Calling the function returns a generator without running the body",
+      "Each next() runs to the next yield and pauses, keeping local state",
+      "Only one item is in memory at a time, so huge files can be processed lazily"
+    ],
+    "rubric": {
+      "0": "Says the body runs fully when called, or that the function ends at the first yield",
+      "1": "Describes laziness but is vague about pausing/resuming or about the memory benefit",
+      "2": "Explains creation without execution, pause-and-resume at each yield, and the memory advantage"
+    },
+    "misconceptions": [
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-002",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-functions-scope"
+    ],
+    "question": "Why is def add_item(item, items=[]): considered a bug? What actually happens across several calls, and what is the usual fix?",
+    "model_answer": "Default values are evaluated once, when the def statement runs, not on each call. So every call that omits items gets the same list object, and items appended in one call are still there in the next. The usual fix is to use None as the default and create a new list inside: if items is None: items = [].",
+    "key_points": [
+      "Default arguments are evaluated once, when the function is defined",
+      "All calls that use the default share the same list, so it grows across calls",
+      "Fix: default to None and create a new list inside the function"
+    ],
+    "rubric": {
+      "0": "Says a new empty list is created on each call, or sees no problem",
+      "1": "Describes the symptom (the list keeps growing) but not why, or gives no correct fix",
+      "2": "Explains evaluation at definition time, the shared list, and the None fix"
+    },
+    "misconceptions": [
+      "py.functions-scope.mutable-default-fresh"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-003",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-functions-scope"
+    ],
+    "question": "What is a closure in Python? If you create several functions in a loop that each refer to the loop variable, what value do they see when you call them later? And why does a nested function that does count += 1 on an outer variable fail unless you use nonlocal?",
+    "model_answer": "A closure is an inner function that remembers variables from the enclosing function's scope, even after that function has returned. It keeps a reference to the variable, not a copy of its value, and looks it up when it is called; so functions made in a loop all see the loop variable's final value (fix: bind it with a default argument, e.g. lambda i=i: i). Assigning to a name inside a function makes it local to that function, so count += 1 tries to read a local count that has no value yet and raises UnboundLocalError; nonlocal (or global, for module variables) tells Python to rebind the outer variable instead.",
+    "key_points": [
+      "A closure remembers variables from its enclosing scope",
+      "It looks the variable up at call time (late binding), so loop-made functions all see the last value",
+      "Assignment inside a function creates a local; nonlocal/global is needed to rebind the outer variable"
+    ],
+    "rubric": {
+      "0": "Says each loop-made function keeps its own value, or that assignment updates the outer variable without nonlocal",
+      "1": "Defines a closure correctly but gets either the late-binding or the nonlocal part wrong",
+      "2": "Correct definition, explains late binding with a fix, and explains why nonlocal is needed"
+    },
+    "misconceptions": [
+      "py.functions-scope.closure-captures-value",
+      "py.functions-scope.assign-updates-global"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-004",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-concurrency"
+    ],
+    "question": "What is the Global Interpreter Lock (GIL) in standard CPython 3.12? What does it mean for running CPU-heavy Python code in several threads, and does it mean you never need locks in threaded code?",
+    "model_answer": "The GIL is a lock inside CPython that allows only one thread at a time to execute Python bytecode. So threads running CPU-bound pure-Python code take turns rather than running in parallel, and are no faster (often slower) than one thread; for CPU-bound work you use multiprocessing or libraries that release the GIL. The GIL does not make your code thread-safe: threads can be switched between bytecodes, and an operation like counter += 1 is several bytecodes (read, add, write), so updates can be lost. You still need a threading.Lock for shared state.",
+    "key_points": [
+      "Only one thread executes Python bytecode at a time",
+      "Threads do not speed up CPU-bound pure-Python code; use processes instead",
+      "The GIL does not make compound operations like counter += 1 atomic; locks are still needed"
+    ],
+    "rubric": {
+      "0": "Says threads give multi-core speed-ups for CPU-bound Python, or that the GIL makes code thread-safe",
+      "1": "Explains the GIL's effect on CPU-bound code but is wrong or unsure about thread safety, or the reverse",
+      "2": "Explains what the GIL is, why it blocks CPU parallelism, and why locks are still needed"
+    },
+    "misconceptions": [
+      "py.concurrency.threads-cpu-parallel",
+      "py.concurrency.gil-thread-safe"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-005",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-concurrency"
+    ],
+    "question": "Two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines that never await inside the increment?",
+    "model_answer": "counter += 1 is not atomic: it reads the value, adds one and writes it back, and the interpreter can switch threads between those steps, so two threads can read the same value and one update is lost. The GIL does not prevent this; a threading.Lock around the increment does. With asyncio, all coroutines run on one thread and switch only at await points, so an increment with no await inside it cannot be interrupted and no update is lost. Races in async code can still happen when a read and write are separated by an await.",
+    "key_points": [
+      "counter += 1 is a read-modify-write that can be interrupted between threads",
+      "The GIL does not prevent this; use a Lock",
+      "asyncio runs on one thread and switches only at await, so this increment cannot race"
+    ],
+    "rubric": {
+      "0": "Says the GIL makes the result always 200,000, or that asyncio runs the coroutines in parallel threads with the same race",
+      "1": "Explains the thread race correctly but is wrong or vague about asyncio, or the reverse",
+      "2": "Explains lost updates, the lock fix, and why asyncio without an await in between is safe"
+    },
+    "misconceptions": [
+      "py.concurrency.gil-thread-safe",
+      "py.concurrency.async-multithreaded"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-006",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-oop"
+    ],
+    "question": "In a class Cart, what is the difference between writing items = [] in the class body and writing self.items = [] inside __init__? Walk through what happens when you create two carts and add an item to one of them in each case.",
+    "model_answer": "When you call Cart(), Python creates the object and then __init__ initialises it. self.items = [] in __init__ runs once per object, so each cart gets its own list and adding to one does not affect the other. items = [] in the class body is a class attribute: it is created once with the class and shared by all instances, so self.items.append(...) on one cart finds the shared class list and the item appears in every cart. Class attributes are fine for constants, but mutable per-object state belongs in __init__.",
+    "key_points": [
+      "__init__ runs once per new object, after Python has created it",
+      "self.items = [] in __init__ gives each instance its own list",
+      "A list in the class body is one object shared by every instance"
+    ],
+    "rubric": {
+      "0": "Says each instance gets its own copy of the class-body list, or that __init__ creates and returns the object",
+      "1": "Knows the class attribute is shared but explains instance creation or lookup unclearly",
+      "2": "Explains per-instance initialisation in __init__ and the shared class-level list, with the two-cart example"
+    },
+    "misconceptions": [
+      "py.oop.init-creates-object",
+      "py.oop.class-attr-per-instance"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-007",
+    "skill": "py",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "py-functions-scope",
+      "py-comprehensions-generators"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "def add_tag(tag, tags=[]):\n    tags.append(tag)\n    return tags\n\ndef make_multipliers():\n    return [lambda x: x * i for i in range(1, 4)]\n\nprint(add_tag(\"a\"))\nprint(add_tag(\"b\"))\nprint([m(10) for m in make_multipliers()])",
+    "expected_output": "['a']\n['a', 'b']\n[30, 30, 30]\n",
+    "model_answer": "Prints \"['a']\", then \"['a', 'b']\", then '[30, 30, 30]'. The default list tags is created once when add_tag is defined, so the second call appends to the same list. Each lambda in the list comprehension looks up i when it is called, not when it is created; by then the loop has finished and i is 3, so every lambda returns 10 * 3.",
+    "key_points": [
+      "The default list is created once and shared between calls",
+      "The lambdas look up i at call time (late binding)",
+      "After the comprehension finishes, i is 3, so all results are 30"
+    ],
+    "rubric": {
+      "0": "Says the second call returns ['b'], or that the results are [10, 20, 30]",
+      "1": "Gets one of the two parts right, or the right output with a wrong or missing reason",
+      "2": "Exact output with both reasons: shared default and late binding"
+    },
+    "misconceptions": [
+      "py.functions-scope.mutable-default-fresh",
+      "py.functions-scope.closure-captures-value"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-008",
+    "skill": "py",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "py-exceptions"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "def load(x):\n    try:\n        return 10 // x\n    except Exception:\n        print(\"general\")\n        return -1\n    except ZeroDivisionError:\n        print(\"zero\")\n        return 0\n    finally:\n        print(\"cleanup\")\n\nprint(load(5))\nprint(load(0))",
+    "expected_output": "cleanup\n2\ngeneral\ncleanup\n-1\n",
+    "model_answer": "Prints 'cleanup', '2', 'general', 'cleanup', '-1'. For load(5) the try returns 2, but finally runs before the function actually returns, so 'cleanup' is printed before 2. For load(0), 10 // 0 raises ZeroDivisionError; Python checks except clauses in order and except Exception matches first, so 'general' is printed and -1 is returned; the ZeroDivisionError clause is never reached. finally still runs before the return.",
+    "key_points": [
+      "finally runs even when try or except returns, before the caller receives the value",
+      "The first matching except clause runs; except Exception catches ZeroDivisionError first",
+      "The more specific ZeroDivisionError handler is never reached"
+    ],
+    "rubric": {
+      "0": "Leaves out 'cleanup', or says 'zero' and 0 are printed for load(0)",
+      "1": "Right handler and values but 'cleanup' in the wrong place, or right output without explaining why",
+      "2": "Exact output with both reasons: finally runs on return, first matching handler wins"
+    },
+    "misconceptions": [
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-009",
+    "skill": "py",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "py-pandas"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "import pandas as pd\n\ns1 = pd.Series([10, 20, 30], index=[\"a\", \"b\", \"c\"])\ns2 = pd.Series([1, 2, 3], index=[\"b\", \"c\", \"d\"])\ntotal = s1 + s2\nprint(total.tolist())\nprint(total.mean())\nprint(s1.loc[\"a\":\"b\"].sum())",
+    "expected_output": "[nan, 21.0, 32.0, nan]\n26.5\n30\n",
+    "model_answer": "Prints '[nan, 21.0, 32.0, nan]', then 26.5, then 30. Adding two Series aligns them on index labels: only 'b' (20 + 1) and 'c' (30 + 2) exist in both, while 'a' and 'd' have no partner and become NaN. mean() skips NaN by default, so it is (21 + 32) / 2 = 26.5. .loc[\"a\":\"b\"] includes both end labels, so the sum is 10 + 20 = 30.",
+    "key_points": [
+      "Series arithmetic aligns by index label; unmatched labels give NaN",
+      "mean() skips NaN, giving (21 + 32) / 2 = 26.5",
+      ".loc label slicing includes the end label, so the sum is 30"
+    ],
+    "rubric": {
+      "0": "Adds by position (11, 22, 33), or treats NaN as 0 in the mean (13.25), or says the loc sum is 10",
+      "1": "Gets two of the three lines right, or right values with an unclear reason",
+      "2": "All three lines correct, explaining alignment, NaN-skipping and inclusive loc"
+    },
+    "misconceptions": [
+      "py.pandas.positional-alignment",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.loc-end-exclusive"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-010",
+    "skill": "py",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "py-oop"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "class Team:\n    members = []\n    def __init__(self, name):\n        self.name = name\n    def join(self, person):\n        self.members.append(person)\n    def rename(self, new_name):\n        self = Team(new_name)\n\na = Team(\"red\")\nb = Team(\"blue\")\na.join(\"Ann\")\na.rename(\"green\")\nprint(a.name, b.members)",
+    "expected_output": "red ['Ann']\n",
+    "model_answer": "Prints \"red ['Ann']\". members = [] is a class attribute, a single list shared by every Team, so a.join(\"Ann\") appends to the list that b.members also refers to. In rename, self = Team(new_name) only rebinds the local name self to a new object, which is then thrown away; a itself is unchanged and its name is still 'red'.",
+    "key_points": [
+      "members is a class attribute shared by all instances, so b sees 'Ann'",
+      "Assigning to self inside rename only rebinds a local name",
+      "a.name is still 'red'"
+    ],
+    "rubric": {
+      "0": "Says b.members is empty, or that a.name becomes 'green'",
+      "1": "Gets one of the two values right, or right output with a wrong reason",
+      "2": "Exact output with both reasons: shared class attribute and self being only a local name"
+    },
+    "misconceptions": [
+      "py.oop.class-attr-per-instance",
+      "py.oop.self-reassign-replaces-object"
+    ],
+    "source": "generated",
+    "status": "draft"
+  }
+]

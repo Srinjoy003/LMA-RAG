@@ -1,0 +1,250 @@
+[
+  {
+    "id": "py.variables-mutability.assignment-copies",
+    "skill": "py",
+    "topic": "py-variables-mutability",
+    "description": "Believes that assigning one variable to another (b = a), or passing an object as an argument, makes an independent copy of a mutable object rather than a second name for the same object",
+    "example_wrong_answer": "b is its own copy of the list, so appending to b leaves a unchanged.",
+    "source": "Adapted from Progmiscon (Chiodini et al., 2021), Python: AssignmentCopiesObject"
+  },
+  {
+    "id": "py.variables-mutability.variable-holds-expression",
+    "skill": "py",
+    "topic": "py-variables-mutability",
+    "description": "Believes a variable stores the expression it was assigned from and is recomputed when the variables in that expression change, instead of holding the value computed at assignment time",
+    "example_wrong_answer": "size was set to len(nums), so after we append to nums, size goes up to 4 as well.",
+    "source": "Adapted from Progmiscon (Chiodini et al., 2021), Python: VariablesHoldExpressions"
+  },
+  {
+    "id": "py.variables-mutability.string-method-mutates",
+    "skill": "py",
+    "topic": "py-variables-mutability",
+    "description": "Believes string methods such as upper(), replace() or strip() change the original string in place, not realising strings are immutable and these methods return a new string",
+    "example_wrong_answer": "After s.upper() the variable s now holds 'HI'.",
+    "source": "generated"
+  },
+  {
+    "id": "py.variables-mutability.shallow-copy-is-deep",
+    "skill": "py",
+    "topic": "py-variables-mutability",
+    "description": "Believes list.copy(), list(x) or slicing x[:] also copies the nested objects inside the list, so a copy of a list of lists is fully independent",
+    "example_wrong_answer": "backup is a copy, so changing backup[0][0] can't affect grid.",
+    "source": "generated"
+  },
+  {
+    "id": "py.control-flow.range-inclusive",
+    "skill": "py",
+    "topic": "py-control-flow",
+    "description": "Believes range(a, b) includes the end value b (or that range(n) runs from 1 to n), rather than stopping just before b",
+    "example_wrong_answer": "range(1, 3) gives 1, 2 and 3, so it prints three numbers.",
+    "source": "Adapted from McMining benchmark (Al-Hossami & Bunescu, 2025, arXiv:2510.08827)"
+  },
+  {
+    "id": "py.control-flow.no-short-circuit",
+    "skill": "py",
+    "topic": "py-control-flow",
+    "description": "Believes 'and' and 'or' always evaluate both operands, not knowing that evaluation stops as soon as the result is decided by the left operand",
+    "example_wrong_answer": "Both sides of the 'and' are always checked, so check('b') is called and prints too.",
+    "source": "Adapted from Progmiscon (Chiodini et al., 2021), Python: NoShortCircuit"
+  },
+  {
+    "id": "py.control-flow.elif-checks-all",
+    "skill": "py",
+    "topic": "py-control-flow",
+    "description": "Believes an if/elif/else chain tests every condition and runs every branch whose condition is true, as if it were a sequence of separate if statements",
+    "example_wrong_answer": "x is 15, which is greater than 10 and greater than 5, so it prints both 'big' and 'medium'.",
+    "source": "Adapted from Progmiscon (Chiodini et al., 2021), Python: ConditionalIsSequence"
+  },
+  {
+    "id": "py.control-flow.or-distributes",
+    "skill": "py",
+    "topic": "py-control-flow",
+    "description": "Believes that in a condition like x == 'red' or 'blue' the comparison applies to both sides of 'or', so it means x == 'red' or x == 'blue'",
+    "example_wrong_answer": "colour is 'green', which is neither red nor blue, so 'warm' is not printed.",
+    "source": "Adapted from McMining benchmark (Al-Hossami & Bunescu, 2025, arXiv:2510.08827)"
+  },
+  {
+    "id": "py.functions-scope.print-is-return",
+    "skill": "py",
+    "topic": "py-functions-scope",
+    "description": "Believes that printing a value inside a function is the same as returning it, so the caller receives whatever the function printed",
+    "example_wrong_answer": "The function prints 5, so result is 5 and the last line prints 5 again.",
+    "source": "Adapted from McMining benchmark (Al-Hossami & Bunescu, 2025, arXiv:2510.08827)"
+  },
+  {
+    "id": "py.functions-scope.mutable-default-fresh",
+    "skill": "py",
+    "topic": "py-functions-scope",
+    "description": "Believes a mutable default argument (such as items=[]) is created fresh on every call, not knowing it is created once when the def statement runs and shared between calls",
+    "example_wrong_answer": "Each call gets a new empty list, so the second call returns just ['b'].",
+    "source": "generated"
+  },
+  {
+    "id": "py.functions-scope.assign-updates-global",
+    "skill": "py",
+    "topic": "py-functions-scope",
+    "description": "Believes that assigning to a name inside a function changes the module-level (or enclosing) variable with the same name, without needing global or nonlocal",
+    "example_wrong_answer": "The function sets count to 5, so the global count is 5 afterwards.",
+    "source": "generated"
+  },
+  {
+    "id": "py.functions-scope.closure-captures-value",
+    "skill": "py",
+    "topic": "py-functions-scope",
+    "description": "Believes a closure (e.g. a lambda defined in a loop) captures the value a variable had when the function was created, rather than looking the variable up when the function is called",
+    "example_wrong_answer": "Each lambda remembers its own i, so the results are 10, 20 and 30.",
+    "source": "generated"
+  },
+  {
+    "id": "py.collections.tuple-mutable",
+    "skill": "py",
+    "topic": "py-collections",
+    "description": "Believes tuples can be changed in place like lists, for example by assigning to an index or calling append() or sort() on them",
+    "example_wrong_answer": "A tuple is just a list with round brackets, so you can sort it or append to it the same way.",
+    "source": "generated"
+  },
+  {
+    "id": "py.collections.unhashable-key",
+    "skill": "py",
+    "topic": "py-collections",
+    "description": "Believes any value, including a list or a dict, can be used as a dictionary key or set element, not knowing keys must be hashable (in practice, immutable)",
+    "example_wrong_answer": "You can use [3, 4] as a key just like (1, 2); both get stored in the dict.",
+    "source": "generated"
+  },
+  {
+    "id": "py.collections.sort-returns-list",
+    "skill": "py",
+    "topic": "py-collections",
+    "description": "Believes list.sort() returns the sorted list, not knowing it sorts in place and returns None (unlike sorted(), which returns a new list)",
+    "example_wrong_answer": "result = nums.sort() gives result = [1, 2, 3].",
+    "source": "generated"
+  },
+  {
+    "id": "py.comprehensions-generators.generator-reusable",
+    "skill": "py",
+    "topic": "py-comprehensions-generators",
+    "description": "Believes a generator can be iterated over several times like a list, not knowing it is exhausted after one full pass",
+    "example_wrong_answer": "The second list(gen) gives [1, 2] again, because gen still holds the same values.",
+    "source": "generated"
+  },
+  {
+    "id": "py.comprehensions-generators.generator-eager",
+    "skill": "py",
+    "topic": "py-comprehensions-generators",
+    "description": "Believes calling a generator function (or creating a generator expression) runs the body and computes all the values immediately, rather than lazily, one value per request",
+    "example_wrong_answer": "Calling numbers() runs the function, so 'start' is printed before 'made'.",
+    "source": "generated"
+  },
+  {
+    "id": "py.comprehensions-generators.yield-is-return",
+    "skill": "py",
+    "topic": "py-comprehensions-generators",
+    "description": "Believes yield ends the function like return, so a generator function can only ever produce its first yielded value",
+    "example_wrong_answer": "The function stops at the first yield, so the list is just [1].",
+    "source": "generated"
+  },
+  {
+    "id": "py.oop.init-creates-object",
+    "skill": "py",
+    "topic": "py-oop",
+    "description": "Believes __init__ creates and returns the new object (like a constructor that must return self), rather than initialising an object Python has already created",
+    "example_wrong_answer": "__init__ builds the object and returns it, and that returned object is what gets stored in c.",
+    "source": "Adapted from Progmiscon (Chiodini et al., 2021), Python: InitCreates and InitReturnsObject"
+  },
+  {
+    "id": "py.oop.self-reassign-replaces-object",
+    "skill": "py",
+    "topic": "py-oop",
+    "description": "Believes that assigning a new object to self inside a method replaces the object the method was called on, rather than just rebinding a local name",
+    "example_wrong_answer": "rename does self = Team(new_name), so a is now the 'green' team.",
+    "source": "Adapted from Progmiscon (Chiodini et al., 2021), Python: SelfAssignable"
+  },
+  {
+    "id": "py.oop.class-attr-per-instance",
+    "skill": "py",
+    "topic": "py-oop",
+    "description": "Believes a mutable attribute defined in the class body (e.g. members = []) gets a separate copy for every instance, not knowing it is one object shared by all instances",
+    "example_wrong_answer": "Each Team gets its own members list, so b.members is still empty.",
+    "source": "generated"
+  },
+  {
+    "id": "py.exceptions.finally-skipped-on-return",
+    "skill": "py",
+    "topic": "py-exceptions",
+    "description": "Believes a finally block does not run when the try or except block executes a return statement",
+    "example_wrong_answer": "The try block returns straight away, so 'cleanup' is never printed.",
+    "source": "generated"
+  },
+  {
+    "id": "py.exceptions.resumes-after-raise",
+    "skill": "py",
+    "topic": "py-exceptions",
+    "description": "Believes that after an exception is caught, execution goes back to the try block and continues with the line after the one that raised",
+    "example_wrong_answer": "After the except prints its message, the next line in the try still runs, so it also prints 'stored'.",
+    "source": "generated"
+  },
+  {
+    "id": "py.exceptions.most-specific-except-wins",
+    "skill": "py",
+    "topic": "py-exceptions",
+    "description": "Believes Python picks the most specific matching except clause, rather than the first clause (top to bottom) whose type matches the exception",
+    "example_wrong_answer": "Dividing by zero is a ZeroDivisionError, so the ZeroDivisionError handler runs even though except Exception comes first.",
+    "source": "generated"
+  },
+  {
+    "id": "py.pandas.method-modifies-inplace",
+    "skill": "py",
+    "topic": "py-pandas",
+    "description": "Believes DataFrame methods such as sort_values(), dropna() or drop() change the DataFrame they are called on, not knowing they return a new object that must be assigned",
+    "example_wrong_answer": "We called df.sort_values('score'), so df is now sorted by score.",
+    "source": "generated"
+  },
+  {
+    "id": "py.pandas.loc-end-exclusive",
+    "skill": "py",
+    "topic": "py-pandas",
+    "description": "Believes label-based slicing with .loc excludes the end label like ordinary Python slicing, when .loc includes both endpoints",
+    "example_wrong_answer": "loc['a':'b'] stops before 'b', so it only contains the value for 'a'.",
+    "source": "generated"
+  },
+  {
+    "id": "py.pandas.nan-treated-as-zero",
+    "skill": "py",
+    "topic": "py-pandas",
+    "description": "Believes missing values (NaN) count as 0 in aggregations such as mean() or sum(), not knowing pandas skips them by default",
+    "example_wrong_answer": "There are four values and two of them are NaN, which count as 0, so the mean is 53 / 4.",
+    "source": "generated"
+  },
+  {
+    "id": "py.pandas.positional-alignment",
+    "skill": "py",
+    "topic": "py-pandas",
+    "description": "Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN",
+    "example_wrong_answer": "s1 + s2 just adds them element by element: 11, 22 and 33.",
+    "source": "generated"
+  },
+  {
+    "id": "py.concurrency.threads-cpu-parallel",
+    "skill": "py",
+    "topic": "py-concurrency",
+    "description": "Believes that in standard CPython, using several threads makes CPU-bound pure-Python code run in parallel on multiple cores and finish faster",
+    "example_wrong_answer": "With four threads on a four-core machine the number crunching runs about four times faster.",
+    "source": "generated"
+  },
+  {
+    "id": "py.concurrency.gil-thread-safe",
+    "skill": "py",
+    "topic": "py-concurrency",
+    "description": "Believes the GIL makes multithreaded Python code thread-safe, so shared updates such as counter += 1 never need a lock",
+    "example_wrong_answer": "Only one thread runs at a time because of the GIL, so counter += 1 can't race and the total is always right.",
+    "source": "generated"
+  },
+  {
+    "id": "py.concurrency.async-multithreaded",
+    "skill": "py",
+    "topic": "py-concurrency",
+    "description": "Believes asyncio runs coroutines in parallel on separate threads or cores, rather than interleaving them on a single thread that switches only at await points",
+    "example_wrong_answer": "asyncio starts each coroutine on its own thread, so it has the same race conditions as threading and also speeds up CPU work.",
+    "source": "generated"
+  }
+]

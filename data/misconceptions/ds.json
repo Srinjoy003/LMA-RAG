@@ -1,0 +1,266 @@
+[
+  {
+    "id": "ds.complexity.constants-change-class",
+    "skill": "ds",
+    "topic": "ds-complexity",
+    "description": "Believes constant factors and lower-order terms change the Big-O class, e.g. that an algorithm taking 2n or 3n + 5 steps is 'O(2n)'/'O(3n)' and belongs to a faster-growing class than O(n)",
+    "example_wrong_answer": "The first one is O(2n), so it grows faster than the O(n) one, and n + 100 is O(n + 100), which is worse still.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.complexity.count-loops-for-big-o",
+    "skill": "ds",
+    "topic": "ds-complexity",
+    "description": "Believes Big-O can be read off by counting visible loops: two nested loops always mean O(n^2) and a single loop always means O(n), ignoring how many times the inner loop actually runs and the cost of operations inside the loop body (such as `x in some_list`)",
+    "example_wrong_answer": "There are two nested loops, so it's O(n^2), even though the inner one only runs 3 times.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.complexity.short-code-is-fast",
+    "skill": "ds",
+    "topic": "ds-complexity",
+    "description": "Believes that shorter code, or a single built-in call or operator (such as `x in lst`, `sorted(...)` or `lst.index(x)`), runs in constant time or is automatically more efficient than an explicit loop",
+    "example_wrong_answer": "`x in lst` is just one operation, so checking it is O(1); it's faster than writing the loop yourself.",
+    "source": "Adapted from Gal-Ezer & Zur (2004), 'The efficiency of algorithms - misconceptions', Computers & Education 42(3), 215-226, doi:10.1016/j.compedu.2003.07.004"
+  },
+  {
+    "id": "ds.complexity.big-o-is-exact-time",
+    "skill": "ds",
+    "topic": "ds-complexity",
+    "description": "Believes Big-O gives the exact running time or exact cost of every single operation, so an O(n) algorithm is faster than an O(n^2) one for every input size, and an 'O(1)' operation always takes the same tiny time",
+    "example_wrong_answer": "O(n) is always faster than O(n^2), even for a list of 5 items, and amortised O(1) means every append takes the same time.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.arrays-strings.index-needs-scan",
+    "skill": "ds",
+    "topic": "ds-arrays-strings",
+    "description": "Believes reading an array/Python list element by index (lst[i]) requires walking from the start, so indexing costs O(n) rather than O(1)",
+    "example_wrong_answer": "To get lst[999] Python has to go through the first 999 items, so it's slower for later positions.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.arrays-strings.front-insert-constant",
+    "skill": "ds",
+    "topic": "ds-arrays-strings",
+    "description": "Believes inserting or deleting at the front or middle of an array/Python list (insert(0, x), pop(0), inserting into a sorted array) is O(1) like appending at the end, unaware that every later element must shift",
+    "example_wrong_answer": "insert(0, x) just puts the item in position 0, so it's as fast as append.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.arrays-strings.append-always-copies",
+    "skill": "ds",
+    "topic": "ds-arrays-strings",
+    "description": "Believes every append to a dynamic array (Python list) allocates a new array and copies all existing elements, so a single append is always O(n) and n appends cost O(n^2)",
+    "example_wrong_answer": "Each append has to make a new list one bigger and copy everything over, so appending n items is O(n^2).",
+    "source": "generated"
+  },
+  {
+    "id": "ds.arrays-strings.strings-mutable",
+    "skill": "ds",
+    "topic": "ds-arrays-strings",
+    "description": "Believes strings can be changed in place, so methods like upper() or replace(), or `s += t`, modify the existing string object, unaware that Python strings are immutable and these operations build new strings",
+    "example_wrong_answer": "After s.upper() the variable s holds 'DATA', because upper() changes the string.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.hash-tables.lookup-is-linear",
+    "skill": "ds",
+    "topic": "ds-hash-tables",
+    "description": "Believes looking up a key in a hash table (dict/set) checks the stored entries one by one, so membership and lookup are O(n) on average, like a list",
+    "example_wrong_answer": "To find the key the dict has to go through its keys until it finds the matching one, so it's O(n).",
+    "source": "generated"
+  },
+  {
+    "id": "ds.hash-tables.worst-case-constant",
+    "skill": "ds",
+    "topic": "ds-hash-tables",
+    "description": "Believes hash table operations are O(1) guaranteed in every case, ignoring that many collisions (a poor hash function or adversarial keys) degrade lookups towards O(n)",
+    "example_wrong_answer": "Dictionary lookups are always O(1); collisions don't change the complexity.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.hash-tables.keys-kept-sorted",
+    "skill": "ds",
+    "topic": "ds-hash-tables",
+    "description": "Believes a hash table stores its keys in sorted order, so iterating over it yields keys sorted and it can produce ordered output or the smallest key without extra sorting",
+    "example_wrong_answer": "The dict will print its keys alphabetically: apple, fig, pear.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.hash-tables.collision-overwrites",
+    "skill": "ds",
+    "topic": "ds-hash-tables",
+    "description": "Believes that when two different keys hash to the same value or slot, the newer key overwrites the older one, so colliding keys cannot both be stored",
+    "example_wrong_answer": "All the keys have hash 42, so each one replaces the previous one and the dict ends up with just one entry.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.stacks-queues.lifo-fifo-swapped",
+    "skill": "ds",
+    "topic": "ds-stacks-queues",
+    "description": "Confuses LIFO and FIFO: believes a stack removes the earliest-added item first (or a queue the most recent), or that the first function call to start is the first to finish",
+    "example_wrong_answer": "We pushed a, b, c, so pop gives back 'a' first.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.stacks-queues.pop-does-not-remove",
+    "skill": "ds",
+    "topic": "ds-stacks-queues",
+    "description": "Believes pop on a stack only returns the top item without removing it (treats pop like peek), so the stack's size is unchanged after popping",
+    "example_wrong_answer": "pop gives you 'c' but the stack still has a, b, c in it, so the length is still 3.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.stacks-queues.recursion-free-memory",
+    "skill": "ds",
+    "topic": "ds-stacks-queues",
+    "description": "Believes recursive calls cost no extra memory, unaware that every pending call keeps a frame on the call stack, so recursion depth n uses O(n) space and very deep recursion fails (RecursionError in Python)",
+    "example_wrong_answer": "Recursion just reuses the same function, so it needs constant memory no matter how big n is.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.linked-lists.index-constant-time",
+    "skill": "ds",
+    "topic": "ds-linked-lists",
+    "description": "Believes the k-th node of a linked list can be reached directly in O(1), like array indexing, instead of following next pointers from the head",
+    "example_wrong_answer": "Getting the 1000th node of a linked list is O(1), same as a list index.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.linked-lists.insert-shifts-nodes",
+    "skill": "ds",
+    "topic": "ds-linked-lists",
+    "description": "Believes inserting a node into a linked list requires shifting all later elements along (as in an array), so insertion after a known node is O(n), or that later nodes reattach automatically",
+    "example_wrong_answer": "After inserting X, B and C get shifted one place to the right, so the list is A, X, B, C.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.linked-lists.pointer-order-irrelevant",
+    "skill": "ds",
+    "topic": "ds-linked-lists",
+    "description": "Believes the order of pointer updates when inserting a node does not matter, not realising that overwriting prev.next before saving the old next node loses the rest of the list",
+    "example_wrong_answer": "You set p.next = n and n.next = p.next; it doesn't matter which you do first.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.trees-bst.always-balanced",
+    "skill": "ds",
+    "topic": "ds-trees-bst",
+    "description": "Believes a binary search tree is balanced by default, so search and insert are always O(log n) regardless of the order in which keys were inserted",
+    "example_wrong_answer": "A BST always halves the search space, so searching is O(log n) even if the keys were inserted in sorted order.",
+    "source": "Adapted from Karpierz & Wolfman (2014), 'Misconceptions and Concept Inventory Questions for Binary Search Trees and Hash Tables', SIGCSE '14, doi:10.1145/2538862.2538902"
+  },
+  {
+    "id": "ds.trees-bst.only-check-children",
+    "skill": "ds",
+    "topic": "ds-trees-bst",
+    "description": "Believes the BST property only requires each node to be greater than its left child and smaller than its right child, rather than greater than every key in its left subtree and smaller than every key in its right subtree",
+    "example_wrong_answer": "Every node is bigger than its left child and smaller than its right child, so it's a valid BST.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.trees-bst.inorder-not-sorted",
+    "skill": "ds",
+    "topic": "ds-trees-bst",
+    "description": "Does not know that an in-order traversal of a valid BST visits keys in sorted order; believes it returns keys in insertion order or level order",
+    "example_wrong_answer": "In-order gives the keys in the order they were inserted: 50, 30, 70, ...",
+    "source": "generated"
+  },
+  {
+    "id": "ds.trees-bst.insert-scans-all-keys",
+    "skill": "ds",
+    "topic": "ds-trees-bst",
+    "description": "Believes inserting (or searching) in a BST requires inspecting every existing key, for example a full search for duplicates first, rather than following a single root-to-leaf path",
+    "example_wrong_answer": "To insert you first have to look through all the nodes to find the right place, so it's O(n) even in a balanced tree.",
+    "source": "Adapted from Karpierz & Wolfman (2014), 'Misconceptions and Concept Inventory Questions for Binary Search Trees and Hash Tables', SIGCSE '14, doi:10.1145/2538862.2538902"
+  },
+  {
+    "id": "ds.heaps.heap-is-sorted",
+    "skill": "ds",
+    "topic": "ds-heaps",
+    "description": "Conflates a binary heap with a sorted array or BST: believes the heap's underlying array is fully sorted, so heap[k] is the (k+1)-th smallest item",
+    "example_wrong_answer": "The heap list is [1, 2, 3, 5, 8, 9]: it's kept sorted, that's how it knows the minimum.",
+    "source": "Adapted from Karpierz & Wolfman (2014), 'Misconceptions and Concept Inventory Questions for Binary Search Trees and Hash Tables', SIGCSE '14, doi:10.1145/2538862.2538902"
+  },
+  {
+    "id": "ds.heaps.max-at-last-index",
+    "skill": "ds",
+    "topic": "ds-heaps",
+    "description": "Believes that in a min-heap the largest element is always the last item of the array (and vice versa for a max-heap), rather than somewhere among the leaves",
+    "example_wrong_answer": "h[-1] is the biggest value, 9, because the min-heap puts the largest at the end.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.heaps.pop-min-constant",
+    "skill": "ds",
+    "topic": "ds-heaps",
+    "description": "Believes removing the minimum from a min-heap (or the top of a priority queue) is O(1) because the minimum is at the root, ignoring the O(log n) sift-down that restores the heap",
+    "example_wrong_answer": "Popping from a heap is O(1) since the smallest is right at the top.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.sorting-searching.binary-search-unsorted",
+    "skill": "ds",
+    "topic": "ds-sorting-searching",
+    "description": "Believes binary search works correctly on unsorted data, or does not know why sorted order is required for it",
+    "example_wrong_answer": "Binary search just checks the middle and goes left or right, so it will still find 42 in the unsorted list.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.sorting-searching.binary-search-half-of-linear",
+    "skill": "ds",
+    "topic": "ds-sorting-searching",
+    "description": "Believes binary search is only about twice as fast as linear search, needing roughly n/2 comparisons (O(n)), rather than about log2(n) comparisons",
+    "example_wrong_answer": "For a million items binary search needs around 500,000 comparisons, half of linear search.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.sorting-searching.sorting-is-linear",
+    "skill": "ds",
+    "topic": "ds-sorting-searching",
+    "description": "Believes general-purpose (comparison) sorting such as sorted() takes O(n) time, so sorting first is effectively free compared with a single linear scan",
+    "example_wrong_answer": "Sorting is O(n), then binary search is O(log n), so sorting first is always better even for one lookup.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.sorting-searching.sort-not-stable",
+    "skill": "ds",
+    "topic": "ds-sorting-searching",
+    "description": "Believes sorting does not preserve the original relative order of items with equal keys (ties come out in arbitrary or alphabetical order), unaware that Python's sort is stable",
+    "example_wrong_answer": "kiwi, pear and date all have length 4, so they'll come out alphabetically: date, kiwi, pear.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.graphs.bfs-dfs-swapped",
+    "skill": "ds",
+    "topic": "ds-graphs",
+    "description": "Confuses BFS and DFS: believes BFS uses a stack and DFS a queue, or that BFS goes deep along one path first while DFS explores level by level",
+    "example_wrong_answer": "This uses a list as a stack and pops from the end, so it's breadth-first: 1, 2, 3, 4.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.graphs.dfs-finds-shortest",
+    "skill": "ds",
+    "topic": "ds-graphs",
+    "description": "Believes depth-first search finds the path with the fewest edges in an unweighted graph, i.e. that the first path DFS finds to a node is a shortest one",
+    "example_wrong_answer": "DFS will also find the shortest path, because it stops at the first path it finds to the target.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.graphs.bfs-weighted-shortest",
+    "skill": "ds",
+    "topic": "ds-graphs",
+    "description": "Believes BFS finds shortest paths in weighted graphs, equating the route with the fewest edges with the route of least total weight",
+    "example_wrong_answer": "BFS gives the shortest route between towns because it finds the path with the fewest roads.",
+    "source": "generated"
+  },
+  {
+    "id": "ds.graphs.visited-unneeded",
+    "skill": "ds",
+    "topic": "ds-graphs",
+    "description": "Believes graph traversal does not need to track visited nodes, that each node is naturally processed once, so cycles cause no problem",
+    "example_wrong_answer": "Without the seen check it just visits a few nodes twice; it still finishes.",
+    "source": "generated"
+  }
+]

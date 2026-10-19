@@ -1,0 +1,856 @@
+[
+  {
+    "id": "PY-L1-011",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-control-flow"
+    ],
+    "question": "This loop checks whether a list is in ascending order: 'for i in range(len(xs)): if i + 1 < len(xs) and xs[i] > xs[i + 1]: print(\"not sorted\")'. For a list of 4 items, which values does i take? And why does the code never raise an IndexError, even when i is the last index?",
+    "model_answer": "For 4 items, range(len(xs)) is range(4), so i takes 0, 1, 2 and 3; the end value 4 is never reached. When i is 3, the left side i + 1 < len(xs) is 4 < 4, which is False. Because 'and' stops as soon as the left operand is False, xs[i + 1] is never evaluated, so xs[4] is never accessed and no IndexError happens. If the two sides were swapped, the comparison with xs[4] would run first and crash.",
+    "key_points": [
+      "range(4) gives 0, 1, 2, 3 and stops before 4",
+      "'and' short-circuits: if the left side is False the right side is not evaluated",
+      "The bounds check must come first; swapping the operands would raise IndexError"
+    ],
+    "rubric": {
+      "0": "Says i goes up to 4 (or from 1 to 4), or that both sides of 'and' are always evaluated",
+      "1": "Gets the values of i right but explains the missing IndexError vaguely (e.g. 'Python checks the length') without short-circuiting, or the reverse",
+      "2": "Lists 0 to 3 and explains that 'and' skips xs[i + 1] when the bounds check is False"
+    },
+    "misconceptions": [
+      "py.control-flow.range-inclusive",
+      "py.control-flow.no-short-circuit"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-012",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-variables-mutability"
+    ],
+    "question": "You write total = price * qty and later set qty = 5. Does total change? Now compare: basket = items, followed by items.append(\"pen\"). Does basket change? Explain why the two cases behave differently.",
+    "model_answer": "total does not change: the expression price * qty is evaluated once, and total holds the resulting number, not the formula. Rebinding qty later just points qty at a new value. In the second case basket = items does not copy anything; both names refer to the same list object. append mutates that one object, so the change is visible through basket too. The difference is rebinding a name versus mutating a shared object.",
+    "key_points": [
+      "A variable holds the value computed at assignment, not the expression",
+      "basket = items makes a second name for the same list, not a copy",
+      "append mutates the shared object, so both names see the change"
+    ],
+    "rubric": {
+      "0": "Says total is recalculated when qty changes, or that basket is an independent copy of items",
+      "1": "Gets one of the two cases right, or both answers right without explaining value vs shared reference",
+      "2": "Both answers right: total keeps its old value, basket sees 'pen' because both names refer to one list"
+    },
+    "misconceptions": [
+      "py.variables-mutability.variable-holds-expression",
+      "py.variables-mutability.assignment-copies"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-013",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-collections"
+    ],
+    "question": "You need to store a GPS location (latitude, longitude). Would you use a list or a tuple, and why? What happens if you write loc[0] = 51.5 when loc is a tuple, and which of the two could you use as a key in a dictionary that maps locations to place names?",
+    "model_answer": "A tuple is the natural choice: a location is a fixed pair of values that should not change, and tuples are immutable. Assigning loc[0] = 51.5 on a tuple raises a TypeError, because tuples do not support item assignment; to 'change' it you build a new tuple. Because a tuple of numbers is immutable it is hashable, so it can be a dict key; a list is mutable and unhashable, so using it as a key raises TypeError.",
+    "key_points": [
+      "Tuples are immutable; item assignment on a tuple raises TypeError",
+      "To change a tuple you create a new one",
+      "A tuple of numbers can be a dict key; a list cannot, because it is unhashable"
+    ],
+    "rubric": {
+      "0": "Says the tuple can be changed in place like a list, or that a list works as a dict key",
+      "1": "Knows tuples are immutable but is wrong or unsure about which can be a dict key, or the reverse",
+      "2": "Chooses a tuple with a reason, says loc[0] = ... raises TypeError, and that only the tuple can be a key"
+    },
+    "misconceptions": [
+      "py.collections.tuple-mutable",
+      "py.collections.unhashable-key"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-014",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-functions-scope",
+      "py-collections"
+    ],
+    "question": "How can a Python function give back two values, for example the smallest and largest number in a list? What exactly does the caller receive, can the caller change one of those values inside what it received, and why is printing both values inside the function not the same thing?",
+    "model_answer": "You write return low, high, which returns a single tuple (low, high); the caller can unpack it with lo, hi = min_max(nums). The tuple is immutable, so result[0] = 0 raises a TypeError; the caller can only rebind its own variables or build a new tuple. Printing inside the function only shows text on the screen: the function still returns None, so the caller gets nothing it can use in further calculations.",
+    "key_points": [
+      "return a, b returns one tuple, which can be unpacked",
+      "The returned tuple is immutable; assigning to an element raises TypeError",
+      "A function that only prints returns None to the caller"
+    ],
+    "rubric": {
+      "0": "Thinks printing the values gives them to the caller, or that the returned tuple can be modified in place",
+      "1": "Knows to return both values but is unclear what the caller receives (a tuple) or about immutability",
+      "2": "Explains returning a tuple and unpacking it, that the tuple cannot be changed, and that print gives the caller None"
+    },
+    "misconceptions": [
+      "py.functions-scope.print-is-return",
+      "py.collections.tuple-mutable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-015",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-variables-mutability"
+    ],
+    "question": "A colleague tries to tidy a list of names with 'for name in names: name.strip().title()'. Afterwards the list is unchanged. They then try 'name = name.strip().title()' inside the loop, and it is still unchanged. Explain both results and show a correct way to do it.",
+    "model_answer": "Strings are immutable, so strip() and title() never change the original string; they return a new string, which the first version simply throws away. The second version keeps the new string but only rebinds the loop variable name; it does not put anything back into the list. To change the list you must build a new list, for example names = [n.strip().title() for n in names], or assign by index with names[i] = names[i].strip().title().",
+    "key_points": [
+      "String methods return a new string and leave the original unchanged",
+      "Assigning to the loop variable does not change the list element",
+      "Fix: build a new list (comprehension) or assign back with names[i] = ..."
+    ],
+    "rubric": {
+      "0": "Says strip()/title() change the string in place, or that the first loop should have worked",
+      "1": "Explains string immutability but not why the second attempt fails, or gives no working fix",
+      "2": "Explains both failures (new string discarded; loop variable rebound) and gives a correct fix"
+    },
+    "misconceptions": [
+      "py.variables-mutability.string-method-mutates"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-016",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-control-flow"
+    ],
+    "question": "A beginner writes: 'if grade == \"A\" or \"B\": print(\"good\")', then 'elif grade == \"C\": print(\"ok\")', then 'else: print(\"retake\")'. When grade is \"C\", what is printed, and why? How would you fix the condition?",
+    "model_answer": "It prints only 'good'. The condition is read as (grade == \"A\") or \"B\"; the comparison is False, but the non-empty string \"B\" is truthy, so the whole condition is true for any grade. Once the if branch runs, the elif and else branches are skipped, because an if/elif/else chain runs at most one branch. The fix is grade == \"A\" or grade == \"B\", or more simply grade in (\"A\", \"B\").",
+    "key_points": [
+      "The condition is (grade == \"A\") or \"B\", and \"B\" is always truthy",
+      "Only the first true branch of an if/elif/else chain runs, so 'ok' is not printed",
+      "Fix with grade == \"A\" or grade == \"B\", or grade in (\"A\", \"B\")"
+    ],
+    "rubric": {
+      "0": "Says it prints 'ok' (thinking == applies to both sides), or that it prints both 'good' and 'ok'",
+      "1": "Says 'good' but cannot explain the truthy \"B\", or gives no correct fix",
+      "2": "Says only 'good', explains the truthy string and that elif is skipped, and gives a correct fix"
+    },
+    "misconceptions": [
+      "py.control-flow.or-distributes",
+      "py.control-flow.elif-checks-all"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-017",
+    "skill": "py",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "py-variables-mutability",
+      "py-collections"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "code = \" ab-12 \"\nsize = len(code)\ncode.upper()\ncode = code.strip()\nnames = [\"Cy\", \"Ann\", \"Bo\"]\nfirst = sorted(names)[0]\nprint(repr(code), size)\nprint(names.sort(), names, first)",
+    "expected_output": "'ab-12' 7\nNone ['Ann', 'Bo', 'Cy'] Ann\n",
+    "model_answer": "It prints \"'ab-12' 7\" and then \"None ['Ann', 'Bo', 'Cy'] Ann\". code.upper() returns a new string that is thrown away, so code is only changed by the reassignment code = code.strip(). size was computed as 7 before the strip and keeps that value. names.sort() sorts the list in place and returns None, so None is printed, followed by the now-sorted list; first came from sorted(), which returned a new sorted list.",
+    "key_points": [
+      "code.upper() does not change code; only the reassignment with strip() does",
+      "size stays 7: it was computed before the strip",
+      "names.sort() returns None and sorts names in place"
+    ],
+    "rubric": {
+      "0": "Says code becomes 'AB-12', size becomes 5, or that names.sort() prints the sorted list",
+      "1": "Most of the output right but one slip (e.g. forgets the list is already sorted when printed) or no reasons",
+      "2": "Exact output with reasons: upper() result discarded, size fixed at 7, sort() returns None"
+    },
+    "misconceptions": [
+      "py.variables-mutability.string-method-mutates",
+      "py.variables-mutability.variable-holds-expression",
+      "py.collections.sort-returns-list"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-018",
+    "skill": "py",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "py-functions-scope",
+      "py-control-flow"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "def area(w, h):\n    print(\"area\", w * h)\n\ndef is_big(n):\n    print(\"checking\", n)\n    return n > 10\n\na = area(2, 3)\nprint(a)\nif is_big(30) or is_big(1):\n    print(\"one big\")\nsize = \"M\"\nif size == \"S\" or \"XS\":\n    print(\"small\")",
+    "expected_output": "area 6\nNone\nchecking 30\none big\nsmall\n",
+    "model_answer": "Output: 'area 6', 'None', 'checking 30', 'one big', 'small'. area prints its result but has no return, so a is None. In the or condition, is_big(30) is True, so 'or' stops and is_big(1) is never called. The last condition is (size == \"S\") or \"XS\"; the non-empty string \"XS\" is truthy, so 'small' is printed even though size is \"M\".",
+    "key_points": [
+      "area returns None because it only prints, so print(a) shows None",
+      "'or' stops after is_big(30) is True, so 'checking 1' is never printed",
+      "size == \"S\" or \"XS\" is always true because \"XS\" is truthy"
+    ],
+    "rubric": {
+      "0": "Says a is 6, prints 'checking 1', or says 'small' is not printed",
+      "1": "Gets the output mostly right but misses one of the three effects or cannot explain it",
+      "2": "Exact five lines with all three reasons: None return, short-circuit, truthy string"
+    },
+    "misconceptions": [
+      "py.functions-scope.print-is-return",
+      "py.control-flow.no-short-circuit",
+      "py.control-flow.or-distributes"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-019",
+    "skill": "py",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "py-control-flow"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "total = 0\nfor n in range(1, 7, 2):\n    total += n\nprint(total)\nfor n in range(4, 0, -2):\n    if n > 3:\n        print(n, \"high\")\n    elif n > 1:\n        print(n, \"mid\")\n    else:\n        print(n, \"low\")",
+    "expected_output": "9\n4 high\n2 mid\n",
+    "model_answer": "It prints 9, then '4 high' and '2 mid'. range(1, 7, 2) gives 1, 3, 5 (it stops before 7), so total is 9. range(4, 0, -2) gives 4 and 2 and stops before 0. For 4 only the first true branch runs ('high'), even though 4 > 1 is also true; for 2 the first condition is false and the elif matches.",
+    "key_points": [
+      "range(1, 7, 2) is 1, 3, 5, so the total is 9",
+      "range(4, 0, -2) is 4, 2: the end value 0 is excluded, so 'low' is never printed",
+      "Only one branch of the if/elif/else runs for each n"
+    ],
+    "rubric": {
+      "0": "Includes 7 in the sum (16), prints a line for 0, or prints both 'high' and 'mid' for 4",
+      "1": "Correct ranges but a slip in the output, or correct output without explaining why 0 is not visited",
+      "2": "Exact output with reasons: range excludes its end, and elif stops at the first true branch"
+    },
+    "misconceptions": [
+      "py.control-flow.range-inclusive",
+      "py.control-flow.elif-checks-all"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-020",
+    "skill": "py",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "py-functions-scope",
+      "py-variables-mutability"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "total = 0\nitems = [1, 2]\n\ndef add(x):\n    total = x\n    items.append(x)\n    return total\n\nresult = add(5)\nalias = items\nalias.append(9)\nprint(total, result, items)",
+    "expected_output": "0 5 [1, 2, 5, 9]\n",
+    "model_answer": "It prints '0 5 [1, 2, 5, 9]'. Inside add, total = x creates a local variable, so the global total stays 0; the function returns the local value 5. items.append(x) does not assign to the name items, it mutates the global list, so 5 is added. alias = items makes a second name for the same list, so appending 9 through alias changes items as well.",
+    "key_points": [
+      "Assigning total inside the function creates a local; the global total stays 0",
+      "append mutates the global list without needing 'global'",
+      "alias is the same list as items, not a copy, so 9 appears in items"
+    ],
+    "rubric": {
+      "0": "Says the global total becomes 5, or that items stays [1, 2, 5] because alias is a copy",
+      "1": "Right output but one wrong reason, or one value wrong with otherwise sound reasoning",
+      "2": "Exact output, explaining local vs global assignment, mutation via append and aliasing"
+    },
+    "misconceptions": [
+      "py.functions-scope.assign-updates-global",
+      "py.variables-mutability.assignment-copies"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-011",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-variables-mutability",
+      "py-collections"
+    ],
+    "question": "A service keeps DEFAULTS = {\"retries\": 3, \"headers\": {\"Accept\": \"json\"}}. Each request does cfg = DEFAULTS.copy(), then cfg[\"retries\"] = 5 and cfg[\"headers\"][\"Auth\"] = token. Later requests start with retries 3, as expected, but they all carry the first user's Auth header. Explain why, and how to fix it.",
+    "model_answer": "dict.copy() is a shallow copy: it creates a new outer dict, but its values are the same objects as in DEFAULTS. Setting cfg[\"retries\"] replaces a value in the new outer dict, so DEFAULTS is untouched. But cfg[\"headers\"] is the same inner dict object as DEFAULTS[\"headers\"], so adding Auth to it mutates the shared defaults. Fix it with copy.deepcopy(DEFAULTS), or by copying the inner dict too, e.g. cfg[\"headers\"] = dict(DEFAULTS[\"headers\"]).",
+    "key_points": [
+      "copy() is shallow: the outer dict is new but nested objects are shared",
+      "Replacing a top-level key only affects the copy; mutating the nested dict affects DEFAULTS",
+      "Fix with copy.deepcopy or by copying the nested dict as well"
+    ],
+    "rubric": {
+      "0": "Says copy() makes a fully independent copy so this cannot happen, or blames something unrelated",
+      "1": "Identifies the shared headers dict but cannot explain why retries is unaffected, or gives no fix",
+      "2": "Explains shallow copy, contrasts replacing retries with mutating headers, and gives a correct fix"
+    },
+    "misconceptions": [
+      "py.variables-mutability.shallow-copy-is-deep",
+      "py.variables-mutability.assignment-copies"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-012",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-comprehensions-generators"
+    ],
+    "question": "A colleague writes 'def parse_rows(lines): for line in lines: yield line.split(\",\")'. They then do rows = parse_rows(data), count them with n = sum(1 for _ in rows), and then run 'for r in rows: save(r)'. n is correct, but nothing is saved. Explain how parse_rows produces its rows and why nothing is saved.",
+    "model_answer": "Calling parse_rows(data) does not run the body; it returns a generator object. Each time a value is requested, the function runs until the next yield, hands back one row and pauses there, then resumes from that point on the next request, so it produces one row per line, not just the first. The sum consumes every row, which exhausts the generator, so the later for loop gets nothing and save is never called. Fix: count while saving, call parse_rows(data) again, or use list(...) if the data fits in memory.",
+    "key_points": [
+      "Calling the function only creates a generator; the body runs lazily on demand",
+      "yield pauses and resumes the function, so it produces every row, not only the first",
+      "A generator is exhausted after one pass, so the second loop sees nothing",
+      "Fix: recreate the generator, combine the two passes, or materialise a list"
+    ],
+    "rubric": {
+      "0": "Says the generator restarts for the second loop, that yield stops the function after one row, or that all rows were computed when parse_rows was called",
+      "1": "Explains exhaustion correctly but is vague or wrong about how yield pauses and resumes, or gives no fix",
+      "2": "Explains lazy execution, pause-and-resume at yield, exhaustion after the sum, and a working fix"
+    },
+    "misconceptions": [
+      "py.comprehensions-generators.generator-reusable",
+      "py.comprehensions-generators.yield-is-return",
+      "py.comprehensions-generators.generator-eager"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-013",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-oop"
+    ],
+    "question": "Animal's __init__ sets self.name. Dog subclasses Animal and defines its own __init__(self, name, breed) that sets only self.breed and forgets to call super().__init__(name). What happens when you run d = Dog(\"Rex\", \"lab\") and then print(d.name)? Explain what __init__ is responsible for and what it returns.",
+    "model_answer": "Python first creates the new, empty Dog object itself, then calls Dog.__init__ on it to fill in attributes; __init__ only initialises an existing object and returns None. Because Dog's __init__ overrides Animal's and never calls super().__init__(name), Animal's initialisation never runs, so d gets breed but no name. print(d.name) raises AttributeError. The fix is to call super().__init__(name) inside Dog.__init__.",
+    "key_points": [
+      "The object is created before __init__ runs; __init__ just sets attributes and returns None",
+      "An overriding __init__ replaces the parent's; the parent's runs only if called via super()",
+      "d.name raises AttributeError; fix by calling super().__init__(name)"
+    ],
+    "rubric": {
+      "0": "Says __init__ creates and returns the object, or that Animal's __init__ runs automatically so d.name is 'Rex'",
+      "1": "Predicts the AttributeError and the fix but misdescribes what __init__ does or returns",
+      "2": "Explains object creation vs initialisation, why name is missing, the AttributeError and the super() fix"
+    },
+    "misconceptions": [
+      "py.oop.init-creates-object"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-014",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-exceptions"
+    ],
+    "question": "A colleague wraps a 30-line function body in 'try: ... except Exception: print(\"error\")' and then adds 'except ValueError: print(\"bad input\")' below it. If line 5 of the body raises ValueError, which message is printed, and do lines 6 to 30 still run? How would you restructure this?",
+    "model_answer": "'error' is printed. Python checks except clauses from top to bottom and runs the first one whose type matches; ValueError is a subclass of Exception, so the first handler catches it and the ValueError clause is never reached. Lines 6 to 30 do not run: after the handler finishes, execution continues after the whole try statement, not back inside the try. Better: put the specific except ValueError first (or only catch what you expect), and keep the try block small around the line that can actually fail.",
+    "key_points": [
+      "The first matching except clause runs, top to bottom, not the most specific one",
+      "except ValueError placed after except Exception is unreachable",
+      "After an exception, the rest of the try block is skipped; execution continues after the try statement",
+      "Restructure: specific handlers first and a small try block"
+    ],
+    "rubric": {
+      "0": "Says 'bad input' is printed because ValueError is more specific, or that lines 6-30 still run after the handler",
+      "1": "Gets the handler right but is wrong or vague about the skipped lines, or the reverse",
+      "2": "Says 'error', explains first-match order and that the rest of the try is skipped, and suggests a sound restructure"
+    },
+    "misconceptions": [
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-015",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-pandas"
+    ],
+    "question": "A DataFrame df has the integer index labels 10, 20, 30, 40. Explain the difference between df.loc and df.iloc, and say which rows df.loc[10:30] and df.iloc[0:2] return.",
+    "model_answer": "loc selects by index label, iloc by integer position, regardless of the labels. Label slices with loc include both endpoints, so df.loc[10:30] returns the rows labelled 10, 20 and 30. iloc slices behave like normal Python slices and exclude the end, so df.iloc[0:2] returns the first two rows, labelled 10 and 20. With integer labels it is easy to confuse the two, which is why being explicit with loc or iloc matters.",
+    "key_points": [
+      "loc uses labels, iloc uses positions",
+      "loc slices include the end label: loc[10:30] gives rows 10, 20 and 30",
+      "iloc slices exclude the end: iloc[0:2] gives the first two rows (10 and 20)"
+    ],
+    "rubric": {
+      "0": "Says loc[10:30] excludes 30, or mixes up which one uses labels and which uses positions",
+      "1": "Explains labels vs positions but gets one of the two results wrong",
+      "2": "Correct distinction and both results: three rows for loc, two rows for iloc"
+    },
+    "misconceptions": [
+      "py.pandas.loc-end-exclusive"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-016",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-concurrency"
+    ],
+    "question": "An asyncio service handles many slow API calls with 'await session.get(...)'. One handler also runs a pure-Python loop that takes 3 seconds of CPU time. Explain how asyncio runs many requests at once, what happens to the other requests during that loop, and whether moving the loop into a thread would let it run on a second core in parallel with the rest.",
+    "model_answer": "asyncio runs all coroutines on a single thread: an event loop switches between them only at await points, so while one waits for the network another can run. A CPU loop has no await, so it holds the event loop for the full 3 seconds and every other request is frozen. Moving the loop to a thread (e.g. asyncio.to_thread) keeps the event loop responsive, because CPython switches between threads, but the GIL means the CPU work still does not run in parallel with other Python code; for real parallelism you would use a process pool.",
+    "key_points": [
+      "asyncio is single-threaded; coroutines switch only at await",
+      "A CPU-bound loop without await blocks every other coroutine",
+      "A thread keeps the loop responsive but, because of the GIL, gives no CPU parallelism; use processes for that"
+    ],
+    "rubric": {
+      "0": "Says asyncio runs each coroutine on its own thread or core, or that a thread makes the CPU loop run in parallel",
+      "1": "Explains the blocking correctly but is wrong or vague about threads and the GIL, or the reverse",
+      "2": "Explains single-threaded switching at await, the blocked loop, and the limited benefit of a thread with the GIL"
+    },
+    "misconceptions": [
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.threads-cpu-parallel"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-017",
+    "skill": "py",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "py-collections",
+      "py-comprehensions-generators"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "words = [\"apple\", \"avocado\", \"banana\", \"blueberry\", \"cherry\"]\nby_letter = {w[0]: w for w in words}\nlengths = [len(w) for w in words]\nloud = (w.upper() for w in words if \"e\" in w)\nprint(by_letter)\nprint(lengths.sort(), lengths)\nprint(next(loud), list(loud))\nprint(list(loud))",
+    "expected_output": "{'a': 'avocado', 'b': 'blueberry', 'c': 'cherry'}\nNone [5, 6, 6, 7, 9]\nAPPLE ['BLUEBERRY', 'CHERRY']\n[]\n",
+    "model_answer": "Line 1: {'a': 'avocado', 'b': 'blueberry', 'c': 'cherry'}: in a dict comprehension a repeated key keeps the last value. Line 2: 'None [5, 6, 6, 7, 9]': lengths.sort() sorts in place and returns None, and the list is already sorted when it is printed. Line 3: next(loud) gives 'APPLE', then list(loud) takes the remaining items, 'BLUEBERRY' and 'CHERRY'. Line 4: [] because the generator is exhausted.",
+    "key_points": [
+      "A repeated key in a dict comprehension is overwritten by the later value",
+      "list.sort() returns None and sorts the list in place",
+      "next() takes one item; list() takes the rest; a second list() gives []"
+    ],
+    "rubric": {
+      "0": "Says sort() prints the sorted list, or that the last line repeats the generator's values",
+      "1": "Gets the generator and sort right but slips on the dict (e.g. keeps 'apple') or on which words contain 'e'",
+      "2": "Exact four lines with reasons for the overwritten keys, sort() returning None and the exhausted generator"
+    },
+    "misconceptions": [
+      "py.collections.sort-returns-list",
+      "py.comprehensions-generators.generator-reusable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-018",
+    "skill": "py",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "py-oop",
+      "py-variables-mutability"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "class Team:\n    def __init__(self, name, members):\n        self.name = name\n        self.members = members\n\nroster = [\"Ann\", \"Bo\"]\nt1 = Team(\"red\", roster)\nt2 = Team(\"blue\", roster[:])\nroster.append(\"Cy\")\nteams = [t1, t2]\nbackup = teams.copy()\nbackup[1].name = \"green\"\nprint(t1.members, t2.members)\nprint(t2.name, backup is teams)",
+    "expected_output": "['Ann', 'Bo', 'Cy'] ['Ann', 'Bo']\ngreen False\n",
+    "model_answer": "It prints \"['Ann', 'Bo', 'Cy'] ['Ann', 'Bo']\" and then 'green False'. t1 stores a reference to the same roster list, so appending Cy shows up in t1.members; t2 got roster[:], a new list. teams.copy() makes a new outer list (so backup is teams is False) but it holds the same Team objects, so renaming backup[1] renames t2.",
+    "key_points": [
+      "Passing roster to Team stores a reference, not a copy, so t1 sees 'Cy'",
+      "roster[:] creates a new list, so t2 is unaffected",
+      "teams.copy() is shallow: a new list holding the same Team objects, so t2 is renamed"
+    ],
+    "rubric": {
+      "0": "Says t1.members is still ['Ann', 'Bo'], or that t2.name stays 'blue' because backup is a copy",
+      "1": "Gets the members right but the name or 'is' result wrong, or the reverse",
+      "2": "Exact output, explaining the shared roster, the slice copy and the shallow copy of teams"
+    },
+    "misconceptions": [
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.shallow-copy-is-deep"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-019",
+    "skill": "py",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "py-exceptions",
+      "py-functions-scope"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "def to_int(v, bad=[]):\n    try:\n        n = int(v)\n        print(\"parsed\", n)\n        return n\n    except ValueError:\n        bad.append(v)\n        print(\"bad\", bad)\n        return 0\n    finally:\n        print(\"done\", v)\n\ntotal = to_int(\"4\") + to_int(\"x\") + to_int(\"y\")\nprint(total)",
+    "expected_output": "parsed 4\ndone 4\nbad ['x']\ndone x\nbad ['x', 'y']\ndone y\n4\n",
+    "model_answer": "Output: 'parsed 4', 'done 4', 'bad ['x']', 'done x', \"bad ['x', 'y']\", 'done y', 4. finally runs every time, even though the try or except block has already executed return. For 'x' and 'y', int() raises, so 'parsed' is skipped and the except block runs. The default list bad is created once when the function is defined, so it keeps 'x' when 'y' is added. The total is 4 + 0 + 0 = 4.",
+    "key_points": [
+      "finally runs even when try or except returns",
+      "When int() fails, the rest of the try block ('parsed') is skipped",
+      "The default list bad is shared between calls, so it grows to ['x', 'y']"
+    ],
+    "rubric": {
+      "0": "Omits the 'done' lines, prints 'parsed' for x or y, or shows bad as ['y'] on the third call",
+      "1": "Mostly right with one slip (e.g. order of lines or the final total)",
+      "2": "Exact output with reasons: finally always runs, the try stops at the error, the default list is shared"
+    },
+    "misconceptions": [
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.mutable-default-fresh"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-020",
+    "skill": "py",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "py-pandas"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "import pandas as pd\n\ndf = pd.DataFrame({\"team\": [\"a\", \"a\", \"b\", \"b\"],\n                   \"pts\": [10, None, 4, 8]})\ndf.rename(columns={\"pts\": \"points\"})\nprint(list(df.columns))\navg = df.groupby(\"team\")[\"pts\"].mean()\nprint(avg.tolist())\nprint(df[\"pts\"].count(), len(df))",
+    "expected_output": "['team', 'pts']\n[10.0, 6.0]\n3 4\n",
+    "model_answer": "It prints ['team', 'pts'], then [10.0, 6.0], then '3 4'. rename returns a new DataFrame, and the result is not assigned, so df keeps the column 'pts'. groupby mean skips the missing value: team a has only 10, so its mean is 10.0, not 5.0; team b is (4 + 8) / 2 = 6.0. count() counts non-missing values (3), while len(df) counts all rows (4).",
+    "key_points": [
+      "rename returns a new DataFrame; df is unchanged because the result is not assigned",
+      "The mean skips NaN: team a's mean is 10.0, not 5.0",
+      "count() gives 3 non-missing values while len(df) is 4"
+    ],
+    "rubric": {
+      "0": "Says the column is renamed to 'points', or that team a's mean is 5.0",
+      "1": "Gets the rename right but slips on the mean or the count, or the reverse",
+      "2": "Exact output with reasons: rename not assigned, NaN skipped in mean, count vs len"
+    },
+    "misconceptions": [
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-011",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-concurrency"
+    ],
+    "question": "A team scores 1 million records with a pure-Python function. To speed it up they split the work across 8 threads, and each thread adds its scores to a shared global with total += score. On an 8-core machine it is no faster than one thread, and occasionally the total is slightly wrong. Explain both problems and how you would fix each.",
+    "model_answer": "In standard CPython the GIL lets only one thread run Python bytecode at a time, so CPU-bound pure-Python work in threads takes turns instead of running in parallel; the fix is a process pool (multiprocessing or ProcessPoolExecutor). The wrong total is a race: total += score is a read, an add and a write, and a thread switch between those steps loses an update, because the GIL protects the interpreter, not your code. Fix it with a threading.Lock around the update, or better, have each worker return a partial sum and add those up at the end.",
+    "key_points": [
+      "The GIL means threads give no speed-up for CPU-bound pure-Python code",
+      "Use processes (multiprocessing / ProcessPoolExecutor) for CPU-bound work",
+      "total += score is not atomic; the GIL does not prevent lost updates",
+      "Fix the race with a Lock or by combining per-worker partial results"
+    ],
+    "rubric": {
+      "0": "Says more threads should have given an 8x speed-up, or that the GIL makes total += score safe",
+      "1": "Explains one of the two problems well but the other wrongly or not at all",
+      "2": "Explains the GIL limit with a process-based fix and the lost-update race with a lock or partial-sum fix"
+    },
+    "misconceptions": [
+      "py.concurrency.threads-cpu-parallel",
+      "py.concurrency.gil-thread-safe"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-012",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-concurrency"
+    ],
+    "question": "A withdraw function does 'if balance >= amount: balance -= amount'. Two threads call it at the same moment on a balance of 100, each withdrawing 80. How can the account end up overdrawn, and how do you prevent it? If you rewrite it with asyncio and there is an 'await audit_log()' between the check and the subtraction, can the same bug happen? What if there is no await in between?",
+    "model_answer": "With threads, both can pass the check while balance is still 100 before either subtracts, because a thread switch can happen between the check and the update; the GIL does not make the pair atomic. The fix is to hold a threading.Lock around the check and the update together. asyncio runs coroutines on one thread and switches only at await, so with an await between the check and the subtraction another coroutine can run in that gap and the same overdraft can happen (use an asyncio.Lock). With no await in between, the check and update run without interruption, so that race cannot occur.",
+    "key_points": [
+      "Check-then-act is a race: a switch between check and update lets both threads pass the check",
+      "The GIL does not make it atomic; use a Lock around both steps",
+      "In asyncio a switch can only happen at await, so an await in the gap re-creates the race",
+      "Without an await between check and update, the asyncio version is safe"
+    ],
+    "rubric": {
+      "0": "Says the GIL prevents the overdraft, or that asyncio runs the coroutines in parallel threads so it always races",
+      "1": "Explains the thread race and lock but gets the asyncio cases wrong, or the reverse",
+      "2": "Explains the thread race, the lock fix, and both asyncio cases (await in the gap vs none)"
+    },
+    "misconceptions": [
+      "py.concurrency.gil-thread-safe",
+      "py.concurrency.async-multithreaded"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-013",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-exceptions"
+    ],
+    "question": "You define class PaymentError(Exception) and class CardDeclined(PaymentError). A handler has 'except PaymentError:' first and 'except CardDeclined:' second, and a finally block that closes the database connection. When CardDeclined is raised, which handler runs? And when the payment succeeds and the try block executes 'return receipt', is the connection still closed?",
+    "model_answer": "The 'except PaymentError' handler runs. Python tests except clauses in order and uses the first one whose type matches; CardDeclined is a subclass of PaymentError, so it matches the first clause and the CardDeclined clause is unreachable. Specific subclasses must be listed before their base classes. The finally block runs on every exit from the try statement, including a return, so the connection is closed before the receipt is returned to the caller.",
+    "key_points": [
+      "The first matching except clause runs; a subclass matches its base class's handler",
+      "The CardDeclined clause is unreachable; put subclasses before base classes",
+      "finally runs even when the try block returns"
+    ],
+    "rubric": {
+      "0": "Says the CardDeclined handler runs because it is more specific, or that return skips the finally block",
+      "1": "Gets one of the two parts right and the other wrong or unsure",
+      "2": "Says PaymentError's handler runs and why, how to reorder, and that finally still closes the connection"
+    },
+    "misconceptions": [
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.finally-skipped-on-return"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-014",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-collections"
+    ],
+    "question": "Why does Python allow a tuple such as (1, 2) as a dictionary key but not a list such as [1, 2]? What would go wrong if a key could be changed after it was inserted? And can the tuple (1, [2, 3]) be used as a key?",
+    "model_answer": "A dict stores each key in a slot chosen from its hash, so a key's hash must never change while it is in the dict. A list is mutable, so its contents and therefore its hash could change; Python makes lists unhashable, and using one as a key raises TypeError. If a key could change after insertion, its hash would no longer match the slot it was stored in, so lookups with the key would fail. A tuple is hashable only if all its elements are hashable, so (1, [2, 3]) raises TypeError: unhashable type 'list'.",
+    "key_points": [
+      "Dict keys are found by their hash, which must stay fixed",
+      "Lists are mutable and therefore unhashable; using one as a key raises TypeError",
+      "A key that changed would no longer be found in its hash slot",
+      "A tuple is hashable only if its elements are; (1, [2, 3]) is not"
+    ],
+    "rubric": {
+      "0": "Says lists can be keys, or that (1, [2, 3]) works because all tuples are immutable and hashable",
+      "1": "Explains hashing for list vs tuple but misses or gets wrong the tuple-containing-a-list case or the consequence of a changing key",
+      "2": "Explains the hash requirement, why lists are excluded, what would break, and that (1, [2, 3]) fails"
+    },
+    "misconceptions": [
+      "py.collections.unhashable-key",
+      "py.collections.tuple-mutable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-015",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-pandas"
+    ],
+    "question": "An analyst makes top = df[df[\"sales\"] > 100].sort_values(\"region\"), calls top.reset_index(drop=True) on its own line, and then sets df[\"top_sales\"] = top[\"sales\"]. Rows that were filtered out show NaN, but the other rows have their own correct values. They then change the middle line to top = top.reset_index(drop=True), and now the numbers land on the wrong rows. Explain both results.",
+    "model_answer": "Assigning a Series to a DataFrame column aligns by index label, not by position. In the first version reset_index() returned a new DataFrame that was thrown away, so top still had df's original labels; each kept row got back its own value despite the sorting, and labels missing from top became NaN. In the second version top really has new labels 0, 1, 2, ..., so its values are matched to whichever rows of df carry those labels, which are unrelated rows. To combine by position on purpose you would use .to_numpy() on data that truly lines up; usually it is better to compute the column directly on df.",
+    "key_points": [
+      "Column assignment aligns on index labels, not on row order",
+      "reset_index() returns a new DataFrame; unassigned, it changes nothing",
+      "Sorting keeps labels, so the first version puts values on their own rows and NaN on missing labels",
+      "With labels reset to 0..n-1, values are matched to unrelated rows of df"
+    ],
+    "rubric": {
+      "0": "Says values are matched in order by position, or that the first reset_index() call changed top in place",
+      "1": "Explains label alignment for one version but not the other",
+      "2": "Explains label alignment, why the unassigned reset_index had no effect, and why the reassigned one misplaces values"
+    },
+    "misconceptions": [
+      "py.pandas.positional-alignment",
+      "py.pandas.method-modifies-inplace"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-016",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-oop"
+    ],
+    "question": "In a class Widget, the class body has items = [] and count = 0. Inside a method, compare three statements: self.count = self.count + 1, self.items.append(x), and self = Widget(). For each one, does it affect only this instance, every instance, or nothing outside the method? Explain why.",
+    "model_answer": "self.count = self.count + 1 reads the class value 0, then creates an instance attribute on this object only, which shadows the class attribute. self.items.append(x) does not assign anything: attribute lookup finds the one list stored on the class and mutates it, so every instance sees x. self = Widget() just rebinds the local name self to a new object; the caller's object is untouched, so it has no effect outside the method.",
+    "key_points": [
+      "Assigning self.count creates an instance attribute that shadows the class one",
+      "self.items.append mutates the single class-level list shared by all instances",
+      "self = Widget() only rebinds a local variable; the original object is unchanged"
+    ],
+    "rubric": {
+      "0": "Says each instance has its own items list, or that self = Widget() replaces the caller's object",
+      "1": "Gets two of the three right, or all three with weak reasons",
+      "2": "All three right with the reasons: shadowing on assignment, shared mutation via lookup, local rebinding of self"
+    },
+    "misconceptions": [
+      "py.oop.class-attr-per-instance",
+      "py.oop.self-reassign-replaces-object"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-017",
+    "skill": "py",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "py-comprehensions-generators",
+      "py-functions-scope"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "def countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+    "expected_output": "created\nbegin\n3 [2, 1] []\n[0, 10, 20]\n",
+    "model_answer": "Output: 'created', 'begin', '3 [2, 1] []', '[0, 10, 20]'. Calling countdown(3) runs nothing, so 'created' comes first and 'begin' appears only when next(gen) starts the body. yield pauses rather than ends the function, so list(gen) collects the remaining 2 and 1, and the second list(gen) is empty; the return value 'done' is not part of the produced values. The generator expression looks up step only when it is consumed, by which time step is 10.",
+    "key_points": [
+      "Calling a generator function runs no code until next() is called",
+      "yield pauses and resumes; the generator produces 3, then 2 and 1, and is then exhausted",
+      "The generator expression reads step when it runs, so it uses 10, not 1"
+    ],
+    "rubric": {
+      "0": "Prints 'begin' before 'created', says the generator yields only 3, or gives [0, 1, 2] for the last line",
+      "1": "Gets the generator lines right but the last line wrong, or the reverse",
+      "2": "Exact output, explaining lazy start, pause and resume at yield, and late lookup of step"
+    },
+    "misconceptions": [
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.functions-scope.closure-captures-value"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-018",
+    "skill": "py",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "py-oop"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "class Plugin:\n    registry = []\n    def __init__(self, name):\n        self.name = name\n        self.registry.append(name)\n    def replace_with(self, name):\n        self = Plugin(name)\n        return self.name\nclass Exporter(Plugin):\n    pass\n\np, e = Plugin(\"csv\"), Exporter(\"json\")\nprint(p.replace_with(\"xml\"), p.name)\nprint(p.__init__(\"tsv\"), p.name)\nprint(Exporter.registry)",
+    "expected_output": "xml csv\nNone tsv\n['csv', 'json', 'xml', 'tsv']\n",
+    "model_answer": "Output: 'xml csv', 'None tsv', and ['csv', 'json', 'xml', 'tsv']. In replace_with, self = Plugin(name) only rebinds the local name, so the method returns 'xml' but p is still the 'csv' plugin; creating that new plugin still appends 'xml' to the registry. Calling __init__ directly re-initialises the existing object and returns None. registry is one list on the class, shared by every instance and by the subclass Exporter.",
+    "key_points": [
+      "self = Plugin(name) rebinds a local name; p keeps its name 'csv'",
+      "__init__ returns None; it only (re)initialises an existing object",
+      "registry is a single class-level list shared by all instances and subclasses"
+    ],
+    "rubric": {
+      "0": "Says p.name becomes 'xml', that __init__ returns the object, or that each plugin has its own registry",
+      "1": "Gets two of the three lines right, or all three without correct reasons",
+      "2": "Exact output with reasons: local rebinding of self, __init__ returns None, shared class-level list"
+    },
+    "misconceptions": [
+      "py.oop.self-reassign-replaces-object",
+      "py.oop.init-creates-object",
+      "py.oop.class-attr-per-instance"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-019",
+    "skill": "py",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "py-functions-scope"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "count = 100\ndef make_counter(log=[]):\n    count = 0\n    def step():\n        nonlocal count\n        count += 1\n        log.append(count)\n        return count\n    return step, log\n\nc1, log1 = make_counter()\nc2, log2 = make_counter()\nc1(); c1()\nprint(c1(), c2(), count)\nprint(log1, log1 is log2)",
+    "expected_output": "3 1 100\n[1, 2, 3, 1] True\n",
+    "model_answer": "It prints '3 1 100' and then '[1, 2, 3, 1] True'. Each call to make_counter creates a new local count, and step updates that variable through nonlocal, so c1 counts 1, 2, 3 while c2 is a separate counter at 1. The count = 0 inside make_counter is local and never touches the global count, which stays 100. The default log list is created once, when def runs, so both counters append to the same list.",
+    "key_points": [
+      "Each closure keeps its own count and reads its current value on every call",
+      "The local count = 0 does not change the global count (100)",
+      "The default list is created once and shared, so log1 is log2"
+    ],
+    "rubric": {
+      "0": "Says the global count changes, that each counter has its own log, or that c1 keeps returning 1",
+      "1": "Gets the first line right but the log wrong, or the reverse",
+      "2": "Exact output with reasons: separate closures, local vs global count, shared default list"
+    },
+    "misconceptions": [
+      "py.functions-scope.mutable-default-fresh",
+      "py.functions-scope.closure-captures-value",
+      "py.functions-scope.assign-updates-global"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-020",
+    "skill": "py",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "py-pandas"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "import pandas as pd\n\ndf = pd.DataFrame({\"price\": [5.0, None, 8.0, 2.0]},\n                  index=[10, 20, 30, 40])\ntop = df.sort_values(\"price\", ascending=False)\ndf[\"rank\"] = range(1, 5)\ndf[\"top_price\"] = top[\"price\"].reset_index(drop=True)\nprint(df.loc[20:30, \"rank\"].tolist())\nprint(df[\"top_price\"].tolist())\nprint(df[\"price\"].sum(), df[\"price\"].mean())",
+    "expected_output": "[2, 3]\n[nan, nan, nan, nan]\n15.0 5.0\n",
+    "model_answer": "Output: [2, 3], then [nan, nan, nan, nan], then '15.0 5.0'. .loc[20:30] slices by label and includes both ends, so it gives the ranks of labels 20 and 30. reset_index(drop=True) relabels top as 0 to 3, and assigning it to df aligns by label; none of 0 to 3 exist in df's index (10 to 40), so every row gets NaN. sum() and mean() skip the missing price: 15.0 / 3 = 5.0.",
+    "key_points": [
+      "loc label slicing includes the end label 30",
+      "Column assignment aligns by index label; labels 0-3 do not match 10-40, so all NaN",
+      "sum and mean skip NaN: the mean is 15 / 3 = 5.0"
+    ],
+    "rubric": {
+      "0": "Says top_price holds the sorted prices by position, gives [2] for the loc slice, or a mean of 3.75",
+      "1": "Gets the loc and mean right but not the NaN column, or the reverse",
+      "2": "Exact output with reasons: inclusive loc slice, label alignment, NaN skipped in aggregations"
+    },
+    "misconceptions": [
+      "py.pandas.positional-alignment",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.nan-treated-as-zero"
+    ],
+    "source": "generated",
+    "status": "draft"
+  }
+]
