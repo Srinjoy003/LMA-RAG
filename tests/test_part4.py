@@ -75,10 +75,10 @@ def prompt_for(outcome, candidate_id="CAND-001"):
         real_bank().misconception_by_id)[1]["content"]
 
 
-def test_a_wrong_answer_gets_no_reference_and_must_avoid_points_and_misconceptions():
+def test_a_wrong_answer_gets_no_reference_and_never_sees_the_misconceptions():
     text = prompt_for("wrong")
     assert question()["model_answer"] not in text and "must NOT state" in text
-    assert real_bank().misconception_by_id[question()["misconceptions"][0]]["description"] in text
+    assert all(real_bank().misconception_by_id[m]["description"] not in text for m in question()["misconceptions"])
 
 
 def test_a_partial_answer_only_sees_the_points_code_chose():

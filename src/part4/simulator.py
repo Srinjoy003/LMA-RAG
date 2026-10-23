@@ -9,8 +9,8 @@ what the candidate should know:
     partial        only the key points the candidate knows, chosen by code; nothing else
     slip           everything, plus the one key point to get slightly wrong
     misread        everything, plus the part of the question to misread and the point that goes wrong
-    wrong          no reference answer: the correct points are listed only as things not to say,
-                   with the question's misconceptions, which must not be shown either
+    wrong          no reference answer: the correct points are listed only as things not to say;
+                   the question's misconceptions are not named (naming them made the model use them)
     misconception  the misconception and its typical wrong answer, no reference answer
 
 The choices are seeded on candidate, question and outcome, so the same candidate gets the same
@@ -65,7 +65,6 @@ class LLMCandidateSimulator:
         points = list(question.get("key_points") or [])
         rng = random.Random(f"{candidate['id']}:{question.get('id')}:{outcome}")
         everything = "Reference answer: " + question["model_answer"] + "\nKey points:\n" + bullet(points)
-        listed = [misconceptions.get(m, {}).get("description", m) for m in question.get("misconceptions", [])]
 
         if outcome == "correct":
             return everything, "Answer correctly and completely, covering every key point, in your own words."
@@ -87,9 +86,10 @@ class LLMCandidateSimulator:
             return everything, (f"You misread {target}. Reason soundly from what you think it says, so that "
                                 f"this point comes out wrong:\n- {point}\nDo not mention that you misread anything.")
         if outcome == "wrong":
-            avoid = bullet(points) + ("\nAlso do not show any of these misconceptions:\n" + bullet(listed) if listed else "")
+            # The question's misconceptions are deliberately not named here: naming them, even as
+            # things to avoid, made the model use them.
             return "", ("You do not know this topic. Give a plausible but wrong answer, the kind a junior guessing "
-                        "would give. Your answer must NOT state any of these correct points:\n" + avoid)
+                        "would give. Your answer must NOT state any of these correct points:\n" + bullet(points))
         if outcome == "misconception":
             m = misconceptions.get(plan.get("misconception_id"), {})
             belief = f"You genuinely believe: {m.get('description', plan.get('misconception_id'))}"
