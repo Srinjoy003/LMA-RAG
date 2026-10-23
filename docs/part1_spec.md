@@ -100,8 +100,8 @@ Defined in `schemas/question.schema.json`.
 
 ## 6. Size and split
 
-- **Total:** 90 questions (3 skills × 3 levels × 10).
-- **Each skill-level cell:** 6 explain and 4 read-code questions, for 54 explain and 36 read-code in total.
+- **Total:** 135 questions (3 skills × 3 levels × 15). The first 90 were chosen from 180 drafts; the revision plan (Change 1) grows the bank to 120–150, so on 2026-10-23 the best 45 kept-back drafts were added with `scripts/promote_pool.py` (5 per cell, preferring misconceptions on fewer than 3 questions; their `selection_record.json` entries have `"promoted": true`).
+- **Each skill-level cell:** 9 explain and 6 read-code questions, for 81 explain and 54 read-code in total. The validator checks the intent rather than fixed numbers: every level of a skill has the same size (at least 10), and 60% of each cell is explain.
 - **Coverage rules:**
     - Every topic appears in at least 2 questions.
     - Each skill-level cell covers at least 4 different topics.

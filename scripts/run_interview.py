@@ -20,26 +20,11 @@ sys.path.insert(0, str(ROOT / "src"))
 from engine.run import run_interview, save_result  # noqa: E402
 from part1.bank import load_bank  # noqa: E402
 from part1.index import DEFAULT_INDEX_DIR, QuestionIndex  # noqa: E402
+from part4.runner import merge_truths  # noqa: E402
 from shared.interfaces import SYSTEMS, Components  # noqa: E402
 from shared.stubs import RuleBasedRespondent, TagDiagnoser, TagGrader  # noqa: E402
 
 QUESTION_WIDTH = 100
-
-
-def merge_truths(result: dict, truths: list) -> None:
-    """Add the respondent's hidden plans to the result as `truth` fields (experiment runner's job)."""
-    follow_ups_seen: dict[int, int] = {}
-    for turn_no, kind, plan in truths:
-        if turn_no > len(result["turns"]):
-            continue    # a reply for a question that never made it into the log
-        turn = result["turns"][turn_no - 1]
-        if kind == "main":
-            turn["truth"] = dict(plan)
-        else:
-            i = follow_ups_seen.get(turn_no, 0)
-            follow_ups_seen[turn_no] = i + 1
-            if i < len(turn["follow_ups"]):
-                turn["follow_ups"][i]["truth"] = dict(plan)
 
 
 def get_index(bank) -> QuestionIndex:

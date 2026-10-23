@@ -32,6 +32,10 @@ python -m venv .venv
 | One simulated interview, offline (no key) | `.venv/Scripts/python.exe scripts/run_interview.py --system A2 --job data-analyst` |
 | Validate the question bank | `.venv/Scripts/python.exe scripts/validate_bank.py` |
 | Rebuild the search index after editing questions | `.venv/Scripts/python.exe scripts/build_index.py` |
+| Add the best kept-back drafts from `data/pool/` to the bank (dry run without `--write`) | `.venv/Scripts/python.exe scripts/promote_pool.py` |
+| Generate the 60 simulated candidates | `.venv/Scripts/python.exe scripts/make_candidates.py` |
+| Run the experiment (stubs by default; `--grader gemini --simulator ollama` for live) | `.venv/Scripts/python.exe scripts/run_experiment.py` |
+| Metrics and targets for a run | `.venv/Scripts/python.exe scripts/evaluate.py --run stub-stub` |
 | Check the live grader and diagnoser | `.venv/Scripts/python.exe scripts/smoke_llm.py` |
 | Evaluate topic extraction | `.venv/Scripts/python.exe scripts/eval_topic_extraction.py` |
 
@@ -39,15 +43,16 @@ python -m venv .venv
 
 | Path | Contents |
 | --- | --- |
-| `data/` | Question bank (`questions/`), misconceptions, topics, jobs |
+| `data/` | Question bank (`questions/`), misconceptions, topics, jobs, simulated candidates (`candidates/`) |
 | `data/pool/` | Both question batches and the blind selection record |
 | `schemas/` | JSON formats: question, misconception, candidate key, interview result |
 | `src/part1/` | Bank loading, validator, search index, topic extraction |
 | `src/engine/` | Interview engine: scorecard (Partial Credit Model + EAP), question selection, follow-ups, report, tools, agent driver, session |
 | `src/part3/` | Prompted grader and diagnoser |
+| `src/part4/` | Simulated candidates (keys, simulator, respondent), experiment runner, metrics |
 | `src/llm/` | LLM client for any OpenAI-compatible provider, with caching and retries |
 | `src/shared/` | Interfaces between the parts, config and system presets (B1, A1–A5), stubs for offline testing |
-| `app/` | Streamlit app |
+| `app/` | Streamlit app; `review/` is the question review page (see its README) |
 | `examples/` | One example candidate key and one interview result |
 | `tests/` | Test suite (no network needed) |
 
@@ -61,15 +66,16 @@ python -m venv .venv
 | `docs/part2_spec.md` | Engine design |
 | `docs/part2_code.md` | How to run the engine |
 | `docs/llm.md` | Models, keys, quotas |
+| `docs/part4.md` | Candidates, experiment runner and metrics |
 | `docs/todo.md` | What is pending |
 
 ## Status
 
 | Part | Status |
 | --- | --- |
-| 1. Question bank and job data | Built. Human review of the 90 questions is pending. |
+| 1. Question bank and job data | Built: 135 questions. Human review is pending. |
 | 2. Interview engine | Built and tested live. Pilot tuning is pending. |
 | 3. Grader and diagnosis | Prompted grader and diagnoser work. The fine-tuned grader is not started. |
-| 4. Candidates and evaluation | Not started: 60 candidate keys, simulator, experiment runner, metrics. |
+| 4. Candidates and evaluation | Built and run on the stubs: 60 candidate keys, LLM simulator, experiment runner, metrics. Live runs pending. |
 
 **Quota note:** every role uses `gemini-3.5-flash-lite` (free tier). One live interview is about 70 LLM calls. Responses are cached in `.cache/`, so re-runs are free.

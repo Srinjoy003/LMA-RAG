@@ -283,6 +283,150 @@
     "status": "draft"
   },
   {
+    "id": "PY-L1-011",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-control-flow"
+    ],
+    "question": "This loop checks whether a list is in ascending order: 'for i in range(len(xs)): if i + 1 < len(xs) and xs[i] > xs[i + 1]: print(\"not sorted\")'. For a list of 4 items, which values does i take? And why does the code never raise an IndexError, even when i is the last index?",
+    "model_answer": "For 4 items, range(len(xs)) is range(4), so i takes 0, 1, 2 and 3; the end value 4 is never reached. When i is 3, the left side i + 1 < len(xs) is 4 < 4, which is False. Because 'and' stops as soon as the left operand is False, xs[i + 1] is never evaluated, so xs[4] is never accessed and no IndexError happens. If the two sides were swapped, the comparison with xs[4] would run first and crash.",
+    "key_points": [
+      "range(4) gives 0, 1, 2, 3 and stops before 4",
+      "'and' short-circuits: if the left side is False the right side is not evaluated",
+      "The bounds check must come first; swapping the operands would raise IndexError"
+    ],
+    "rubric": {
+      "0": "Says i goes up to 4 (or from 1 to 4), or that both sides of 'and' are always evaluated",
+      "1": "Gets the values of i right but explains the missing IndexError vaguely (e.g. 'Python checks the length') without short-circuiting, or the reverse",
+      "2": "Lists 0 to 3 and explains that 'and' skips xs[i + 1] when the bounds check is False"
+    },
+    "misconceptions": [
+      "py.control-flow.range-inclusive",
+      "py.control-flow.no-short-circuit"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-012",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-control-flow"
+    ],
+    "question": "A beginner writes: 'if grade == \"A\" or \"B\": print(\"good\")', then 'elif grade == \"C\": print(\"ok\")', then 'else: print(\"retake\")'. When grade is \"C\", what is printed, and why? How would you fix the condition?",
+    "model_answer": "It prints only 'good'. The condition is read as (grade == \"A\") or \"B\"; the comparison is False, but the non-empty string \"B\" is truthy, so the whole condition is true for any grade. Once the if branch runs, the elif and else branches are skipped, because an if/elif/else chain runs at most one branch. The fix is grade == \"A\" or grade == \"B\", or more simply grade in (\"A\", \"B\").",
+    "key_points": [
+      "The condition is (grade == \"A\") or \"B\", and \"B\" is always truthy",
+      "Only the first true branch of an if/elif/else chain runs, so 'ok' is not printed",
+      "Fix with grade == \"A\" or grade == \"B\", or grade in (\"A\", \"B\")"
+    ],
+    "rubric": {
+      "0": "Says it prints 'ok' (thinking == applies to both sides), or that it prints both 'good' and 'ok'",
+      "1": "Says 'good' but cannot explain the truthy \"B\", or gives no correct fix",
+      "2": "Says only 'good', explains the truthy string and that elif is skipped, and gives a correct fix"
+    },
+    "misconceptions": [
+      "py.control-flow.or-distributes",
+      "py.control-flow.elif-checks-all"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-013",
+    "skill": "py",
+    "level": 1,
+    "type": "explain",
+    "topics": [
+      "py-variables-mutability",
+      "py-collections"
+    ],
+    "question": "What does it mean for a Python type to be mutable or immutable? Say which of list, tuple, str and dict are mutable, and explain what happens to a string s when you call s.upper().",
+    "model_answer": "A mutable object can be changed in place after it is created; an immutable one cannot, so any 'change' produces a new object. Lists and dicts are mutable; tuples and strings are immutable. s.upper() does not change s: it returns a new uppercase string, which you must assign (for example s = s.upper()) to keep it.",
+    "key_points": [
+      "Mutable objects can be changed in place; immutable ones cannot",
+      "list and dict are mutable; tuple and str are immutable",
+      "s.upper() returns a new string and leaves s unchanged"
+    ],
+    "rubric": {
+      "0": "Says strings or tuples can be changed in place, or that s.upper() modifies s",
+      "1": "Correct definition but misclassifies one type, or does not explain that upper() returns a new string",
+      "2": "Correct definition, all four types classified correctly, and explains that upper() returns a new string that must be assigned"
+    },
+    "misconceptions": [
+      "py.variables-mutability.string-method-mutates",
+      "py.collections.tuple-mutable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-014",
+    "skill": "py",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "py-collections",
+      "py-control-flow",
+      "py-variables-mutability"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "nums = [3, 1, 2]\ncount = len(nums)\nresult = nums.sort()\nnums.append(0)\nprint(result, count)\nprint(nums)\nfor i in range(1, 3):\n    print(nums[i])",
+    "expected_output": "None 3\n[1, 2, 3, 0]\n2\n3\n",
+    "model_answer": "Prints 'None 3', then '[1, 2, 3, 0]', then 2 and 3 on separate lines. nums.sort() sorts in place and returns None. count was computed as 3 before the append and does not update. range(1, 3) gives 1 and 2 only, so it prints nums[1] and nums[2].",
+    "key_points": [
+      "result is None because sort() sorts in place and returns None",
+      "count stays 3: it holds the value computed at assignment",
+      "range(1, 3) stops before 3, so only indexes 1 and 2 are printed"
+    ],
+    "rubric": {
+      "0": "Says result is the sorted list, or that count becomes 4, or that range(1, 3) includes 3",
+      "1": "Gets most lines right but makes one smaller slip (e.g. the position of 0 in the list) or cannot explain why",
+      "2": "Exact output with the reasons: sort() returns None, count is fixed at 3, range excludes its end"
+    },
+    "misconceptions": [
+      "py.collections.sort-returns-list",
+      "py.control-flow.range-inclusive",
+      "py.variables-mutability.variable-holds-expression"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L1-015",
+    "skill": "py",
+    "level": 1,
+    "type": "read-code",
+    "topics": [
+      "py-functions-scope",
+      "py-variables-mutability"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "total = 0\nitems = [1, 2]\n\ndef add(x):\n    total = x\n    items.append(x)\n    return total\n\nresult = add(5)\nalias = items\nalias.append(9)\nprint(total, result, items)",
+    "expected_output": "0 5 [1, 2, 5, 9]\n",
+    "model_answer": "It prints '0 5 [1, 2, 5, 9]'. Inside add, total = x creates a local variable, so the global total stays 0; the function returns the local value 5. items.append(x) does not assign to the name items, it mutates the global list, so 5 is added. alias = items makes a second name for the same list, so appending 9 through alias changes items as well.",
+    "key_points": [
+      "Assigning total inside the function creates a local; the global total stays 0",
+      "append mutates the global list without needing 'global'",
+      "alias is the same list as items, not a copy, so 9 appears in items"
+    ],
+    "rubric": {
+      "0": "Says the global total becomes 5, or that items stays [1, 2, 5] because alias is a copy",
+      "1": "Right output but one wrong reason, or one value wrong with otherwise sound reasoning",
+      "2": "Exact output, explaining local vs global assignment, mutation via append and aliasing"
+    },
+    "misconceptions": [
+      "py.functions-scope.assign-updates-global",
+      "py.variables-mutability.assignment-copies"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
     "id": "PY-L2-001",
     "skill": "py",
     "level": 2,
@@ -571,6 +715,148 @@
     "status": "draft"
   },
   {
+    "id": "PY-L2-011",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-exceptions"
+    ],
+    "question": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+    "model_answer": "try holds code that might raise; except handles a matching exception; else runs only if the try block finished without an exception; finally always runs, whether there was an exception, a return or neither. When an exception is raised, the rest of the try block is skipped and Python jumps to the first except clause, from top to bottom, whose type matches; after the handler it continues after the whole try statement, not back inside try. finally runs even when try or except returns, just before the function actually returns.",
+    "key_points": [
+      "After a raise, the rest of the try block is skipped; execution continues after the try statement",
+      "The first matching except clause in order runs, not the most specific",
+      "else runs only if no exception occurred",
+      "finally always runs, even when try returns"
+    ],
+    "rubric": {
+      "0": "Says execution resumes inside try after the handler, or that finally is skipped on return",
+      "1": "Knows the basic roles but gets one detail wrong (e.g. which except runs, or what else does)",
+      "2": "All four blocks explained correctly, including first-match order and finally running on return"
+    },
+    "misconceptions": [
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.resumes-after-raise",
+      "py.exceptions.most-specific-except-wins"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-012",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-concurrency"
+    ],
+    "question": "An asyncio service handles many slow API calls with 'await session.get(...)'. One handler also runs a pure-Python loop that takes 3 seconds of CPU time. Explain how asyncio runs many requests at once, what happens to the other requests during that loop, and whether moving the loop into a thread would let it run on a second core in parallel with the rest.",
+    "model_answer": "asyncio runs all coroutines on a single thread: an event loop switches between them only at await points, so while one waits for the network another can run. A CPU loop has no await, so it holds the event loop for the full 3 seconds and every other request is frozen. Moving the loop to a thread (e.g. asyncio.to_thread) keeps the event loop responsive, because CPython switches between threads, but the GIL means the CPU work still does not run in parallel with other Python code; for real parallelism you would use a process pool.",
+    "key_points": [
+      "asyncio is single-threaded; coroutines switch only at await",
+      "A CPU-bound loop without await blocks every other coroutine",
+      "A thread keeps the loop responsive but, because of the GIL, gives no CPU parallelism; use processes for that"
+    ],
+    "rubric": {
+      "0": "Says asyncio runs each coroutine on its own thread or core, or that a thread makes the CPU loop run in parallel",
+      "1": "Explains the blocking correctly but is wrong or vague about threads and the GIL, or the reverse",
+      "2": "Explains single-threaded switching at await, the blocked loop, and the limited benefit of a thread with the GIL"
+    },
+    "misconceptions": [
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.threads-cpu-parallel"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-013",
+    "skill": "py",
+    "level": 2,
+    "type": "explain",
+    "topics": [
+      "py-comprehensions-generators"
+    ],
+    "question": "What is the difference between [x * x for x in data] and (x * x for x in data)? Talk about when the values are computed, memory use, and whether you can loop over the result twice.",
+    "model_answer": "The square-bracket version is a list comprehension: it computes every value straight away and stores them all in a list, which you can index and loop over as many times as you like. The round-bracket version is a generator expression: it computes nothing up front and produces one value each time the next one is asked for, so it uses almost no memory even for huge inputs. A generator can only be consumed once; after a full loop it is exhausted and a second loop gives nothing.",
+    "key_points": [
+      "The list comprehension builds the whole list immediately",
+      "The generator expression is lazy: one value at a time, little memory",
+      "A generator can only be iterated once; a list can be reused"
+    ],
+    "rubric": {
+      "0": "Says the generator computes all values up front, or that it can be looped over again like a list",
+      "1": "Explains laziness or memory correctly but misses or gets wrong the single-use point",
+      "2": "Covers eager versus lazy, memory, and that a generator is exhausted after one pass"
+    },
+    "misconceptions": [
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.generator-reusable"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-014",
+    "skill": "py",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "py-pandas"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "import pandas as pd\n\ndf = pd.DataFrame({\"team\": [\"a\", \"a\", \"b\", \"b\"],\n                   \"pts\": [10, None, 4, 8]})\ndf.rename(columns={\"pts\": \"points\"})\nprint(list(df.columns))\navg = df.groupby(\"team\")[\"pts\"].mean()\nprint(avg.tolist())\nprint(df[\"pts\"].count(), len(df))",
+    "expected_output": "['team', 'pts']\n[10.0, 6.0]\n3 4\n",
+    "model_answer": "It prints ['team', 'pts'], then [10.0, 6.0], then '3 4'. rename returns a new DataFrame, and the result is not assigned, so df keeps the column 'pts'. groupby mean skips the missing value: team a has only 10, so its mean is 10.0, not 5.0; team b is (4 + 8) / 2 = 6.0. count() counts non-missing values (3), while len(df) counts all rows (4).",
+    "key_points": [
+      "rename returns a new DataFrame; df is unchanged because the result is not assigned",
+      "The mean skips NaN: team a's mean is 10.0, not 5.0",
+      "count() gives 3 non-missing values while len(df) is 4"
+    ],
+    "rubric": {
+      "0": "Says the column is renamed to 'points', or that team a's mean is 5.0",
+      "1": "Gets the rename right but slips on the mean or the count, or the reverse",
+      "2": "Exact output with reasons: rename not assigned, NaN skipped in mean, count vs len"
+    },
+    "misconceptions": [
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L2-015",
+    "skill": "py",
+    "level": 2,
+    "type": "read-code",
+    "topics": [
+      "py-exceptions",
+      "py-collections"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "def store(d, key, value):\n    try:\n        d[key] = value\n        print(\"stored\", key)\n    except TypeError:\n        print(\"cannot use\", key)\n    finally:\n        print(\"done\")\n\nd = {}\nstore(d, (1, 2), \"a\")\nstore(d, [3, 4], \"b\")\nprint(len(d))",
+    "expected_output": "stored (1, 2)\ndone\ncannot use [3, 4]\ndone\n1\n",
+    "model_answer": "Prints 'stored (1, 2)', 'done', 'cannot use [3, 4]', 'done', then 1. The tuple is hashable, so it is stored. A list is unhashable, so d[key] = value raises TypeError; the rest of the try block (the 'stored' print) is skipped, the except prints 'cannot use [3, 4]', and finally runs both times. Only one key was stored, so len(d) is 1.",
+    "key_points": [
+      "A tuple can be a key; a list cannot and raises TypeError",
+      "After the exception the rest of the try block is skipped",
+      "finally runs on both calls, and len(d) is 1"
+    ],
+    "rubric": {
+      "0": "Says the list is stored, or prints 'stored [3, 4]', or gives len(d) as 2",
+      "1": "Right about the TypeError but misses a 'done' line or misorders lines",
+      "2": "Exact output with the reasons: unhashable list, try block skipped after raise, finally always runs"
+    },
+    "misconceptions": [
+      "py.collections.unhashable-key",
+      "py.exceptions.resumes-after-raise"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
     "id": "PY-L3-001",
     "skill": "py",
     "level": 3,
@@ -851,6 +1137,147 @@
     "misconceptions": [
       "py.exceptions.finally-skipped-on-return",
       "py.exceptions.most-specific-except-wins"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-011",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-concurrency"
+    ],
+    "question": "Two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines that never await inside the increment?",
+    "model_answer": "counter += 1 is not atomic: it reads the value, adds one and writes it back, and the interpreter can switch threads between those steps, so two threads can read the same value and one update is lost. The GIL does not prevent this; a threading.Lock around the increment does. With asyncio, all coroutines run on one thread and switch only at await points, so an increment with no await inside it cannot be interrupted and no update is lost. Races in async code can still happen when a read and write are separated by an await.",
+    "key_points": [
+      "counter += 1 is a read-modify-write that can be interrupted between threads",
+      "The GIL does not prevent this; use a Lock",
+      "asyncio runs on one thread and switches only at await, so this increment cannot race"
+    ],
+    "rubric": {
+      "0": "Says the GIL makes the result always 200,000, or that asyncio runs the coroutines in parallel threads with the same race",
+      "1": "Explains the thread race correctly but is wrong or vague about asyncio, or the reverse",
+      "2": "Explains lost updates, the lock fix, and why asyncio without an await in between is safe"
+    },
+    "misconceptions": [
+      "py.concurrency.gil-thread-safe",
+      "py.concurrency.async-multithreaded"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-012",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-pandas"
+    ],
+    "question": "An analyst makes top = df[df[\"sales\"] > 100].sort_values(\"region\"), calls top.reset_index(drop=True) on its own line, and then sets df[\"top_sales\"] = top[\"sales\"]. Rows that were filtered out show NaN, but the other rows have their own correct values. They then change the middle line to top = top.reset_index(drop=True), and now the numbers land on the wrong rows. Explain both results.",
+    "model_answer": "Assigning a Series to a DataFrame column aligns by index label, not by position. In the first version reset_index() returned a new DataFrame that was thrown away, so top still had df's original labels; each kept row got back its own value despite the sorting, and labels missing from top became NaN. In the second version top really has new labels 0, 1, 2, ..., so its values are matched to whichever rows of df carry those labels, which are unrelated rows. To combine by position on purpose you would use .to_numpy() on data that truly lines up; usually it is better to compute the column directly on df.",
+    "key_points": [
+      "Column assignment aligns on index labels, not on row order",
+      "reset_index() returns a new DataFrame; unassigned, it changes nothing",
+      "Sorting keeps labels, so the first version puts values on their own rows and NaN on missing labels",
+      "With labels reset to 0..n-1, values are matched to unrelated rows of df"
+    ],
+    "rubric": {
+      "0": "Says values are matched in order by position, or that the first reset_index() call changed top in place",
+      "1": "Explains label alignment for one version but not the other",
+      "2": "Explains label alignment, why the unassigned reset_index had no effect, and why the reassigned one misplaces values"
+    },
+    "misconceptions": [
+      "py.pandas.positional-alignment",
+      "py.pandas.method-modifies-inplace"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-013",
+    "skill": "py",
+    "level": 3,
+    "type": "explain",
+    "topics": [
+      "py-comprehensions-generators"
+    ],
+    "question": "Explain what happens, step by step, when you call a function that contains yield and then loop over the result. Why is a generator a good fit for processing a 10 GB log file line by line?",
+    "model_answer": "Calling the function does not run its body; it returns a generator object. Each time the loop asks for the next value, the body runs until the next yield, hands that value out, and pauses with its local state saved; the next request resumes right after the yield. When the body finishes, StopIteration ends the loop. For a 10 GB file this means only one line is in memory at a time and processing can start immediately, instead of loading everything into a list first.",
+    "key_points": [
+      "Calling the function returns a generator without running the body",
+      "Each next() runs to the next yield and pauses, keeping local state",
+      "Only one item is in memory at a time, so huge files can be processed lazily"
+    ],
+    "rubric": {
+      "0": "Says the body runs fully when called, or that the function ends at the first yield",
+      "1": "Describes laziness but is vague about pausing/resuming or about the memory benefit",
+      "2": "Explains creation without execution, pause-and-resume at each yield, and the memory advantage"
+    },
+    "misconceptions": [
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-014",
+    "skill": "py",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "py-oop"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "class Team:\n    members = []\n    def __init__(self, name):\n        self.name = name\n    def join(self, person):\n        self.members.append(person)\n    def rename(self, new_name):\n        self = Team(new_name)\n\na = Team(\"red\")\nb = Team(\"blue\")\na.join(\"Ann\")\na.rename(\"green\")\nprint(a.name, b.members)",
+    "expected_output": "red ['Ann']\n",
+    "model_answer": "Prints \"red ['Ann']\". members = [] is a class attribute, a single list shared by every Team, so a.join(\"Ann\") appends to the list that b.members also refers to. In rename, self = Team(new_name) only rebinds the local name self to a new object, which is then thrown away; a itself is unchanged and its name is still 'red'.",
+    "key_points": [
+      "members is a class attribute shared by all instances, so b sees 'Ann'",
+      "Assigning to self inside rename only rebinds a local name",
+      "a.name is still 'red'"
+    ],
+    "rubric": {
+      "0": "Says b.members is empty, or that a.name becomes 'green'",
+      "1": "Gets one of the two values right, or right output with a wrong reason",
+      "2": "Exact output with both reasons: shared class attribute and self being only a local name"
+    },
+    "misconceptions": [
+      "py.oop.class-attr-per-instance",
+      "py.oop.self-reassign-replaces-object"
+    ],
+    "source": "generated",
+    "status": "draft"
+  },
+  {
+    "id": "PY-L3-015",
+    "skill": "py",
+    "level": 3,
+    "type": "read-code",
+    "topics": [
+      "py-functions-scope"
+    ],
+    "question": "What does this code print, and why?",
+    "code": "count = 100\ndef make_counter(log=[]):\n    count = 0\n    def step():\n        nonlocal count\n        count += 1\n        log.append(count)\n        return count\n    return step, log\n\nc1, log1 = make_counter()\nc2, log2 = make_counter()\nc1(); c1()\nprint(c1(), c2(), count)\nprint(log1, log1 is log2)",
+    "expected_output": "3 1 100\n[1, 2, 3, 1] True\n",
+    "model_answer": "It prints '3 1 100' and then '[1, 2, 3, 1] True'. Each call to make_counter creates a new local count, and step updates that variable through nonlocal, so c1 counts 1, 2, 3 while c2 is a separate counter at 1. The count = 0 inside make_counter is local and never touches the global count, which stays 100. The default log list is created once, when def runs, so both counters append to the same list.",
+    "key_points": [
+      "Each closure keeps its own count and reads its current value on every call",
+      "The local count = 0 does not change the global count (100)",
+      "The default list is created once and shared, so log1 is log2"
+    ],
+    "rubric": {
+      "0": "Says the global count changes, that each counter has its own log, or that c1 keeps returning 1",
+      "1": "Gets the first line right but the log wrong, or the reverse",
+      "2": "Exact output with reasons: separate closures, local vs global count, shared default list"
+    },
+    "misconceptions": [
+      "py.functions-scope.mutable-default-fresh",
+      "py.functions-scope.closure-captures-value",
+      "py.functions-scope.assign-updates-global"
     ],
     "source": "generated",
     "status": "draft"

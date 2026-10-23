@@ -82,9 +82,12 @@ def test_run_interview_delegates_to_the_engine(monkeypatch):
     assert seen == {"job": {"id": "x"}, "candidate_id": "CAND-9"}
 
 
-def test_unimplemented_entry_points():
-    with pytest.raises(NotImplementedError):
-        plan_answer({}, {}, kind="main", turn=1, previous=None, rng=random.Random())
+def test_plan_answer_uses_the_reference_rules():
+    candidate = load("examples/candidate.example.json")
+    question = {"id": "SQL-L2-900", "level": 2, "topics": ["sql-joins"], "misconceptions": []}
+    plans = [f(candidate, question, kind="main", turn=1, previous=None, rng=random.Random(5))
+             for f in (plan_answer, reference_plan_answer)]
+    assert plans[0] == plans[1]
 
 
 def _candidate(**levels):

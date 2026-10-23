@@ -92,8 +92,14 @@ def _question_source(bank, root: Path):
     return QuestionIndex.build(bank, embed_fn=lambda texts: np.ones((len(texts), 1), dtype=np.float32))
 
 
-def live_status() -> tuple[bool, str]:
-    """(ready, message): is an LLM endpoint and key configured? Never raises."""
+def live_status(provider: str | None = None) -> tuple[bool, str]:
+    """(ready, message): is an LLM endpoint and key configured? Never raises.
+    `provider` is a name from `llm.providers.PROVIDERS`; None checks LLM_BASE_URL / LLM_API_KEY."""
+    if provider is not None:
+        try:
+            return importlib.import_module("llm.providers").provider_status(provider)
+        except Exception as e:
+            return False, f"The LLM providers could not be loaded ({type(e).__name__}: {e})."
     try:
         client_module = importlib.import_module("llm.client")
         client_module.load_env()
@@ -106,7 +112,11 @@ def live_status() -> tuple[bool, str]:
                    "project's .env file, or switch to the offline stub mode.")
 
 
-def build_components(config, *, live: bool, root: str | Path | None = None) -> Components:
+def build_components(config, *, live: bool, root: str | Path | None = None,
+                     provider: str | None = None) -> Components:
+    """`provider` (live only) picks the endpoint, key and reasoning effort from
+    `llm.providers`; pass the config through `apply_provider` first so the model names match.
+    None uses LLM_BASE_URL / LLM_API_KEY with the components' default reasoning effort."""
     root = Path(root) if root else ROOT
     from part1.bank import load_bank
     bank = load_bank(root)
@@ -121,14 +131,22 @@ def build_components(config, *, live: bool, root: str | Path | None = None) -> C
     client_module = _import("llm.client")
     grader_module = _import("part3.grader")
     diagnoser_module = _import("part3.diagnoser")
+    effort = {}   # extra keyword for the grader, diagnoser and topic extractor
     try:
-        llm = MeteredLLM(client_module.get_client())
+        if provider is None:
+            llm = MeteredLLM(client_module.get_client())
+        else:
+            providers = _import("llm.providers")
+            llm = MeteredLLM(providers.provider_client(provider))
+            effort = {"reasoning_effort": providers.PROVIDERS[provider].reasoning_effort}
+    except FactoryError:
+        raise
     except Exception as e:
         raise FactoryError(f"live mode needs an LLM endpoint and key: {e}") from e
 
-    grader = grader_module.PromptedGrader(llm, model=grader_model(config), votes=config.grader_votes)
+    grader = grader_module.PromptedGrader(llm, model=grader_model(config), votes=config.grader_votes, **effort)
     diagnoser = diagnoser_module.StructuredDiagnoser(
-        llm, model=config.models.diagnoser, misconceptions=records, votes=config.diagnosis_votes)
+        llm, model=config.models.diagnoser, misconceptions=records, votes=config.diagnosis_votes, **effort)
 
     extractor = None
     if config.use_topic_extraction:
@@ -138,7 +156,7 @@ def build_components(config, *, live: bool, root: str | Path | None = None) -> C
             warnings.warn("part1.extract_topics has no LLMTopicExtractor yet; the job's required_topics "
                           "from jobs.json are used instead", stacklevel=2)
         else:
-            extractor = extractor_class(llm, config.models.topic_extractor)
+            extractor = extractor_class(llm, config.models.topic_extractor, **effort)
 
     return Components(question_source=source, grader=grader, diagnoser=diagnoser, topic_extractor=extractor,
                       llm=llm, misconceptions=records)

@@ -21,7 +21,8 @@ python -m venv .venv
 | `src/part1/execute.py` | Runs read-code questions (Python subprocess, SQLite in memory). |
 | `src/part1/index.py` | `QuestionIndex`: build, save, load, search, near duplicates. |
 | `src/part1/extract_topics.py` | `extract_topics(job_description)`. |
-| `scripts/` | `validate_bank.py`, `build_index.py`, `eval_topic_extraction.py`. |
+| `src/part1/pool.py` | Picks the best kept-back drafts from `data/pool/` to grow the bank (behind `promote_pool.py`). |
+| `scripts/` | `validate_bank.py`, `build_index.py`, `eval_topic_extraction.py`, `promote_pool.py`. |
 | `tests/` | pytest suite; `tests/fixtures/make_bank.py` builds a small valid bank for the tests. |
 
 ## Validate the bank

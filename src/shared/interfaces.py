@@ -291,6 +291,7 @@ def run_interview(job: Job, respondent: Respondent, config: InterviewConfig,
 
 def plan_answer(candidate: Candidate, question: Question, *, kind: TurnKind, turn: int,
                 previous: AnswerPlan | None, rng: random.Random) -> AnswerPlan:
-    """Decide in code what a simulated candidate does for one reply (Part 4 owns the
-    final rules). A reference implementation lives in shared.stubs.reference_plan_answer."""
-    raise NotImplementedError("Part 4 implements the answer policy")
+    """Decide in code what a simulated candidate does for one reply. Part 4 uses the
+    reference rules in shared.stubs.reference_plan_answer unchanged (docs/interfaces.md)."""
+    from .stubs import reference_plan_answer
+    return reference_plan_answer(candidate, question, kind=kind, turn=turn, previous=previous, rng=rng)

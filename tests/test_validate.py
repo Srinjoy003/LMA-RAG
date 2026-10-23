@@ -137,23 +137,29 @@ def test_job_required_topic_must_exist(bank):
 
 
 # ---- d. coverage ---------------------------------------------------------------
-def test_wrong_total_number_of_questions(bank):
+def test_levels_of_a_skill_must_be_the_same_size(bank):
     extra = make_question("py", 1, 1)
     extra["id"] = "PY-L1-011"
     bank.questions.append(extra)
-    assert "py: 31 questions, expected 30" in messages(run(bank))
+    assert "py: levels 1-3 have 11, 10, 10 questions" in messages(run(bank))
 
 
-def test_wrong_number_per_level(bank):
-    bank.questions = [x for x in bank.questions if x["id"] != "PY-L2-010"]
-    assert "py level 2: 9 questions, expected 10" in messages(run(bank))
+def test_too_few_questions_per_level(bank):
+    bank.questions = [x for x in bank.questions if not x["id"].endswith("-010")]
+    msg = messages(run(bank))
+    assert "py level 2: 9 questions, need at least 10" in msg and "levels 1-3 have" not in msg
+
+
+def test_a_bigger_balanced_bank_passes(bank):
+    for level in (1, 2, 3):
+        for new, source in zip(range(11, 16), (1, 2, 3, 7, 8)):     # 3 explain + 2 read-code
+            bank.questions.append({**make_question("py", level, source), "id": f"PY-L{level}-{new:03d}"})
+    assert "[coverage] py" not in messages(run(bank))
 
 
 def test_wrong_explain_read_code_split(bank):
     q(bank, "PY-L1-007")["type"] = "explain"
-    msg = messages(run(bank))
-    assert "py level 1: 7 explain questions, expected 6" in msg
-    assert "py level 1: 3 read-code questions, expected 4" in msg
+    assert "py level 1: 7 explain and 3 read-code questions, expected 6 and 4" in messages(run(bank))
 
 
 def test_too_few_topics_per_level(bank):
@@ -191,8 +197,8 @@ def test_misconception_referenced_too_rarely(bank):
 
 
 def test_rules_are_configurable(bank):
-    report = run(bank, rules=Rules(questions_per_skill=31))
-    assert "expected 31" in messages(report)
+    report = run(bank, rules=Rules(min_questions_per_level=11))
+    assert "need at least 11" in messages(report)
 
 
 # ---- e. warnings -------------------------------------------------------------------
