@@ -69,11 +69,30 @@ def test_the_prompt_carries_the_planned_misconception():
     assert "follow-up" not in text
 
 
-def test_a_wrong_answer_is_told_to_avoid_the_listed_misconceptions():
-    misconceptions = real_bank().misconception_by_id
-    messages = LLMCandidateSimulator(None, "m").build_messages(
-        {"id": "CAND-001"}, question(), question()["question"], {"outcome": "wrong"}, misconceptions)
-    assert "NOT to show" in messages[1]["content"]
+def prompt_for(outcome, candidate_id="CAND-001"):
+    return LLMCandidateSimulator(None, "m").build_messages(
+        {"id": candidate_id}, question(), question()["question"], {"outcome": outcome},
+        real_bank().misconception_by_id)[1]["content"]
+
+
+def test_a_wrong_answer_gets_no_reference_and_must_avoid_points_and_misconceptions():
+    text = prompt_for("wrong")
+    assert question()["model_answer"] not in text and "must NOT state" in text
+    assert real_bank().misconception_by_id[question()["misconceptions"][0]]["description"] in text
+
+
+def test_a_partial_answer_only_sees_the_points_code_chose():
+    text = prompt_for("partial")
+    shown = [p for p in question()["key_points"] if p in text]
+    assert len(shown) == max(1, len(question()["key_points"]) // 2)
+    assert question()["model_answer"] not in text
+    assert prompt_for("partial") == text                       # same choice every time (cache-friendly)
+
+
+def test_a_slip_names_the_one_point_to_get_wrong():
+    text = prompt_for("slip")
+    what_to_do = text.split("WHAT TO DO:")[1]
+    assert sum(p in what_to_do for p in question()["key_points"]) == 1
 
 
 def test_respondent_logs_plans_appends_attacks_and_passes_history():
