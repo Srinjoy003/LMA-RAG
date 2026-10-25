@@ -7,6 +7,7 @@ Picks 6 bank questions (2 per skill: one "explain", one "read-code"). For each i
 then prints grades, vote agreement and diagnoses, and a summary.
 
     .venv\Scripts\python.exe scripts\smoke_llm.py [--model gemini-3.5-flash-lite] [--votes 3]
+    .venv\Scripts\python.exe scripts\smoke_llm.py --provider groq    # GROQ_API_KEY, its model and effort
 
 Cost: 6 x (2 grades + 1 diagnosis) x votes = 54 calls with the default 3 votes, all cached under
 .cache/llm, so an interrupted or repeated run only pays for what is missing. If the provider's daily
@@ -21,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from llm.client import DEFAULT_REASONING_EFFORT, LLMError, LLMQuotaError, get_client  # noqa: E402
+from llm.providers import PROVIDERS, provider_client, provider_model  # noqa: E402
 from part1.bank import load_bank  # noqa: E402
 from part3 import PromptedGrader, StructuredDiagnoser  # noqa: E402
 from shared.interfaces import SKILLS  # noqa: E402
@@ -50,16 +52,25 @@ def wrong_answer_for(bank, q: dict) -> tuple[str | None, str | None]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--model", default="gemini-3.5-flash-lite")
+    ap.add_argument("--provider", choices=sorted(PROVIDERS),
+                    help="use this provider's endpoint, key, model and effort (default: LLM_BASE_URL / LLM_API_KEY)")
+    ap.add_argument("--model", default=None, help="default: the provider's model, else gemini-3.5-flash-lite")
     ap.add_argument("--votes", type=int, default=3)
-    ap.add_argument("--effort", default=DEFAULT_REASONING_EFFORT, help="reasoning_effort (default: %(default)s)")
+    ap.add_argument("--effort", default=None,
+                    help=f"reasoning_effort (default: the provider's, else {DEFAULT_REASONING_EFFORT})")
     ap.add_argument("--level", type=int, default=2)
     args = ap.parse_args()
+    if args.provider:     # the provider's own effort, even when it has none (Ollama)
+        args.model = args.model or provider_model(args.provider)
+        args.effort = args.effort or PROVIDERS[args.provider].reasoning_effort
+    else:
+        args.effort = args.effort or DEFAULT_REASONING_EFFORT
+    args.model = args.model or "gemini-3.5-flash-lite"
 
     bank = load_bank(ROOT)
     records = {m["id"]: m for m in bank.misconceptions}
     try:
-        llm = get_client()
+        llm = provider_client(args.provider) if args.provider else get_client()
     except RuntimeError as e:
         sys.exit(str(e))
     grader = PromptedGrader(llm, args.model, votes=args.votes, reasoning_effort=args.effort, misconceptions=records)

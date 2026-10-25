@@ -74,6 +74,19 @@ def test_live_mode_without_a_key_gives_a_clear_message(app, monkeypatch):
         app.start_session(app.load_jobs()[0], "A2", live=True)
 
 
+def test_a_second_submit_is_refused_while_grading_or_once_the_prompt_moved_on(app):
+    session = app.start_session(app.load_jobs()[0], "A2", live=False)
+    state = {}
+    first = session.next_prompt()
+    state.setdefault("submit_lock", app.threading.Lock()).acquire()     # an answer is being graded
+    assert app.submit_once(state, session, first, "[[sim outcome=correct]]") is False
+    assert session.next_prompt() == first and not session.turns
+    state["submit_lock"].release()
+    assert app.submit_once(state, session, first, "[[sim outcome=correct]]") is True
+    assert app.submit_once(state, session, first, "[[sim outcome=correct]]") is False   # a double click
+    assert len(session.turns) == 1 and not session.errors
+
+
 def test_turn_rows_hide_grades_unless_the_interviewer_view_is_on(app):
     job = app.load_jobs()[0]
     session = app.start_session(job, "A2", live=False)

@@ -20,11 +20,11 @@ from .execute import TIMEOUT_SECONDS, check_question
 
 @dataclass
 class Rules:
-    """Coverage rules from spec section 6 (per skill)."""
-    questions_per_skill: int = 30
-    questions_per_level: int = 10
-    explain_per_level: int = 6
-    read_code_per_level: int = 4
+    """Coverage rules from spec section 6 (per skill). Every level of a skill holds the same
+    number of questions, at least `min_questions_per_level`, with `explain_share` of them
+    explain questions (6 of 10, 9 of 15) and the rest read-code."""
+    min_questions_per_level: int = 10
+    explain_share: float = 0.6
     min_topics_per_level: int = 4
     min_questions_per_topic: int = 2
     min_questions_per_required_topic: int = 3
@@ -150,20 +150,23 @@ def check_coverage(bank: Bank, report: Report, skills: list, rules: Rules):
             report.warn(f"[coverage] skill {skill!r}: no questions yet, coverage checks skipped")
             continue
 
-        if len(qs) != rules.questions_per_skill:
-            report.error(f"[coverage] {skill}: {len(qs)} questions, expected {rules.questions_per_skill}")
+        sizes = [sum(q.get("level") == level for q in qs) for level in LEVELS]
+        if len(set(sizes)) > 1:
+            report.error(f"[coverage] {skill}: levels 1-3 have {', '.join(map(str, sizes))} questions; "
+                         "every level needs the same number")
 
         for level in LEVELS:
             cell = [q for q in qs if q.get("level") == level]
             where = f"{skill} level {level}"
-            if len(cell) != rules.questions_per_level:
-                report.error(f"[coverage] {where}: {len(cell)} questions, expected {rules.questions_per_level}")
+            if len(cell) < rules.min_questions_per_level:
+                report.error(f"[coverage] {where}: {len(cell)} questions, need at least "
+                             f"{rules.min_questions_per_level}")
             n_explain = sum(q.get("type") == "explain" for q in cell)
             n_code = sum(q.get("type") == "read-code" for q in cell)
-            if n_explain != rules.explain_per_level:
-                report.error(f"[coverage] {where}: {n_explain} explain questions, expected {rules.explain_per_level}")
-            if n_code != rules.read_code_per_level:
-                report.error(f"[coverage] {where}: {n_code} read-code questions, expected {rules.read_code_per_level}")
+            want_explain = round(rules.explain_share * len(cell))
+            if (n_explain, n_code) != (want_explain, len(cell) - want_explain):
+                report.error(f"[coverage] {where}: {n_explain} explain and {n_code} read-code questions, "
+                             f"expected {want_explain} and {len(cell) - want_explain}")
             distinct = {t for q in cell for t in q.get("topics", [])}
             if len(distinct) < rules.min_topics_per_level:
                 report.error(f"[coverage] {where}: {len(distinct)} distinct topics, need at least "

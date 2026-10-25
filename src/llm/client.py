@@ -346,7 +346,13 @@ def get_client(role: str | None = None) -> OpenAICompatClient:
         names = [f"LLM_BASE_URL{suffix}", f"LLM_API_KEY{suffix}"] if suffix else []
         raise RuntimeError("LLM_BASE_URL and LLM_API_KEY must be set (environment or .env)"
                            + (f"; per-role overrides: {', '.join(names)}" if names else ""))
-    ident = (base.rstrip("/"), key)
+    return client_for(base, key)
+
+
+def client_for(base_url: str, api_key: str) -> OpenAICompatClient:
+    """The shared client for this endpoint and key (one per pair, so the minimum call
+    interval holds for everything that uses it)."""
+    ident = (base_url.rstrip("/"), api_key)
     if ident not in _clients:
-        _clients[ident] = OpenAICompatClient(base, key)
+        _clients[ident] = OpenAICompatClient(base_url, api_key)
     return _clients[ident]

@@ -87,3 +87,18 @@ TOPIC_MODEL=gemini-flash-lite-latest .venv\Scripts\python.exe scripts\eval_topic
 ## Default model (2026-10-19)
 
 All roles default to **`gemini-3.5-flash-lite`**, pinned by exact name: `-latest` aliases silently change the model behind them, which would break reproducibility. `gemini-flash-latest` (= `gemini-3.8-flash`) has only 20 free requests per day; `gemini-2.5-flash` and `gemini-2.5-flash-lite` are retired for new users; `gemini-3.5-flash-lite` and `gemini-3.1-flash-lite` answered normally.
+
+## Switching provider (Gemini, Groq or Ollama)
+
+`src/llm/providers.py` names the providers the app can switch between. Each sets the endpoint, key, model and reasoning effort for every role.
+
+| Provider | Variables | Model | `reasoning_effort` |
+| --- | --- | --- | --- |
+| `gemini` | `LLM_BASE_URL`, `LLM_API_KEY` | the config's (`gemini-3.5-flash-lite`) | `minimal` |
+| `groq` | `GROQ_API_KEY`, optional `GROQ_BASE_URL` (default `https://api.groq.com/openai/v1`) and `GROQ_MODEL` | `openai/gpt-oss-20b` | `low` (gpt-oss rejects `minimal`) |
+| `ollama` | none needed; optional `OLLAMA_BASE_URL` (default `http://localhost:11434/v1`) and `OLLAMA_MODEL` | `llama3` | not sent |
+
+- **App:** choose Gemini, Groq or Ollama under Mode in the sidebar. With Groq, the saved result's `config.models` names the Groq model.
+- **Smoke test:** `scripts/smoke_llm.py --provider groq`.
+- **Code:** `apply_provider(config, name)` sets the model names, then `build_components(config, live=True, provider=name)`.
+- **Caveat:** the experiments require the simulator (default `gpt-oss-120b`) to come from a different family than the grader, so don't grade with gpt-oss in the experiments.

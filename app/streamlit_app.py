@@ -2,7 +2,7 @@ r"""Interview app: a person takes the adaptive interview in the browser.
 
     .venv\Scripts\python.exe -m streamlit run app\streamlit_app.py
 
-Sidebar: job, system preset, live (Gemini) or offline stub mode, interviewer view, start.
+Sidebar: job, system preset, live (Gemini, Groq or local Ollama) or offline stub mode, interviewer view, start.
 The logic lives in plain functions at the top of this file (tested in tests/test_app.py);
 `main()` only draws the page.
 """
@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+import threading
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,8 +28,11 @@ from part1.bank import load_bank  # noqa: E402
 from shared.interfaces import SYSTEMS  # noqa: E402
 
 LIVE_MODE = "Live grading (Gemini)"
+GROQ_MODE = "Live grading (Groq)"
+OLLAMA_MODE = "Live grading (Ollama, local)"
 STUB_MODE = "Offline stub"
-MODES = (LIVE_MODE, STUB_MODE)
+MODES = (LIVE_MODE, GROQ_MODE, OLLAMA_MODE, STUB_MODE)
+MODE_PROVIDERS = {LIVE_MODE: "gemini", GROQ_MODE: "groq", OLLAMA_MODE: "ollama"}   # live modes -> llm.providers name
 DEFAULT_SYSTEM = "A2"
 LIVE_DIR = Path(os.environ.get("INTERVIEW_RESULTS_DIR") or ROOT / "results" / "live")
 
@@ -71,14 +75,18 @@ def make_config(system: str, seed: int = 0):
     return SYSTEMS[system].with_(seed=int(seed))
 
 
-def start_session(job: dict, system: str, live: bool, seed: int = 0, root: Path = ROOT) -> InterviewSession:
-    """A new interview session. Live mode with no API key raises FactoryError with a clear message."""
+def start_session(job: dict, system: str, live: bool, seed: int = 0, root: Path = ROOT,
+                  provider: str = "gemini") -> InterviewSession:
+    """A new interview session. Live mode with no API key raises FactoryError with a clear message.
+    `provider` (live only) is a name from `llm.providers.PROVIDERS`."""
     config = make_config(system, seed)
     if live:
-        ready, message = live_status()
+        ready, message = live_status(provider)
         if not ready:
             raise FactoryError(message)
-    components = build_components(config, live=live, root=root)
+        from llm.providers import apply_provider
+        config = apply_provider(config, provider)
+    components = build_components(config, live=live, root=root, provider=provider if live else None)
     return InterviewSession(job, config, components)
 
 
@@ -139,6 +147,24 @@ def result_json(result: dict) -> str:
 def save_live_result(result: dict, folder: Path = LIVE_DIR) -> Path:
     """results/live/live-<timestamp>.json"""
     return save_result(result, folder=folder)
+
+
+def submit_once(state, session: InterviewSession, prompt: dict, text: str) -> bool:
+    """Submit `text` as the answer to `prompt`; False (nothing sent) if another answer is still
+    being graded or the interview has already moved past `prompt`.
+
+    Pressing Submit again while grading makes Streamlit start a second run of the page next to
+    the first, and the session must never be used by two runs at once."""
+    lock = state.setdefault("submit_lock", threading.Lock())
+    if not lock.acquire(blocking=False):
+        return False
+    try:
+        if session.next_prompt() != prompt:
+            return False
+        session.submit(text)
+        return True
+    finally:
+        lock.release()
 
 
 # --------------------------------------------------------------------------
@@ -240,12 +266,13 @@ def main() -> None:
             st.write(job["description"])
             st.caption("Minimum levels: " + ", ".join(f"{SKILL_NAMES[s]} {m}" for s, m in job["min_levels"].items()))
         system = st.selectbox("System preset", list(SYSTEMS), index=list(SYSTEMS).index(DEFAULT_SYSTEM))
-        mode = st.radio("Mode", MODES, index=1)
-        live = mode == LIVE_MODE
+        mode = st.radio("Mode", MODES, index=MODES.index(STUB_MODE))
+        provider = MODE_PROVIDERS.get(mode)
+        live = provider is not None
         interviewer = st.toggle("Show interviewer view", value=False)
         seed = st.number_input("Seed", min_value=0, value=0, step=1)
         if live:
-            ready, message = live_status()
+            ready, message = live_status(provider)
             (st.caption if ready else st.warning)(message)
         start = st.button("Start / Restart", type="primary")
 
@@ -253,7 +280,7 @@ def main() -> None:
         for key in ("session", "result", "saved_path", "error"):
             state.pop(key, None)
         try:
-            state["session"] = start_session(job, system, live, seed)
+            state["session"] = start_session(job, system, live, seed, provider=provider or "gemini")
         except FactoryError as e:
             state["error"] = str(e)
         except Exception as e:
@@ -303,8 +330,11 @@ def main() -> None:
             submitted = st.form_submit_button("Submit")
         if submitted:
             text = answer if live else with_stub_tag(answer, STUB_OUTCOMES[stub_choice])
-            session.submit(text)
-            st.rerun()
+            with st.spinner("Grading your answer…"):
+                sent = submit_once(state, session, prompt, text)
+            if sent:
+                st.rerun()
+            st.warning("That answer was not sent: the previous one is still being graded. Please wait.")
         draw_history(st, session, interviewer)
     if right is not None:
         with right:

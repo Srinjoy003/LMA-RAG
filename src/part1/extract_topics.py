@@ -53,7 +53,8 @@ def build_prompt(job_description: str, catalogue: list[tuple[str, str]]) -> tupl
 
 
 def extract_topics(job_description: str, llm: LLMClient | None = None, model: str | None = None,
-                   topics: dict | None = None) -> list[str]:
+                   topics: dict | None = None,
+                   reasoning_effort: str | None = DEFAULT_REASONING_EFFORT) -> list[str]:
     """Return the topic ids (from topics.json only) that the job description needs.
 
     `llm` is any `LLMClient` (pass a fake in tests); by default `llm.get_client()`.
@@ -71,7 +72,7 @@ def extract_topics(job_description: str, llm: LLMClient | None = None, model: st
     response = llm.complete(
         [{"role": "system", "content": system}, {"role": "user", "content": user}],
         model=model or get_model(), temperature=0.0, json_schema=build_schema(topic_ids),
-        max_tokens=4096, reasoning_effort=DEFAULT_REASONING_EFFORT, cache_tag="topics")
+        max_tokens=4096, reasoning_effort=reasoning_effort, cache_tag="topics")
 
     parsed = response.get("parsed")
     if not isinstance(parsed, dict) or not isinstance(parsed.get("topics"), list):
@@ -88,11 +89,13 @@ def extract_topics(job_description: str, llm: LLMClient | None = None, model: st
 class LLMTopicExtractor:
     """`shared.interfaces.TopicExtractor`: job description -> topic ids, via an LLM."""
 
-    def __init__(self, llm: LLMClient | None = None, model: str | None = None, topics: dict | None = None):
-        self.llm, self.model, self.topics = llm, model, topics
+    def __init__(self, llm: LLMClient | None = None, model: str | None = None, topics: dict | None = None,
+                 reasoning_effort: str | None = DEFAULT_REASONING_EFFORT):
+        self.llm, self.model, self.topics, self.reasoning_effort = llm, model, topics, reasoning_effort
 
     def __call__(self, job_description: str) -> list[str]:
-        return extract_topics(job_description, llm=self.llm, model=self.model, topics=self.topics)
+        return extract_topics(job_description, llm=self.llm, model=self.model, topics=self.topics,
+                              reasoning_effort=self.reasoning_effort)
 
 
 def score_topics(predicted: list[str], expected: list[str]) -> dict:
