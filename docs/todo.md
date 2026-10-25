@@ -5,7 +5,7 @@
 The build is done: bank, misconceptions, job descriptions, validator, search index and tests. These items were deliberately skipped for later.
 
 ### Human review
-- [ ] Review the 135 questions in `data/questions/` against spec section 13 and change `status` from `draft` to `checked`. The 45 added on 2026-10-23 are numbered 011–015 in every cell. In progress since 2026-10-23 on the shared review page (https://claude.ai/artifact/X1LazXWwYup2coDscLkebY, source and instructions in app/review/): 4 batches, verdict keep / needs a fix (with note) / drop. When done, read the verdicts, apply them, and refill any dropped questions from the 36 drafts left in `data/pool/` so every level stays the same size.
+- [ ] Review the 135 questions in `data/questions/` against spec section 13 and change `status` from `draft` to `checked`. The 45 added on 2026-10-23 are numbered 011–015 in every cell. In progress since 2026-10-23 on the team's shared review page: 4 batches, verdict keep / needs a fix (with note) / drop. When done, read the verdicts, apply them, and refill any dropped questions from the 36 drafts left in `data/pool/` so every level stays the same size.
 - [ ] Difficulty check (spec section 14): two people rate the same 21 questions blind.
 - [ ] Verify the adapted citations:
     - [ ] the 4 data-structures misconceptions (Karpierz & Wolfman 2014; Gal-Ezer & Zur 2004), which were cited from summaries only

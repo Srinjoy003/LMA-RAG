@@ -52,7 +52,7 @@ python -m venv .venv
 | `src/part4/` | Simulated candidates (keys, simulator, respondent), experiment runner, metrics |
 | `src/llm/` | LLM client for any OpenAI-compatible provider, with caching and retries |
 | `src/shared/` | Interfaces between the parts, config and system presets (B1, A1–A5), stubs for offline testing |
-| `app/` | Streamlit app; `review/` is the question review page (see its README) |
+| `app/` | Streamlit app |
 | `examples/` | One example candidate key and one interview result |
 | `tests/` | Test suite (no network needed) |
 
