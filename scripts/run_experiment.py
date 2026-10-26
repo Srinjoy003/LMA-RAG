@@ -8,7 +8,7 @@ A balanced subset: the first 12 candidates (or 24, 36, ...) cover each job x eve
 fit/not-fit once, so `--candidates 12 --systems B1 A2` is the smallest fair comparison.
 
 Sharing the work across accounts: put each extra key in .env with a suffix (GROQ_API_KEY_2,
-LLM_API_KEY_2, ...) and start one run per account, each on its share of the candidates:
+GEMINI_API_KEY_2, ...) and start one run per account, each on its share of the candidates:
     ... --run subset --share 1/3
     ... --run subset --share 2/3 --keys 2
     ... --run subset --share 3/3 --keys 3
@@ -52,7 +52,7 @@ def main() -> int:
     parser.add_argument("--simulator-model", help="override the simulator provider's default model")
     parser.add_argument("--candidates", type=int, help="only the first N candidates (default: all)")
     parser.add_argument("--share", metavar="K/N", help="only the K-th of N equal shares of the candidates")
-    parser.add_argument("--keys", metavar="NAME", help="use the keys ending in _NAME in .env, e.g. GROQ_API_KEY_2")
+    parser.add_argument("--keys", metavar="NAME", help="use the keys ending in _NAME in .env, e.g. GROQ_API_KEY_2, GEMINI_API_KEY_2")
     parser.add_argument("--run", help="results folder name (default: <grader>-<simulator>)")
     parser.add_argument("--rerun", action="store_true", help="redo interviews that already have a result")
     args = parser.parse_args()

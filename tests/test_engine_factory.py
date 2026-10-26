@@ -124,7 +124,7 @@ def test_a_module_that_fails_while_importing_gives_a_clear_error(fake_live, monk
 
 
 def test_live_without_a_key_gives_a_clear_error(monkeypatch):
-    for name in ("LLM_API_KEY", "LLM_BASE_URL"):
+    for name in ("LLM_API_KEY", "LLM_BASE_URL", "GEMINI_API_KEY"):
         monkeypatch.delenv(name, raising=False)
     monkeypatch.setattr("llm.client.load_env", lambda path=None: {})
     with pytest.raises(FactoryError, match="LLM_API_KEY"):
@@ -132,7 +132,7 @@ def test_live_without_a_key_gives_a_clear_error(monkeypatch):
 
 
 def test_live_status_reports_a_missing_key(monkeypatch):
-    for name in ("LLM_API_KEY", "LLM_BASE_URL"):
+    for name in ("LLM_API_KEY", "LLM_BASE_URL", "GEMINI_API_KEY"):
         monkeypatch.delenv(name, raising=False)
     monkeypatch.setattr("llm.client.load_env", lambda path=None: {})
     ok, message = live_status()

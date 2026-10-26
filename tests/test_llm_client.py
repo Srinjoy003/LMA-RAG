@@ -373,5 +373,16 @@ def test_get_client_without_credentials_raises(monkeypatch):
     monkeypatch.setattr(client_mod, "_clients", {})
     monkeypatch.delenv("LLM_BASE_URL", raising=False)
     monkeypatch.delenv("LLM_API_KEY", raising=False)
-    with pytest.raises(RuntimeError, match="LLM_API_KEY"):
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    with pytest.raises(RuntimeError, match="GEMINI_API_KEY"):
         get_client()
+
+
+def test_get_client_falls_back_to_the_gemini_key(monkeypatch):
+    monkeypatch.setattr(client_mod, "load_env", lambda *a, **k: {})
+    monkeypatch.setattr(client_mod, "_clients", {})
+    monkeypatch.delenv("LLM_BASE_URL", raising=False)
+    monkeypatch.delenv("LLM_API_KEY", raising=False)
+    monkeypatch.setenv("GEMINI_API_KEY", "gemini-key")
+    client = get_client()
+    assert client._api_key == "gemini-key" and "generativelanguage.googleapis.com" in client.base_url

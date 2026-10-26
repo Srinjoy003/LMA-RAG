@@ -1,12 +1,13 @@
 """Named LLM providers the app can switch between: endpoint, key, model and reasoning effort.
 
-    gemini  LLM_BASE_URL / LLM_API_KEY (the default setup); keeps the config's model names
+    gemini  GEMINI_API_KEY (the older LLM_API_KEY also works), optional GEMINI_BASE_URL;
+            keeps the config's model names
     groq    GROQ_API_KEY, optional GROQ_BASE_URL and GROQ_MODEL (default openai/gpt-oss-20b)
     ollama  a local Ollama server, no key needed; optional OLLAMA_BASE_URL and OLLAMA_MODEL
             (default llama3)
 
 Keys come from the environment / .env only, like everywhere else. Extra accounts' keys can sit
-beside the usual ones with a suffix (GROQ_API_KEY_2, LLM_API_KEY_2) and be chosen with use_key_set.
+beside the usual ones with a suffix (GROQ_API_KEY_2, GEMINI_API_KEY_2) and be chosen with use_key_set.
 """
 
 from __future__ import annotations
@@ -15,7 +16,7 @@ import os
 from dataclasses import dataclass, replace
 
 from . import client as _client   # looked up at call time, so tests can patch client.load_env
-from .client import OpenAICompatClient, client_for
+from .client import GEMINI_BASE_URL, OpenAICompatClient, client_for
 
 
 @dataclass(frozen=True)
@@ -28,10 +29,12 @@ class Provider:
     default_model: str | None = None    # None: keep the config's model names
     reasoning_effort: str | None = None
     default_key: str | None = None      # for servers that ignore the key, such as Ollama
+    old_key_var: str | None = None      # an earlier name for the key, still read so old .env files work
 
 
 PROVIDERS = {
-    "gemini": Provider("Gemini", "LLM_API_KEY", "LLM_BASE_URL", reasoning_effort="minimal"),
+    "gemini": Provider("Gemini", "GEMINI_API_KEY", "GEMINI_BASE_URL", GEMINI_BASE_URL,
+                       reasoning_effort="minimal", old_key_var="LLM_API_KEY"),
     # gpt-oss accepts low / medium / high, not Gemini's "minimal"
     "groq": Provider("Groq", "GROQ_API_KEY", "GROQ_BASE_URL", "https://api.groq.com/openai/v1",
                      "GROQ_MODEL", "openai/gpt-oss-20b", reasoning_effort="low"),
@@ -49,11 +52,12 @@ def _get(name: str) -> Provider:
 
 def _endpoint(p: Provider) -> tuple[str | None, str | None]:
     _client.load_env()
-    return os.environ.get(p.base_var) or p.default_base, os.environ.get(p.key_var) or p.default_key
+    key = os.environ.get(p.key_var) or (os.environ.get(p.old_key_var) if p.old_key_var else None)
+    return os.environ.get(p.base_var) or p.default_base, key or p.default_key
 
 
 def use_key_set(name: str, providers: list[str]) -> list[str]:
-    """Point each provider at its key from set `name` (GROQ_API_KEY_<name>, LLM_API_KEY_<name>), so
+    """Point each provider at its key from set `name` (GROQ_API_KEY_<name>, GEMINI_API_KEY_<name>), so
     several runs can share the work across accounts. A provider with no key in the set keeps its
     usual key. Returns the variables that were switched."""
     _client.load_env()
