@@ -19,10 +19,13 @@ GRID = np.round(np.arange(-4.0, 4.0 + 1e-9, 0.05), 2)
 PRIOR_MEAN = 0.0
 PRIOR_SD = 1.0
 
-# Estimate -> level: lower edge of levels 1, 2 and 3
-LEVEL_CUTS = (-1.5, -0.5, 0.5)
+# Estimate -> level: lower edge of levels 1, 2 and 3. A level-L candidate answers level-L
+# questions fully and level L+1 questions about half the time, which puts their estimate
+# about half a step above DIFFICULTY[L]; the cuts sit 0.25 above the midpoints between the
+# difficulties to match (tuned on stub runs, 2026-10-26: this removed a +0.25 level bias).
+LEVEL_CUTS = (-1.25, -0.25, 0.75)
 # Cut for a job minimum m (the theta at which a candidate reaches level m)
-MINIMUM_CUT = {0: -math.inf, 1: -1.5, 2: -0.5, 3: 0.5}
+MINIMUM_CUT = {0: -math.inf, 1: LEVEL_CUTS[0], 2: LEVEL_CUTS[1], 3: LEVEL_CUTS[2]}
 
 
 def pcm_probs(theta, difficulty: float) -> np.ndarray:
