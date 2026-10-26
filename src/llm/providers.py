@@ -5,7 +5,8 @@
     ollama  a local Ollama server, no key needed; optional OLLAMA_BASE_URL and OLLAMA_MODEL
             (default llama3)
 
-Keys come from the environment / .env only, like everywhere else.
+Keys come from the environment / .env only, like everywhere else. Extra accounts' keys can sit
+beside the usual ones with a suffix (GROQ_API_KEY_2, LLM_API_KEY_2) and be chosen with use_key_set.
 """
 
 from __future__ import annotations
@@ -49,6 +50,20 @@ def _get(name: str) -> Provider:
 def _endpoint(p: Provider) -> tuple[str | None, str | None]:
     _client.load_env()
     return os.environ.get(p.base_var) or p.default_base, os.environ.get(p.key_var) or p.default_key
+
+
+def use_key_set(name: str, providers: list[str]) -> list[str]:
+    """Point each provider at its key from set `name` (GROQ_API_KEY_<name>, LLM_API_KEY_<name>), so
+    several runs can share the work across accounts. A provider with no key in the set keeps its
+    usual key. Returns the variables that were switched."""
+    _client.load_env()
+    switched = []
+    for p in {_get(n) for n in providers}:
+        key = os.environ.get(f"{p.key_var}_{name}")
+        if key:
+            os.environ[p.key_var] = key
+            switched.append(p.key_var)
+    return sorted(switched)
 
 
 def provider_status(name: str) -> tuple[bool, str]:

@@ -9,7 +9,7 @@ from jsonschema import Draft202012Validator
 from engine_support import ROOT, real_bank
 from fake_llm import FakeLLM
 from part4.candidates import make_candidates, true_fit, true_levels, truth_for
-from part4.metrics import load_results, macro_f1, summarise, targets
+from part4.metrics import load_results, macro_f1, paired, summarise, target_intervals, targets
 from part4.respondent import SimulatedRespondent
 from part4.runner import Setup, run_experiment
 from part4.simulator import LLMCandidateSimulator
@@ -134,6 +134,19 @@ def test_metrics_on_the_stub_run(tmp_path, candidates):
     assert 0 < a2["recall"] <= 1 and a2["false_alarm_rate"] == 0.0
     rows = targets(summaries)
     assert [r["passed"] is not None for r in rows] == [True] * 4
+
+
+def test_systems_are_compared_on_the_same_candidates_with_intervals(tmp_path, candidates):
+    run_experiment(["B1"], candidates[:4], JOBS, Setup(), tmp_path, report=lambda *_: None)
+    run_experiment(["A2"], candidates[:3], JOBS, Setup(), tmp_path, report=lambda *_: None)   # cut short
+    by_system = paired(load_results(tmp_path))
+    assert [len(by_system[s]) for s in ("B1", "A2")] == [3, 3]
+    summaries = {s: summarise(rs) for s, rs in by_system.items()}
+    intervals = target_intervals(by_system, samples=200)
+    for row in targets(summaries):
+        if row["value"] is not None:
+            low, high = intervals[row["target"]]
+            assert low <= row["value"] <= high
 
 
 def test_macro_f1_exposes_always_guessing_the_common_level():
