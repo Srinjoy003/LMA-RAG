@@ -104,8 +104,8 @@ def test_harder_questions_answered_correctly_count_for_more():
     assert hard.estimate > easy.estimate
 
 
-@pytest.mark.parametrize("theta,level", [(-4, 0), (-1.51, 0), (-1.5, 1), (-0.51, 1), (-0.5, 2),
-                                         (0.49, 2), (0.5, 3), (4, 3)])
+@pytest.mark.parametrize("theta,level", [(-4, 0), (-1.26, 0), (-1.25, 1), (-0.26, 1), (-0.25, 2),
+                                         (0.74, 2), (0.75, 3), (4, 3)])
 def test_estimate_to_level(theta, level):
     assert level_of(theta) == level
 
@@ -122,8 +122,8 @@ def test_nearest_level_tie_goes_to_the_lower_level():
 def test_probability_of_meeting_a_minimum():
     prior = SkillScore()
     assert prior.prob_at_least(MINIMUM_CUT[0]) == 1.0
-    assert prior.prob_at_least(MINIMUM_CUT[2]) == pytest.approx(0.69, abs=0.02)   # P(Z >= -0.5)
-    assert prior.prob_at_least(MINIMUM_CUT[3]) == pytest.approx(0.31, abs=0.02)   # P(Z >= 0.5)
+    assert prior.prob_at_least(MINIMUM_CUT[2]) == pytest.approx(0.60, abs=0.02)   # P(Z >= -0.25)
+    assert prior.prob_at_least(MINIMUM_CUT[3]) == pytest.approx(0.23, abs=0.02)   # P(Z >= 0.75)
     cuts = [prior.prob_at_least(MINIMUM_CUT[m]) for m in (0, 1, 2, 3)]
     assert cuts == sorted(cuts, reverse=True)
 

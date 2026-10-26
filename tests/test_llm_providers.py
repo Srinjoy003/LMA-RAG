@@ -37,6 +37,15 @@ def test_client_uses_the_provider_endpoint(clean_env):
         providers.provider_client("gemini")
 
 
+def test_a_key_set_switches_only_the_providers_it_has_a_key_for(clean_env):
+    clean_env.setenv("GROQ_API_KEY", "mine")
+    clean_env.setenv("LLM_API_KEY", "mine-too")
+    clean_env.setenv("GROQ_API_KEY_2", "friends")
+    assert providers.use_key_set("2", ["gemini", "groq"]) == ["GROQ_API_KEY"]
+    assert providers.provider_client("groq")._api_key == "friends"
+    assert providers.use_key_set("3", ["groq"]) == []
+
+
 def test_ollama_needs_no_key_and_sends_no_reasoning_effort(clean_env):
     assert providers.provider_status("ollama")[0] is True
     assert providers.provider_client("ollama").base_url == "http://localhost:11434/v1"

@@ -2,12 +2,14 @@
 
 Every result carries the ground truth (`result["truth"]`: true levels, true fit, planted
 misconceptions) and, per reply, what the candidate was told to do (`turn["truth"]`).
-`summarise` measures one system; `targets` checks the method against the baseline.
+`summarise` measures one system; `targets` checks the method against the baseline, and
+`target_intervals` says how far a small run's target values can be trusted.
 """
 
 from __future__ import annotations
 
 import json
+import random
 from collections import defaultdict
 from pathlib import Path
 
@@ -23,6 +25,13 @@ def load_results(run_dir: Path) -> dict[str, list[dict]]:
         result = json.loads(path.read_text(encoding="utf-8"))
         by_system[result["system"]].append(result)
     return dict(by_system)
+
+
+def paired(by_system: dict[str, list[dict]]) -> dict[str, list[dict]]:
+    """Only the candidates every system has a result for, so a run cut short by a quota
+    limit still compares the systems on the same people."""
+    common = set.intersection(*({r["candidate_id"] for r in results} for results in by_system.values()))
+    return {s: [r for r in results if r["candidate_id"] in common] for s, results in by_system.items()}
 
 
 def ratio(part: float, whole: float) -> float | None:
@@ -143,3 +152,26 @@ def targets(summaries: dict[str, dict], method: str = "A2", baseline: str = "B1"
              lambda v: v < TARGETS["false_alarm_rate"])]
     return [{"target": name, "value": value, "passed": None if value is None else check(value)}
             for name, value, check in rows]
+
+
+def target_intervals(by_system: dict[str, list[dict]], method: str = "A2", baseline: str = "B1",
+                     samples: int = 2000, seed: int = 0) -> dict[str, tuple[float, float]]:
+    """95% bootstrap interval for each target's value: draw the candidates with replacement (the
+    same draw for both systems, as the results are paired) and recompute. Needs paired results."""
+    by_id = {s: {r["candidate_id"]: r for r in by_system[s]} for s in (method, baseline) if s in by_system}
+    ids = sorted(next(iter(by_id.values()), {}))
+    rng = random.Random(seed)
+    values = defaultdict(list)
+    for _ in range(samples):
+        draw = rng.choices(ids, k=len(ids))
+        summaries = {s: summarise([results[i] for i in draw]) for s, results in by_id.items()}
+        for row in targets(summaries, method, baseline):
+            if row["value"] is not None:
+                values[row["target"]].append(row["value"])
+    return {name: percentile_interval(vs) for name, vs in values.items()}
+
+
+def percentile_interval(values: list[float], level: float = 0.95) -> tuple[float, float]:
+    values = sorted(values)
+    tail = (1 - level) / 2
+    return values[int(tail * len(values))], values[min(len(values) - 1, int((1 - tail) * len(values)))]

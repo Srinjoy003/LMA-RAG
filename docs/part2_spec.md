@@ -44,7 +44,7 @@ OpenAI-format function schemas (`agent.TOOLS`). Candidate replies come back to t
 | `ask_candidate(question_id)` | Shows that question word for word and returns the reply | No question chosen; `question_id` is not the chosen one; already asked |
 | `grade_answer()` | Provisional grade, diagnosis, and whether a follow-up is allowed | Not asked yet |
 | `ask_follow_up()` | Asks the diagnosis's suggested follow-up (the model cannot change its words) and returns the reply and the new diagnosis | Not allowed: score 2, plain gap, misconception already confirmed, system without follow-ups, or `max_follow_ups` reached |
-| `update_scorecard()` | Final grade of the whole exchange and the scorecard update; says whether `can_end_interview` | Not graded yet; a required follow-up is still open |
+| `update_scorecard()` | Final grade of the whole exchange and the scorecard update; says whether `can_end_interview`, and when it can, the computed `outcome` (recommendation, reason, levels against minimums) so the summary agrees with it | Not graded yet; a required follow-up is still open |
 | `end_interview(summary)` | Produces the report; the model's `summary` becomes `report.summary` (the engine's own text is kept as `report.engine_summary`) | The stop rule is not met; a question is open |
 
 Loop: system prompt, then repeated `llm.complete(messages, model=config.models.interviewer, tools=TOOLS)`. The assistant `raw_message` is appended unchanged, then one `tool` message per call. A reply without a tool call gets a nudge. After `max_agent_steps` (default 150) LLM calls without `end_interview` the interview ends with `stop_reason: "error"`.
@@ -69,10 +69,12 @@ There is one scorecard per skill (py, sql, ds).
 
 | θ | Level |
 | --- | --- |
-| below −1.5 | 0 (below level 1) |
-| −1.5 to −0.5 | 1 |
-| −0.5 to +0.5 | 2 |
-| +0.5 and above | 3 |
+| below −1.25 | 0 (below level 1) |
+| −1.25 to −0.25 | 1 |
+| −0.25 to +0.75 | 2 |
+| +0.75 and above | 3 |
+
+The cuts sit 0.25 above the midpoints between the level difficulties. A level-L candidate answers level-L questions fully and level L+1 questions about half the time, which puts their estimate about half a step above level L's difficulty; with the midpoint cuts (−1.5, −0.5, +0.5) every system placed candidates about a quarter level too high (stub runs, 2026-10-26).
 
 ## 3. Turn flow
 
@@ -130,7 +132,7 @@ Follow-ups don't count toward the cap, but they do count in `exchanges`.
 
 ## 6. Fit decision and report (`src/engine/report.py`)
 
-- **Skill against the job minimum m.** The cut for m is −∞ (m = 0), −1.5 (1), −0.5 (2) or +0.5 (3). From the posterior, p = P(θ ≥ cut).
+- **Skill against the job minimum m.** The cut for m is the lower edge of level m: −∞ (m = 0), −1.25 (1), −0.25 (2) or +0.75 (3). From the posterior, p = P(θ ≥ cut).
     - **meets** if p ≥ 0.8
     - **below** if p ≤ 0.2
     - **uncertain** otherwise
@@ -208,10 +210,11 @@ Choices made where the spec was silent or ambiguous. None of the spec's numbers 
 - **Evidence weight** is the grader's `agreement` as reported (so 2/3 stays 0.667, not 0.67), multiplied by `generated_weight` (0.5) for a question whose `source` is `generated-live`. Bank questions have `source: "generated"` (written offline by an LLM), so they count as bank questions with full weight. Only `generated-live` questions get `question_source: "generated"` in the result.
 - **Start level:** `start_level` moves the prior mean to that level's difficulty (level 2 gives the spec's mean 0).
 - **Too little data:** a skill with fewer than 2 graded main questions is always `uncertain` against the job minimum. Otherwise the prior alone says "meets" for minimums 0 and 1 (P(θ ≥ −1.5) is 0.93 under Normal(0, 1)), for example when a skill's questions run out.
-- **Pilot items:** with the placeholder numbers the SE threshold 0.6 needs about 4 to 6 main questions per skill. A very strong or very weak candidate often reaches `max_questions` (15) with SE just above 0.6, because questions far from their ability carry little information. A candidate who is right at level 1 and wrong at level 2 gets an estimate near −0.3, which is level 2. Both are for the pilot to tune.
+- **Pilot items:** with the placeholder numbers the SE threshold 0.6 needs about 4 to 6 main questions per skill. A very strong or very weak candidate often reaches `max_questions` (15) with SE just above 0.6, because questions far from their ability carry little information. A candidate who is right at level 1 and wrong at level 2 gets an estimate near −0.3, which is level 2. Both are for the pilot to tune. Tuned on stub runs (2026-10-26, below): the level cuts moved up by 0.25, which fixed the second; the first now costs almost nothing (raising the cap to 18 adds 0.2 questions on average).
 
 **Selection and stopping**
-- **Ties:** a tie between two level difficulties (estimate exactly ±0.5) goes to the lower level. SE ties are compared to 9 decimals.
+- **Stopping, tuned on stub runs (2026-10-26).** 180 freshly generated candidates (seeds 777–779, not the 60 used for evaluation), perfect stub grader. With the new cuts, B1 (12 questions) places 70% of skill levels right; A2 at SE 0.6 / cap 15 asks 15.2 exchanges and places 79% right, with 0.6% not-fit candidates passed as fit and 45% of planted misconceptions confirmed. Stopping earlier loses accuracy (SE 0.7: 10.1 exchanges, 71%; a fit-decision stop at 9 questions: about 8–10 exchanges, 67–68%, more wrong verdicts or more deferrals); asking longer gains little (SE 0.55: 18.9 exchanges, 81%). Kept SE 0.6 and cap 15: the evaluation's quality comes first, so A2 is not tuned to reach "25% fewer exchanges than B1".
+- **Ties:** a tie between two level difficulties (estimate exactly ±0.5) goes to the lower level when choosing a question's level. SE ties are compared to 9 decimals.
 - **Ranking:** with `probe_missed_topics` off, the three rules are exclusive tiers. A question that covers an untested required topic *and* lists a suspected misconception is tier 1. Ties inside the best tier are random (seeded) after sorting candidates by id. With it on, the four rules are compared one after the other (lexicographic), with the same tie-break.
 - **Probing:** "scored < 2" is the final grade of the earlier main question. "Whose misconception was not confirmed" means no misconception that won a diagnosis vote on a reply to that question is confirmed (a suspected one still leaves the topic open). "Not yet probed" counts the questions asked so far, the open one included. The reason text of a turn says which rule applied.
 - **Measured recall (stubs, A2, 10 generated candidates, seed 0):** planted misconceptions confirmed 4 of 16 without probing and 8 of 16 with it; probed at all 4 and 8. Over 5 seeds (80 planted): confirmed 23 and 32, probed 23 and 34. No false positives, and the mean interview length stayed about the same (12.8 and 12.9 main questions over 5 seeds). `scripts/misconception_recall.py` repeats it.

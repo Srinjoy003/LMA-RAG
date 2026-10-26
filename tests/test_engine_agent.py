@@ -346,6 +346,24 @@ def test_follow_ups_over_the_limit_are_refused_and_a_required_one_cannot_be_skip
     assert_valid(result)
 
 
+def test_the_agent_sees_the_outcome_before_writing_its_summary():
+    llm = ScriptedLLM()
+    result = agent_run(STRONG, llm, max_questions=3)
+    updates = [r for name, r in tool_results(llm.sent[-1]) if name == "update_scorecard"]
+    assert ["outcome" in r for r in updates] == [False, False, True]   # only once it may end
+    outcome = updates[-1]["outcome"]
+    assert outcome["recommendation"] == result["report"]["decision"]
+    assert outcome["reason"] == result["report"]["decision_reason"]
+    assert {s: o["level"] for s, o in outcome["levels"].items()} == \
+        {s: r["level"] for s, r in result["report"]["levels"].items()}
+
+
+def tool_results(messages):
+    """(tool name, result) for every tool message, in order."""
+    names = {c["id"]: c["function"]["name"] for m in messages for c in m.get("tool_calls") or []}
+    return [(names[m["tool_call_id"]], json.loads(m["content"])) for m in messages if m["role"] == "tool"]
+
+
 def test_end_interview_is_refused_until_the_stop_rule_is_met():
     llm, tried = ScriptedLLM(), []
 

@@ -67,6 +67,21 @@ Interviews that failed are not saved, so every metric is over completed intervie
 
 **Targets** (A2 against B1), checked by `evaluate.py`: at least 25% fewer exchanges; skill accuracy at most 5 percentage points below B1; recall at least 60%; false alarms below 15%.
 
+`evaluate.py` compares the systems only on candidates they all have results for, and gives each target a 95% bootstrap interval over the candidates (the same draw for every system). On a small run, report the interval with the value: a target whose whole interval is on one side is a clear result; one whose interval crosses the threshold is not settled.
+
+## Subset run
+
+The full run is 240 interviews. The smallest fair comparison is the first 12 candidates on B1 and A2 (24 interviews): candidates come in blocks of 12 that cover each job × even/uneven × fit/not-fit once, and the first block includes one manipulation attempt (CAND-008). Grow it by 12 at a time; finished interviews are kept.
+
+To share the work across accounts, put each extra key in `.env` with a suffix (`GROQ_API_KEY_2`, `GROQ_API_KEY_3`; `LLM_API_KEY_2` for Gemini) and start one run per account in its own terminal, all with the same `--run` name: `--share 1/3`, `--share 2/3 --keys 2`, `--share 3/3 --keys 3`. Each takes every third candidate, so the merged results are the same as one run.
+
+```bash
+.venv/bin/python scripts/run_experiment.py --grader gemini --simulator groq --simulator-model openai/gpt-oss-120b --candidates 12 --systems B1 A2 --run subset
+.venv/bin/python scripts/evaluate.py --run subset --json results/subset/metrics.json
+```
+
 ## First stub run (2026-10-23)
 
 60 candidates × B1, A2, A4, A5. Skill accuracy B1 57%, A2 71%; exchanges B1 12.0, A2 15.2 (target missed: 27% more, not 25% fewer); A2 recall 52% (43 of 82); no false alarms; review rate A2 48%. These come from a perfect stub grader, so they show the engine's behaviour, not the system's real accuracy.
+
+Re-run 2026-10-26 after moving the level cuts up 0.25 (docs/part2_spec.md, "Stopping, tuned on stub runs"): skill accuracy B1 60%, A2 78% (+17.8 points, 95% CI +9.4 to +25.6); fit accuracy on decided cases B1 83%, A2 97%; not-fit passed as fit B1 3.3%, A2 1.7%; exchanges unchanged (B1 12.0, A2 15.2); A2 recall 52%. A2 keeps its length on purpose: shortening it to 25% fewer exchanges than B1 cost accuracy and verdict quality.

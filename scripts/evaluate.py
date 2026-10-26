@@ -2,6 +2,9 @@ r"""Compute the evaluation metrics for one experiment run (see src/part4/metrics
 
     .venv/bin/python scripts/evaluate.py --run stub-stub
     .venv/bin/python scripts/evaluate.py --run main --json results/main/metrics.json
+
+Systems are compared on the candidates they all have results for. Each target also gets a 95%
+bootstrap interval over the candidates, so a small run shows how much its numbers can move.
 """
 
 import argparse
@@ -12,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from part4.metrics import load_results, summarise, targets  # noqa: E402
+from part4.metrics import load_results, paired, summarise, target_intervals, targets  # noqa: E402
 from part4.runner import RESULTS_DIR  # noqa: E402
 
 ROWS = [  # (label, metric, format)
@@ -40,6 +43,10 @@ def show(value, fmt: str) -> str:
     return "-" if value is None else fmt.format(value)
 
 
+def show_target(value, target: str) -> str:
+    return f"{value:+.1f} points" if "points" in target else f"{value:.1%}"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run", default="stub-stub", help="results/<run>/ folder")
@@ -48,9 +55,13 @@ def main() -> int:
     parser.add_argument("--json", type=Path, help="also write all numbers to this file")
     args = parser.parse_args()
 
-    by_system = load_results(RESULTS_DIR / args.run)
-    if not by_system:
+    all_results = load_results(RESULTS_DIR / args.run)
+    if not all_results:
         parser.error(f"no results in {RESULTS_DIR / args.run}: run scripts/run_experiment.py first")
+    by_system = paired(all_results)
+    left_out = sum(len(rs) for rs in all_results.values()) - sum(len(rs) for rs in by_system.values())
+    if left_out:
+        print(f"Left out {left_out} results whose candidate is missing from another system.\n")
     systems = sorted(by_system, key=lambda s: (s != args.baseline, s))
     summaries = {s: summarise(by_system[s]) for s in systems}
 
@@ -64,10 +75,14 @@ def main() -> int:
 
     print(f"\nTargets ({args.method} against {args.baseline})")
     rows = targets(summaries, args.method, args.baseline)
+    intervals = target_intervals(by_system, args.method, args.baseline)
     for row in rows:
         mark = {True: "PASS", False: "FAIL", None: "n/a "}[row["passed"]]
-        value = "-" if row["value"] is None else (f"{row['value']:+.1f} points" if "points" in row["target"]
-                                                  else f"{row['value']:.1%}")
+        value = "-" if row["value"] is None else show_target(row["value"], row["target"])
+        if row["target"] in intervals:
+            low, high = intervals[row["target"]]
+            row["interval"] = [low, high]
+            value += f"  (95% CI {show_target(low, row['target'])} to {show_target(high, row['target'])})"
         print(f"  {mark}  {row['target']}: {value}")
 
     if args.json:
