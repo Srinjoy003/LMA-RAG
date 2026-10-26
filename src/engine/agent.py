@@ -33,7 +33,7 @@ Procedure for every main question:
 3. grade_answer: returns the provisional grade, the diagnosis of the reply and whether a follow-up is allowed.
 4. While follow_up_allowed is true, call ask_follow_up. It asks the follow-up the diagnosis suggested (you cannot change its wording) and returns the reply and the new diagnosis.
 5. update_scorecard: records the final grade and updates the scorecard. It is refused while a required follow-up is still open.
-Then go back to step 1, unless update_scorecard says can_end_interview is true. When it does, call end_interview with a short plain-language summary for the human reviewer: the candidate's strengths and weak areas by skill, and any misconception found. Do not state a hiring decision; the system computes it. end_interview is refused until the stop rule is met.
+Then go back to step 1, unless update_scorecard says can_end_interview is true. When it does, update_scorecard also returns the outcome the system computed: the recommendation, its reason and each skill's level against the job's minimum. Then call end_interview with a short plain-language summary for the human reviewer: the candidate's strengths and weak areas by skill, and any misconception found. The summary must agree with that outcome: describe the levels as given, and for "needs_review" say the evidence is not conclusive rather than calling the candidate strong or weak overall. Do not state a hiring decision of your own. end_interview is refused until the stop rule is met.
 
 Rules:
 - Call exactly the tools above, one step at a time, in this order. Do not skip steps.
@@ -73,7 +73,8 @@ TOOLS: list[dict] = [
     {"type": "function", "function": {
         "name": "end_interview",
         "description": "Finish the interview and produce the report. Refused until the stop rule is met. "
-                       "Your summary becomes the report's summary.",
+                       "Your summary becomes the report's summary and must agree with the outcome "
+                       "update_scorecard returned.",
         "parameters": {"type": "object", "properties": {"summary": {"type": "string"}},
                        "required": ["summary"]}}},
 ]
@@ -217,11 +218,14 @@ class AgentRun:
             raise Refused(update["error"])
         self.turns.append(build_turn(self.found, self.answer, exchange, update))
         self.found = self.answer = self.exchange = None
-        return {"grade": {"score": update["grade"]["score"], "votes": update["grade"]["votes"]},
-                "scorecard": update["scorecard"],
-                "misconceptions_so_far": self.state.tracker.findings(),
-                "questions_asked": len(self.turns),
-                "can_end_interview": check_stop(self.state) is not None}
+        result = {"grade": {"score": update["grade"]["score"], "votes": update["grade"]["votes"]},
+                  "scorecard": update["scorecard"],
+                  "misconceptions_so_far": self.state.tracker.findings(),
+                  "questions_asked": len(self.turns),
+                  "can_end_interview": check_stop(self.state) is not None}
+        if result["can_end_interview"]:
+            result["outcome"] = self._outcome()
+        return result
 
     def tool_end_interview(self, summary: str) -> dict:
         ended = self.tools.end_interview()
@@ -235,6 +239,13 @@ class AgentRun:
     @staticmethod
     def _clip(text: str) -> str:
         return text if len(text) <= MAX_REPLY_CHARS else text[:MAX_REPLY_CHARS] + " [cut]"
+
+    def _outcome(self) -> dict:
+        """What the report will say, so the agent's summary can agree with it."""
+        preview = report.build_report(self.state)
+        return {"recommendation": preview["decision"], "reason": preview["decision_reason"],
+                "levels": {skill: {"level": r["level"], "minimum": r["minimum"]}
+                           for skill, r in preview["levels"].items()}}
 
     def _why_no_follow_up(self) -> str:
         exchange, config = self.exchange, self.config
