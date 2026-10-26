@@ -73,7 +73,7 @@ Interviews that failed are not saved, so every metric is over completed intervie
 
 The full run is 240 interviews. The smallest fair comparison is the first 12 candidates on B1 and A2 (24 interviews): candidates come in blocks of 12 that cover each job × even/uneven × fit/not-fit once, and the first block includes one manipulation attempt (CAND-008). Grow it by 12 at a time; finished interviews are kept.
 
-To share the work across accounts, put each extra key in `.env` with a suffix (`GROQ_API_KEY_2`, `GROQ_API_KEY_3`; `LLM_API_KEY_2` for Gemini) and start one run per account in its own terminal, all with the same `--run` name: `--share 1/3`, `--share 2/3 --keys 2`, `--share 3/3 --keys 3`. Each takes every third candidate, so the merged results are the same as one run.
+To share the work across accounts, put each extra key in `.env` with a suffix (`GROQ_API_KEY_2`, `GROQ_API_KEY_3`; `GEMINI_API_KEY_2` for Gemini) and start one run per account in its own terminal, all with the same `--run` name: `--share 1/3`, `--share 2/3 --keys 2`, `--share 3/3 --keys 3`. Each takes every third candidate, so the merged results are the same as one run.
 
 ```bash
 .venv/bin/python scripts/run_experiment.py --grader gemini --simulator groq --simulator-model openai/gpt-oss-120b --candidates 12 --systems B1 A2 --run subset

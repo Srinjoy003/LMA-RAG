@@ -6,7 +6,7 @@ from engine.factory import FactoryError, build_components, live_status
 from llm import providers
 from shared.interfaces import SYSTEMS
 
-ENV = ("LLM_API_KEY", "LLM_BASE_URL", "GROQ_API_KEY", "GROQ_BASE_URL", "GROQ_MODEL",
+ENV = ("LLM_API_KEY", "LLM_BASE_URL", "GEMINI_API_KEY", "GEMINI_BASE_URL", "GROQ_API_KEY", "GROQ_BASE_URL", "GROQ_MODEL",
        "OLLAMA_API_KEY", "OLLAMA_BASE_URL", "OLLAMA_MODEL")
 
 
@@ -22,7 +22,7 @@ def test_status_names_the_missing_variable(clean_env):
     ok, message = providers.provider_status("groq")
     assert ok is False and "GROQ_API_KEY" in message and "GROQ_BASE_URL" not in message   # base has a default
     ok, message = providers.provider_status("gemini")
-    assert ok is False and "LLM_API_KEY" in message and "LLM_BASE_URL" in message
+    assert ok is False and "GEMINI_API_KEY" in message and "BASE_URL" not in message   # base has a default
     clean_env.setenv("GROQ_API_KEY", "test-key")
     assert providers.provider_status("groq")[0] is True
     assert live_status("groq")[0] is True and live_status("nope")[0] is False
@@ -33,8 +33,16 @@ def test_client_uses_the_provider_endpoint(clean_env):
     client = providers.provider_client("groq")
     assert client.base_url.startswith("https://api.groq.com/openai/v1")
     assert providers.provider_client("groq") is client          # shared per endpoint and key
-    with pytest.raises(RuntimeError, match="LLM_API_KEY"):
+    with pytest.raises(RuntimeError, match="GEMINI_API_KEY"):
         providers.provider_client("gemini")
+
+
+def test_gemini_reads_its_own_key_name_and_still_the_old_one(clean_env):
+    clean_env.setenv("LLM_API_KEY", "old-name")
+    client = providers.provider_client("gemini")
+    assert client._api_key == "old-name" and "generativelanguage.googleapis.com" in client.base_url
+    clean_env.setenv("GEMINI_API_KEY", "new-name")
+    assert providers.provider_client("gemini")._api_key == "new-name"     # the new name wins
 
 
 def test_a_key_set_switches_only_the_providers_it_has_a_key_for(clean_env):
@@ -44,6 +52,9 @@ def test_a_key_set_switches_only_the_providers_it_has_a_key_for(clean_env):
     assert providers.use_key_set("2", ["gemini", "groq"]) == ["GROQ_API_KEY"]
     assert providers.provider_client("groq")._api_key == "friends"
     assert providers.use_key_set("3", ["groq"]) == []
+    clean_env.setenv("GEMINI_API_KEY_2", "friends-gemini")
+    assert providers.use_key_set("2", ["gemini"]) == ["GEMINI_API_KEY"]
+    assert providers.provider_client("gemini")._api_key == "friends-gemini"   # over the old LLM_API_KEY
 
 
 def test_ollama_needs_no_key_and_sends_no_reasoning_effort(clean_env):

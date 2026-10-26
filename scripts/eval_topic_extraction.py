@@ -5,7 +5,7 @@ against `required_topics`, plus the missed and extra topics.
 
     .venv\Scripts\python.exe scripts\eval_topic_extraction.py
 
-The endpoint and key come from LLM_BASE_URL / LLM_API_KEY (environment or the project's .env;
+The endpoint and key come from GEMINI_API_KEY (or LLM_BASE_URL / LLM_API_KEY) (environment or the project's .env;
 see docs/llm.md). Optional: TOPIC_MODEL=<model id> to use another model. Answers are cached
 under .cache/llm, so a re-run makes no calls (LLM_CACHE=0 to force fresh ones).
 """

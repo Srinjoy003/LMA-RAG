@@ -25,6 +25,7 @@ from typing import Any, Callable
 import httpx
 
 ROOT = Path(__file__).resolve().parents[2]
+GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
 # Lowest `reasoning_effort` that gemini-flash-latest accepts through the OpenAI-compatible
 # endpoint (see docs/llm.md). Used for grading, diagnosis and topic extraction.
@@ -336,15 +337,18 @@ _clients: dict[tuple[str, str], OpenAICompatClient] = {}
 
 def get_client(role: str | None = None) -> OpenAICompatClient:
     """Client for `role`. Reads (after loading .env) LLM_BASE_URL_<ROLE> / LLM_API_KEY_<ROLE>
-    first and falls back to LLM_BASE_URL / LLM_API_KEY. Clients with the same endpoint and
-    key share one instance, so the minimum call interval holds across roles."""
+    first, then LLM_BASE_URL / LLM_API_KEY, then GEMINI_API_KEY on Gemini's endpoint. Clients
+    with the same endpoint and key share one instance, so the minimum call interval holds
+    across roles."""
     load_env()
     suffix = "_" + re.sub(r"[^A-Za-z0-9]+", "_", role).upper() if role else ""
     base = (os.environ.get(f"LLM_BASE_URL{suffix}") if suffix else None) or os.environ.get("LLM_BASE_URL")
     key = (os.environ.get(f"LLM_API_KEY{suffix}") if suffix else None) or os.environ.get("LLM_API_KEY")
+    if not key and os.environ.get("GEMINI_API_KEY"):
+        base, key = GEMINI_BASE_URL, os.environ["GEMINI_API_KEY"]
     if not base or not key:
         names = [f"LLM_BASE_URL{suffix}", f"LLM_API_KEY{suffix}"] if suffix else []
-        raise RuntimeError("LLM_BASE_URL and LLM_API_KEY must be set (environment or .env)"
+        raise RuntimeError("GEMINI_API_KEY, or LLM_BASE_URL and LLM_API_KEY, must be set (environment or .env)"
                            + (f"; per-role overrides: {', '.join(names)}" if names else ""))
     return client_for(base, key)
 

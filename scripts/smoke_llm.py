@@ -53,7 +53,7 @@ def wrong_answer_for(bank, q: dict) -> tuple[str | None, str | None]:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--provider", choices=sorted(PROVIDERS),
-                    help="use this provider's endpoint, key, model and effort (default: LLM_BASE_URL / LLM_API_KEY)")
+                    help="use this provider's endpoint, key, model and effort (default: GEMINI_API_KEY, or LLM_BASE_URL / LLM_API_KEY)")
     ap.add_argument("--model", default=None, help="default: the provider's model, else gemini-3.5-flash-lite")
     ap.add_argument("--votes", type=int, default=3)
     ap.add_argument("--effort", default=None,

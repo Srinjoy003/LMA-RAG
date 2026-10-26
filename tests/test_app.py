@@ -67,7 +67,7 @@ def test_offline_session_runs_to_a_finished_result(app):
 
 
 def test_live_mode_without_a_key_gives_a_clear_message(app, monkeypatch):
-    for name in ("LLM_API_KEY", "LLM_BASE_URL"):
+    for name in ("LLM_API_KEY", "LLM_BASE_URL", "GEMINI_API_KEY"):
         monkeypatch.delenv(name, raising=False)
     monkeypatch.setattr("llm.client.load_env", lambda path=None: {})
     with pytest.raises(FactoryError, match="API key"):
@@ -127,7 +127,7 @@ def click(at, label):
 def test_app_runs_offline_without_an_api_key(monkeypatch, tmp_path):
     from streamlit.testing.v1 import AppTest
     monkeypatch.setenv("INTERVIEW_RESULTS_DIR", str(tmp_path))
-    for name in ("LLM_API_KEY", "LLM_BASE_URL"):
+    for name in ("LLM_API_KEY", "LLM_BASE_URL", "GEMINI_API_KEY"):
         monkeypatch.delenv(name, raising=False)
     at = AppTest.from_file(str(APP), default_timeout=60).run()
     assert not at.exception
@@ -159,7 +159,7 @@ def test_app_runs_offline_without_an_api_key(monkeypatch, tmp_path):
 def test_app_shows_a_clear_message_for_live_mode_without_a_key(monkeypatch, tmp_path):
     from streamlit.testing.v1 import AppTest
     monkeypatch.setenv("INTERVIEW_RESULTS_DIR", str(tmp_path))
-    for name in ("LLM_API_KEY", "LLM_BASE_URL"):
+    for name in ("LLM_API_KEY", "LLM_BASE_URL", "GEMINI_API_KEY"):
         monkeypatch.delenv(name, raising=False)
     monkeypatch.setattr("llm.client.load_env", lambda path=None: {})
     at = AppTest.from_file(str(APP), default_timeout=60).run()

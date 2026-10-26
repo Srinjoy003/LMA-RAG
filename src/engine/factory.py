@@ -94,7 +94,8 @@ def _question_source(bank, root: Path):
 
 def live_status(provider: str | None = None) -> tuple[bool, str]:
     """(ready, message): is an LLM endpoint and key configured? Never raises.
-    `provider` is a name from `llm.providers.PROVIDERS`; None checks LLM_BASE_URL / LLM_API_KEY."""
+    `provider` is a name from `llm.providers.PROVIDERS`; None checks the default endpoint
+    (LLM_BASE_URL / LLM_API_KEY, or GEMINI_API_KEY)."""
     if provider is not None:
         try:
             return importlib.import_module("llm.providers").provider_status(provider)
@@ -106,17 +107,17 @@ def live_status(provider: str | None = None) -> tuple[bool, str]:
     except Exception as e:
         return False, f"The LLM client could not be loaded ({type(e).__name__}: {e})."
     import os
-    if os.environ.get("LLM_API_KEY") and os.environ.get("LLM_BASE_URL"):
+    if (os.environ.get("LLM_API_KEY") and os.environ.get("LLM_BASE_URL")) or os.environ.get("GEMINI_API_KEY"):
         return True, "LLM endpoint and key found."
-    return False, ("No API key found. Set LLM_BASE_URL and LLM_API_KEY in the environment or in the "
-                   "project's .env file, or switch to the offline stub mode.")
+    return False, ("No API key found. Set GEMINI_API_KEY in the environment or in the project's .env "
+                   "file, or switch to the offline stub mode.")
 
 
 def build_components(config, *, live: bool, root: str | Path | None = None,
                      provider: str | None = None) -> Components:
     """`provider` (live only) picks the endpoint, key and reasoning effort from
     `llm.providers`; pass the config through `apply_provider` first so the model names match.
-    None uses LLM_BASE_URL / LLM_API_KEY with the components' default reasoning effort."""
+    None uses the default endpoint (llm.client.get_client) with the components' default reasoning effort."""
     root = Path(root) if root else ROOT
     from part1.bank import load_bank
     bank = load_bank(root)

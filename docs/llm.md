@@ -4,12 +4,14 @@ Code: `src/llm/client.py` (client), `src/part3/grader.py` (`PromptedGrader`), `s
 
 ## Setup
 
-Put two variables in `.env` in the project root (git-ignored) or in the environment. The environment wins; `.env` never overrides a variable that is already set.
+Put your Gemini key in `.env` in the project root (git-ignored) or in the environment. The environment wins; `.env` never overrides a variable that is already set.
 
 ```
-LLM_API_KEY=...
-LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+GEMINI_API_KEY=...
+GROQ_API_KEY=...        # optional: Groq
 ```
+
+The older pair `LLM_API_KEY` / `LLM_BASE_URL` still works and, when set, is the default endpoint.
 
 ```python
 from llm import get_client
@@ -25,7 +27,8 @@ The key is only read from the environment, sent in the `Authorization` header an
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
-| `LLM_BASE_URL`, `LLM_API_KEY` | required | Default endpoint (any OpenAI-compatible `/chat/completions`) |
+| `GEMINI_API_KEY` | | Gemini key; the default endpoint when `LLM_API_KEY` is not set |
+| `LLM_BASE_URL`, `LLM_API_KEY` | `GEMINI_API_KEY` on Gemini's endpoint | Default endpoint (any OpenAI-compatible `/chat/completions`) |
 | `LLM_BASE_URL_<ROLE>`, `LLM_API_KEY_<ROLE>` | falls back to the defaults | Per-role endpoint, e.g. `LLM_BASE_URL_SIMULATOR` for `get_client("simulator")`. Role names are upper-cased, other characters become `_`. Topic extraction asks for the role `topic_extractor`. |
 | `LLM_CACHE` | `1` | `0` turns the disk cache off |
 | `LLM_CACHE_DIR` | `.cache/llm` | Cache folder |
@@ -94,7 +97,7 @@ All roles default to **`gemini-3.5-flash-lite`**, pinned by exact name: `-latest
 
 | Provider | Variables | Model | `reasoning_effort` |
 | --- | --- | --- | --- |
-| `gemini` | `LLM_BASE_URL`, `LLM_API_KEY` | the config's (`gemini-3.5-flash-lite`) | `minimal` |
+| `gemini` | `GEMINI_API_KEY` (or the older `LLM_API_KEY`), optional `GEMINI_BASE_URL` | the config's (`gemini-3.5-flash-lite`) | `minimal` |
 | `groq` | `GROQ_API_KEY`, optional `GROQ_BASE_URL` (default `https://api.groq.com/openai/v1`) and `GROQ_MODEL` | `openai/gpt-oss-20b` | `low` (gpt-oss rejects `minimal`) |
 | `ollama` | none needed; optional `OLLAMA_BASE_URL` (default `http://localhost:11434/v1`) and `OLLAMA_MODEL` | `llama3` | not sent |
 

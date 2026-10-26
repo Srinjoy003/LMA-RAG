@@ -4,7 +4,7 @@ The model's answer is constrained to the topic ids in data/topics.json by a JSON
 schema whose items are an enum of those ids; anything else is dropped anyway.
 
 The call goes through the provider-agnostic `LLMClient` (src/llm); endpoint and key come
-from LLM_BASE_URL / LLM_API_KEY (environment or .env).
+from GEMINI_API_KEY, or LLM_BASE_URL / LLM_API_KEY (environment or .env).
 """
 
 from __future__ import annotations

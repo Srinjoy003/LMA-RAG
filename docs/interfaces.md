@@ -80,7 +80,7 @@ A candidate key is the hidden truth about one simulated candidate. The interview
 - **`LLMClient` is provider-agnostic.** It uses the OpenAI-compatible format (Gemini, Groq, NVIDIA NIM, OpenRouter).
     - Implementations must **cache** every response, keyed on model, messages, schema and temperature, and **retry** on rate limits.
     - Endpoints and keys come from environment variables, never code:
-        - `LLM_BASE_URL` and `LLM_API_KEY` set the default.
+        - `GEMINI_API_KEY` sets the default (Gemini); `LLM_BASE_URL` and `LLM_API_KEY` override it with any endpoint.
         - Per-role overrides add the role name, for example `LLM_BASE_URL_SIMULATOR` and `LLM_API_KEY_SIMULATOR`.
 - **`Components`** bundles the question source, grader, diagnoser, topic extractor, question generator, LLM client and the misconception records. Any of them can be replaced by a stub.
 

@@ -65,7 +65,7 @@ Sidebar:
 
 - **Job:** from `data/jobs.json`; the description is in an expander.
 - **System preset:** default A2.
-- **Mode:** "Offline stub" (default, no key) or "Live grading (Gemini)". Live mode needs `LLM_BASE_URL` and `LLM_API_KEY` in the environment or in `.env`; without them the app shows a message and does not start.
+- **Mode:** "Offline stub" (default, no key) or "Live grading (Gemini)". Live mode needs `GEMINI_API_KEY` in the environment or in `.env`; without them the app shows a message and does not start.
 - **Show interviewer view:** the live scorecard (estimate, SE, level), provisional grade and diagnosis of the current answer, misconceptions so far, and grades in the history.
 - **Start / Restart.**
 

@@ -88,6 +88,7 @@ def test_missing_credentials_raise(monkeypatch):
     monkeypatch.setattr(client, "_clients", {})
     monkeypatch.delenv("LLM_API_KEY", raising=False)
     monkeypatch.delenv("LLM_API_KEY_TOPIC_EXTRACTOR", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     with pytest.raises(RuntimeError, match="LLM_API_KEY"):
         extract_topics("job", topics=TOPICS)
 

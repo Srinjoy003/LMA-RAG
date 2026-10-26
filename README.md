@@ -16,7 +16,7 @@ python -m venv .venv
 .venv/Scripts/python.exe -m pip install -r requirements.txt
 ```
 
-**2. Add an API key.** Copy `.env.example` to `.env` and put your own free Gemini key in it. Get one at https://aistudio.google.com/apikey. Never commit `.env`.
+**2. Add an API key.** Copy `.env.example` to `.env` and put your own free Gemini key in it as `GEMINI_API_KEY` (and a Groq key as `GROQ_API_KEY` if you use Groq). Get one at https://aistudio.google.com/apikey. Never commit `.env`.
 
 **3. Check everything works:**
 
