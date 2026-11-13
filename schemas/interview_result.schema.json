@@ -238,7 +238,14 @@
         "level": {"enum": [0, 1, 2, 3]},
         "estimate": {"type": "number"},
         "se": {"type": "number"},
-        "confident": {"type": "boolean", "description": "se below the stopping threshold"},
+        "level_probability": {"type": "number", "minimum": 0, "maximum": 1, "description": "Posterior mass inside the reported EAP level band; not empirical accuracy"},
+        "level_probabilities": {"type": "object", "required": ["0", "1", "2", "3"], "properties": {
+          "0": {"type": "number", "minimum": 0, "maximum": 1},
+          "1": {"type": "number", "minimum": 0, "maximum": 1},
+          "2": {"type": "number", "minimum": 0, "maximum": 1},
+          "3": {"type": "number", "minimum": 0, "maximum": 1}
+        }},
+        "confident": {"type": "boolean", "description": "Meets configured SE criterion and, for boundary stopping, the level-band mass criterion"},
         "minimum": {"enum": [0, 1, 2, 3], "description": "The job's minimum for this skill"},
         "meets_minimum": {"type": ["boolean", "null"], "description": "null when not confident"}
       }

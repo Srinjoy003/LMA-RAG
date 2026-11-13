@@ -204,8 +204,9 @@ class InterviewConfig:
     start_level: int = 2                            # prior guess for every skill
 
     # When to stop
-    stop_rule: Literal["uncertainty", "fixed_count", "decision"] = "uncertainty"
+    stop_rule: Literal["uncertainty", "fixed_count", "decision", "level_confidence"] = "uncertainty"
     uncertainty_threshold: float = 0.6   # Rasch standard error (logits); tune on the pilot
+    level_probability_threshold: float = 0.7  # additional gate for level_confidence only
     max_questions: int = 15              # main questions, adaptive mode
     fixed_count: int = 12                # main questions for fixed mode / fixed_count stop rule
 
@@ -266,6 +267,10 @@ SYSTEMS: dict[str, InterviewConfig] = {
     "A2Q": _A2.with_(system="A2Q", misconception_confirmation_unit="question"),
     "A2E": _A2.with_(system="A2E", misconception_confirmation_unit="question",
                      diagnostic_evidence=True),
+    # Step 6 candidates, not a replacement for the declared main conditions.
+    "A2EB": _A2.with_(system="A2EB", misconception_confirmation_unit="question",
+                      diagnostic_evidence=True, stop_rule="level_confidence"),
+    "A2B": _A2.with_(system="A2B", stop_rule="level_confidence"),
     # Full system with a prompted grader instead of the fine-tuned one
     "A3": _A2.with_(system="A3", models=replace(_A2.models, grader="gemini-3.5-flash-lite")),
     # Full system without the candidate model: skill-only scorecard, generic follow-up,

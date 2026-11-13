@@ -113,7 +113,11 @@ class InterviewSession:
         view = {}
         for skill, score in self.state.scores.items():
             view[skill] = {**score.state(), "minimum": minimums.get(skill, 0),
+                           **score.uncertainty(),
                            "confident": score.se < self.config.uncertainty_threshold}
+            if self.config.stop_rule == "level_confidence":
+                view[skill]["confident"] = score.meets_level_confidence(
+                    self.config.uncertainty_threshold, self.config.level_probability_threshold)
         return view
 
     def interviewer_view(self) -> dict[str, Any]:

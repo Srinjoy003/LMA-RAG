@@ -36,7 +36,8 @@ BANK_FILES = ("data/questions/py.json", "data/questions/sql.json", "data/questio
               "data/topics.json", "data/jobs.json")
 # Shown separately for readability; all of them are also inside the code hash.
 PROMPT_SOURCES = ("src/part3/prompts.py", "src/part3/diagnoser.py", "src/part3/grader.py",
-                  "src/part4/simulator.py", "src/shared/evidence.py", "src/shared/stubs.py")
+                  "src/part4/simulator.py", "src/shared/evidence.py", "src/shared/stubs.py",
+                  "src/part1/extract_topics.py", "src/engine/agent.py", "src/engine/followups.py")
 
 
 class RunManifestError(RuntimeError):

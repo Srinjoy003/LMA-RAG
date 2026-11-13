@@ -26,6 +26,8 @@ class InterviewState:
         self.misconception_records = components.misconceptions
         self.required_topics = list(required_topics)
         self.rng = rng
+        if config.stop_rule == "level_confidence" and not (0 < config.level_probability_threshold <= 1):
+            raise ValueError("level_probability_threshold must be in (0, 1]")
 
         self.scores = {skill: SkillScore(config.start_level) for skill in SKILLS}
         self.tracker = MisconceptionTracker(config.misconception_confirmations,
@@ -276,6 +278,8 @@ def _settled(state: InterviewState, skill: str) -> bool:
     if config.stop_rule == "decision":
         minimum = state.job.get("min_levels", {}).get(skill, 0)
         return report.skill_fit(score, minimum)[0] != "uncertain"
+    if config.stop_rule == "level_confidence":
+        return score.meets_level_confidence(config.uncertainty_threshold, config.level_probability_threshold)
     return score.se < config.uncertainty_threshold
 
 
@@ -284,9 +288,12 @@ def check_stop(state: InterviewState) -> str | None:
     config, n = state.config, state.n_graded
     if config.stop_rule == "fixed_count" and n >= config.fixed_count:
         return "fixed_length"
-    if config.stop_rule in ("uncertainty", "decision") and all(_settled(state, s) for s in SKILLS):
+    if config.stop_rule in ("uncertainty", "decision", "level_confidence") and all(_settled(state, s) for s in SKILLS):
         unmeasured = [s for s in state.exhausted
-                      if not (state.scores[s].n >= 2 and state.scores[s].se < config.uncertainty_threshold)]
+                      if not (state.scores[s].meets_level_confidence(config.uncertainty_threshold,
+                                                                   config.level_probability_threshold)
+                              if config.stop_rule == "level_confidence" else
+                              state.scores[s].n >= 2 and state.scores[s].se < config.uncertainty_threshold)]
         return "bank_exhausted" if unmeasured else "confident"
     if config.stop_rule != "fixed_count" and n >= config.max_questions:
         return "max_questions"

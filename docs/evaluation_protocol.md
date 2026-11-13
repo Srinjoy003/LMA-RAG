@@ -236,7 +236,7 @@ A4 writes the same fields, because the tracker records evidence on every diagnos
 | `evidence_rejected` | a diagnosis whose misconception vote lacked valid evidence | `quote_rejections` and `quote_rejection_rate` |
 | `diagnosis_prompt_version` | saved `config` (`evidence-v1`) | Kept in the run manifest's condition configuration |
 
-**Requested from Step 6** (stopping): at the end of the interview, per skill, the posterior mass inside the reported level band, next to the existing `estimate`, `se`, `level` and `meets_minimum`. This lets evaluation study boundary errors without re-running the scorecard.
+**Delivered in Step 6** (stopping): each final skill report and live scorecard now includes `level_probability` (posterior mass inside the reported EAP level) and `level_probabilities` (all four bands). These are optional in saved-result schemas for compatibility. `A2EB` and `A2B` add a separately named `level_confidence` stopping rule, requiring at least two main questions, SE < 0.6 and mass >= 0.7 for every skill, with the existing 15-main-question cap. These are experimental, not adopted main conditions. See [step6_stopping.md](step6_stopping.md) for validation, control review, the decision to defer A2M, commands and limitations. C9/C10 in the matrix describe the paired pilot comparisons. Existing cost estimates exclude those additional interviews.
 
 Agreeing this contract is the handoff. Neither of us edits the other's modules until it is agreed (assessment section 8).
 

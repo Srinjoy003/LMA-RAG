@@ -111,7 +111,8 @@ def scorecard_frame(view: dict) -> pd.DataFrame:
     """The live scorecard (session.scorecard_view()) as a table."""
     return pd.DataFrame([{"Skill": SKILL_NAMES[s], "Questions": r["n"], "Estimate": round(r["estimate"], 2),
                           "SE": round(r["se"], 2), "Level": r["level"], "Job minimum": r["minimum"],
-                          "SE below threshold": "yes" if r["confident"] else "no"}
+                          "P(reported level)": r.get("level_probability"),
+                          "Skill confidence met": "yes" if r["confident"] else "no"}
                          for s, r in view.items()])
 
 
@@ -129,6 +130,7 @@ def result_overview(result: dict, records: dict) -> dict:
     """The final screen as plain data: decision, per-skill table, misconceptions, coverage, summary."""
     report = result["report"]
     skills = [{"Skill": SKILL_NAMES[s], "Level": r["level"], "Estimate": r.get("estimate"), "SE": r.get("se"),
+               "P(reported level)": r.get("level_probability"),
                "Job minimum": r["minimum"], "Meets minimum": MEETS_LABELS[r.get("meets_minimum")]}
               for s, r in report["levels"].items()]
     coverage = report["topic_coverage"]

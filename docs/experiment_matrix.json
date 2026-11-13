@@ -1,6 +1,6 @@
 {
   "version": "rv1",
-  "status": "declared (Step 2), amended after Step 4 (Step 5); not frozen. Freeze at Step 9 with code commit and manifest.",
+  "status": "Declared Step 2, amended Steps 5 and 6; not frozen. Stopping variants are experimental; choose at Step 8 before Step 9 freeze.",
   "date": "2026-11-13",
   "protocol": "docs/evaluation_protocol.md",
   "baseline_manifest": "docs/evaluation_baseline.json",
@@ -75,9 +75,28 @@
         "misconception_confirmation_unit": "question"
       }
     },
+    "A2EB": {
+      "preset": "A2EB",
+      "status": "experimental (Step 6); not adopted as the main condition",
+      "role": "boundary-aware stopping matched to A2-rev",
+      "overrides": {
+        "misconception_confirmation_unit": "question",
+        "diagnostic_evidence": true,
+        "stop_rule": "level_confidence"
+      },
+      "definition": "A2E with at least two questions, SE < 0.6 and posterior mass >= 0.7 in every reported EAP level; original 15-main-question cap retained"
+    },
+    "A2B": {
+      "preset": "A2B",
+      "status": "experimental (Step 6); optional diagnostic comparison",
+      "role": "same stopping alternative matched to historical A2",
+      "overrides": {
+        "stop_rule": "level_confidence"
+      }
+    },
     "A2M": {
       "preset": null,
-      "status": "not implemented; optional, needs agreement with Souradeep (tracker and selection are his modules)",
+      "status": "deferred by Souradeep in Step 6; optional and not required for the diagnosis-package claim",
       "role": "matched-memory control against A2",
       "overrides": null,
       "definition": "A2 with the misconception tracker reset at every main question: confirmation only from replies to one question, no suspected set passed to selection, earlier confirmations do not suppress follow-ups"
@@ -172,6 +191,51 @@
                      "precision", "recall", "false_alarm_rate", "disputed", "quote_rejection_rate", "mean_exchanges",
                      "mean_llm_calls", "skill_accuracy"]
     }
+,
+    {
+      "id": "C9",
+      "question": "stopping alternative",
+      "primary": false,
+      "conditions": [
+        "A2EB",
+        "A2-rev"
+      ],
+      "endpoints": [
+        "skill_accuracy",
+        "mae",
+        "mean_exchanges",
+        "premature_stop_rate",
+        "false_fit_rate",
+        "false_reject_rate",
+        "review_rate",
+        "recall",
+        "precision"
+      ],
+      "only_if_run": true,
+      "rule": "pilot comparison only until freeze; report cap rate, all-stop level errors and level-0 denominators alongside confident-stop rates"
+    },
+    {
+      "id": "C10",
+      "question": "stopping alternative",
+      "primary": false,
+      "conditions": [
+        "A2B",
+        "A2"
+      ],
+      "endpoints": [
+        "skill_accuracy",
+        "mae",
+        "mean_exchanges",
+        "premature_stop_rate",
+        "false_fit_rate",
+        "false_reject_rate",
+        "review_rate",
+        "recall",
+        "precision"
+      ],
+      "only_if_run": true,
+      "rule": "pilot comparison only until freeze; report cap rate, all-stop level errors and level-0 denominators alongside confident-stop rates"
+    }
   ],
   "pairing": "per comparison: candidates with a saved result in both conditions",
   "bootstrap": {
@@ -214,12 +278,24 @@
     },
     "rv1-pilot": {
       "population": "pilot",
-      "conditions": ["B1", "A2-rev", "A4", "ADAPT12"]
+      "conditions": ["B1", "A2-rev", "A4", "ADAPT12"],
+      "optional": ["A2EB", "A2B", "A2"]
     },
     "rv1-main": {
       "population": "evaluation",
       "conditions": ["B1", "A2-rev", "A4", "ADAPT12", "A5-rev"],
       "optional": ["A2", "A2Q", "A2M"]
+    },
+    "rv2-step6-check": {
+      "population": "pilot",
+      "conditions": [
+        "A2",
+        "A2Q",
+        "A2-rev",
+        "A2B",
+        "A2EB"
+      ],
+      "status": "offline validation only; not part of the final run"
     },
     "rv1-sqlverify": {
       "population": "paired evaluation subset chosen at freeze",
@@ -278,6 +354,7 @@
     "status": "deferred: Step 3 skipped; human-supported endpoints are reported as not measured"
   },
   "budget_estimate": {
+    "step6_note": "Existing budgets exclude the experimental stopping variants. Adding A2EB to a 12-person live pilot adds 12 interviews; the 15-main-question cap was reached in all stub pilot cases. Measure actual calls and latency before accepting it. A2M remains deferred.",
     "method": "report formula; B1/ADAPT12 exact; others = stub run on the 60 evaluation candidates x 1.4 (historical A2 live/stub calls); upper bounds before cache reuse. Re-estimated after Step 4: A2E also diagnoses correct main answers. Measure on the pilot before freezing.",
     "per_interview": {
       "B1": {

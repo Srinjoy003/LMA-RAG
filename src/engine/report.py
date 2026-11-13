@@ -66,7 +66,11 @@ def build_report(state) -> dict:
         levels_report[skill] = {
             "level": score.level, "estimate": round(score.estimate, 4), "se": round(score.se, 4),
             "confident": score.se < config.uncertainty_threshold, "minimum": minimums[skill],
+            **score.uncertainty(),
             "meets_minimum": {"meets": True, "below": False, "uncertain": None}[fit]}
+        if config.stop_rule == "level_confidence":
+            levels_report[skill]["confident"] = score.meets_level_confidence(
+                config.uncertainty_threshold, config.level_probability_threshold)
     decision, reason = decide(fits, minimums, levels)
 
     required = list(state.required_topics)

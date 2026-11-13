@@ -98,6 +98,26 @@ class SkillScore:
             return 1.0
         return float(self.posterior()[GRID >= cut - 1e-9].sum())
 
+    def level_probabilities(self) -> dict[int, float]:
+        """Posterior mass of each half-open level band; boundaries match level_of."""
+        bands = np.searchsorted(np.asarray(LEVEL_CUTS), GRID, side="right")
+        post = self.posterior()
+        return {level: float(post[bands == level].sum()) for level in range(4)}
+
+    @property
+    def level_probability(self) -> float:
+        """Mass inside the reported EAP level, which need not be the modal band."""
+        return self.level_probabilities()[self.level]
+
+    def meets_level_confidence(self, se_threshold: float, probability_threshold: float) -> bool:
+        return self.n >= 2 and self.se < se_threshold and self.level_probability >= probability_threshold
+
+    def uncertainty(self) -> dict:
+        """Optional report fields, rounded only for serialisation, never for stopping."""
+        probabilities = self.level_probabilities()
+        return {"level_probability": round(probabilities[self.level], 6),
+                "level_probabilities": {str(k): round(v, 6) for k, v in probabilities.items()}}
+
     def state(self) -> dict:
         """Snapshot for the log (matches the schema's skill_state)."""
         return {"estimate": round(self.estimate, 4), "se": round(self.se, 4),
