@@ -287,7 +287,7 @@ def fig_stopping(bank) -> dict:
     candidates = [c for seed in (777, 778, 779) for c in make_candidates(bank, n=60, seed=seed)]
     baseline = stub_run(SYSTEMS["B1"], bank, candidates, jobs)
     points = {thr: stub_run(SYSTEMS["A2"].with_(uncertainty_threshold=thr), bank, candidates, jobs)
-              for thr in (0.7, 0.65, 0.6, 0.55)}
+              for thr in (0.75, 0.7, 0.65, 0.6, 0.55)}
     fig, ax = plt.subplots(figsize=(6.0, 2.5))
     xs = [p["mean_exchanges"] for p in points.values()]
     ys = [100 * p["skill_accuracy"] for p in points.values()]
@@ -305,7 +305,92 @@ def fig_stopping(bank) -> dict:
     ax.legend(frameon=False, loc="lower right")
     grid_lines(ax)
     save(fig, "stopping")
-    return {"baseline": baseline, "points": points}
+    controls = {
+        "fixed15": SYSTEMS["B1"].with_(fixed_levels=(1, 2, 2, 3, 3), fixed_count=15),
+        "adaptive12": SYSTEMS["A1"].with_(diagnosis="off", generic_follow_up=False),
+        "adaptive12follow": SYSTEMS["A1"],
+    }
+    return {"baseline": baseline, "points": points,
+            "controls": {name: stub_run(config, bank, candidates, jobs) for name, config in controls.items()}}
+
+
+# --------------------------------------------------------------------------
+# Intervals and diagnosis details for the text
+# --------------------------------------------------------------------------
+
+TABLE_KEYS = ("skill_accuracy", "mae", "macro_f1", "mean_exchanges", "fit_accuracy_decided", "review_rate",
+              "grading_accuracy", "wrong_verdict_rate", "recall", "precision", "false_alarm_rate")
+
+
+def summarise_with_verdicts(results: list[dict]) -> dict:
+    """`summarise` plus the share of interviews with a wrong fit or not-fit verdict."""
+    s = summarise(results)
+    s["wrong_verdict_rate"] = s["false_fit_rate"] + s["false_reject_rate"]
+    return s
+
+
+def table_intervals(by_system: dict, samples: int = 2000, seed: int = 0) -> dict:
+    """95% bootstrap intervals over candidates (the same draw for both systems): for A2's own
+    value of every table metric, and for the difference A2 - B1."""
+    by_id = {s: {r["candidate_id"]: r for r in rs} for s, rs in by_system.items()}
+    ids = sorted(by_id["A2"])
+    rng = random.Random(seed)
+    ours, diffs = {k: [] for k in TABLE_KEYS}, {k: [] for k in TABLE_KEYS}
+    for _ in range(samples):
+        draw = rng.choices(ids, k=len(ids))
+        a2 = summarise_with_verdicts([by_id["A2"][i] for i in draw])
+        b1 = summarise_with_verdicts([by_id["B1"][i] for i in draw])
+        for k in TABLE_KEYS:
+            if a2[k] is not None:
+                ours[k].append(a2[k])
+                if b1[k] is not None:
+                    diffs[k].append(a2[k] - b1[k])
+    return {"ours": {k: percentile_interval(v) for k, v in ours.items() if v},
+            "diff": {k: percentile_interval(v) for k, v in diffs.items() if v}}
+
+
+def diagnosis_details(results: list[dict]) -> dict:
+    """How often the diagnosis vote was a three-way split, and how many confirmed misconceptions
+    rest on replies to a single question (the main answer and its own follow-ups)."""
+    named = split = single_question = confirmed = 0
+    for r in results:
+        for turn in r["turns"]:
+            for d in [turn.get("diagnosis")] + [f.get("diagnosis") for f in turn["follow_ups"]]:
+                if d and d.get("misconception_id"):
+                    named += 1
+                    split += d["vote_share"] < 0.5
+        for m in r["report"]["misconceptions"]:
+            if m["confirmed"]:
+                confirmed += 1
+                single_question += len(m["evidence_turns"]) == 1
+    return {"named": named, "split": split, "single_question": single_question, "confirmed": confirmed}
+
+
+def premature_counts(results: list[dict]) -> dict:
+    wrong = [any(r["report"]["levels"][s]["level"] != r["truth"]["levels"][s] for s in SKILLS) for r in results]
+    confident = [r["stop_reason"] == "confident" for r in results]
+    return {"all": len(results), "confident": sum(confident),
+            "confident_wrong": sum(c and w for c, w in zip(confident, wrong)), "any_wrong": sum(wrong)}
+
+
+def premature_breakdown(results: list[dict]) -> dict:
+    """The wrong skill levels in interviews that stopped on the confidence rule: which skill,
+    which direction, how far off, the SE they stopped at, and how true level 0 fared."""
+    misses, zero_skills = [], 0
+    for r in results:
+        if r["stop_reason"] != "confident":
+            continue
+        for s in SKILLS:
+            true, got = r["truth"]["levels"][s], r["report"]["levels"][s]
+            zero_skills += true == 0
+            if got["level"] != true:
+                misses.append({"skill": s, "true": true, "gap": got["level"] - true, "se": got["se"]})
+    return {"misses": len(misses),
+            "by_skill": Counter(m["skill"] for m in misses),
+            "over": sum(m["gap"] > 0 for m in misses),
+            "max_gap": max((abs(m["gap"]) for m in misses), default=0),
+            "se_low": min((m["se"] for m in misses), default=0), "se_high": max((m["se"] for m in misses), default=0),
+            "zero_missed": sum(m["true"] == 0 for m in misses), "zero_skills": zero_skills}
 
 
 # --------------------------------------------------------------------------
@@ -317,8 +402,12 @@ def pct(x: float, digits: int = 0) -> str:
 
 
 def write_numbers(values: dict) -> None:
+    """One macro per value; a leading minus sign is typeset as a real minus."""
     lines = ["% Generated by report/make_figures.py; do not edit by hand."]
-    lines += [f"\\newcommand{{\\{name}}}{{{value}}}" for name, value in values.items()]
+    for name, value in values.items():
+        value = str(value)
+        value = "$-$" + value[1:] if value.startswith("-") else value
+        lines.append(f"\\newcommand{{\\{name}}}{{{value}}}")
     (OUT / "numbers.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("wrote", OUT / "numbers.tex")
 
@@ -382,6 +471,39 @@ def main() -> int:
         "callsBase": f"{np.mean([r['usage']['llm_calls'] for r in by_system['B1']]):.0f}",
         "callsOurs": f"{np.mean([r['usage']['llm_calls'] for r in by_system['A2']]):.0f}",
     }
+    ci = table_intervals(by_system)
+    points = lambda x: f"{100 * x:+.0f}"
+    for name, key, fmt in (("Mae", "mae", "{:+.2f}"), ("FOne", "macro_f1", "{:+.2f}"),
+                           ("Exch", "mean_exchanges", "{:+.1f}")):
+        values[f"ci{name}Low"], values[f"ci{name}High"] = (fmt.format(v) for v in ci["diff"][key])
+    for name, key in (("Fit", "fit_accuracy_decided"), ("Review", "review_rate"), ("Grading", "grading_accuracy"),
+                      ("Wrong", "wrong_verdict_rate")):
+        values[f"ci{name}Low"], values[f"ci{name}High"] = (points(v) for v in ci["diff"][key])
+    values["ciPrecisionLow"], values["ciPrecisionHigh"] = (pct(v) for v in ci["ours"]["precision"])
+    values["ciAlarmLow"], values["ciAlarmHigh"] = (f"{100 * v:.1f}\\%" for v in ci["ours"]["false_alarm_rate"])
+    values["exchDiff"] = f"{a2['mean_exchanges'] - b1['mean_exchanges']:+.1f}"
+    values["extraMain"] = f"{a2['mean_main_questions'] - b1['mean_main_questions']:.1f}"
+    follow = a2["mean_exchanges"] - a2["mean_main_questions"]
+    values["followShare"] = pct(follow / (a2["mean_exchanges"] - b1["mean_exchanges"]))
+    for name, key in (("Fit", "fit_accuracy_decided"), ("Review", "review_rate"), ("Grading", "grading_accuracy")):
+        values[f"diff{name}"] = points(a2[key] - b1[key])
+    values["diffMae"] = f"{a2['mae'] - b1['mae']:+.2f}"
+    values["diffFOne"] = f"{a2['macro_f1'] - b1['macro_f1']:+.2f}"
+
+    diag = diagnosis_details(by_system["A2"])
+    values.update({"diagNamed": diag["named"], "diagSplit": diag["split"],
+                   "confirmedOneQuestion": diag["single_question"]})
+    prem = premature_counts(by_system["A2"])
+    values.update({"stoppedConfident": prem["confident"], "confidentWrong": prem["confident_wrong"],
+                   "anyWrongOurs": prem["any_wrong"],
+                   "confidentWrongShare": pct(prem["confident_wrong"] / prem["confident"])})
+    miss = premature_breakdown(by_system["A2"])
+    values.update({"premMisses": miss["misses"], "premPy": miss["by_skill"]["py"],
+                   "premSql": miss["by_skill"]["sql"], "premDs": miss["by_skill"]["ds"],
+                   "premOver": miss["over"], "premUnder": miss["misses"] - miss["over"],
+                   "premMaxGap": miss["max_gap"],
+                   "premSeLow": f"{miss['se_low']:.2f}", "premSeHigh": f"{miss['se_high']:.2f}",
+                   "premZeroMissed": miss["zero_missed"], "premZeroSkills": miss["zero_skills"]})
     if not args.skip_sweep:
         sweep = fig_stopping(bank)
         chosen, quick = sweep["points"][0.6], sweep["points"][0.7]
@@ -391,6 +513,15 @@ def main() -> int:
             "stubAccQuick": pct(quick["skill_accuracy"]), "stubExchQuick": f"{quick['mean_exchanges']:.1f}",
             "stubAccLong": pct(sweep["points"][0.55]["skill_accuracy"]),
             "stubExchLong": f"{sweep['points'][0.55]['mean_exchanges']:.1f}",
+            "stubAccShort": pct(sweep["points"][0.75]["skill_accuracy"], 1),
+            "stubExchShort": f"{sweep['points'][0.75]['mean_exchanges']:.1f}",
+            "stubShortReduction": pct(1 - sweep["points"][0.75]["mean_exchanges"] / sweep["baseline"]["mean_exchanges"]),
+            "stubAccFixedFifteen": pct(sweep["controls"]["fixed15"]["skill_accuracy"], 1),
+            "stubAccAdaptiveTwelve": pct(sweep["controls"]["adaptive12"]["skill_accuracy"], 1),
+            "stubAccAdaptiveTwelveFollow": pct(sweep["controls"]["adaptive12follow"]["skill_accuracy"], 1),
+            "stubExchAdaptiveTwelveFollow": f"{sweep['controls']['adaptive12follow']['mean_exchanges']:.1f}",
+            "stubAccBaseExact": pct(sweep["baseline"]["skill_accuracy"], 1),
+            "stubAccOursExact": pct(chosen["skill_accuracy"], 1),
         })
     write_numbers(values)
     return 0
