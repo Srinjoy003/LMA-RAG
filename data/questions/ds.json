@@ -24,7 +24,7 @@
       "ds.stacks-queues.pop-does-not-remove"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-002",
@@ -53,7 +53,7 @@
       "ds.sorting-searching.binary-search-unsorted"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-003",
@@ -65,11 +65,11 @@
       "ds-arrays-strings"
     ],
     "question": "You need to delete the item at position k from a sequence of n items. Compare doing this on a Python list (`del lst[k]`) and on a singly linked list that you walk from the head. In each case, how much work goes into reaching position k, and how much into removing the item?",
-    "model_answer": "In a Python list, reaching index k is O(1) because the element's address is computed directly, but removing it shifts every later element one place left, which is O(n - k), O(n) in the worst case. In a singly linked list you must follow k next pointers from the head to reach the node before position k, which is O(k), but removing it is O(1): you set prev.next = prev.next.next and nothing else moves. So the list finds cheaply and removes expensively, while the linked list does the opposite.",
+    "model_answer": "In a Python list, reaching index k is O(1) because the element's address is computed directly, but removing it shifts every later element one place left, which is O(n - k), O(n) in the worst case. In a singly linked list you must follow k - 1 next pointers from the head to reach the node just before position k (counting from 0; deleting the head needs no walk), which is O(k), but removing it is O(1): you set prev.next = prev.next.next and nothing else moves. So the list finds cheaply and removes expensively, while the linked list does the opposite.",
     "key_points": [
       "Python list: reaching index k is O(1) (direct address calculation)",
       "Python list: removal shifts every later element, O(n - k)",
-      "Linked list: reaching position k means following k next pointers, O(k)",
+      "Linked list: reaching the node before position k means following k - 1 next pointers, O(k)",
       "Linked list: unlinking is O(1) by changing the previous node's next pointer; nothing moves"
     ],
     "rubric": {
@@ -83,7 +83,7 @@
       "ds.arrays-strings.front-insert-constant"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-004",
@@ -113,7 +113,7 @@
       "ds.complexity.count-loops-for-big-o"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-005",
@@ -141,7 +141,7 @@
       "ds.arrays-strings.append-always-copies"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-006",
@@ -168,7 +168,7 @@
       "ds.complexity.big-o-is-exact-time"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-007",
@@ -198,7 +198,7 @@
       "ds.sorting-searching.sort-not-stable"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-008",
@@ -227,7 +227,7 @@
       "ds.stacks-queues.pop-does-not-remove"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-009",
@@ -258,7 +258,7 @@
       "ds.arrays-strings.index-needs-scan"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-010",
@@ -289,7 +289,7 @@
       "ds.sorting-searching.binary-search-half-of-linear"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-011",
@@ -318,7 +318,7 @@
       "ds.arrays-strings.index-needs-scan"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-012",
@@ -345,7 +345,7 @@
       "ds.complexity.big-o-is-exact-time"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-013",
@@ -373,7 +373,7 @@
       "ds.stacks-queues.pop-does-not-remove"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-014",
@@ -402,7 +402,7 @@
       "ds.arrays-strings.strings-mutable"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L1-015",
@@ -431,7 +431,7 @@
       "ds.complexity.constants-change-class"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-001",
@@ -443,8 +443,8 @@
       "ds-hash-tables",
       "ds-arrays-strings"
     ],
-    "question": "A game leaderboard receives frequent new scores and must often list all players in score order. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
-    "model_answer": "A hash table gives fast inserts and lookups by key but keeps no useful order, so listing by score would need a full sort each time, O(n log n). A sorted array is easy to list in order, but each new score must be placed in its correct position and every later element shifted, O(n) per insert. A balanced BST inserts in O(log n) and an in-order traversal returns the scores already sorted in O(n), so it handles both operations well and is the best fit.",
+    "question": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+    "model_answer": "A hash table gives fast inserts and lookups by key but keeps no useful order, so listing by score would need a full sort each time, O(n log n). A sorted array is easy to list in order, but each new score must be placed in its correct position and every later element shifted, O(n) per insert. A balanced BST inserts in O(log n) and an in-order traversal returns the scores already sorted in O(n), so it handles both operations well and is the best fit. (If only the top few scores were needed, a heap would also do.)",
     "key_points": [
       "Hash table: fast inserts but no ordering, so listing needs a full sort",
       "Sorted array: ordered, but each insert shifts elements, O(n)",
@@ -461,7 +461,7 @@
       "ds.trees-bst.inorder-not-sorted"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-002",
@@ -474,16 +474,16 @@
       "ds-sorting-searching"
     ],
     "question": "A service receives 100,000 user IDs and must report whether any ID appears twice. Compare three approaches: keep a list of seen IDs and check `if uid in seen_list`; keep a set of seen IDs; or sort all the IDs and compare neighbours. What is the time complexity of each?",
-    "model_answer": "With a list, each `in` check is a linear scan, so n checks cost O(n²) in total, even though the code is a single short loop. With a set, each membership check and insert is O(1) on average because a set is a hash table, so the whole job is O(n). Sorting first costs O(n log n), and one pass comparing adjacent IDs is then O(n), so that approach is O(n log n) overall: it needs no hash table but is slower than the set for large n.",
+    "model_answer": "With a list, each `in` check is a linear scan, so n checks cost O(n²) in the worst case (it can stop early once a duplicate is found), even though the code is a single short loop. With a set, each membership check and insert is O(1) on average because a set is a hash table, so the whole job is O(n). Sorting first costs O(n log n), and one pass comparing adjacent IDs is then O(n), so that approach is O(n log n) overall: it needs no hash table but is slower than the set for large n.",
     "key_points": [
-      "List: each `in` check is O(n), so the total is O(n²)",
+      "List: each `in` check is O(n), so the total is O(n²) in the worst case",
       "Set: O(1) average membership and insert, so the total is O(n)",
       "Sort then compare neighbours: O(n log n), dominated by the sort"
     ],
     "rubric": {
       "0": "Says the list approach is O(n) (one loop, or `in` treated as a single step), that set membership is linear, or that sorting is O(n)",
       "1": "Gets two of the three complexities right with reasons",
-      "2": "All three complexities correct with reasons: O(n²), O(n), O(n log n)"
+      "2": "All three complexities correct with reasons: O(n²) worst case, O(n) on average, O(n log n)"
     },
     "misconceptions": [
       "ds.hash-tables.lookup-is-linear",
@@ -491,7 +491,7 @@
       "ds.sorting-searching.sorting-is-linear"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-003",
@@ -519,7 +519,7 @@
       "ds.trees-bst.always-balanced"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-004",
@@ -546,7 +546,7 @@
       "ds.hash-tables.lookup-is-linear"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-005",
@@ -572,7 +572,7 @@
       "ds.sorting-searching.sort-not-stable"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-006",
@@ -584,10 +584,10 @@
       "ds-linked-lists"
     ],
     "question": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
-    "model_answer": "The hash map maps each key to its node in the linked list, so finding an entry is O(1) on average: the key's hash leads straight to it instead of scanning entries. The doubly linked list keeps entries in recency order, most recent at the front and the eviction candidate at the tail. On a hit, the map gives k's node, which is unlinked by pointing its neighbours at each other and then spliced in at the front, setting its own pointers before redirecting the head so no reference is lost. Nothing shifts, so moving and evicting (remove the tail and its map entry) are O(1).",
+    "model_answer": "The hash map maps each key to its node in the linked list, so finding an entry is O(1) on average: the key's hash leads straight to it instead of scanning entries. The doubly linked list keeps entries in recency order, most recent at the front and the eviction candidate at the tail. On a hit, the map gives k's node, which is unlinked by pointing its neighbours at each other and then spliced in at the front, setting its own pointers before redirecting the head so no reference is lost. On put, an existing key is updated and moved to the front the same way; a new key gets a new node at the front plus a map entry, and if that exceeds the capacity the tail node is removed and its key deleted from the map, which is why each node stores its key. Nothing shifts, and each step is a fixed number of pointer and map operations, so get and put are O(1) on average.",
     "key_points": [
       "The hash map gives average O(1) access from a key to its list node, with no scan",
-      "The doubly linked list keeps recency order; the tail is the least recently used entry to evict",
+      "The doubly linked list keeps recency order; on put over capacity the tail (least recently used) is removed along with its map key, so each node stores its key",
       "On a hit, the node is unlinked by rewiring its neighbours and re-inserted at the front; nothing shifts",
       "Pointer updates must be ordered so no reference is overwritten before it is saved"
     ],
@@ -602,7 +602,7 @@
       "ds.linked-lists.pointer-order-irrelevant"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-007",
@@ -632,7 +632,7 @@
       "ds.hash-tables.worst-case-constant"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-008",
@@ -661,7 +661,7 @@
       "ds.trees-bst.inorder-not-sorted"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-009",
@@ -691,7 +691,7 @@
       "ds.sorting-searching.binary-search-half-of-linear"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-010",
@@ -704,7 +704,7 @@
     "question": "`reverse` is meant to reverse a singly linked list in place and return the new head. What does this code print, what went wrong, and how would you fix the loop?",
     "code": "class Node:\n    def __init__(self, val, nxt=None):\n        self.val, self.next = val, nxt\n\ndef reverse(head):\n    prev, node = None, head\n    while node:\n        node.next = prev\n        prev, node = node, node.next\n    return prev\n\nhead = Node(1, Node(2, Node(3)))\nsecond = head.next\nnew_head = reverse(head)\nprint(new_head.val, new_head.next, second.next.val)",
     "expected_output": "1 None 3\n",
-    "model_answer": "Prints `1 None 3`. In the first iteration `node.next = prev` overwrites node 1's only link to the rest of the list before it has been saved, and the right-hand side `node.next` is then read after that overwrite, so it is None and the loop stops after one node. The returned head is node 1 with next None; nodes 2 and 3 are still linked to each other (second.next is 3) but nothing points to them any more, and they do not reattach automatically. The fix is to save the next node first: `nxt = node.next`, then `node.next = prev`, then `prev, node = node, nxt`, which reverses the list in O(n) time with O(1) extra memory.",
+    "model_answer": "Prints `1 None 3`. In the first iteration `node.next = prev` overwrites node 1's only link to the rest of the list before it has been saved, and the right-hand side `node.next` is then read after that overwrite, so it is None and the loop stops after one node. The returned head is node 1 with next None; nodes 2 and 3 are still linked to each other (second.next is 3) but are no longer reachable from the returned head (only the variable `second` still refers to node 2), and they do not reattach automatically. The fix is to save the next node first: `nxt = node.next`, then `node.next = prev`, then `prev, node = node, nxt`, which reverses the list in O(n) time with O(1) extra memory.",
     "key_points": [
       "Prints 1 None 3",
       "node.next = prev destroys the link to node 2 before it is saved, so the loop ends after one node",
@@ -717,11 +717,10 @@
       "2": "Correct output, the overwritten link as the cause, and the save-next-first fix"
     },
     "misconceptions": [
-      "ds.linked-lists.pointer-order-irrelevant",
-      "ds.linked-lists.insert-shifts-nodes"
+      "ds.linked-lists.pointer-order-irrelevant"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-011",
@@ -750,7 +749,7 @@
       "ds.sorting-searching.binary-search-half-of-linear"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-012",
@@ -780,7 +779,7 @@
       "ds.trees-bst.inorder-not-sorted"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-013",
@@ -791,11 +790,11 @@
       "ds-sorting-searching"
     ],
     "question": "Explain how merge sort sorts a list. Why does it take O(n log n) time: how many levels of splitting are there, and how much work is done at each level? Is merge sort stable?",
-    "model_answer": "Merge sort splits the list in half recursively until the pieces have one item, then merges pairs of sorted pieces by repeatedly taking the smaller front item. Halving gives about log2(n) levels, and the merges at each level touch all n items once, so the total is O(n log n), not O(n); no comparison-based sort can do better in general. It is stable if, on ties, the merge takes the item from the left piece first, so equal items keep their original relative order (Python's own sort, Timsort, is a stable merge-sort hybrid).",
+    "model_answer": "Merge sort splits the list in half recursively until the pieces have one item, then merges pairs of sorted pieces by repeatedly taking the smaller front item. Halving gives about log2(n) levels, and the merges at each level touch all n items once, so the total is O(n log n), not O(n); comparison-based sorting has an Ω(n log n) worst-case lower bound, so no comparison sort can do better in the worst case. It is stable if, on ties, the merge takes the item from the left piece first, so equal items keep their original relative order (Python's own sort, Timsort, is a stable merge-sort hybrid).",
     "key_points": [
       "Split into halves recursively, then merge sorted halves by repeatedly taking the smaller front item",
       "About log2(n) levels, each doing O(n) merge work: O(n log n) total",
-      "Comparison sorting is not O(n) in general",
+      "Comparison sorting has an Ω(n log n) worst-case lower bound, so it is not O(n) in general",
       "Stable: on ties take from the left half first, so equal items keep their original order"
     ],
     "rubric": {
@@ -808,7 +807,7 @@
       "ds.sorting-searching.sort-not-stable"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-014",
@@ -838,7 +837,7 @@
       "ds.trees-bst.insert-scans-all-keys"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L2-015",
@@ -868,7 +867,7 @@
       "ds.sorting-searching.sort-not-stable"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-001",
@@ -896,7 +895,7 @@
       "ds.hash-tables.collision-overwrites"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-002",
@@ -907,10 +906,10 @@
       "ds-graphs"
     ],
     "question": "A flight network connects airports, and each flight has a fare. A user wants (a) the route with the fewest flights and (b) the cheapest route. Which algorithm would you use for each, and why? Would a depth-first search that stops at the first route it finds answer either question?",
-    "model_answer": "(a) Breadth-first search from the origin, using a FIFO queue: it explores airports in order of the number of flights needed, so the first time it reaches the destination it has used the fewest flights. (b) Dijkstra's algorithm with a priority queue keyed by total fare, because the route with the fewest flights is not necessarily the cheapest (two cheap flights can beat one expensive one) and BFS ignores the fares. A DFS that stops at its first route answers neither: it follows one branch as deep as it can, so the first route it finds depends on the order it explores flights and may have many legs and a high total fare.",
+    "model_answer": "(a) Breadth-first search from the origin, using a FIFO queue: it explores airports in order of the number of flights needed, so the first time it reaches the destination it has used the fewest flights. (b) Dijkstra's algorithm with a priority queue keyed by total fare (fares are non-negative, which Dijkstra requires), because the route with the fewest flights is not necessarily the cheapest (two cheap flights can beat one expensive one) and BFS ignores the fares. A DFS that stops at its first route answers neither: it follows one branch as deep as it can, so the first route it finds depends on the order it explores flights and may have many legs and a high total fare.",
     "key_points": [
       "Fewest flights: BFS with a queue, which explores airports in order of the number of hops",
-      "Cheapest route: Dijkstra with a priority queue, since fewest flights is not the same as lowest total fare",
+      "Cheapest route: Dijkstra with a priority queue (valid because fares are non-negative), since fewest flights is not the same as lowest total fare",
       "DFS's first route is simply the first deep path it explores; it guarantees neither fewest flights nor lowest fare"
     ],
     "rubric": {
@@ -924,7 +923,7 @@
       "ds.graphs.bfs-dfs-swapped"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-003",
@@ -954,7 +953,7 @@
       "ds.arrays-strings.front-insert-constant"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-004",
@@ -966,10 +965,10 @@
       "ds-stacks-queues"
     ],
     "question": "A data pipeline has jobs that depend on other jobs, forming a directed graph. How would you find an order in which to run the jobs so that each job runs after everything it depends on? Why must the algorithm keep track of visited (and in-progress) jobs, and why could a recursive version crash on a pipeline that is one long chain of 50,000 jobs?",
-    "model_answer": "This is a topological sort: either Kahn's algorithm (repeatedly run a job whose dependencies are all done, using a queue of such jobs and decrementing the counts of its dependents) or a DFS that outputs each job after all its dependencies have finished. Without visited marks, a job reachable along several paths is processed again and again, and a cycle would make the traversal loop forever; in-progress marks let DFS detect a cycle, which means no valid order exists. A recursive DFS keeps one stack frame per nested call, so a 50,000-job chain needs 50,000 frames and exceeds Python's recursion limit (RecursionError); Kahn's algorithm or an explicit stack avoids that.",
+    "model_answer": "This is a topological sort: either Kahn's algorithm (repeatedly run a job whose dependencies are all done, using a queue of such jobs and decrementing the counts of its dependents) or a DFS that outputs each job after all its dependencies have finished. Without visited marks, a job reachable along several paths is processed again and again, and a cycle would make the traversal loop forever; DFS keeps two marks: visited (fully processed, never revisited) and in-progress (on the current recursion path), and reaching an in-progress job again means a cycle, so no valid order exists. Kahn's algorithm detects a cycle when it ends having run fewer jobs than there are. A recursive DFS keeps one stack frame per nested call, so a 50,000-job chain needs 50,000 frames and exceeds Python's recursion limit (RecursionError); Kahn's algorithm or an explicit stack avoids that.",
     "key_points": [
       "Topological sort: Kahn's algorithm (queue of jobs whose dependencies are done) or DFS post-order",
-      "Visited marks stop jobs being processed repeatedly; in-progress marks detect cycles, which make a valid order impossible",
+      "Visited marks stop jobs being processed repeatedly; in-progress marks (jobs on the current DFS path) detect cycles, which make a valid order impossible; Kahn's algorithm sees a cycle when fewer than all jobs get run",
       "Recursive DFS keeps one call-stack frame per nested call, so a 50,000-job chain hits Python's recursion limit",
       "An iterative approach (queue or explicit stack) avoids the deep recursion"
     ],
@@ -983,7 +982,7 @@
       "ds.stacks-queues.recursion-free-memory"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-005",
@@ -1013,7 +1012,7 @@
       "ds.sorting-searching.sorting-is-linear"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-006",
@@ -1025,9 +1024,9 @@
       "ds-complexity"
     ],
     "question": "You insert the keys 1, 2, 3, …, n in that order into a plain (not self-balancing) binary search tree. What shape does the tree take, and what do search and insert cost? How do self-balancing trees such as AVL or red-black trees avoid this, and what do their operations cost?",
-    "model_answer": "Each new key is larger than every key so far, so it always goes to the right: the tree degenerates into a chain of height n, essentially a linked list. Search and insert then walk that chain and cost O(n) each, so building the whole tree costs O(n²). Self-balancing trees perform rotations after inserts and deletes to keep the height O(log n), so search, insert and delete each follow a single root-to-leaf path and cost O(log n) in the worst case.",
+    "model_answer": "Each new key is larger than every key so far, so it always goes to the right: the tree degenerates into a chain n levels deep (height O(n)), essentially a linked list. Search and insert then walk that chain and cost O(n) each, so building the whole tree costs O(n²). Self-balancing trees perform rotations after inserts and deletes to keep the height O(log n), so search, insert and delete each follow a single root-to-leaf path and cost O(log n) in the worst case.",
     "key_points": [
-      "Sorted insertions produce a chain of height n (a degenerate tree)",
+      "Sorted insertions produce a chain of height O(n) (a degenerate tree)",
       "Search and insert become O(n) in this worst case",
       "Self-balancing trees use rotations to keep the height O(log n), so each operation follows one short path: O(log n)"
     ],
@@ -1041,7 +1040,7 @@
       "ds.trees-bst.insert-scans-all-keys"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-007",
@@ -1073,7 +1072,7 @@
       "ds.complexity.constants-change-class"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-008",
@@ -1087,7 +1086,7 @@
     "question": "This is Dijkstra's algorithm with `heapq` as the priority queue. What does it print? Why is the distance to C 3 and not 5, even though there is a direct edge A -> C? Would BFS, or a DFS that keeps the first path it finds, give the same distances? What does each `heappop` cost?",
     "code": "import heapq\ngraph = {\"A\": [(\"C\", 5), (\"B\", 1)], \"B\": [(\"D\", 1)], \"C\": [(\"E\", 1)], \"D\": [(\"C\", 1)], \"E\": []}\n\ndef dijkstra(src):\n    dist, pq = {src: 0}, [(0, src)]\n    while pq:\n        d, u = heapq.heappop(pq)\n        if d > dist[u]:\n            continue\n        for v, w in graph[u]:\n            if d + w < dist.get(v, float(\"inf\")):\n                dist[v] = d + w\n                heapq.heappush(pq, (d + w, v))\n    return dist\nprint(dijkstra(\"A\"))",
     "expected_output": "{'A': 0, 'C': 3, 'B': 1, 'D': 2, 'E': 4}\n",
-    "model_answer": "Prints `{'A': 0, 'C': 3, 'B': 1, 'D': 2, 'E': 4}`. The direct edge A -> C costs 5, but A -> B -> D -> C costs 1 + 1 + 1 = 3; Dijkstra always expands the smallest tentative distance, so it settles B (1) and D (2) and lowers C to 3 before C is popped, and the stale (5, 'C') entry is skipped; E is then 3 + 1 = 4. BFS counts edges, so it would take the one-edge route to C (cost 5), and a DFS exploring A's edges in order would also reach C first by the direct edge, giving C = 5 and E = 6. Each heappop is O(log n), because the heap must sift down after the root is removed.",
+    "model_answer": "Prints `{'A': 0, 'C': 3, 'B': 1, 'D': 2, 'E': 4}`. The direct edge A -> C costs 5, but A -> B -> D -> C costs 1 + 1 + 1 = 3; Dijkstra always expands the smallest tentative distance, so it settles B (1) and D (2) and lowers C to 3 before C is popped, and the stale (5, 'C') entry is skipped; E is then 3 + 1 = 4. BFS minimises the number of edges, not the total weight, so it would record C via the one-edge route (cost 5); BFS gives shortest paths only when all edge weights are equal, and a DFS exploring A's edges in order would also reach C first by the direct edge, giving C = 5 and E = 6. Each heappop is O(log n), because the heap must sift down after the root is removed.",
     "key_points": [
       "Prints {'A': 0, 'C': 3, 'B': 1, 'D': 2, 'E': 4}",
       "A -> B -> D -> C costs 3, less than the direct edge of 5; Dijkstra expands the smallest tentative distance and skips the stale (5, 'C') entry",
@@ -1105,7 +1104,7 @@
       "ds.heaps.pop-min-constant"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-009",
@@ -1134,7 +1133,7 @@
       "ds.heaps.max-at-last-index"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-010",
@@ -1148,7 +1147,7 @@
     "question": "What does this code print? What would happen if the `if node in seen: continue` check were removed, and why might this explicit-stack version be preferred over a recursive DFS on a graph containing a path of a million nodes?",
     "code": "graph = {1: [2, 3], 2: [4], 3: [4], 4: [1]}\n\ndef dfs(start):\n    seen, stack, order = set(), [start], []\n    while stack:\n        node = stack.pop()\n        if node in seen:\n            continue\n        seen.add(node)\n        order.append(node)\n        for nb in graph[node]:\n            stack.append(nb)\n    return order\n\nprint(dfs(1))\n",
     "expected_output": "[1, 3, 4, 2]\n",
-    "model_answer": "It prints `[1, 3, 4, 2]`. The list is used as a stack, so the last neighbour pushed (3) is explored first, going deep along 1→3→4 before backtracking to 2: this is depth-first, not breadth-first. Without the seen check, the cycle back from 4 to 1 would keep pushing the same nodes and the loop would never end. A recursive DFS on a million-node path would need a million nested calls on the call stack and exceed Python's recursion limit, whereas the explicit stack is an ordinary list that can grow as needed.",
+    "model_answer": "It prints `[1, 3, 4, 2]`. The list is used as a stack, so the last neighbour pushed (3) is explored first, going deep along 1→3→4 before backtracking to 2: this is depth-first, not breadth-first. Without the seen check, every visit to 4 pushes 1 again, which pushes 2 and 3 again, and so on around the cycle, so the stack never empties and the loop never ends. A recursive DFS on a million-node path would need a million nested calls on the call stack and exceed Python's recursion limit, whereas the explicit stack is an ordinary list that can grow as needed.",
     "key_points": [
       "Output `[1, 3, 4, 2]`: the stack pops the last-pushed neighbour first (depth-first)",
       "Without the seen check, the cycle 4→1 makes the loop run forever",
@@ -1165,7 +1164,7 @@
       "ds.stacks-queues.recursion-free-memory"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-011",
@@ -1193,7 +1192,7 @@
       "ds.graphs.visited-unneeded"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-012",
@@ -1221,7 +1220,7 @@
       "ds.heaps.pop-min-constant"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-013",
@@ -1250,7 +1249,7 @@
       "ds.hash-tables.collision-overwrites"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-014",
@@ -1280,7 +1279,7 @@
       "ds.graphs.bfs-weighted-shortest"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "DS-L3-015",
@@ -1310,6 +1309,6 @@
       "ds.heaps.max-at-last-index"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   }
 ]

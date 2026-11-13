@@ -73,7 +73,7 @@ python -m venv .venv
 
 | Part | Status |
 | --- | --- |
-| 1. Question bank and job data | Built: 135 questions. Human review is pending. |
+| 1. Question bank and job data | Built: 135 questions, all reviewed by the team and checked. |
 | 2. Interview engine | Built and tested live. Pilot tuning is pending. |
 | 3. Grader and diagnosis | Prompted grader and diagnoser work. The fine-tuned grader is not started. |
 | 4. Candidates and evaluation | Built and run on the stubs: 60 candidate keys, LLM simulator, experiment runner, metrics. Live runs pending. |
