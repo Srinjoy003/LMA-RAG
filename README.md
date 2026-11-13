@@ -30,6 +30,7 @@ python -m venv .venv
 | --- | --- |
 | Live interview in the browser | `.venv/Scripts/python.exe -m streamlit run app/streamlit_app.py` |
 | One simulated interview, offline (no key) | `.venv/Scripts/python.exe scripts/run_interview.py --system A2 --job data-analyst` |
+| The tool-calling agent, step by step, with rule-breaking calls refused (offline) | `.venv/Scripts/python.exe scripts/agent_demo.py --system A2EV --probe-rules` |
 | Validate the question bank | `.venv/Scripts/python.exe scripts/validate_bank.py` |
 | Rebuild the search index after editing questions | `.venv/Scripts/python.exe scripts/build_index.py` |
 | Add the best kept-back drafts from `data/pool/` to the bank (dry run without `--write`) | `.venv/Scripts/python.exe scripts/promote_pool.py` |

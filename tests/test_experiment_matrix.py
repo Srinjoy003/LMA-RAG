@@ -75,7 +75,7 @@ def test_comparisons_name_declared_conditions():
 def test_runs_name_declared_conditions():
     names = set(MATRIX["conditions"])
     for run, spec in MATRIX["runs"].items():
-        if run in ("midsub", "rv1-sqlverify"):
+        if run == "midsub":
             continue
         assert set(spec["conditions"]) | set(spec.get("optional", [])) <= names, run
 

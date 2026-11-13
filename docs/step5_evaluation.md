@@ -96,7 +96,7 @@ python report/make_figures.py --run midsub --bank-root ../bank-673ee08 --bank-la
 - **Human checks** (Step 3) were skipped. The annotation-source population (`VAL-A`) was not generated, and no endpoint uses human labels.
 - **Stub cost is zero:** stubs make no LLM calls, so `mean_llm_calls` is 0 there. The budget in protocol section 8 uses the report's call formula on stub runs, scaled by 1.4. Live numbers must come from the pilot.
 - **The pilot set has no no-misconception controls.** Controls are every 10th candidate per job, so 12 candidates have none. False alarms on the pilot are measured on correct replies only.
-- **The runner uses the code driver only.** The agent driver is Step 7.
+- **The runner uses the code driver only.** The agent driver is demonstrated separately with `scripts/agent_demo.py` (Step 7, [step7_tools.md](step7_tools.md)).
 
 ## Findings from the stub checks (plumbing, not results)
 

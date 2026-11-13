@@ -94,6 +94,18 @@
         "stop_rule": "level_confidence"
       }
     },
+    "A2-rev+verify": {
+      "preset": "A2EV",
+      "status": "exists (Step 7); tool-on condition, not in the main matrix unless added at the freeze",
+      "role": "SQL verification: A2-rev plus verify_sql_result on SQL read-code questions",
+      "overrides": {
+        "misconception_confirmation_unit": "question",
+        "diagnostic_evidence": true,
+        "sql_verification": true
+      },
+      "behavioural_differences": [
+                                   "SQL read-code questions: the bank's own query is run on the question's own tables (SQLite, time limit)", "a verified result (rows equal the bank's checked expected_output) is added to the grader's prompt", "mismatch or error: nothing is added and the report is flagged", "the candidate's prompts are unchanged; candidate text is never executed", "agent driver: a seventh tool, and grade_answer is refused until verification is done"]
+    },
     "A2M": {
       "preset": null,
       "status": "deferred by Souradeep in Step 6; optional and not required for the diagnosis-package claim",
@@ -190,27 +202,15 @@
       "endpoints": [
                      "precision", "recall", "false_alarm_rate", "disputed", "quote_rejection_rate", "mean_exchanges",
                      "mean_llm_calls", "skill_accuracy"]
-    }
-,
+    },
     {
       "id": "C9",
       "question": "stopping alternative",
       "primary": false,
-      "conditions": [
-        "A2EB",
-        "A2-rev"
-      ],
+      "conditions": ["A2EB", "A2-rev"],
       "endpoints": [
-        "skill_accuracy",
-        "mae",
-        "mean_exchanges",
-        "premature_stop_rate",
-        "false_fit_rate",
-        "false_reject_rate",
-        "review_rate",
-        "recall",
-        "precision"
-      ],
+                     "skill_accuracy", "mae", "mean_exchanges", "premature_stop_rate", "false_fit_rate", "false_reject_rate",
+                     "review_rate", "recall", "precision"],
       "only_if_run": true,
       "rule": "pilot comparison only until freeze; report cap rate, all-stop level errors and level-0 denominators alongside confident-stop rates"
     },
@@ -218,23 +218,21 @@
       "id": "C10",
       "question": "stopping alternative",
       "primary": false,
-      "conditions": [
-        "A2B",
-        "A2"
-      ],
+      "conditions": ["A2B", "A2"],
       "endpoints": [
-        "skill_accuracy",
-        "mae",
-        "mean_exchanges",
-        "premature_stop_rate",
-        "false_fit_rate",
-        "false_reject_rate",
-        "review_rate",
-        "recall",
-        "precision"
-      ],
+                     "skill_accuracy", "mae", "mean_exchanges", "premature_stop_rate", "false_fit_rate", "false_reject_rate",
+                     "review_rate", "recall", "precision"],
       "only_if_run": true,
       "rule": "pilot comparison only until freeze; report cap rate, all-stop level errors and level-0 denominators alongside confident-stop rates"
+    },
+    {
+      "id": "C11",
+      "question": "SQL verification",
+      "primary": false,
+      "conditions": ["A2-rev+verify", "A2-rev"],
+      "endpoints": ["sql_read_code_grading_accuracy", "grading_accuracy", "skill_accuracy"],
+      "secondary": ["verified_questions", "verification_failures", "mean_llm_calls", "mean_exchanges"],
+      "rule": "descriptive; on a separately identified paired subset (run rv1-sqlverify)"
     }
   ],
   "pairing": "per comparison: candidates with a saved result in both conditions",
@@ -288,18 +286,13 @@
     },
     "rv2-step6-check": {
       "population": "pilot",
-      "conditions": [
-        "A2",
-        "A2Q",
-        "A2-rev",
-        "A2B",
-        "A2EB"
-      ],
+      "conditions": ["A2", "A2Q", "A2-rev", "A2B", "A2EB"],
       "status": "offline validation only; not part of the final run"
     },
     "rv1-sqlverify": {
-      "population": "paired evaluation subset chosen at freeze",
-      "conditions": ["A2-rev+verify", "A2-rev"]
+      "population": "paired subset chosen at the freeze (pilot or evaluation candidates)",
+      "conditions": ["A2-rev+verify", "A2-rev"],
+      "note": "verification is local SQLite: no extra LLM calls; the grader prompt is longer on SQL read-code questions"
     }
   },
   "allocation": {

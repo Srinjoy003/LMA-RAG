@@ -82,6 +82,10 @@ class InterviewSession:
         try:
             if self._prompt["kind"] == "main":
                 self._answer = answer
+                if self.tools.verification_required():      # Step 7: before the provisional grade
+                    checked = self.tools.verify_sql_result(self._found["question_id"])
+                    if not checked["ok"]:
+                        raise RuntimeError(f"verify_sql_result refused: {checked['error']}")
                 self._exchange = Exchange(self._found_question(), self._found["prompt"], answer,
                                           turn=self._found["turn"], diagnoser=self.components.diagnoser,
                                           config=self.config, tracker=self.state.tracker,

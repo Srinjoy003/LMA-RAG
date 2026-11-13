@@ -45,6 +45,17 @@ SYSTEM = (
 )
 
 
+def render_verified(evidence: dict) -> str:
+    """Step 7: the query's real output, run by the system on the question's tables. Present only
+    for systems with SQL verification; without it the grading prompt is unchanged."""
+    order = "in this order (the query has ORDER BY)" if evidence["ordered"] else "in any order"
+    rows = "\n".join(" | ".join("NULL" if v is None else str(v) for v in row) for row in evidence["rows"])
+    more = "\n(further rows not shown)" if evidence.get("rows_truncated") else ""
+    return (f"VERIFIED EXECUTION RESULT: the system ran the query above on these tables. It returns exactly "
+            f"{evidence['row_count']} row(s), {order}:\n{rows or '(no rows)'}{more}\n"
+            "Use this as the true output when judging what the candidate says the query returns.")
+
+
 class PromptedGrader:
     """`shared.interfaces.Grader` backed by an LLM, with `votes` independent marks per exchange."""
 
@@ -72,6 +83,7 @@ class PromptedGrader:
             "RUBRIC:\n" + "\n".join(f"{s}: {rubric.get(s, '')}" for s in ("0", "1", "2")),
             "LISTED MISCONCEPTIONS (a candidate showing one of these scores 0):\n"
             + render_misconceptions(question, self.misconceptions),
+            *([render_verified(question["verified_execution"])] if question.get("verified_execution") else []),
             render_exchange(answer, follow_ups),
         ])
         return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]

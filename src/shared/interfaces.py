@@ -231,6 +231,9 @@ class InterviewConfig:
 
     # Grading
     grader_votes: int = 3
+    # Step 7: run a SQL read-code question's own query on its own tables (trusted bank code only)
+    # and give the grader the result. Never shown to the candidate. Off in every historical preset.
+    sql_verification: bool = False
 
     # Question generation fallback
     allow_generated_questions: bool = True
@@ -271,6 +274,10 @@ SYSTEMS: dict[str, InterviewConfig] = {
     "A2EB": _A2.with_(system="A2EB", misconception_confirmation_unit="question",
                       diagnostic_evidence=True, stop_rule="level_confidence"),
     "A2B": _A2.with_(system="A2B", stop_rule="level_confidence"),
+    # Step 7 tool-on condition: A2E plus verify_sql_result. Compared with A2E on a paired subset
+    # (run rv1-sqlverify); not part of the main matrix unless added at the freeze.
+    "A2EV": _A2.with_(system="A2EV", misconception_confirmation_unit="question",
+                      diagnostic_evidence=True, sql_verification=True),
     # Full system with a prompted grader instead of the fine-tuned one
     "A3": _A2.with_(system="A3", models=replace(_A2.models, grader="gemini-3.5-flash-lite")),
     # Full system without the candidate model: skill-only scorecard, generic follow-up,

@@ -39,15 +39,19 @@ def required_topics_for(job: dict, config, components, errors: list[str]) -> lis
 def build_turn(found: dict, answer: str, exchange: dict, update: dict) -> dict:
     """One entry of `turns`. `found` is the search_question_bank result, `exchange` the
     result of the follow-up flow, `update` the update_scorecard result."""
-    return {
+    turn = {
         "index": found["turn"], "skill": found["skill"], "level": found["level"],
         "question_id": found["question_id"], "question_source": found["source"],
+        "question_type": found.get("type"),
         "topics": found["topics"], "selection_reason": found["selection_reason"],
         "prompt": found["prompt"], "answer": answer,
         "diagnosis": exchange["diagnosis"], "follow_ups": exchange["follow_ups"],
         "grade": update["grade"], "provisional_grade": exchange["provisional"],
         "evidence_weight": update["evidence_weight"], "scorecard_after": update["scorecard"],
     }
+    if update.get("verification"):     # Step 7: internal execution evidence (never shown to the candidate)
+        turn["verification"] = update["verification"]
+    return turn
 
 
 def attach_tool_calls(turns: list[dict], log: list[dict]) -> None:

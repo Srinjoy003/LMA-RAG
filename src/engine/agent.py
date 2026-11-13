@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import random
+import time
 from typing import Any
 
 from . import report
@@ -80,6 +81,27 @@ TOOLS: list[dict] = [
 ]
 TOOL_NAMES = [t["function"]["name"] for t in TOOLS]
 
+# Step 7: offered only to systems with `sql_verification` on; without it the agent's requests
+# (tools and system prompt) are exactly as before, so existing conditions and caches are unchanged.
+VERIFY_TOOL = {"type": "function", "function": {
+    "name": "verify_sql_result",
+    "description": "Run the open SQL read-code question's own query on its own tables and give the result to the "
+                   "grader (you only get the status and row count; the candidate never sees it). Refused for any "
+                   "other question.",
+    "parameters": {"type": "object", "properties": {"question_id": {"type": "string"}},
+                   "required": ["question_id"]}}}
+VERIFY_PROMPT = ("\n\nSQL verification is on for this interview. When ask_candidate returns "
+                 "verification_required: true, call verify_sql_result(question_id) before grade_answer; "
+                 "grade_answer is refused until you do. Never mention the verification to the candidate.")
+
+
+def tools_for(config) -> list[dict]:
+    return TOOLS + [VERIFY_TOOL] if config.sql_verification else TOOLS
+
+
+def system_prompt_for(config) -> str:
+    return SYSTEM_PROMPT + (VERIFY_PROMPT if config.sql_verification else "")
+
 
 class Refused(Exception):
     """A well-formed call that the rules refuse."""
@@ -115,6 +137,8 @@ class AgentRun:
         self.exchange: Exchange | None = None
         self.ended = False
         self.summary: str | None = None
+        self.tool_specs = tools_for(config)
+        self.timings: list[dict] = []             # per tool call: name, ok, milliseconds
 
     # ---- dispatch ------------------------------------------------------------------
     def _turn_number(self) -> int:
@@ -124,6 +148,8 @@ class AgentRun:
         """Run one tool call from the model. Always returns a JSON-able dict with `ok`."""
         turn = self._turn_number()
         args: dict = {}
+        started = time.perf_counter()
+        names = [t["function"]["name"] for t in self.tool_specs]
         try:
             if isinstance(arguments, str):
                 try:
@@ -133,10 +159,10 @@ class AgentRun:
             if not isinstance(arguments, dict):
                 raise InvalidCall("arguments must be an object")
             args = dict(arguments)
-            handler = getattr(self, f"tool_{name}", None) if name in TOOL_NAMES else None
+            handler = getattr(self, f"tool_{name}", None) if name in names else None
             if handler is None:
-                raise InvalidCall(f"unknown tool {name!r}; the tools are: {', '.join(TOOL_NAMES)}")
-            result = {"ok": True, **handler(**self._checked(name, args))}
+                raise InvalidCall(f"unknown tool {name!r}; the tools are: {', '.join(names)}")
+            result = {"ok": True, **handler(**self._checked(name, args, self.tool_specs))}
         except InvalidCall as e:
             self.invalid += 1
             result = {"ok": False, "error": f"invalid call: {e}"}
@@ -145,12 +171,15 @@ class AgentRun:
             result = {"ok": False, "error": str(e)}
         self.log.append({"turn": turn, "name": name, "args": args, "ok": result["ok"],
                          "error": None if result["ok"] else result["error"]})
+        self.timings.append({"turn": turn, "name": name, "ok": result["ok"],
+                             "error": None if result["ok"] else result["error"],
+                             "ms": round(1000 * (time.perf_counter() - started), 3)})
         return result
 
     @staticmethod
-    def _checked(name: str, args: dict) -> dict:
+    def _checked(name: str, args: dict, specs: list[dict] = TOOLS) -> dict:
         """Validate arguments against the tool's schema (types and required fields)."""
-        schema = next(t["function"]["parameters"] for t in TOOLS if t["function"]["name"] == name)
+        schema = next(t["function"]["parameters"] for t in specs if t["function"]["name"] == name)
         props, required = schema["properties"], schema.get("required", [])
         for key in required:
             if key not in args:
@@ -185,11 +214,26 @@ class AgentRun:
             raise Refused(f"question {question_id} was already asked; call grade_answer")
         self.answer = self.respondent.reply(self.found["prompt"], question=self.state.pending, kind="main",
                                             turn=self.found["turn"])
-        return {"reply": self._clip(self.answer)}
+        out = {"reply": self._clip(self.answer)}
+        if self.config.sql_verification:
+            out["verification_required"] = self.tools.verification_required()
+        return out
+
+    def tool_verify_sql_result(self, question_id: str) -> dict:
+        if self.found is None:
+            raise Refused("no question has been chosen; call search_question_bank first")
+        if self.exchange is not None:
+            raise Refused("the answer is already graded; verification must come before grade_answer")
+        checked = self.tools.verify_sql_result(question_id)
+        if not checked["ok"]:
+            raise Refused(checked["error"])
+        return {k: v for k, v in checked.items() if k != "ok"}
 
     def tool_grade_answer(self) -> dict:
         if self.answer is None:
             raise Refused("the question has not been asked yet; call ask_candidate")
+        if self.exchange is None and self.tools.verification_required():
+            raise Refused(f"question {self.found['question_id']} needs verify_sql_result before grade_answer")
         if self.exchange is None:
             self.exchange = Exchange(self.state.pending, self.found["prompt"], self.answer,
                                      turn=self.found["turn"], diagnoser=self.components.diagnoser,
@@ -292,16 +336,18 @@ def run_agent_interview(job: dict, respondent, config, components, *, candidate_
     """Run one interview with an LLM calling the tools and return the result dict."""
     run = AgentRun(job, respondent, config, components, rng)
     llm, model = components.llm, config.models.interviewer
-    messages: list[dict] = [{"role": "system", "content": SYSTEM_PROMPT},
+    messages: list[dict] = [{"role": "system", "content": system_prompt_for(config)},
                             {"role": "user", "content": "Job: " + job.get("title", job["id"])
                              + f". Minimum levels: {json.dumps(job.get('min_levels', {}))}. Begin the interview."}]
-    steps = 0
+    steps, llm_seconds = 0, 0.0
     usage = {"llm_calls": 0, "input_tokens": 0, "output_tokens": 0, "by_model": {}}
     stop_reason = final_report = None
     try:
         while steps < config.max_agent_steps and not run.ended:
             steps += 1
-            response = llm.complete(messages, model=model, tools=TOOLS, max_tokens=2048)
+            asked = time.perf_counter()
+            response = llm.complete(messages, model=model, tools=run.tool_specs, max_tokens=2048)
+            llm_seconds += time.perf_counter() - asked
             used = usage["by_model"].setdefault(response.get("model") or model,
                                                 {"llm_calls": 0, "input_tokens": 0, "output_tokens": 0})
             for target in (usage, used):
@@ -315,7 +361,7 @@ def run_agent_interview(job: dict, respondent, config, components, *, candidate_
                 run.log.append({"turn": run._turn_number(), "name": "(no tool call)", "args": {}, "ok": False,
                                 "error": "the reply contained no tool call"})
                 messages.append({"role": "user", "content": "Continue by calling one of the tools: "
-                                 + ", ".join(TOOL_NAMES) + "."})
+                                 + ", ".join(t["function"]["name"] for t in run.tool_specs) + "."})
                 continue
             for call in calls:
                 result = run.call(call.get("name", ""), call.get("arguments"))
@@ -337,5 +383,8 @@ def run_agent_interview(job: dict, respondent, config, components, *, candidate_
                           report=final_report, errors=run.errors, tool_log=run.log)
     result["usage"] = usage     # replaced by the whole interview's usage when the client is metered
     result["agent"] = {"steps": steps, "tool_calls": len(run.log), "refused_calls": run.refused,
-                       "invalid_calls": run.invalid, "model": model, "interviewer_usage": usage}
+                       "invalid_calls": run.invalid, "model": model, "interviewer_usage": usage,
+                       "llm_seconds": round(llm_seconds, 3),
+                       "tool_seconds": round(sum(t["ms"] for t in run.timings) / 1000, 3),
+                       "tool_timings": run.timings}
     return result

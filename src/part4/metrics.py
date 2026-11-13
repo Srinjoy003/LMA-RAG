@@ -96,6 +96,7 @@ def summarise(results: list[dict]) -> dict:
         **evidence_metrics(results),
         # diagnostics
         "grading_accuracy": grading_accuracy(results),
+        **verification_metrics(results),
         **safety_metrics(results),
         # cost (interviewer side: grader, diagnoser, topic extraction, agent)
         **cost_metrics(results),
@@ -219,6 +220,30 @@ def grading_accuracy(results: list[dict]) -> float | None:
     turns = [t for r in results for t in r["turns"] if t.get("truth")]
     last_plan = lambda t: next((f["truth"] for f in reversed(t["follow_ups"]) if f.get("truth")), t["truth"])
     return ratio(sum(t["grade"]["score"] == last_plan(t)["expected_score"] for t in turns), len(turns))
+
+
+def is_sql_read_code(turn: dict) -> bool:
+    """A SQL read-code main question. Results from before Step 7 have no `question_type`; there
+    the saved prompt is the fallback (read-code questions show their tables as `Table <name>:`)."""
+    if turn["skill"] != "sql":
+        return False
+    if "question_type" in turn:
+        return turn["question_type"] == "read-code"
+    return "\nTable " in (turn.get("prompt") or "")
+
+
+def verification_metrics(results: list[dict]) -> dict:
+    """Step 7: grading accuracy on the SQL read-code questions (what verification should
+    improve), how many of them were verified, and how many verifications did not succeed."""
+    turns = [t for r in results for t in r["turns"] if is_sql_read_code(t)]
+    planned = [t for t in turns if t.get("truth")]
+    last_plan = lambda t: next((f["truth"] for f in reversed(t["follow_ups"]) if f.get("truth")), t["truth"])
+    status = Counter((t.get("verification") or {}).get("status") for t in turns)
+    return {"sql_read_code_questions": len(turns),
+            "sql_read_code_grading_accuracy": ratio(sum(t["grade"]["score"] == last_plan(t)["expected_score"]
+                                                        for t in planned), len(planned)),
+            "verified_questions": status["verified"],
+            "verification_failures": status["mismatch"] + status["error"]}
 
 
 def safety_metrics(results: list[dict]) -> dict:

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from shared.interfaces import SKILLS
 
-from . import report
+from . import report, verification
 from .followups import render_prompt
 from .selection import InterviewState, check_stop, choose_next, record_asked
 
@@ -26,6 +26,7 @@ class InterviewTools:
         self.stop_reason: str | None = None
         self.report: dict | None = None
         self.choice: dict | None = None   # the choice behind the open question
+        self.verifications: dict[str, dict] = {}   # question id -> verify_sql_result evidence
 
     # ---- shared helpers ------------------------------------------------------
     def _run(self, name: str, args: dict, turn: int, action) -> dict:
@@ -47,7 +48,11 @@ class InterviewTools:
         key = (question["id"], answer, tuple(f["answer"] for f in follow_ups))
         cache = self.state.grade_cache
         if key not in cache:
-            grade = dict(self.grader.grade(question, answer, list(follow_ups)))
+            evidence = verification.for_grader(self.verifications.get(question["id"], {}))
+            # The grader gets a copy with the verified rows; the question shown to the candidate
+            # (state.pending) is never changed. Without verification the call is exactly as before.
+            seen = {**question, "verified_execution": evidence} if evidence else question
+            grade = dict(self.grader.grade(seen, answer, list(follow_ups)))
             if grade.get("score") not in (0, 1, 2) or not grade.get("votes"):
                 raise ValueError(f"grader returned an invalid grade: {grade}")
             grade.setdefault("agreement", grade["votes"].count(grade["score"]) / len(grade["votes"]))
@@ -86,11 +91,48 @@ class InterviewTools:
             self.choice = choice
             question = choice["question"]
             return {"turn": len(state.asked), "question_id": question["id"], "skill": choice["skill"],
-                    "level": choice["level"], "source": choice["source"],
+                    "level": choice["level"], "source": choice["source"], "type": question.get("type"),
                     "topics": list(question.get("topics", [])),
                     "selection_reason": choice["reason"], "prompt": render_prompt(question)}
 
         return self._run("search_question_bank", args, turn, action)
+
+    # ---- verify_sql_result (Step 7, only when config.sql_verification) ---------------
+    def verification_required(self) -> bool:
+        """The open question must be verified before grading: the system uses the tool and the
+        question is a SQL read-code question from the bank that has not been verified yet."""
+        pending = self.state.pending
+        return bool(self.state.config.sql_verification and pending and verification.applies_to(pending)
+                    and pending["id"] not in self.verifications)
+
+    def verify_sql_result(self, question_id: str) -> dict:
+        """Run the open question's own query on its own tables. Returns status and counts only;
+        the rows go to the grader. Refused unless the system uses verification, the id is the
+        open question's and that question is a SQL read-code question from the bank."""
+        state = self.state
+        turn = len(state.asked)
+
+        def action() -> dict:
+            if not state.config.sql_verification:
+                raise ToolError(f"system {state.config.system} does not use SQL verification")
+            if state.pending is None:
+                raise ToolError("no question is open; call search_question_bank first")
+            if question_id != state.pending["id"]:
+                raise ToolError(f"only the open question {state.pending['id']} can be verified, not {question_id}")
+            if not verification.applies_to(state.pending):
+                raise ToolError(f"{question_id} is not a SQL read-code question; there is nothing to verify")
+            if question_id in self.verifications:
+                raise ToolError(f"{question_id} is already verified; call grade_answer")
+            evidence = verification.verify_sql_result(state.pending)
+            self.verifications[question_id] = evidence
+            if evidence["status"] != "verified":
+                flag = (f"SQL verification {evidence['status']} for question {turn} ({question_id}); "
+                        "graded without execution evidence")
+                if flag not in state.flags:
+                    state.flags.append(flag)
+            return verification.summary(evidence)
+
+        return self._run("verify_sql_result", {"question_id": question_id}, turn, action)
 
     # ---- update_scorecard ---------------------------------------------------------
     def update_scorecard(self, question_id: str, answer: str, follow_ups: list | None = None) -> dict:
@@ -118,8 +160,11 @@ class InterviewTools:
                 state.flags.append(f"possible manipulation attempt in question {len(state.asked)}: "
                                    "the answer asks to change the rating or to see the rubric")
             state.pending = None
-            return {"grade": grade, "evidence_weight": round(weight, 4),
-                    "scorecard": {s: sc.state() for s, sc in state.scores.items()}}
+            out = {"grade": grade, "evidence_weight": round(weight, 4),
+                   "scorecard": {s: sc.state() for s, sc in state.scores.items()}}
+            if question["id"] in self.verifications:
+                out["verification"] = dict(self.verifications[question["id"]])
+            return out
 
         return self._run("update_scorecard", args, len(state.asked), action)
 

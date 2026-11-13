@@ -130,9 +130,11 @@ def test_a_short_interview_through_the_tools():
     assert result["report"]["engine_summary"].startswith("Recommendation:")
     assert result["report"]["decision"] in ("fit", "not_fit", "needs_review")
     assert_valid(result)
-    agent = {k: v for k, v in result["agent"].items() if k != "interviewer_usage"}
+    timing_keys = {"llm_seconds", "tool_seconds", "tool_timings"}      # Step 7 demo timings
+    agent = {k: v for k, v in result["agent"].items() if k != "interviewer_usage" and k not in timing_keys}
     assert agent == {"steps": llm.n, "tool_calls": llm.n, "refused_calls": 0, "invalid_calls": 0,
                      "model": SYSTEMS["A2"].models.interviewer}
+    assert len(result["agent"]["tool_timings"]) == llm.n and result["agent"]["tool_seconds"] >= 0
     assert result["agent"]["interviewer_usage"]["llm_calls"] == llm.n
     assert result["usage"]["llm_calls"] == llm.n and result["usage"]["input_tokens"] == 100 * llm.n
     assert result["usage"]["by_model"][SYSTEMS["A2"].models.interviewer]["llm_calls"] == llm.n

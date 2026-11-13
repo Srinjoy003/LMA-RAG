@@ -17,6 +17,7 @@ All conditions use the same reviewed bank (135 questions, 95 misconceptions, has
 | **A5-rev** | `A5E` | `retrieval=job-blind`, plus A2-rev's two settings | exists (Step 5) | Job-aware retrieval: differs from A2-rev only in retrieval |
 | A2 | `A2` | none | exists | Optional: confirmation-rule, memory and bank comparisons |
 | A2Q | `A2Q` | `misconception_confirmation_unit=question` | exists | Optional: the confirmation rule without the evidence prompt (C5, C8) |
+| A2-rev+verify | `A2EV` | A2-rev's two settings plus `sql_verification=True` | exists (Step 7) | SQL verification on a paired subset (C11); not in the main matrix unless added at the freeze |
 | A5 | `A5` | `retrieval=job-blind` | exists | Historical only; not run in rv1 |
 | A2M | not implemented | see section 1.2 | needs agreement with Souradeep (tracker and selection are his modules) | Optional: memory-specific control |
 | A1 | `A1` | `stop_rule=fixed_count` (12) | exists | Not run live: 12 main questions plus follow-ups is not equal-exchange with B1 |
@@ -71,8 +72,10 @@ Each comparison is **paired on candidates**: it uses the candidates with a saved
 | C6 | Memory | A2 vs A2M | As C3 | Only with A2M run | |
 | C7 | Bank change | historical `midsub` B1/A2 vs reviewed B1/A2 | Reported side by side | Descriptive only: not paired, original transcripts unavailable | |
 | C8 | Evidence requirement | A2-rev vs A2Q | Precision, recall, false alarms, disputed findings, quote-rejection rate | Descriptive | Exchanges, LLM calls, skill accuracy |
+| C9, C10 | Stopping alternative (Step 6) | A2EB vs A2-rev; A2B vs A2 | See `docs/step6_stopping.md` | Descriptive | |
+| C11 | SQL verification (Step 7) | A2-rev+verify vs A2-rev | Grading accuracy on SQL read-code questions | Descriptive, run `rv1-sqlverify` | Verified questions, failures, LLM calls, exchanges, skill accuracy |
 
-C1 to C3 are the primary comparisons; C4 to C8 are exploratory and carry no new claims. `scripts/evaluate.py --comparisons` runs every declared comparison whose two conditions are in the run (C7 is unpaired and is not computed there). A result whose interval crosses its threshold is "not settled", as in `docs/part4.md`.
+C1 to C3 are the primary comparisons; C4 to C11 are exploratory and carry no new claims. `scripts/evaluate.py --comparisons` runs every declared comparison whose two conditions are in the run (C7 is unpaired and is not computed there). A result whose interval crosses its threshold is "not settled", as in `docs/part4.md`.
 
 **Metric definitions** are those in `src/part4/metrics.py` and `docs/part4.md`, unchanged. Two additions are declared now:
 
