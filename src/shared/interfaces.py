@@ -212,7 +212,8 @@ class InterviewConfig:
     generic_follow_up: bool = True       # single: ask one generic "explain your reasoning"
     max_follow_ups: int = 2
     diagnosis_votes: int = 3
-    misconception_confirmations: int = 2  # replies on which the same id must win
+    misconception_confirmations: int = 2  # required wins, counted using the unit below
+    misconception_confirmation_unit: Literal["reply", "question"] = "reply"
 
     # Misconception recall: prefer questions that probe topics where an earlier answer was
     # weak, and questions that list misconceptions nobody has probed yet (spec section 4)
@@ -251,6 +252,9 @@ SYSTEMS: dict[str, InterviewConfig] = {
     "A1": _A2.with_(system="A1", stop_rule="fixed_count"),
     # Full system
     "A2": _A2,
+    # Experimental revised A2: corroboration across distinct bank questions.
+    # Keep A2 unchanged so old and new runs cannot be silently mixed.
+    "A2Q": _A2.with_(system="A2Q", misconception_confirmation_unit="question"),
     # Full system with a prompted grader instead of the fine-tuned one
     "A3": _A2.with_(system="A3", models=replace(_A2.models, grader="gemini-3.5-flash-lite")),
     # Full system without the candidate model: skill-only scorecard, generic follow-up,

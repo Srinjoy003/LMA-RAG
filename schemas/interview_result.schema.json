@@ -154,9 +154,26 @@
             "required": ["id", "confirmed"],
             "properties": {
               "id": {"$ref": "#/$defs/misconception_id"},
-              "confirmed": {"type": "boolean", "description": "Won the diagnosis vote on at least the configured number of replies"},
+              "confirmed": {"type": "boolean", "description": "Reached the configured reply or distinct-question confirmation threshold"},
               "evidence_turns": {"type": "array", "items": {"type": "integer"}},
-              "vote_share": {"type": "number"}
+              "vote_share": {"type": "number"},
+              "confirmation_unit": {"enum": ["reply", "question"]},
+              "confirmation_count": {"type": "integer", "minimum": 0},
+              "required_confirmations": {"type": "integer", "minimum": 1},
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["question_id", "turn", "reply_index", "reply_text", "vote_share"],
+                  "properties": {
+                    "question_id": {"type": "string", "minLength": 1},
+                    "turn": {"type": "integer", "minimum": 1},
+                    "reply_index": {"type": "integer", "minimum": 0},
+                    "reply_text": {"type": ["string", "null"]},
+                    "vote_share": {"type": "number", "minimum": 0, "maximum": 1}
+                  }
+                }
+              }
             }
           }
         },

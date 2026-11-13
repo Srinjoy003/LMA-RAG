@@ -37,20 +37,36 @@ def render_prompt(question: dict) -> str:
 # --------------------------------------------------------------------------
 
 class MisconceptionTracker:
-    """Counts the replies on which each misconception id won the diagnosis vote.
+    """Count winning diagnoses by reply (historical) or distinct question ID.
 
-    An id that won once is suspected; at `confirmations` replies it is confirmed.
-    Replies may come from different questions.
+    Question mode keeps all replies for auditing, but follow-ups and repeated use
+    of the same question cannot supply independent confirmations.
     """
 
-    def __init__(self, confirmations: int = 2):
+    def __init__(self, confirmations: int = 2, *, unit: str = "reply"):
+        if isinstance(confirmations, bool) or not isinstance(confirmations, int) or confirmations < 1:
+            raise ValueError("confirmations must be a positive integer")
+        if unit not in ("reply", "question"):
+            raise ValueError("confirmation unit must be reply or question")
         self.confirmations = confirmations
+        self.unit = unit
         self.replies: dict[str, list[tuple[int, float]]] = {}   # id -> [(turn, vote_share), ...]
+        self.evidence: dict[str, list[dict]] = {}
 
-    def record(self, misconception_id: str, turn: int, vote_share: float = 1.0) -> None:
+    def record(self, misconception_id: str, turn: int, vote_share: float = 1.0, *,
+               question_id: str | None = None, reply_index: int = 0,
+               reply_text: str | None = None) -> None:
+        if self.unit == "question" and not question_id:
+            raise ValueError("question-based confirmation needs a question_id")
         self.replies.setdefault(misconception_id, []).append((turn, vote_share))
+        if question_id:
+            self.evidence.setdefault(misconception_id, []).append({
+                "question_id": question_id, "turn": turn, "reply_index": reply_index,
+                "reply_text": reply_text, "vote_share": vote_share})
 
     def count(self, misconception_id: str | None) -> int:
+        if self.unit == "question":
+            return len({e["question_id"] for e in self.evidence.get(misconception_id, [])})
         return len(self.replies.get(misconception_id, []))
 
     def is_confirmed(self, misconception_id: str | None) -> bool:
@@ -70,9 +86,15 @@ class MisconceptionTracker:
         """One entry per id seen, in order of first sighting (schema: report.misconceptions)."""
         out = []
         for mid, replies in self.replies.items():
-            out.append({"id": mid, "confirmed": self.is_confirmed(mid),
+            finding = {"id": mid, "confirmed": self.is_confirmed(mid),
                         "evidence_turns": sorted({turn for turn, _ in replies}),
-                        "vote_share": round(sum(share for _, share in replies) / len(replies), 3)})
+                        "vote_share": round(sum(share for _, share in replies) / len(replies), 3)}
+            if mid in self.evidence:
+                finding.update({"confirmation_unit": self.unit,
+                                "confirmation_count": self.count(mid),
+                                "required_confirmations": self.confirmations,
+                                "evidence": [dict(e) for e in self.evidence[mid]]})
+            out.append(finding)
         return out
 
 
@@ -125,7 +147,9 @@ class Exchange:
         diag = clean_diagnosis(self.diagnoser.diagnose(self.question, text, history), self.question,
                                self.known_ids)
         if diag.get("misconception_id"):
-            self.tracker.record(diag["misconception_id"], self.turn, diag["vote_share"])
+            self.tracker.record(diag["misconception_id"], self.turn, diag["vote_share"],
+                                question_id=self.question["id"], reply_index=len(self.follow_ups),
+                                reply_text=text)
         return diag
 
     def _plan(self) -> None:

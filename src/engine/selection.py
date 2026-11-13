@@ -28,7 +28,8 @@ class InterviewState:
         self.rng = rng
 
         self.scores = {skill: SkillScore(config.start_level) for skill in SKILLS}
-        self.tracker = MisconceptionTracker(config.misconception_confirmations)
+        self.tracker = MisconceptionTracker(config.misconception_confirmations,
+                                           unit=config.misconception_confirmation_unit)
         self.asked: list[dict] = []          # questions chosen so far (the last may still be open)
         self.asked_ids: set[str] = set()
         self.tested_topics: set[str] = set()
