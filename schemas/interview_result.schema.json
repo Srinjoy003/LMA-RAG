@@ -46,11 +46,27 @@
         "grader": {"type": "string", "description": "Which grader/model produced it"}
       }
     },
+    "contradiction": {
+      "type": "object",
+      "required": ["misconception_id", "question_id", "turn", "reply_index", "reply_text", "supporting_quote", "quote_start", "quote_end", "reason", "vote_share"],
+      "properties": {
+        "misconception_id": {"$ref": "#/$defs/misconception_id"},
+        "question_id": {"type": "string"},
+        "turn": {"type": "integer", "minimum": 1},
+        "reply_index": {"type": "integer", "minimum": 0},
+        "reply_text": {"type": "string"},
+        "supporting_quote": {"type": "string", "minLength": 1},
+        "quote_start": {"type": "integer", "minimum": 0},
+        "quote_end": {"type": "integer", "minimum": 1},
+        "reason": {"type": "string", "minLength": 1},
+        "vote_share": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
     "diagnosis": {
       "type": "object",
       "required": ["cause"],
       "properties": {
-        "cause": {"enum": ["gap", "misconception", "misread", "slip"]},
+        "cause": {"enum": ["gap", "misconception", "misread", "slip", "correct"]},
         "misconception_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/misconception_id"}]},
         "follow_up": {"type": ["string", "null"], "description": "Follow-up question to ask, if any"},
         "vote_share": {"type": "number", "minimum": 0, "maximum": 1, "description": "Share of runs agreeing with the winning cause/id"},
@@ -60,12 +76,26 @@
             "type": "object",
             "required": ["cause"],
             "properties": {
-              "cause": {"enum": ["gap", "misconception", "misread", "slip"]},
+              "cause": {"enum": ["gap", "misconception", "misread", "slip", "correct"]},
               "misconception_id": {"type": ["string", "null"]},
               "follow_up": {"type": ["string", "null"]}
             }
           }
         },
+        "supporting_quote": {"type": ["string", "null"]},
+        "evidence_reason": {"type": ["string", "null"]},
+        "prompt_version": {"type": "string"},
+        "evidence_rejected": {"type": "string"},
+        "contradicting": {"type": "array", "items": {
+          "type": "object",
+          "required": ["misconception_id", "supporting_quote", "reason"],
+          "properties": {
+            "misconception_id": {"$ref": "#/$defs/misconception_id"},
+            "supporting_quote": {"type": "string", "minLength": 1},
+            "reason": {"type": "string", "minLength": 1},
+            "vote_share": {"type": "number", "minimum": 0, "maximum": 1}
+          }
+        }},
         "confidence_expressed": {"enum": ["low", "medium", "high"], "description": "Optional: how sure the reply sounded (stretch: confidence style)"}
       }
     },
@@ -160,6 +190,8 @@
               "confirmation_unit": {"enum": ["reply", "question"]},
               "confirmation_count": {"type": "integer", "minimum": 0},
               "required_confirmations": {"type": "integer", "minimum": 1},
+              "status": {"enum": ["confirmed", "suspected", "disputed"]},
+              "contradicting": {"type": "array", "items": {"$ref": "#/$defs/contradiction"}},
               "evidence": {
                 "type": "array",
                 "items": {
@@ -170,6 +202,10 @@
                     "turn": {"type": "integer", "minimum": 1},
                     "reply_index": {"type": "integer", "minimum": 0},
                     "reply_text": {"type": ["string", "null"]},
+                    "supporting_quote": {"type": "string", "minLength": 1},
+                    "quote_start": {"type": "integer", "minimum": 0},
+                    "quote_end": {"type": "integer", "minimum": 1},
+                    "reason": {"type": "string", "minLength": 1},
                     "vote_share": {"type": "number", "minimum": 0, "maximum": 1}
                   }
                 }

@@ -7,6 +7,7 @@ regrades the whole exchange (main answer plus follow-ups).
 from __future__ import annotations
 
 import re
+from shared.evidence import claim_span
 
 GENERIC_FOLLOW_UP = "Could you explain your reasoning?"
 FOLLOW_UP_CAUSES = ("misconception", "misread", "slip")   # a plain "gap" is never followed up
@@ -52,16 +53,28 @@ class MisconceptionTracker:
         self.unit = unit
         self.replies: dict[str, list[tuple[int, float]]] = {}   # id -> [(turn, vote_share), ...]
         self.evidence: dict[str, list[dict]] = {}
+        self.contradicting: dict[str, list[dict]] = {}
 
     def record(self, misconception_id: str, turn: int, vote_share: float = 1.0, *,
                question_id: str | None = None, reply_index: int = 0,
-               reply_text: str | None = None) -> None:
+               reply_text: str | None = None, support: dict | None = None) -> None:
         if self.unit == "question" and not question_id:
             raise ValueError("question-based confirmation needs a question_id")
         self.replies.setdefault(misconception_id, []).append((turn, vote_share))
         if question_id:
             self.evidence.setdefault(misconception_id, []).append({
                 "question_id": question_id, "turn": turn, "reply_index": reply_index,
+                "reply_text": reply_text, "vote_share": vote_share,
+                **({k: support[k] for k in ("supporting_quote", "quote_start", "quote_end", "reason")}
+                   if support else {})})
+
+    def contradict(self, claim: dict, *, question_id: str, turn: int, reply_index: int,
+                   reply_text: str, vote_share: float) -> None:
+        mid = claim["misconception_id"]
+        # Rejecting a belief never previously attributed to this candidate is not a finding.
+        if mid in self.replies:
+            self.contradicting.setdefault(mid, []).append({
+                **claim, "question_id": question_id, "turn": turn, "reply_index": reply_index,
                 "reply_text": reply_text, "vote_share": vote_share})
 
     def count(self, misconception_id: str | None) -> int:
@@ -70,7 +83,7 @@ class MisconceptionTracker:
         return len(self.replies.get(misconception_id, []))
 
     def is_confirmed(self, misconception_id: str | None) -> bool:
-        return self.count(misconception_id) >= self.confirmations
+        return self.count(misconception_id) >= self.confirmations and not self.contradicting.get(misconception_id)
 
     def ids_for_turn(self, turn: int) -> set[str]:
         """Misconception ids that won the vote on a reply of this main question."""
@@ -94,6 +107,9 @@ class MisconceptionTracker:
                                 "confirmation_count": self.count(mid),
                                 "required_confirmations": self.confirmations,
                                 "evidence": [dict(e) for e in self.evidence[mid]]})
+                finding["status"] = ("disputed" if self.contradicting.get(mid) else
+                                     "confirmed" if finding["confirmed"] else "suspected")
+                finding["contradicting"] = [dict(e) for e in self.contradicting.get(mid, [])]
             out.append(finding)
         return out
 
@@ -138,7 +154,7 @@ class Exchange:
         self.follow_ups: list[dict] = []
         self.pending: str | None = None      # follow-up waiting to be asked
         self._latest: dict | None = None     # newest diagnosis
-        if self.provisional["score"] >= 2 or config.diagnosis == "off":
+        if (self.provisional["score"] >= 2 and not config.diagnostic_evidence) or config.diagnosis == "off":
             return                           # a 2 is final; B1 never diagnoses
         self.diagnosis = self._latest = self._diagnose(answer, [])
         self._plan()
@@ -146,16 +162,40 @@ class Exchange:
     def _diagnose(self, text: str, history: list) -> dict:
         diag = clean_diagnosis(self.diagnoser.diagnose(self.question, text, history), self.question,
                                self.known_ids)
+        support = None
+        if self.config.diagnostic_evidence:
+            allowed = self.question.get("misconceptions", [])
+            support = claim_span({"misconception_id": diag.get("misconception_id"),
+                                  "supporting_quote": diag.get("supporting_quote"),
+                                  "reason": diag.get("evidence_reason")}, text, allowed)
+            contradictions = []
+            for claim in diag.get("contradicting", []):
+                valid = claim_span(claim, text, allowed)
+                if valid:
+                    valid["vote_share"] = claim.get("vote_share", diag["vote_share"])
+                    contradictions.append(valid)
+            if diag.get("misconception_id") and (not support or any(
+                    c["misconception_id"] == diag["misconception_id"] for c in contradictions)):
+                diag.update(cause="gap", misconception_id=None, follow_up=None,
+                            evidence_rejected="missing, conflicting or non-verbatim evidence")
+                support = None
+            diag["contradicting"] = contradictions
+            for claim in contradictions:
+                self.tracker.contradict(claim, question_id=self.question["id"], turn=self.turn,
+                                        reply_index=len(self.follow_ups), reply_text=text,
+                                        vote_share=claim["vote_share"])
         if diag.get("misconception_id"):
             self.tracker.record(diag["misconception_id"], self.turn, diag["vote_share"],
                                 question_id=self.question["id"], reply_index=len(self.follow_ups),
-                                reply_text=text)
+                                reply_text=text, support=support)
         return diag
 
     def _plan(self) -> None:
         """Decide the next follow-up from the newest diagnosis."""
         diag, config = self._latest, self.config
         self.pending = None
+        if self.provisional["score"] >= 2 or diag["cause"] == "correct":
+            return
         if config.diagnosis == "single":
             # One diagnosis on the main reply; at most one generic follow-up, which is not diagnosed.
             if config.generic_follow_up and not self.follow_ups and diag["cause"] in FOLLOW_UP_CAUSES:

@@ -8,12 +8,27 @@ from __future__ import annotations
 
 from llm.client import DEFAULT_REASONING_EFFORT, LLMOutputError
 from shared.interfaces import Diagnosis, FollowUp, LLMClient, Question
+from shared.evidence import claim_span
 
 from .prompts import (ANSWER_WARNING, pick_majority, render_history, render_misconceptions,
                       render_question)
 
 CAUSES = ("gap", "misconception", "misread", "slip")
 CONFIDENCE = ("low", "medium", "high")
+EVIDENCE_PROMPT = """
+Evidence mode (evidence-v1): cause may also be correct when the current reply is correct.
+For a misconception, supply supporting_quote: a nonempty EXACT substring of the CURRENT
+candidate reply, and evidence_reason explaining how it explicitly expresses that precise
+listed belief. Never quote the reference answer, question, or earlier replies as current evidence.
+A wrong answer alone is insufficient: saying heap removal is O(n) does not express a listed
+belief that it is O(1). When no listed belief is explicitly supported, use gap and a null ID.
+Also return contradicting: a list of {misconception_id, supporting_quote, reason} for listed
+beliefs explicitly rejected by the CURRENT reply. An unrelated correct answer, silence, or an
+omitted idea is not a contradiction. Identify correction/retraction and context, not just keywords.
+Do not support and contradict the same belief in one reply. Follow-ups must remain neutral and
+must not teach or reveal the answer. supporting_quote/evidence_reason may be null with no claim.
+Return all original fields plus supporting_quote, evidence_reason and contradicting.
+"""
 
 SYSTEM = (
     "You are the diagnostic part of an adaptive technical interviewer for junior candidates "
@@ -41,9 +56,9 @@ SYSTEM = (
 )
 
 
-def build_schema(misconception_ids: list[str]) -> dict:
+def build_schema(misconception_ids: list[str], evidence_mode: bool = False) -> dict:
     ids: list = list(dict.fromkeys(misconception_ids))
-    return {
+    schema = {
         "type": "object",
         "properties": {
             "cause": {"type": "string", "enum": list(CAUSES)},
@@ -54,6 +69,21 @@ def build_schema(misconception_ids: list[str]) -> dict:
         "required": ["cause", "misconception_id", "follow_up", "confidence_expressed"],
         "additionalProperties": False,
     }
+    if evidence_mode:
+        schema["properties"]["cause"]["enum"] = list(CAUSES) + ["correct"]
+        schema["properties"].update({
+            "supporting_quote": {"type": ["string", "null"]},
+            "evidence_reason": {"type": ["string", "null"]},
+            "contradicting": {"type": "array", "items": {
+                "type": "object", "properties": {
+                    "misconception_id": {"type": "string", "enum": ids},
+                    "supporting_quote": {"type": "string"}, "reason": {"type": "string"}},
+                "required": ["misconception_id", "supporting_quote", "reason"],
+                "additionalProperties": False}}})
+        if not ids:
+            schema["properties"]["contradicting"] = {"type": "array", "maxItems": 0, "items": {"type": "object"}}
+        schema["required"] += ["supporting_quote", "evidence_reason", "contradicting"]
+    return schema
 
 
 class StructuredDiagnoser:
@@ -61,13 +91,15 @@ class StructuredDiagnoser:
 
     def __init__(self, llm: LLMClient, model: str, misconceptions: dict[str, dict] | None = None,
                  votes: int = 3, temperature: float = 0.7,
-                 reasoning_effort: str | None = DEFAULT_REASONING_EFFORT, max_tokens: int = 2048):
+                 reasoning_effort: str | None = DEFAULT_REASONING_EFFORT, max_tokens: int = 2048,
+                 evidence_mode: bool = False):
         if votes < 1:
             raise ValueError("votes must be at least 1")
         if misconceptions is None:
             from .prompts import load_misconceptions
             misconceptions = load_misconceptions()
         self.llm, self.model, self.misconceptions, self.votes = llm, model, misconceptions, votes
+        self.evidence_mode = evidence_mode
         self.temperature, self.reasoning_effort, self.max_tokens = temperature, reasoning_effort, max_tokens
 
     def build_messages(self, question: Question, answer: str, history=()) -> list[dict]:
@@ -81,11 +113,12 @@ class StructuredDiagnoser:
             parts.append("EARLIER EXCHANGES ON THIS QUESTION (the answer to diagnose comes after them):\n"
                          + render_history(question, history))
         parts.append("ANSWER TO DIAGNOSE:\n<<<\n" + answer.strip() + "\n>>>")
-        return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": "\n\n".join(parts)}]
+        return [{"role": "system", "content": SYSTEM + (EVIDENCE_PROMPT if self.evidence_mode else "")},
+                {"role": "user", "content": "\n\n".join(parts)}]
 
     def diagnose(self, question: Question, answer: str, history: list[FollowUp] = ()) -> Diagnosis:
         allowed = list(question.get("misconceptions") or [])
-        schema = build_schema(allowed)
+        schema = build_schema(allowed, self.evidence_mode)
         messages = self.build_messages(question, answer, history)
         votes: list[dict] = []
         errors: list[str] = []
@@ -94,7 +127,10 @@ class StructuredDiagnoser:
                 resp = self.llm.complete(messages, model=self.model, temperature=self.temperature,
                                          json_schema=schema, max_tokens=self.max_tokens,
                                          reasoning_effort=self.reasoning_effort, cache_tag=f"vote-{i}")
-                votes.append(self._clean(resp["parsed"], allowed))
+                if self.evidence_mode:
+                    votes.append(self._evidence_vote(resp["parsed"], allowed, answer))
+                else:
+                    votes.append(self._clean(resp["parsed"], allowed))
             except (LLMOutputError, KeyError, TypeError, ValueError) as e:
                 errors.append(str(e))
         if not votes:
@@ -105,8 +141,48 @@ class StructuredDiagnoser:
         winners = [v for v in votes if (v["cause"], v["misconception_id"]) == (cause, mid)]
         follow_up = next((v["follow_up"] for v in winners if v["follow_up"]), None)
         confidence = pick_majority([v["confidence_expressed"] for v in winners])[0]
-        return Diagnosis(cause=cause, misconception_id=mid, follow_up=follow_up,
-                         vote_share=n / len(votes), votes=votes, confidence_expressed=confidence)
+        result = Diagnosis(cause=cause, misconception_id=mid, follow_up=follow_up,
+                           vote_share=n / len(votes), votes=votes, confidence_expressed=confidence)
+        if self.evidence_mode:
+            result.update(prompt_version="evidence-v1", supporting_quote=None, evidence_reason=None,
+                          contradicting=[])
+            if mid and n > self.votes / 2:
+                result.update(supporting_quote=winners[0]["supporting_quote"],
+                              evidence_reason=winners[0]["evidence_reason"])
+            elif mid:
+                result.update(cause="gap", misconception_id=None, follow_up=None,
+                              evidence_rejected="no strict majority for supported belief")
+            for contradicted in allowed:
+                matching = [c for v in votes for c in v["contradicting"]
+                            if c["misconception_id"] == contradicted]
+                if len(matching) > self.votes / 2:
+                    result["contradicting"].append(dict(matching[0], vote_share=len(matching) / self.votes))
+        return result
+
+    @staticmethod
+    def _evidence_vote(parsed, allowed, answer):
+        source = dict(parsed)
+        correct = source.get("cause") == "correct"
+        if correct:
+            source["cause"] = "gap"
+        vote = StructuredDiagnoser._clean(source, allowed)
+        if correct:
+            vote.update(cause="correct", misconception_id=None, follow_up=None)
+        contradictions = {}
+        for claim in parsed.get("contradicting", []):
+            valid = claim_span(claim, answer, allowed)
+            if valid:
+                contradictions[valid["misconception_id"]] = valid
+        support = claim_span({"misconception_id": vote["misconception_id"],
+                              "supporting_quote": parsed.get("supporting_quote"),
+                              "reason": parsed.get("evidence_reason")}, answer, allowed)
+        if vote["cause"] == "misconception" and (not support or vote["misconception_id"] in contradictions):
+            vote.update(cause="gap", misconception_id=None, follow_up=None)
+            support = None
+        vote.update(supporting_quote=support["supporting_quote"] if support else None,
+                    evidence_reason=support["reason"] if support else None,
+                    contradicting=list(contradictions.values()))
+        return vote
 
     @staticmethod
     def _clean(parsed: dict, allowed: list[str]) -> dict:

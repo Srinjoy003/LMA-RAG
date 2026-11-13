@@ -127,7 +127,7 @@ def build_components(config, *, live: bool, root: str | Path | None = None,
     if not live:
         from shared.stubs import TagDiagnoser, TagGrader
         return Components(question_source=source, grader=TagGrader(votes=config.grader_votes),
-                          diagnoser=TagDiagnoser(), misconceptions=records)
+                          diagnoser=TagDiagnoser(evidence_mode=config.diagnostic_evidence), misconceptions=records)
 
     client_module = _import("llm.client")
     grader_module = _import("part3.grader")
@@ -147,7 +147,8 @@ def build_components(config, *, live: bool, root: str | Path | None = None,
 
     grader = grader_module.PromptedGrader(llm, model=grader_model(config), votes=config.grader_votes, **effort)
     diagnoser = diagnoser_module.StructuredDiagnoser(
-        llm, model=config.models.diagnoser, misconceptions=records, votes=config.diagnosis_votes, **effort)
+        llm, model=config.models.diagnoser, misconceptions=records, votes=config.diagnosis_votes,
+        **({"evidence_mode": True} if config.diagnostic_evidence else {}), **effort)
 
     extractor = None
     if config.use_topic_extraction:

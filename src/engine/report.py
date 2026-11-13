@@ -93,6 +93,8 @@ def summarise(state, levels_report: dict, decision: str, reason: str, findings: 
     for finding in findings:
         what = records.get(finding["id"], {}).get("description", finding["id"])
         kind = "Confirmed" if finding["confirmed"] else "Suspected (insufficient corroboration)"
+        if finding.get("status") == "disputed":
+            kind = "Disputed (contradictory evidence; not confirmed)"
         text += f" {kind} misconception: {what}."
     if state.flags:
         text += " Flags: " + "; ".join(state.flags) + "."

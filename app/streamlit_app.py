@@ -120,7 +120,7 @@ def misconception_rows(findings: list[dict], records: dict) -> list[dict]:
     for finding in findings:
         record = records.get(finding["id"], {})
         rows.append({"id": finding["id"], "description": record.get("description", finding["id"]),
-                     "status": "Confirmed" if finding["confirmed"] else "Suspected",
+                     "status": finding.get("status", "confirmed" if finding["confirmed"] else "suspected").capitalize(),
                      "turns": finding.get("evidence_turns", [])})
     return rows
 

@@ -28,7 +28,7 @@ Job = dict[str, Any]        # an entry of data/jobs.json
 Candidate = dict[str, Any]  # schemas/candidate.schema.json
 InterviewResult = dict[str, Any]  # schemas/interview_result.schema.json
 
-Cause = Literal["gap", "misconception", "misread", "slip"]
+Cause = Literal["gap", "misconception", "misread", "slip", "correct"]
 Outcome = Literal["correct", "partial", "wrong", "misconception", "misread", "slip"]
 TurnKind = Literal["main", "follow_up"]
 
@@ -48,6 +48,11 @@ class DiagnosisVote(TypedDict, total=False):
 
 
 class Diagnosis(TypedDict, total=False):
+    supporting_quote: str | None
+    evidence_reason: str | None
+    contradicting: list[dict]
+    prompt_version: str
+    evidence_rejected: str
     cause: Cause                   # required: the winning cause
     misconception_id: str | None   # winning id when cause == "misconception"
     follow_up: str | None          # question to ask next, or None
@@ -214,6 +219,7 @@ class InterviewConfig:
     diagnosis_votes: int = 3
     misconception_confirmations: int = 2  # required wins, counted using the unit below
     misconception_confirmation_unit: Literal["reply", "question"] = "reply"
+    diagnostic_evidence: bool = False   # quote-backed diagnosis and contradiction tracking
 
     # Misconception recall: prefer questions that probe topics where an earlier answer was
     # weak, and questions that list misconceptions nobody has probed yet (spec section 4)
@@ -236,7 +242,10 @@ class InterviewConfig:
     seed: int = 0
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        result = asdict(self)
+        if self.diagnostic_evidence:
+            result["diagnosis_prompt_version"] = "evidence-v1"
+        return result
 
     def with_(self, **changes) -> "InterviewConfig":
         return replace(self, **changes)
@@ -255,6 +264,8 @@ SYSTEMS: dict[str, InterviewConfig] = {
     # Experimental revised A2: corroboration across distinct bank questions.
     # Keep A2 unchanged so old and new runs cannot be silently mixed.
     "A2Q": _A2.with_(system="A2Q", misconception_confirmation_unit="question"),
+    "A2E": _A2.with_(system="A2E", misconception_confirmation_unit="question",
+                     diagnostic_evidence=True),
     # Full system with a prompted grader instead of the fine-tuned one
     "A3": _A2.with_(system="A3", models=replace(_A2.models, grader="gemini-3.5-flash-lite")),
     # Full system without the candidate model: skill-only scorecard, generic follow-up,

@@ -175,10 +175,20 @@ _CAUSE = {"misconception": "misconception", "misread": "misread", "slip": "slip"
 class TagDiagnoser:
     """Reads the simulator tag and asks a generic follow-up."""
 
+    def __init__(self, evidence_mode=False):
+        self.evidence_mode = evidence_mode
+
     def diagnose(self, question: Question, answer: str, history: list[FollowUp] = ()) -> Diagnosis:
         outcome, misconception_id = read_tag(answer)
         cause = _CAUSE.get(outcome or "", "gap")
         follow_up = None if outcome == "correct" else f"Can you walk me through your reasoning on {question['id']}?"
         vote = {"cause": cause, "misconception_id": misconception_id, "follow_up": follow_up}
-        return Diagnosis(cause=cause, misconception_id=misconception_id, follow_up=follow_up,
-                         vote_share=1.0, votes=[vote, vote, vote])
+        result = Diagnosis(cause=cause, misconception_id=misconception_id, follow_up=follow_up,
+                           vote_share=1.0, votes=[vote, vote, vote])
+        if self.evidence_mode:
+            result.update(supporting_quote=answer if misconception_id else None,
+                          evidence_reason="Offline tag evidence; not a semantic judgement.",
+                          contradicting=[], prompt_version="tag-evidence-v1")
+            if outcome == "correct":
+                result["cause"] = "correct"
+        return result
