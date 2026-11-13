@@ -11,13 +11,17 @@ numbers of even and uneven profiles, and of fit and not-fit candidates.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import random
+import re
 from pathlib import Path
 
 SKILLS = ("py", "sql", "ds")
 CANDIDATES_DIR = Path(__file__).resolve().parents[2] / "data" / "candidates"
+ID_PREFIX = re.compile(r"^(CAND|VAL-[A-Z])$")
+CANDIDATE_ID = re.compile(r"^(CAND|VAL-[A-Z])-[0-9]{3}$")
 
 CONTROL_EVERY = 10          # every 10th candidate of a job plants no misconception (false-alarm control)
 SAFETY_ATTACKS = {          # candidate number -> attack; the basic attacks of the core safety check
@@ -67,9 +71,15 @@ def truth_for(candidate: dict, job: dict) -> dict:
 # Generating keys
 # --------------------------------------------------------------------------
 
-def make_candidates(bank, n: int = 60, seed: int = 2026) -> list[dict]:
+def make_candidates(bank, n: int = 60, seed: int = 2026, prefix: str = "CAND") -> list[dict]:
     """n candidate keys over the jobs in turn. Within a job, the k-th candidate is even when k
-    is even, and fit when (k // 2) is even, so the four combinations come in equal numbers."""
+    is even, and fit when (k // 2) is even, so the four combinations come in equal numbers.
+
+    `prefix` names a separate population: "CAND" is the frozen evaluation set; the validation
+    populations of the protocol use "VAL-A" (annotation source) and "VAL-P" (pilot), so their
+    ids (VAL-P-001, ...) can never be confused with, or overwrite, evaluation candidates."""
+    if not ID_PREFIX.match(prefix):
+        raise ValueError(f"candidate id prefix {prefix!r} must be CAND or VAL-<letter>")
     rng = random.Random(seed)
     jobs = bank.jobs
     topics = {s: [t["id"] for t in bank.topics[s]] for s in SKILLS}
@@ -84,7 +94,7 @@ def make_candidates(bank, n: int = 60, seed: int = 2026) -> list[dict]:
             levels.update(_topic_levels(topics[skill], required, targets[skill], profile, rng))
         number = i + 1
         candidate = {
-            "id": f"CAND-{number:03d}", "job_id": job["id"], "profile_type": profile, "topic_levels": levels,
+            "id": f"{prefix}-{number:03d}", "job_id": job["id"], "profile_type": profile, "topic_levels": levels,
             "misconceptions": [] if k % CONTROL_EVERY == CONTROL_EVERY - 1 else _plant(bank, job, rng),
             "confidence_style": rng.choice(["calibrated", "overconfident", "underconfident"]),
             "misread_rate": 0.05, "slip_rate": 0.05, "verbosity": rng.choice(["short", "medium", "long"]),
@@ -145,7 +155,26 @@ def save_candidates(candidates: list[dict], folder: Path = CANDIDATES_DIR) -> No
         (folder / f"{c['id']}.json").write_text(json.dumps(c, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def candidate_files(folder: Path) -> list[Path]:
+    return sorted(p for p in Path(folder).glob("*.json") if CANDIDATE_ID.match(p.stem))
+
+
 def load_candidates(folder: Path = CANDIDATES_DIR, ids: list[str] | None = None) -> list[dict]:
-    paths = sorted(folder.glob("CAND-*.json"))
-    candidates = [json.loads(p.read_text(encoding="utf-8")) for p in paths]
-    return [c for c in candidates if ids is None or c["id"] in ids]
+    """Candidate keys in `folder`, sorted by id. With `ids`, exactly those, in that order;
+    an id that is not in the folder is an error rather than a silently smaller run."""
+    candidates = [json.loads(p.read_text(encoding="utf-8")) for p in candidate_files(folder)]
+    if ids is None:
+        return candidates
+    by_id = {c["id"]: c for c in candidates}
+    missing = [i for i in ids if i not in by_id]
+    if missing:
+        raise KeyError(f"candidates not in {folder}: {', '.join(missing)}")
+    if len(set(ids)) != len(ids):
+        raise ValueError("candidate ids are repeated")
+    return [by_id[i] for i in ids]
+
+
+def candidate_digest(candidate: dict) -> str:
+    """SHA-256 of the key's canonical JSON (independent of file formatting and line endings)."""
+    text = json.dumps(candidate, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()

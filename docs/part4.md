@@ -16,10 +16,11 @@ Code: `src/part4/`. Scripts: `make_candidates.py`, `run_experiment.py`, `evaluat
 .venv/bin/python scripts/evaluate.py --run main
 ```
 
-`run_experiment.py` options: `--systems` (default B1 A2 A4 A5), `--grader` and `--simulator` (`stub`, `gemini`, `groq`, `ollama`), `--simulator-model`, `--candidates N` (first N only), `--run` (results folder, default `<grader>-<simulator>`), `--rerun`.
+`run_experiment.py` options: `--systems` (default B1 A2 A4 A5; the rv1 conditions are B1 A2E A4 ADAPT12 A5E), `--grader` and `--simulator` (`stub`, `gemini`, `groq`, `ollama`), `--simulator-model`, `--candidates N` (first N only), `--ids`, `--ids-file` or `--allocation nilkanta|souradeep` (explicit candidates), `--candidates-dir` (another population, such as `data/candidates_validation/pilot`), `--run` (results folder, default `<grader>-<simulator>`), `--operator`, `--rerun`. Versioned runs, exclusions and comparisons: [step5_evaluation.md](step5_evaluation.md).
 
 - Results: `results/<run>/<system>/<job>/<candidate>.json`, with `truth` on every turn and follow-up and the ground truth at the top level.
-- **Resuming:** finished interviews are skipped, so a run stopped by a quota limit continues where it left off. A failed interview is not saved, so the next run redoes it.
+- **Resuming:** finished interviews are skipped, so a run stopped by a quota limit continues where it left off. A failed interview is not saved but logged in `failures.jsonl`, so the next run redoes it; after 3 failed attempts the pair is excluded.
+- **Run manifest:** `results/<run>/manifest.json` records the code, bank, prompts, setup, configurations and candidates. A run made differently, or an old folder without a manifest, is refused before any interview: use a new run name.
 - **Stub runs** check the plumbing only: the stub grader reads hidden tags, so it is always right, and A2 and A4 come out identical. Real numbers need a live grader and simulator.
 
 ## The candidates (`candidates.py`)

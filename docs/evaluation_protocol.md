@@ -1,6 +1,6 @@
-# Evaluation protocol for the reviewed bank (Step 2)
+# Evaluation protocol for the reviewed bank (Step 2, amended in Step 5)
 
-Nilkanta Karak, 13 November 2026. Builds on [the baseline manifest](evaluation_baseline.md) (Step 1, commit `c297b3f`). The machine-readable copy of the matrix, run names, allocation and budget is [experiment_matrix.json](experiment_matrix.json). `tests/test_experiment_matrix.py` checks that file against the real presets and candidate files.
+Nilkanta Karak, 13 November 2026; amended after Souradeep's Step 4 (`b0cfda0`). Step 3 (human checks) was skipped by team decision: section 5 stays declared but is not carried out, and its endpoints are reported as *not measured*. Builds on [the baseline manifest](evaluation_baseline.md) (Step 1, commit `c297b3f`). The machine-readable copy of the matrix, run names, allocation and budget is [experiment_matrix.json](experiment_matrix.json). `tests/test_experiment_matrix.py` checks that file against the real presets and candidate files.
 
 This document **declares** what will be compared, how it will be measured, and how the human checks are scored. It does not run any experiment or claim any result. Anything it marks as *to implement* is Step 4 (Souradeep) or Step 5 (Nilkanta) work. Changes after the pilot need a new version number (section 7).
 
@@ -11,16 +11,25 @@ All conditions use the same reviewed bank (135 questions, 95 misconceptions, has
 | Condition | Preset | Differs from A2 | Status | Role |
 | --- | --- | --- | --- | --- |
 | **B1** | `B1` | `mode=fixed`, `stop_rule=fixed_count` (12), `diagnosis=off`, `generic_follow_up=False`, `probe_missed_topics=False` | exists | RQ1 baseline |
-| **A2-rev** | `A2Q` for now | `misconception_confirmation_unit=question` | exists; Step 4 may extend it | Revised full system, main method for RQ1 and RQ2 |
+| **A2-rev** | `A2E` | `misconception_confirmation_unit=question`, `diagnostic_evidence=True` | exists (Step 4) | Revised full system, main method for RQ1 and RQ2 |
 | **A4** | `A4` | `diagnosis=single`, `diagnosis_votes=1`, `misconception_confirmations=1` | exists | RQ2 ablation: no candidate-belief package |
-| **ADAPT12** | to add | `stop_rule=fixed_count` (12), `diagnosis=off`, `generic_follow_up=False` | to implement (Step 5); identical to the `adaptive12` control in `report/make_figures.py` | RQ1 equal-exchange control |
-| **A5** | `A5` | `retrieval=job-blind` | exists (applied to A2-rev at freeze, see below) | Job-aware retrieval |
-| A2 | `A2` | none | exists | Optional: confirmation-rule and bank comparison |
-| A2M | to add | see section 1.2 | to design (Step 5, with Souradeep) | Optional: memory-specific control |
+| **ADAPT12** | `ADAPT12` | `stop_rule=fixed_count` (12), `diagnosis=off`, `generic_follow_up=False` | exists (Step 5); `report/make_figures.py` uses it as its `adaptive12` control | RQ1 equal-exchange control |
+| **A5-rev** | `A5E` | `retrieval=job-blind`, plus A2-rev's two settings | exists (Step 5) | Job-aware retrieval: differs from A2-rev only in retrieval |
+| A2 | `A2` | none | exists | Optional: confirmation-rule, memory and bank comparisons |
+| A2Q | `A2Q` | `misconception_confirmation_unit=question` | exists | Optional: the confirmation rule without the evidence prompt (C5, C8) |
+| A5 | `A5` | `retrieval=job-blind` | exists | Historical only; not run in rv1 |
+| A2M | not implemented | see section 1.2 | needs agreement with Souradeep (tracker and selection are his modules) | Optional: memory-specific control |
 | A1 | `A1` | `stop_rule=fixed_count` (12) | exists | Not run live: 12 main questions plus follow-ups is not equal-exchange with B1 |
 | A3 | `A3` | grader model | exists | Not run: no fine-tuned grader exists |
 
-**A2-rev naming.** The revised full system is whatever Souradeep hands over after Step 4. Today that is the `A2Q` preset. If Step 4 changes behaviour beyond the confirmation unit, it gets its own preset name and `A2Q` stays as it is. A5 must be the frozen A2-rev with `retrieval=job-blind`, not today's `A5` (which is historical A2 with job-blind retrieval). Step 5 adds the matching preset, so that A5 against A2-rev changes exactly one setting.
+**A2-rev is `A2E`** (accepted in Step 5, from Souradeep's Step 4 handoff in `docs/step4_evidence.md`). On top of A2Q's distinct-question rule it:
+
+- asks the diagnoser for a verbatim quote and a reason; a misconception vote without a valid quote becomes `gap`;
+- needs a strict majority of the configured votes for a positive finding;
+- also diagnoses correct main answers (without follow-ups), so an explicit correction can contradict an earlier belief;
+- marks a finding with valid contradicting evidence `disputed`, which is never counted as confirmed.
+
+Its saved configuration carries `diagnosis_prompt_version: evidence-v1`. `A2Q` and `A2` stay unchanged as named controls. `A5E` is A2E with `retrieval=job-blind`, so A5-rev against A2-rev changes exactly one setting (checked by a test). The historical `A5` is not part of rv1.
 
 **ADAPT12** asks exactly 12 main questions, chosen adaptively, with no diagnosis and no follow-ups. It therefore has exactly 12 exchanges, like B1. Apart from adaptive choice, the only difference from B1 is `probe_missed_topics` (on in ADAPT12, off in B1), which only reorders questions within the chosen skill and level. That is part of "adaptive choice" here. On the 60 frozen stub candidates it gave 12.0 exchanges and 72.2% skill accuracy, against 60.6% for B1. That is a plumbing check only, not a result.
 
@@ -57,27 +66,28 @@ Each comparison is **paired on candidates**: it uses the candidates with a saved
 | **C1** | RQ1 | A2-rev vs B1 | Skill accuracy difference; exchanges per interview | Non-inferior if the lower bound of the accuracy-difference interval is above −5 points; exchange target: at least 25% fewer (already missed historically, reported as is) | MAE, macro-F1, fit accuracy when decided, review rate, false fit and false reject, premature stops |
 | **C2** | RQ1 at equal length | ADAPT12 vs B1 | Skill accuracy difference at exactly 12 exchanges | Adaptive choice helps if the interval is above 0 | MAE, verdicts |
 | **C3** | RQ2 | A2-rev vs A4 | Misconception recall and precision against planted, and false-alarm rate (each as a difference with interval) | Report all three plus length together; no single winner metric | Human-supported precision on the annotated sample (section 5), exchanges, interviewer LLM calls |
-| C4 | Retrieval | A5 vs A2-rev | Recall; required-topic coverage | Descriptive | Skill accuracy |
-| C5 | Confirmation rule | A2 vs A2-rev | Precision, recall, exchanges, **and skill accuracy** | Descriptive | Number of questions selected because they list a suspected misconception |
+| C4 | Retrieval | A5-rev vs A2-rev | Recall; required-topic coverage | Descriptive | Skill accuracy |
+| C5 | Confirmation rule | A2Q vs A2 | Precision, recall, exchanges, **and skill accuracy** | Descriptive | Number of questions selected because they list a suspected misconception |
 | C6 | Memory | A2 vs A2M | As C3 | Only with A2M run | |
 | C7 | Bank change | historical `midsub` B1/A2 vs reviewed B1/A2 | Reported side by side | Descriptive only: not paired, original transcripts unavailable | |
+| C8 | Evidence requirement | A2-rev vs A2Q | Precision, recall, false alarms, disputed findings, quote-rejection rate | Descriptive | Exchanges, LLM calls, skill accuracy |
 
-C1 to C3 are the primary comparisons; C4 to C7 are exploratory and carry no new claims. A result whose interval crosses its threshold is "not settled", as in `docs/part4.md`.
+C1 to C3 are the primary comparisons; C4 to C8 are exploratory and carry no new claims. `scripts/evaluate.py --comparisons` runs every declared comparison whose two conditions are in the run (C7 is unpaired and is not computed there). A result whose interval crosses its threshold is "not settled", as in `docs/part4.md`.
 
 **Metric definitions** are those in `src/part4/metrics.py` and `docs/part4.md`, unchanged. Two additions are declared now:
 
 - **RQ2 is counted on reported findings.** For both A2-rev and A4, recall and precision count misconceptions the report marks `confirmed`. As a secondary measure, both are also computed on *any named* misconception (suspected included), so A2-rev is not judged only by its stricter threshold.
 - **Premature stops** reuse Kushal's `premature_counts` and `premature_breakdown` from `report/make_figures.py`, with denominators added: wrong levels ÷ skills assessed, per skill and per true level, with intervals. Counts alone (five/four/five) do not show equal error rates.
 
-**Stub warning for C5 (found while preparing this protocol).** On the 60 frozen candidates with stubs, `A2Q` reached 67.8% skill accuracy against 78.3% for `A2`, and under-estimated 38 levels against 20. The cause: under the question rule a misconception stays "suspected" longer, so selection picked 33 questions *because they list a suspected misconception* (A2: 0). A candidate holding it scores 0 on each of those, which pulls the ability estimate down. Ground-truth levels ignore misconceptions. This is stub behaviour, not a live result, but it is a real interaction between corroboration and the scorecard. C5 must report skill accuracy, and Souradeep should check it in Step 4.
+**Stub warning for C5 (found while preparing this protocol).** On the 60 frozen candidates with stubs, `A2Q` reached 67.8% skill accuracy against 78.3% for `A2`, and under-estimated 38 levels against 20. The cause: under the question rule a misconception stays "suspected" longer, so selection picked 33 questions *because they list a suspected misconception* (A2: 0). A candidate holding it scores 0 on each of those, which pulls the ability estimate down. Ground-truth levels ignore misconceptions. This is stub behaviour, not a live result, but it is a real interaction between corroboration and the scorecard. C5 must report skill accuracy, and Souradeep should check it in Step 4. **Still present after Step 4:** `A2E` gives the same stub length and accuracy as `A2Q` (15.9 exchanges, 67.8%; 0.55 suspected-probe questions per interview). C8 therefore also reports skill accuracy; Step 6 (stopping) should look at it.
 
 ## 3. Candidates, pairing and allocation
 
 | Population | Ids | Seed | Size | Used for | Status |
 | --- | --- | --- | --- | --- | --- |
 | Evaluation | `CAND-001`–`CAND-060` | 2026 (existing files, hashed in `evaluation_baseline.json`) | 60 | Final runs only (Step 10). Never used for tuning or annotation. | Frozen; do not regenerate |
-| Annotation source | `VAL-A01`–`VAL-A12` | 3101 | 12 (one balanced block) | Step 3 annotation sample | To generate (needs Step 5 support, section 7) |
-| Pilot | `VAL-P01`–`VAL-P12` | 3102 | 12 (one balanced block) | Step 8 tuning and pilot | To generate |
+| Annotation source | `VAL-A-001`–`VAL-A-012` | 3101 | 12 (one balanced block) | Step 3 annotation sample | Deferred with Step 3; `scripts/make_candidates.py --prefix VAL-A --seed 3101 --n 12` |
+| Pilot | `VAL-P-001`–`VAL-P-012` | 3102 | 12 (one balanced block) | Step 8 tuning and pilot | Generated in Step 5: `data/candidates_validation/pilot/` (6 fit / 6 not fit, 6 even / 6 uneven, 4 per job, 20 planted, one attack on VAL-P-008, no no-misconception controls at this size) |
 
 The evaluation candidates were planted from the 94-misconception catalog. `py.concurrency.async-preempts` (added in the review) is never planted in them, so it can only appear as a non-planted finding there. The validation populations are drawn from the current 95-entry catalog and may plant it.
 
@@ -97,14 +107,14 @@ Run folder: `results/<version>-<purpose>/`. The version is `rv1` for the reviewe
 | Run | Population | Conditions |
 | --- | --- | --- |
 | `midsub` | historical, 24 | B1, A2. Reserved: never written to, results unavailable |
-| `rv1-annot` | VAL-A | A2 (historical rule, which produces the most extra claims to label) |
+| `rv1-annot` | VAL-A | A2 (historical rule, which produces the most extra claims to label). Deferred with Step 3 |
 | `rv1-pilot` | VAL-P | B1, A2-rev, A4, ADAPT12 (plus any stopping variant from Step 6) |
 | `rv1-main` | CAND-001–060 | Frozen matrix (section 8) |
 | `rv1-sqlverify` | paired subset, chosen at freeze | A2-rev with SQL verification on and off (Step 7) |
 
 **Exclusions**, declared before any data is seen:
 
-1. An interview ending in `stop_reason="error"` is not saved (current runner behaviour). Retry it up to 3 times under the same frozen setup. If it still fails, exclude that candidate *only from comparisons involving that condition*, and list it in `results/<run>/exclusions.json` with the error.
+1. An interview ending in `stop_reason="error"` is not saved (current runner behaviour). Retry it up to 3 times under the same frozen setup. If it still fails, exclude that candidate *only from comparisons involving that condition*, The runner logs every failed attempt with its error in `results/<run>/failures.jsonl`, skips the pair after the third, and `evaluate.py` lists it as excluded.
 2. A quota stop is a resume, not an exclusion.
 3. A completed interview with a non-empty `errors` list (for example a topic-extractor fallback) is **kept** and flagged.
 4. No exclusion based on outcomes. Attack candidates and no-misconception controls stay in every metric; safety is also reported separately.
@@ -112,6 +122,8 @@ Run folder: `results/<version>-<purpose>/`. The version is `rv1` for the reviewe
 6. Validation candidates never enter evaluation metrics, and evaluation candidates are never looked at during tuning.
 
 ## 5. Human checks: annotation protocol
+
+> **Deferred.** Step 3 was skipped by team decision (13 November 2026). The protocol below stays declared so it can be run later unchanged, but no human labels exist. Every endpoint that depends on them (human-supported precision, grader and simulator agreement with adjudicated labels) is reported as *not measured*, never replaced by model-generated labels.
 
 Two tasks, both labelled by Nilkanta and Souradeep **independently**. Neither sees the other's labels until both sheets are submitted and frozen (file hashes recorded). Initial labels are kept unchanged after adjudication. Templates are in [annotation/](annotation/).
 
@@ -214,40 +226,32 @@ Also use a fresh sample after any diagnosis-prompt or model change (Step 4 or th
 
 A4 writes the same fields, because the tracker records evidence on every diagnosed reply, so A2-rev and A4 are scored by identical code.
 
-**Requested from Step 4.** All fields are optional so that old results stay readable; evaluation treats a missing field as "not produced":
+**Delivered in Step 4** (`b0cfda0`, `docs/step4_evidence.md`) and used by the evaluation in Step 5:
 
-| Field | Where | Needed for |
+| Field | Where | Used for |
 | --- | --- | --- |
-| `status`: `confirmed`, `suspected` or `disputed` | finding (keep the boolean `confirmed`) | Counting disputed findings separately from suspected ones |
-| `supporting_quote`, plus `quote_start` and `quote_end` | each `evidence[]` record | Checking that the quote is an exact substring of `reply_text`; comparing it with the human `quote` |
-| `contradicting[]`, same record shape plus `reason` | finding | Contradiction analysis; precision among findings with and without contradictions |
-| Diagnoser prompt version or hash | `config` or the manifest | Telling A2 and A2-rev apart if only the prompt changes |
+| `status`: `confirmed`, `suspected` or `disputed` | finding (`confirmed` stays the boolean; disputed is false) | `confirmed`/`suspected`/`disputed` counts; recall and precision count only `confirmed`, never disputed; older results without `status` fall back to the boolean |
+| `supporting_quote`, `quote_start`, `quote_end`, `reason` | each `evidence[]` record | Available for audit; the substring check is done by the engine |
+| `contradicting[]` | finding, and each diagnosis | `contradiction_claims` count |
+| `evidence_rejected` | a diagnosis whose misconception vote lacked valid evidence | `quote_rejections` and `quote_rejection_rate` |
+| `diagnosis_prompt_version` | saved `config` (`evidence-v1`) | Kept in the run manifest's condition configuration |
 
 **Requested from Step 6** (stopping): at the end of the interview, per skill, the posterior mass inside the reported level band, next to the existing `estimate`, `se`, `level` and `meets_minimum`. This lets evaluation study boundary errors without re-running the scorecard.
 
 Agreeing this contract is the handoff. Neither of us edits the other's modules until it is agreed (assessment section 8).
 
-## 7. Runner and reporting support needed (Step 5, Nilkanta)
+## 7. Runner and reporting support (implemented in Step 5)
 
-These are not implemented yet; they are listed so the order of work is clear.
+How to use it: [step5_evaluation.md](step5_evaluation.md). Tests: `tests/test_step5_evaluation.py`.
 
-1. **Run manifest.** Write `results/<run>/manifest.json` before the first interview:
-   - code commit and dirty flag;
-   - bank, catalog, topics and jobs hashes, and the hash of each candidate file;
-   - each condition's `config.to_dict()`;
-   - provider, models and simulator model;
-   - prompt file hashes (`part3/prompts.py`, `part4/simulator.py`);
-   - seeds, operator and share.
-
-   Refuse to add to a run whose manifest differs.
-2. **Explicit candidate selection.** `--ids` or an id-list file, plus a `--candidates-dir` for the validation populations.
-3. **Validation candidates.** A `make_candidates` id prefix, so they can be `VAL-A..`/`VAL-P..`. `load_results` must accept that prefix (today it matches `CAND-*.json` only).
-4. **Presets** for ADAPT12 and job-blind A2-rev (and A2M if it is run), each with a test that the configuration differs from its reference only as declared.
-5. **Per-comparison pairing**, the comparisons in section 2 run through `evaluate.py`, and premature-stop statistics with denominators.
-6. **Annotation scoring script** (Step 3): weighted and unweighted kappa, raw agreement, bootstrap intervals, phase 4 tables.
-7. **Explicit bank root for the report:** `make_figures.py` must not silently use the working-tree bank for historical sweeps (assessment section 7.F.2).
-
-`rv1-annot` needs items 1–3 before Step 3 can start. These three are the first Step 5 tasks, done once Souradeep accepts this protocol.
+1. **Run manifest** (`src/part4/manifest.py`). It is written to `results/<run>/manifest.json` before the first interview. It holds a fingerprint (engine source, bank, prompt and evidence sources, grader and simulator setup), each condition's configuration, each candidate key's hash, and append-only sessions (operator, share, candidates, commit, dirty flag). The runner refuses, before any interview, a run made with a different fingerprint, configuration or candidate key, and an old folder that has results but no manifest. Hashes are of LF-normalised text, so Windows and macOS checkouts of one commit agree. Every result is tagged with its run name and fingerprint.
+2. **Explicit candidates:** `--ids`, `--ids-file`, `--allocation nilkanta|souradeep` and `--candidates-dir`.
+3. **Validation candidates:** `make_candidates.py --prefix VAL-P|VAL-A`, with ids such as `VAL-P-001` (the schema and `load_results` accept them). The script now refuses to overwrite an existing set, and the frozen evaluation set in particular.
+4. **Presets** `ADAPT12` and `A5E`, tested against their declared differences. A2M is not implemented (section 1.2).
+5. **Paired comparisons and premature-stop rates.** `metrics.compare` pairs only the two conditions being compared. `evaluate.py --comparisons` runs C1–C6 and C8 from `experiment_matrix.json`. `metrics.premature_rates` adds denominators per skill and per true level; Kushal's `premature_counts` and `premature_breakdown` moved into `metrics.py` unchanged.
+6. **Exclusions:** failed interviews are logged in `results/<run>/failures.jsonl`. After 3 failed attempts a pair is excluded and listed by `evaluate.py`. Quota stops do not count.
+7. **Explicit bank for the report:** `make_figures.py --bank-root PATH --bank-label NAME`. For a run with a manifest, the bank must match it. For one without (`midsub`), a label is required and the numbers carry the bank's hash.
+8. **Annotation scoring** (Step 3) is not implemented: deferred with Step 3.
 
 ## 8. Budget and recommended scope
 
@@ -255,15 +259,16 @@ Interviewer-side LLM calls per interview are given by the report's formula:
 
 > 1 topic call + grader votes × main questions + grader votes × questions with follow-ups + diagnosis votes × diagnosed replies
 
-The simulator makes one call per exchange. B1 and ADAPT12 are exact. The others take their stub run on the 60 evaluation candidates and scale it by the live/stub ratio of historical A2 (104 / 74.3 calls ≈ 1.4). They are **estimates**.
+The simulator makes one call per exchange. B1 and ADAPT12 are exact. The others take their stub run on the 60 evaluation candidates and scale it by the live/stub ratio of historical A2 (104 / 74.3 calls ≈ 1.4). They are **estimates**. Re-estimated in Step 5: `A2E` also diagnoses correct main answers (3 more calls each), so it costs about 18 more stub calls than `A2Q` at the same length. Measure the real numbers on the pilot (`evaluate.py` reports `mean_llm_calls` and `mean_api_calls`) before freezing.
 
 | Condition | Stub calls | Estimated live calls | Simulator calls | 60 candidates |
 | --- | ---: | ---: | ---: | ---: |
 | B1 | 37 | 37 | 12 | 2,220 + 720 |
 | ADAPT12 | 37 | 37 | 12 | 2,220 + 720 |
-| A2-rev (`A2Q`) | 76.2 | ≈107 | ≈22 | ≈6,400 + 1,300 |
+| A2-rev (`A2E`) | 93.9 | ≈131 | ≈22 | ≈7,900 + 1,300 |
+| A2Q | 76.2 | ≈107 | ≈22 | ≈6,400 + 1,300 |
 | A4 | 54.1 | ≈75 (at most about 106) | ≈18 | ≈4,500 + 1,100 |
-| A5 | 72.7 | ≈102 | ≈21 | ≈6,100 + 1,300 |
+| A5-rev (`A5E`) | 92.3 | ≈129 | ≈21 | ≈7,700 + 1,300 |
 | A2 | 74.3 | 104 (historical) | 21 | 6,240 + 1,260 |
 | A2M | — | ≈104 | ≈21 | ≈6,200 + 1,300 |
 
@@ -271,9 +276,9 @@ These are upper bounds. The disk cache reuses identical grader calls on the same
 
 | Scope | Interviews | Interviewer calls | Simulator calls |
 | --- | ---: | ---: | ---: |
-| `rv1-annot` (A2 on 12) | 12 | ≈1,250 | ≈250 |
-| `rv1-pilot` (4 conditions on 12) | 48 | ≈3,100 | ≈770 |
-| **Main, recommended:** B1, A2-rev, A4, ADAPT12, A5 | 300 | ≈21,500 | ≈5,100 |
+| `rv1-annot` (A2 on 12; deferred with Step 3) | 12 | ≈1,250 | ≈250 |
+| `rv1-pilot` (B1, A2-rev, A4, ADAPT12 on 12) | 48 | ≈3,400 | ≈770 |
+| **Main, recommended:** B1, A2-rev, A4, ADAPT12, A5-rev | 300 | ≈24,500 | ≈5,100 |
 | plus A2 and A2M on blocks 1–2 (24 candidates, exploratory) | +48 | +≈5,000 | +≈1,000 |
 | plus A2 and A2M on all 60 | +120 | +≈12,500 | +≈2,600 |
 
@@ -281,9 +286,7 @@ These are upper bounds. The disk cache reuses identical grader calls on the same
 
 The historical run used free tiers over four accounts plus about $1 of paid Gemini (report section 5). Per-call prices are not estimated here: check the provider's current pricing at freeze and record it in the manifest.
 
-## 9. Handoff to Souradeep
+## 9. Handoffs
 
-- **Behavioural definitions:** sections 1, 1.1 and 1.2. Please confirm that A2-rev is `A2Q` plus your Step 4 changes, and whether those changes get a new preset name.
-- **Evidence fields:** section 6. Please confirm or amend before either of us edits `followups.py`, `report.py` or the schema.
-- **Minimum comparisons:** C1–C3 (section 2). C5 needs skill accuracy because of the stub interaction above.
-- **For Step 3:** you prepare the samples and provenance (sections 5.1 and 5.2); I write the scoring script (section 7, item 6).
+- **Step 2 to Souradeep:** behavioural definitions (sections 1–1.2), evidence fields (section 6) and minimum comparisons (C1–C3). Answered by Step 4: A2-rev is `A2E`.
+- **Step 5 to Souradeep:** see [step5_evaluation.md](step5_evaluation.md), section "Handoff". It covers the runnable configurations, evaluation commands and reporting outputs, and asks Souradeep to check that each control removes the intended behaviour.

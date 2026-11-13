@@ -273,6 +273,13 @@ SYSTEMS: dict[str, InterviewConfig] = {
     "A4": _A2.with_(system="A4", diagnosis="single", diagnosis_votes=1, misconception_confirmations=1),
     # Full system with job-blind retrieval
     "A5": _A2.with_(system="A5", retrieval="job-blind"),
+    # Step 5 controls (docs/evaluation_protocol.md section 1). ADAPT12: adaptive choice, exactly
+    # 12 main questions, no diagnosis and no follow-ups, so exactly 12 exchanges like B1 (the
+    # report's offline "adaptive12" control). A5E: the revised system A2E with job-blind
+    # retrieval, so A5E against A2E changes only retrieval.
+    "ADAPT12": _A2.with_(system="ADAPT12", stop_rule="fixed_count", diagnosis="off", generic_follow_up=False),
+    "A5E": _A2.with_(system="A5E", retrieval="job-blind", misconception_confirmation_unit="question",
+                     diagnostic_evidence=True),
 }
 
 

@@ -27,7 +27,11 @@ from engine.factory import build_components  # noqa: E402
 from engine.run import run_interview  # noqa: E402
 from part1.bank import load_bank  # noqa: E402
 from part4.candidates import make_candidates, truth_for  # noqa: E402
-from part4.metrics import load_results, paired, percentile_interval, replies, summarise, target_intervals  # noqa: E402
+from part4.manifest import RunManifest, bank_hashes  # noqa: E402
+from part4.metrics import (  # noqa: E402
+    load_results, paired, percentile_interval, premature_breakdown, premature_counts, replies, summarise,
+    target_intervals,
+)
 from part4.runner import RESULTS_DIR  # noqa: E402
 from shared.interfaces import SYSTEMS  # noqa: E402
 from shared.stubs import RuleBasedRespondent  # noqa: E402
@@ -271,7 +275,7 @@ def fig_trajectory(results: list[dict], candidate_id: str) -> None:
 # --------------------------------------------------------------------------
 
 def stub_run(config, bank, candidates, jobs) -> dict:
-    components = build_components(config, live=False, root=ROOT)
+    components = build_components(config, live=False, root=bank.root)
     results = []
     for c in candidates:
         job = jobs[c["job_id"]]
@@ -307,7 +311,7 @@ def fig_stopping(bank) -> dict:
     save(fig, "stopping")
     controls = {
         "fixed15": SYSTEMS["B1"].with_(fixed_levels=(1, 2, 2, 3, 3), fixed_count=15),
-        "adaptive12": SYSTEMS["A1"].with_(diagnosis="off", generic_follow_up=False),
+        "adaptive12": SYSTEMS["ADAPT12"],
         "adaptive12follow": SYSTEMS["A1"],
     }
     return {"baseline": baseline, "points": points,
@@ -366,33 +370,6 @@ def diagnosis_details(results: list[dict]) -> dict:
     return {"named": named, "split": split, "single_question": single_question, "confirmed": confirmed}
 
 
-def premature_counts(results: list[dict]) -> dict:
-    wrong = [any(r["report"]["levels"][s]["level"] != r["truth"]["levels"][s] for s in SKILLS) for r in results]
-    confident = [r["stop_reason"] == "confident" for r in results]
-    return {"all": len(results), "confident": sum(confident),
-            "confident_wrong": sum(c and w for c, w in zip(confident, wrong)), "any_wrong": sum(wrong)}
-
-
-def premature_breakdown(results: list[dict]) -> dict:
-    """The wrong skill levels in interviews that stopped on the confidence rule: which skill,
-    which direction, how far off, the SE they stopped at, and how true level 0 fared."""
-    misses, zero_skills = [], 0
-    for r in results:
-        if r["stop_reason"] != "confident":
-            continue
-        for s in SKILLS:
-            true, got = r["truth"]["levels"][s], r["report"]["levels"][s]
-            zero_skills += true == 0
-            if got["level"] != true:
-                misses.append({"skill": s, "true": true, "gap": got["level"] - true, "se": got["se"]})
-    return {"misses": len(misses),
-            "by_skill": Counter(m["skill"] for m in misses),
-            "over": sum(m["gap"] > 0 for m in misses),
-            "max_gap": max((abs(m["gap"]) for m in misses), default=0),
-            "se_low": min((m["se"] for m in misses), default=0), "se_high": max((m["se"] for m in misses), default=0),
-            "zero_missed": sum(m["true"] == 0 for m in misses), "zero_skills": zero_skills}
-
-
 # --------------------------------------------------------------------------
 # Numbers for the text
 # --------------------------------------------------------------------------
@@ -401,9 +378,35 @@ def pct(x: float, digits: int = 0) -> str:
     return f"{100 * x:.{digits}f}\\%"
 
 
-def write_numbers(values: dict) -> None:
+def combined_bank_hash(bank_root: Path) -> str:
+    import hashlib
+    import json
+    return hashlib.sha256(json.dumps(bank_hashes(bank_root), sort_keys=True).encode()).hexdigest()
+
+
+def check_bank(run_dir: Path, bank_root: Path, label: str | None, parser) -> tuple[Path, str]:
+    """The bank the numbers describe must be named, and must be the run's bank when the run has a
+    manifest: the figures never silently mix a run with the working-tree bank (assessment 7.F.2)."""
+    bank_root = Path(bank_root).resolve()
+    manifest = RunManifest.load(run_dir)
+    if manifest is not None:
+        used = manifest.data["fingerprint"]["bank_files_sha256"]
+        if bank_hashes(bank_root) != used:
+            parser.error(f"--bank-root {bank_root} is not the bank {run_dir.name} was run on "
+                         "(its manifest records different bank hashes)")
+        return bank_root, label or "as recorded in the run manifest"
+    if label is None:
+        parser.error(f"{run_dir.name} has no manifest, so the bank it used cannot be checked: pass --bank-root "
+                     "(a checkout of that bank) and --bank-label to say which bank the numbers describe")
+    print(f"Warning: {run_dir.name} has no manifest; bank '{label}' at {bank_root} is taken on trust")
+    return bank_root, label
+
+
+def write_numbers(values: dict, provenance: str = "") -> None:
     """One macro per value; a leading minus sign is typeset as a real minus."""
     lines = ["% Generated by report/make_figures.py; do not edit by hand."]
+    if provenance:
+        lines.append(f"% {provenance}")
     for name, value in values.items():
         value = str(value)
         value = "$-$" + value[1:] if value.startswith("-") else value
@@ -417,8 +420,13 @@ def main() -> int:
     parser.add_argument("--run", default="midsub")
     parser.add_argument("--example", default="CAND-013", help="candidate for the uncertainty figure")
     parser.add_argument("--skip-sweep", action="store_true", help="leave out the stub stopping sweep (slow)")
+    parser.add_argument("--bank-root", type=Path, default=ROOT,
+                        help="repository root whose bank the run used (default: this working tree). For the "
+                             "historical midsub run, a checkout of the bank commit it used (673ee08)")
+    parser.add_argument("--bank-label", help="name for that bank in numbers.tex, e.g. historical or reviewed")
     args = parser.parse_args()
     FIGURES.mkdir(parents=True, exist_ok=True)
+    bank_root, bank_label = check_bank(RESULTS_DIR / args.run, args.bank_root, args.bank_label, parser)
 
     by_system = paired(load_results(RESULTS_DIR / args.run))
     by_system = {s: by_system[s] for s in ("B1", "A2")}
@@ -435,7 +443,7 @@ def main() -> int:
     mis = fig_misconceptions(by_system["A2"])
     fig_trajectory(by_system["A2"], args.example)
 
-    bank = load_bank(ROOT)
+    bank = load_bank(bank_root)
     verdicts = {name: verdict_counts(rs) for name, rs in by_system.items()}
     over = {name: sum(int(counts[name][i, j]) for i in range(4) for j in range(4) if j > i) for name in counts}
     under = {name: sum(int(counts[name][i, j]) for i in range(4) for j in range(4) if j < i) for name in counts}
@@ -523,7 +531,7 @@ def main() -> int:
             "stubAccBaseExact": pct(sweep["baseline"]["skill_accuracy"], 1),
             "stubAccOursExact": pct(chosen["skill_accuracy"], 1),
         })
-    write_numbers(values)
+    write_numbers(values, f"bank {bank_label} at {bank_root}, sha256 {combined_bank_hash(bank_root)}")
     return 0
 
 

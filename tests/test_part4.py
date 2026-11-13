@@ -112,9 +112,9 @@ def test_respondent_logs_plans_appends_attacks_and_passes_history():
 def test_stub_run_saves_results_with_truth_and_resumes(tmp_path, candidates):
     some = candidates[:3]
     counts = run_experiment(["B1", "A2"], some, JOBS, Setup(), tmp_path, report=lambda *_: None)
-    assert counts == {"done": 6, "skipped": 0, "failed": 0}
+    assert counts == {"done": 6, "skipped": 0, "failed": 0, "excluded": 0}
     again = run_experiment(["B1", "A2"], some, JOBS, Setup(), tmp_path, report=lambda *_: None)
-    assert again == {"done": 0, "skipped": 6, "failed": 0}
+    assert again == {"done": 0, "skipped": 6, "failed": 0, "excluded": 0}
     results = load_results(tmp_path)
     r = results["A2"][0]
     assert set(r["truth"]) == {"levels", "fit", "misconceptions", "profile_type"} and r["turns"][0]["truth"]

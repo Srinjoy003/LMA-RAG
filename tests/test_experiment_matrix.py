@@ -45,10 +45,18 @@ def test_a3_differs_only_in_the_grader_model():
 
 
 def test_adapt12_matches_the_report_offline_control():
-    # report/make_figures.py: "adaptive12": SYSTEMS["A1"].with_(diagnosis="off", generic_follow_up=False)
+    # The report's original offline control was SYSTEMS["A1"].with_(diagnosis="off", generic_follow_up=False);
+    # report/make_figures.py now uses the ADAPT12 preset, which must be exactly that configuration.
     control = SYSTEMS["A1"].with_(diagnosis="off", generic_follow_up=False)
+    assert differences(control, SYSTEMS["ADAPT12"]) == {}
     assert differences(control, SYSTEMS["A2"]) == declared("ADAPT12")["overrides"]
     assert control.fixed_count == SYSTEMS["B1"].fixed_count == 12
+
+
+def test_revised_job_blind_condition_changes_only_retrieval():
+    a2rev, a5rev = SYSTEMS[declared("A2-rev")["preset"]], SYSTEMS[declared("A5-rev")["preset"]]
+    assert differences(a5rev, a2rev) == {"retrieval": "job-blind"}
+    assert a2rev.to_dict()["diagnosis_prompt_version"] == a5rev.to_dict()["diagnosis_prompt_version"]
 
 
 def test_a4_cannot_tell_reply_from_question_counting():

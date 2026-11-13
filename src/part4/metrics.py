@@ -10,28 +10,61 @@ from __future__ import annotations
 
 import json
 import random
-from collections import defaultdict
+import re
+from collections import Counter, defaultdict
 from pathlib import Path
 
 SKILLS = ("py", "sql", "ds")
 LEVELS = (0, 1, 2, 3)
 TARGETS = {"exchange_reduction": 0.25, "accuracy_gap_points": -5.0, "recall": 0.60, "false_alarm_rate": 0.15}
+CANDIDATE_ID = re.compile(r"^(CAND|VAL-[A-Z])-[0-9]{3}$")
+SUSPECTED_PROBE = "suspected misconception"     # selection_reason text of ranking rule (a)
+# Declared endpoints that no run can supply yet (protocol section 5: annotation deferred).
+NOT_MEASURED = {"human_supported_precision": "not measured: the human answer annotation (Step 3) was deferred"}
 
 
 def load_results(run_dir: Path) -> dict[str, list[dict]]:
     """{system: [result, ...]} from results/<run>/<system>/<job>/<candidate>.json."""
     by_system = defaultdict(list)
-    for path in sorted(Path(run_dir).glob("*/*/CAND-*.json")):
+    for path in sorted(Path(run_dir).glob("*/*/*.json")):
+        if not CANDIDATE_ID.match(path.stem):
+            continue
         result = json.loads(path.read_text(encoding="utf-8"))
         by_system[result["system"]].append(result)
     return dict(by_system)
 
 
+def check_run(run_dir: Path, by_system: dict[str, list[dict]]) -> list[str]:
+    """Problems with a run's provenance: results without a manifest, or from another one."""
+    from .manifest import RunManifest
+    manifest = RunManifest.load(run_dir)
+    results = [r for rs in by_system.values() for r in rs]
+    if manifest is None:
+        return [f"{Path(run_dir).name} has no manifest: results are unversioned (historical or hand-made); "
+                "report them as such"] if results else []
+    problems = []
+    foreign = [r for r in results if (r.get("run") or {}).get("fingerprint") != manifest.fingerprint_id]
+    if foreign:
+        problems.append(f"{len(foreign)} results were not made under this run's manifest "
+                        f"(e.g. {foreign[0]['system']} {foreign[0]['candidate_id']}); do not report them with it")
+    for r in results:
+        known = manifest.data["conditions"].get(r["system"])
+        if known is not None and known != r["config"]:
+            problems.append(f"{r['system']} {r['candidate_id']}: configuration differs from the manifest")
+    return problems
+
+
 def paired(by_system: dict[str, list[dict]]) -> dict[str, list[dict]]:
     """Only the candidates every system has a result for, so a run cut short by a quota
-    limit still compares the systems on the same people."""
+    limit still compares the systems on the same people. For a comparison of two systems use
+    `pair` instead: an incomplete third system must not shrink it."""
     common = set.intersection(*({r["candidate_id"] for r in results} for results in by_system.values()))
     return {s: [r for r in results if r["candidate_id"] in common] for s, results in by_system.items()}
+
+
+def pair(by_system: dict[str, list[dict]], a: str, b: str) -> dict[str, list[dict]]:
+    """The two systems on the candidates both have a result for (protocol section 2)."""
+    return paired({a: by_system.get(a, []), b: by_system.get(b, [])})
 
 
 def ratio(part: float, whole: float) -> float | None:
@@ -55,13 +88,17 @@ def summarise(results: list[dict]) -> dict:
         "mean_exchanges": ratio(sum(r["exchanges"] for r in results), n),
         "mean_main_questions": ratio(sum(len(r["turns"]) for r in results), n),
         "premature_stop_rate": ratio(sum(r["stop_reason"] == "confident" and w for r, w in zip(results, wrong_level)), n),
+        "topic_coverage": topic_coverage(results),
         # decisions
         **fit_metrics(results),
         # misconceptions (RQ2)
         **misconception_metrics(results),
+        **evidence_metrics(results),
         # diagnostics
         "grading_accuracy": grading_accuracy(results),
         **safety_metrics(results),
+        # cost (interviewer side: grader, diagnoser, topic extraction, agent)
+        **cost_metrics(results),
     }
 
 
@@ -91,22 +128,82 @@ def fit_metrics(results: list[dict]) -> dict:
     }
 
 
+def finding_status(finding: dict) -> str:
+    """confirmed / suspected / disputed. Results from before Step 4 have no `status`: a finding
+    there is confirmed or suspected by its boolean. A disputed finding is never confirmed,
+    however many positive replies it has."""
+    return finding.get("status") or ("confirmed" if finding["confirmed"] else "suspected")
+
+
 def misconception_metrics(results: list[dict]) -> dict:
-    """Recall and precision count confirmed misconceptions only. The false-alarm rate counts any
-    misconception named on a reply the candidate answered correctly (suspected ones too)."""
-    planted = found = confirmed = 0
+    """Recall and precision count confirmed misconceptions only (disputed ones are not
+    confirmed). `*_any_named` count every finding the report names, whatever its status.
+    The false-alarm rate counts any misconception named on a reply the candidate answered
+    correctly (suspected ones too)."""
+    planted = found = confirmed = named = found_named = 0
+    status = Counter()
+    disputed_planted = 0
     correct_replies = alarms = 0
     for r in results:
         truth = set(r["truth"]["misconceptions"])
-        claimed = {m["id"] for m in r["report"]["misconceptions"] if m["confirmed"]}
+        findings = r["report"]["misconceptions"]
+        claimed = {m["id"] for m in findings if finding_status(m) == "confirmed"}
+        any_named = {m["id"] for m in findings}
         planted, found, confirmed = planted + len(truth), found + len(truth & claimed), confirmed + len(claimed)
+        named, found_named = named + len(any_named), found_named + len(truth & any_named)
+        for m in findings:
+            status[finding_status(m)] += 1
+            disputed_planted += finding_status(m) == "disputed" and m["id"] in truth
         for reply in replies(r):
             if (reply.get("truth") or {}).get("outcome") == "correct":
                 correct_replies += 1
                 alarms += bool((reply.get("diagnosis") or {}).get("misconception_id"))
     return {"planted": planted, "found": found, "confirmed": confirmed,
+            "suspected": status["suspected"], "disputed": status["disputed"], "disputed_planted": disputed_planted,
+            "named": named, "found_named": found_named,
             "recall": ratio(found, planted), "precision": ratio(found, confirmed),
+            "recall_any_named": ratio(found_named, planted), "precision_any_named": ratio(found_named, named),
             "false_alarm_rate": ratio(alarms, correct_replies)}
+
+
+def evidence_metrics(results: list[dict]) -> dict:
+    """Step 4 evidence: misconception votes turned into a gap because the quote was missing,
+    not verbatim or conflicting; valid contradiction claims; and questions chosen because they
+    list a still-suspected misconception (ranking rule a). Zero for systems without evidence."""
+    rejected = contradictions = probes = diagnosed = 0
+    for r in results:
+        for turn in r["turns"]:
+            probes += SUSPECTED_PROBE in (turn.get("selection_reason") or "")
+        for reply in replies(r):
+            d = reply.get("diagnosis")
+            if d:
+                diagnosed += 1
+                rejected += bool(d.get("evidence_rejected"))
+                contradictions += len(d.get("contradicting") or [])
+    n = len(results)
+    return {"diagnosed_replies": diagnosed, "quote_rejections": rejected, "contradiction_claims": contradictions,
+            "quote_rejection_rate": ratio(rejected, diagnosed),
+            "suspected_probe_selections": ratio(probes, n)}
+
+
+def cost_metrics(results: list[dict]) -> dict:
+    """Mean usage per interview. `api_calls` excludes cache hits; results from runs that did not
+    meter usage (the stubs) report zero."""
+    n = len(results)
+    usage = [r.get("usage") or {} for r in results]
+    return {f"mean_{k}": ratio(sum(u.get(k, 0) or 0 for u in usage), n)
+            for k in ("llm_calls", "api_calls", "input_tokens", "output_tokens")}
+
+
+def topic_coverage(results: list[dict]) -> float | None:
+    """Mean share of the job's required topics that at least one question tested."""
+    shares = []
+    for r in results:
+        cov = r["report"].get("topic_coverage") or {}
+        required = set(cov.get("required") or [])
+        if required:
+            shares.append(len(required & set(cov.get("tested") or [])) / len(required))
+    return ratio(sum(shares), len(shares))
 
 
 def replies(result: dict):
@@ -169,6 +266,93 @@ def target_intervals(by_system: dict[str, list[dict]], method: str = "A2", basel
             if row["value"] is not None:
                 values[row["target"]].append(row["value"])
     return {name: percentile_interval(vs) for name, vs in values.items()}
+
+
+def compare(by_system: dict[str, list[dict]], a: str, b: str, endpoints: list[str], *,
+            samples: int = 2000, seed: int = 0) -> dict:
+    """Paired comparison of system `a` against `b` on the candidates both have (protocol
+    section 2): each endpoint's value for both, the difference a - b, and a 95% bootstrap
+    interval for the difference (candidates drawn with replacement, the same draw for both).
+    An endpoint that is undefined in a draw (for example precision with nothing confirmed) is
+    left out of that endpoint's interval and counted in `undefined_draws`."""
+    both = pair(by_system, a, b)
+    ids = sorted({r["candidate_id"] for r in both[a]})
+    out = {"a": a, "b": b, "candidates": len(ids), "endpoints": {}}
+    if not ids:
+        return out
+    by_id = {s: {r["candidate_id"]: r for r in both[s]} for s in (a, b)}
+    point = {s: summarise([by_id[s][i] for i in ids]) for s in (a, b)}
+    rng = random.Random(seed)
+    diffs, undefined = defaultdict(list), Counter()
+    for _ in range(samples):
+        draw = rng.choices(ids, k=len(ids))
+        sa, sb = (summarise([by_id[s][i] for i in draw]) for s in (a, b))
+        for e in endpoints:
+            if e in NOT_MEASURED:
+                continue
+            if sa.get(e) is None or sb.get(e) is None:
+                undefined[e] += 1
+            else:
+                diffs[e].append(sa[e] - sb[e])
+    for e in endpoints:
+        if e in NOT_MEASURED:
+            out["endpoints"][e] = {"status": NOT_MEASURED[e]}
+            continue
+        va, vb = point[a].get(e), point[b].get(e)
+        out["endpoints"][e] = {a: va, b: vb, "difference": None if va is None or vb is None else va - vb,
+                               "interval": list(percentile_interval(diffs[e])) if diffs[e] else None,
+                               "undefined_draws": undefined[e]}
+    return out
+
+
+# --------------------------------------------------------------------------
+# Premature stops (Kushal's report analysis, moved here so the runner's evaluation reuses it)
+# --------------------------------------------------------------------------
+
+def premature_counts(results: list[dict]) -> dict:
+    wrong = [any(r["report"]["levels"][s]["level"] != r["truth"]["levels"][s] for s in SKILLS) for r in results]
+    confident = [r["stop_reason"] == "confident" for r in results]
+    return {"all": len(results), "confident": sum(confident),
+            "confident_wrong": sum(c and w for c, w in zip(confident, wrong)), "any_wrong": sum(wrong)}
+
+
+def premature_breakdown(results: list[dict]) -> dict:
+    """The wrong skill levels in interviews that stopped on the confidence rule: which skill,
+    which direction, how far off, the SE they stopped at, and how true level 0 fared."""
+    misses, zero_skills = [], 0
+    for r in results:
+        if r["stop_reason"] != "confident":
+            continue
+        for s in SKILLS:
+            true, got = r["truth"]["levels"][s], r["report"]["levels"][s]
+            zero_skills += true == 0
+            if got["level"] != true:
+                misses.append({"skill": s, "true": true, "gap": got["level"] - true, "se": got["se"]})
+    return {"misses": len(misses),
+            "by_skill": Counter(m["skill"] for m in misses),
+            "over": sum(m["gap"] > 0 for m in misses),
+            "max_gap": max((abs(m["gap"]) for m in misses), default=0),
+            "se_low": min((m["se"] for m in misses), default=0), "se_high": max((m["se"] for m in misses), default=0),
+            "zero_missed": sum(m["true"] == 0 for m in misses), "zero_skills": zero_skills}
+
+
+def premature_rates(results: list[dict]) -> dict:
+    """The same misses with their denominators: among confident stops, wrong levels out of skills
+    assessed, per skill and per true level, split into over- and under-estimates."""
+    by_skill, by_level = defaultdict(lambda: [0, 0]), defaultdict(lambda: [0, 0, 0])
+    for r in results:
+        if r["stop_reason"] != "confident":
+            continue
+        for s in SKILLS:
+            true, got = r["truth"]["levels"][s], r["report"]["levels"][s]["level"]
+            by_skill[s][0] += got != true
+            by_skill[s][1] += 1
+            by_level[true][0] += got > true
+            by_level[true][1] += got < true
+            by_level[true][2] += 1
+    return {"by_skill": {s: {"wrong": w, "assessed": n, "rate": ratio(w, n)} for s, (w, n) in sorted(by_skill.items())},
+            "by_true_level": {str(lv): {"over": o, "under": u, "assessed": n, "rate": ratio(o + u, n)}
+                              for lv, (o, u, n) in sorted(by_level.items())}}
 
 
 def percentile_interval(values: list[float], level: float = 0.95) -> tuple[float, float]:
