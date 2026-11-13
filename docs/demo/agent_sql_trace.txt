@@ -1,0 +1,76 @@
+Agent-driven interview: system A2EV, candidate VAL-P-004 (data-analyst), agent scripted (offline, no LLM)
+
+turn  tool                     result         ms  note
+   1  end_interview            REFUSED      0.20  the stop rule (uncertainty) is not met yet: 0 main questions asked
+   1  search_question_bank     ok           0.18
+   1  ask_candidate            REFUSED      0.01  the rules chose question PY-L2-007, not NOT-THE-CHOSEN-QUESTION
+   1  ask_candidate            ok           0.01
+   1  update_scorecard         REFUSED      0.00  nothing has been graded yet; call ask_candidate and grade_answer first
+   1  verify_sql_result        REFUSED      0.01  PY-L2-007 is not a SQL read-code question; there is nothing to verify
+   1  grade_answer             ok           0.03
+   1  search_question_bank     REFUSED      0.01  question PY-L2-007 is still open; call update_scorecard first
+   1  update_scorecard         ok           0.20
+   2  search_question_bank     ok           0.17
+   2  ask_candidate            ok           0.01
+   2  grade_answer             REFUSED      0.00  question SQL-L2-014 needs verify_sql_result before grade_answer
+   2  verify_sql_result        ok           2.75  status verified, 3 rows (the rows go to the grader only)
+   2  grade_answer             ok           0.03
+   2  update_scorecard         ok           0.20
+   3  search_question_bank     ok           0.15
+   3  ask_candidate            ok           0.01
+   3  grade_answer             ok           0.01
+   3  update_scorecard         ok           0.15
+   4  search_question_bank     ok           0.15
+   4  ask_candidate            ok           0.01
+   4  grade_answer             ok           0.01
+   4  update_scorecard         ok           0.15
+   5  search_question_bank     ok           0.15
+   5  ask_candidate            ok           0.01
+   5  grade_answer             ok           0.01
+   5  update_scorecard         ok           0.14
+   6  search_question_bank     ok           0.15
+   6  ask_candidate            ok           0.01
+   6  verify_sql_result        ok           0.12  status verified, 3 rows (the rows go to the grader only)
+   6  grade_answer             ok           0.01
+   6  update_scorecard         ok           0.14
+   7  search_question_bank     ok           0.14
+   7  ask_candidate            ok           0.01
+   7  grade_answer             ok           0.02
+   7  ask_follow_up            ok           0.01
+   7  ask_follow_up            ok           0.01
+   7  update_scorecard         ok           0.17
+   8  search_question_bank     ok           0.17
+   8  ask_candidate            ok           0.01
+   8  grade_answer             ok           0.01
+   8  update_scorecard         ok           0.15
+   9  search_question_bank     ok           0.16
+   9  ask_candidate            ok           0.01
+   9  verify_sql_result        ok           0.08  status verified, 2 rows (the rows go to the grader only)
+   9  grade_answer             ok           0.01
+   9  update_scorecard         ok           0.15
+  10  search_question_bank     ok           0.17
+  10  ask_candidate            ok           0.01
+  10  grade_answer             ok           0.01
+  10  update_scorecard         ok           0.16
+  11  search_question_bank     ok           0.15
+  11  ask_candidate            ok           0.01
+  11  grade_answer             ok           0.01
+  11  update_scorecard         ok           0.17
+  12  search_question_bank     ok           0.16
+  12  ask_candidate            ok           0.01
+  12  grade_answer             ok           0.01
+  12  update_scorecard         ok           0.26
+  13  delete_candidate_record  invalid      0.00  invalid call: unknown tool 'delete_candidate_record'; the tools are: search_question_bank, ask_candidate, grade_answer, ask_follow_up, update_scorecard, end_interview, verify_sql_result
+  13  end_interview            ok           0.14
+
+Steps 61, tool calls 61, refused 6, invalid 1; stop reason confident
+SQL verification: SQL-L2-014 verified, SQL-L2-010 verified, SQL-L1-008 verified
+
+Decision (computed by code): needs_review. Levels: py 3, sql 1, ds 1
+Agent summary: Levels: Python level 3 (job minimum 2), SQL level 1 (job minimum 2), data structures level 1 (job minimum 1). The evidence is not conclusive, so a human should review this candidate. Not enough evidence: cannot tell whether sql reaches level 2.
+Summary consistency (heuristic): consistent
+
+Code driver, same setup: same questions True, same decision True, same levels True; exchanges 14 vs 14
+Agent overhead: 61 agent steps (each a model call when live); wall time 0.01 s (agent) vs 0.01 s (code) (offline: the scripted agent costs no calls)
+
+Wrote /tmp/lma-handoff-demo/agent-on.json

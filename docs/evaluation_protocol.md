@@ -1,5 +1,7 @@
 # Evaluation protocol for the reviewed bank (Step 2, amended in Step 5)
 
+> **14 November handoff status:** Souradeep owns remaining review, documentation and demo preparation; Kushal owns subsequent live execution. The large Step 8 pilot was stopped after one B1 completion and an A2E smoke failure. Earlier 48/60-interview pilot scopes are historical plans, not automatic continuation instructions. Final settings remain unfrozen. See [implementation_handoff.md](implementation_handoff.md) for current status, conditions, commands and limitations. Human checks and A2M remain deferred.
+
 Nilkanta Karak, 13 November 2026; amended after Souradeep's Step 4 (`b0cfda0`). Step 3 (human checks) was skipped by team decision: section 5 stays declared but is not carried out, and its endpoints are reported as *not measured*. Builds on [the baseline manifest](evaluation_baseline.md) (Step 1, commit `c297b3f`). The machine-readable copy of the matrix, run names, allocation and budget is [experiment_matrix.json](experiment_matrix.json). `tests/test_experiment_matrix.py` checks that file against the real presets and candidate files.
 
 This document **declares** what will be compared, how it will be measured, and how the human checks are scored. It does not run any experiment or claim any result. Anything it marks as *to implement* is Step 4 (Souradeep) or Step 5 (Nilkanta) work. Changes after the pilot need a new version number (section 7).
@@ -19,7 +21,7 @@ All conditions use the same reviewed bank (135 questions, 95 misconceptions, has
 | A2Q | `A2Q` | `misconception_confirmation_unit=question` | exists | Optional: the confirmation rule without the evidence prompt (C5, C8) |
 | A2-rev+verify | `A2EV` | A2-rev's two settings plus `sql_verification=True` | exists (Step 7) | SQL verification on a paired subset (C11); not in the main matrix unless added at the freeze |
 | A5 | `A5` | `retrieval=job-blind` | exists | Historical only; not run in rv1 |
-| A2M | not implemented | see section 1.2 | needs agreement with Souradeep (tracker and selection are his modules) | Optional: memory-specific control |
+| A2M | not implemented | see section 1.2 | deferred; not required for the combined-package claim | Optional: memory-specific control |
 | A1 | `A1` | `stop_rule=fixed_count` (12) | exists | Not run live: 12 main questions plus follow-ups is not equal-exchange with B1 |
 | A3 | `A3` | grader model | exists | Not run: no fine-tuned grader exists |
 

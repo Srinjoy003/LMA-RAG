@@ -1,0 +1,92 @@
+{
+  "status": "stopped after runtime objection; full batch never started",
+  "owner": "souradeep",
+  "date": "2026-11-14",
+  "engine_revision": "18d8be62662d3ed058daa7aecfd07e938cac2565",
+  "run": "rv4-groq-pilot-20261114",
+  "candidate_folder": "data/candidates_validation/pilot",
+  "candidate_ids": [
+    "VAL-P-001",
+    "VAL-P-002",
+    "VAL-P-003",
+    "VAL-P-004",
+    "VAL-P-005",
+    "VAL-P-006",
+    "VAL-P-007",
+    "VAL-P-008",
+    "VAL-P-009",
+    "VAL-P-010",
+    "VAL-P-011",
+    "VAL-P-012"
+  ],
+  "systems": [
+    "B1",
+    "A2",
+    "A2E",
+    "A4",
+    "ADAPT12"
+  ],
+  "interviews": 60,
+  "setup": {
+    "grader": "groq",
+    "simulator": "groq",
+    "simulator_model": "openai/gpt-oss-120b"
+  },
+  "smoke": {
+    "systems": [
+      "B1"
+    ],
+    "candidate_ids": [
+      "VAL-P-001"
+    ],
+    "included_in_core_if_unchanged": true
+  },
+  "additional_comparison": {
+    "a": "A2E",
+    "b": "A2",
+    "reason": "Direct check of the accuracy and corroboration trade-off; original core lacks A2",
+    "endpoints": [
+      "skill_accuracy",
+      "mean_exchanges",
+      "recall",
+      "precision",
+      "review_rate",
+      "false_fit_rate",
+      "false_reject_rate",
+      "suspected_probe_selections",
+      "mean_llm_calls",
+      "mean_api_calls"
+    ]
+  },
+  "optional_not_started": [
+    "A2EB paired stopping comparison",
+    "A2EV paired SQL verification subset",
+    "live agent demonstration"
+  ],
+  "tuning": "No changes during this run. Any subsequent prompt/model/method change gets a new version. Pilot evidence guides decisions and does not validate a tuned successor.",
+  "limits": [
+    "Human validation deferred",
+    "No no-misconception controls in this pilot",
+    "Only validation candidates; never CAND evaluation candidates",
+    "No final experiment or Step 9 freeze implied"
+  ],
+  "grader_model": "qwen/qwen3.8-27b",
+  "reasoning_effort": "low",
+  "credential_policy": "Primary Groq key for both roles; second key reserved, not assumed to add quota",
+  "local_source_changes": [
+    "src/llm/client.py: classify Groq json_validate_failed as LLMOutputError"
+  ],
+  "superseded_run": {
+    "run": "rv3-groq-pilot-20261114",
+    "completed_interviews": 0,
+    "B1_VAL_P_001_failed_attempts": 2,
+    "reason": "HTTP 400 json_validate_failed treated as fatal request error; preserved without deletion"
+  },
+  "execution_summary": {
+    "completed_interviews": 1,
+    "completed_condition": "B1/VAL-P-001",
+    "A2E_smoke": "failed: no usable diagnosis votes after provider rejected generated JSON",
+    "full_batch_started": false,
+    "automatic_continuation": false
+  }
+}

@@ -1,5 +1,21 @@
 # Pending work
 
+## Current handoff — 14 November 2026
+
+- [x] Reviewed bank, evidence-backed diagnosis, distinct-question confirmations, uncertainty fields, experimental stopping, runnable controls and versioned evaluation.
+- [x] Agent demonstration and optional trusted-bank SQL verification; repeatable offline examples are in `docs/offline_demo.md`.
+- [x] Souradeep consolidated methods/limitations, experiment instructions and a final-results worksheet in `docs/implementation_handoff.md`.
+- [x] Review JSON-output error classification and tests; it does not fix all-invalid model diagnoses.
+- [ ] Chosen-model readiness check and final freeze/execution: Kushal. No new live calls are scheduled for Souradeep.
+- [ ] Final measurements, figures and interpretation after versioned outputs arrive.
+- Deferred: independent human difficulty/answer annotation, A2M, fine-tuning and semantic retrieval upgrades.
+- Stopped: large Step 8 pilot (one B1 completion, A2E smoke failed; full batch never started).
+
+## Historical development notes
+
+The notes below record earlier plans and observations; the handoff above is the current task list. Historical model availability, prices and timing observations are not current guarantees.
+
+
 ## Part 1: question bank and job data
 
 The build is done: bank, misconceptions, job descriptions, validator, search index and tests. These items were deliberately skipped for later.
@@ -42,4 +58,4 @@ The build is done: bank, misconceptions, job descriptions, validator, search ind
 
 ### Housekeeping
 - [ ] Update the proposal's Data section: misconceptions are adapted from published catalogs, with citations, and no private hiring data is used.
-- [ ] Commit the work of 2026-10-22/23 (the repo is under git with 2 commits; Groq provider, double-submit fix and the 135-question bank are uncommitted).
+- Historical housekeeping about the October checkout has been superseded by the recorded implementation commits; review the current working-tree handoff before committing.

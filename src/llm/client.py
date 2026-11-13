@@ -248,6 +248,13 @@ class OpenAICompatClient:
                 err = _error_body(resp)
                 msg = _error_message(err)
                 last = f"HTTP {resp.status_code}: {msg}"
+                detail = err.get("error", err) if isinstance(err, dict) else {}
+                if (resp.status_code == 400 and isinstance(detail, dict)
+                        and detail.get("code") == "json_validate_failed"):
+                    # Groq can reject the model's generated JSON at the API boundary.
+                    # This is an unusable output vote, like a malformed HTTP-200 answer,
+                    # rather than an invalid request. Never use/cache failed_generation.
+                    raise LLMOutputError(f"provider rejected generated JSON ({last})")
                 if resp.status_code not in RETRY_STATUSES:
                     raise LLMError(f"LLM request failed ({last})")
                 if resp.status_code == 429 and re.search(r"PerDay|per day|daily", json.dumps(err), re.I):

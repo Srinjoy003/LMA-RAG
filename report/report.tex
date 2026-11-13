@@ -23,13 +23,18 @@
 \newcommand{\fail}{\textcolor[HTML]{b02f2f}{\textbf{not met}}}
 \newcommand{\open}{\textcolor[HTML]{8a6d00}{\textbf{not settled}}}
 
-\title{Adaptive AI Technical Interviewer\\[2pt]\large Mid-term report}
+\title{Adaptive AI Technical Interviewer\\[2pt]\large Mid-term results and implementation update}
 \author{Team ``Claude lag gaye'': Kushal Mukherjee (2025201072) \and Srinjoy Sengupta (2025202010)
   \and Nilkanta Karak (2025201031) \and Souradeep Das (2025201004)}
-\date{October 2026\\[4pt]\small Code: \url{https://github.com/Srinjoy003/LMA-RAG}}
+\date{October 2026 results; implementation update 14 November 2026\\[4pt]\small Code: \url{https://github.com/Srinjoy003/LMA-RAG}}
 
 \begin{document}
 \maketitle
+
+\noindent\textbf{Scope of this document.} The live numerical results below are the historical
+24-candidate B1/A2 experiment on the pre-review bank. The dated implementation update
+in Section~\ref{sec:implementation-update} describes later code and offline checks; it does
+not replace those historical results with a completed revised-bank experiment.
 
 \begin{abstract}
 We are building an interviewer for junior technical screening in Python, SQL and data structures.
@@ -220,9 +225,10 @@ the diagnoser decides \emph{why} it is wrong (a gap in knowledge, a misread, a s
 wrong belief from the question's list), and the system tracks each suspected belief across replies.
 A suspected belief earns a follow-up aimed at it, and only a belief seen on two replies is reported
 as confirmed. For now this lives entirely in the prompts and the vote-counting rule; nothing is
-learned. Ablation A4 tests whether it is worth having: A4 keeps everything else but drops the belief
-model (one diagnosis of the main reply, generic follow-ups, a misconception named from a single
-reply). Comparing A2 with A4 is therefore our answer to RQ2.
+learned. Ablation A4 tests whether it is worth having: A4 changes several behaviours together: one diagnosis vote on the main reply only, generic
+follow-ups, and confirmation from a single reply. This also removes the suspected-belief
+selection priority. Comparing A2 with A4 tests the combined diagnosis/candidate-belief package,
+not persistent memory in isolation. The revised comparison uses A2E against this unchanged A4.
 
 \paragraph{Verdict.} For each skill the system computes, from the posterior, the probability that
 $\theta$ is at or above the cut point of the job's minimum level. Above 0.8 the skill meets the
@@ -232,7 +238,7 @@ against a level-2 minimum if the estimate sits close to the cut. The verdict is 
 all clearly meet, and \emph{needs human review} otherwise.
 
 \paragraph{The baseline (B1).} B1 asks four questions per skill, at levels 1, 2, 2 and 3, rotating
-through the skills. It uses the same bank, the same job-aware question ranking and the same grader,
+through the skills. It uses the same bank, job-topic filtering and grader, with adaptive weak-topic probing disabled,
 but never adapts, never stops early and asks no follow-ups. So any difference between B1 and A2
 comes from how questions are chosen, when the interview stops, and the diagnosis.
 
@@ -273,10 +279,12 @@ profile, and fit or not fit once. This run used the first two blocks (\nCandidat
 
 For every question, code first decides what the candidate should do from the key: answer
 correctly, partly, wrongly, with a planted misconception, misread, or slip. A second LLM then writes
-the answer following that plan. It never sees the model answer and is told which points to get
-right or wrong. Because the plan is recorded, we know the intended mark for every reply. We use a
-different model family for the candidate than for the grader, so the grader cannot simply
-recognise its own writing.
+the answer following that plan. For correct, slip and misread plans, its private notes include
+the reference answer and key points. Partial plans receive a subset of key points; other plans
+use their corresponding instructions. The simulator therefore has answer-key access in some
+conditions. The plan gives an intended mark, not an independently verified label for what was
+actually written. Different model families are used for simulation and grading to reduce shared
+model effects; this does not establish independence or remove reference-answer priming.
 
 \section{Experimental setup}
 
@@ -558,11 +566,12 @@ Looking at the transcripts, the extra confirmations are of two kinds:
   takes $O(n)$ time. The listed misconception is believing it takes $O(1)$. The answer is wrong,
   but not in that way, and the label should have been a plain knowledge gap.
 \end{itemize}
-The measured precision of \precisionOurs{} mixes these two kinds, so it understates how often
-the diagnoser reads a reply correctly; we do not yet know the split, and two teammates will label a
-sample by hand. Two changes should help either way: requiring the two confirming replies to come
-from different questions, and requiring the reply to state the listed belief before that
-misconception can be chosen.
+The measured precision of \precisionOurs{} is agreement with planted misconceptions, not an
+independent assessment of whether every diagnosis matches the written reply. The illustrative
+cases suggest both unplanted beliefs and diagnostic overreach; their relative frequency has not
+been established by a blinded human audit. That audit is deferred. Distinct-question confirmation
+and quote-backed diagnoses have since been implemented as A2Q/A2E
+(Section~\ref{sec:implementation-update}); their effect on live precision and length is unmeasured.
 
 \paragraph{Premature stops.} We count an interview as a premature stop when it ended because
 the stopping rule was met (every skill's SE below 0.6) and at least one of its three reported levels
@@ -577,7 +586,8 @@ enough to count, so this is a strict measure, but a confident report is clearly 
 and a human should treat the levels as estimates.
 
 The \confidentWrong{} premature stops hold \premMisses{} wrong skill levels: \premPy{} in Python,
-\premSql{} in SQL and \premDs{} in data structures, so no skill stands out. None is off by more than
+\premSql{} in SQL and \premDs{} in data structures. These counts alone do not establish similar
+per-skill error rates without their denominators. None is off by more than
 \premMaxGap{} level, and every one stopped with an SE between \premSeLow{} and \premSeHigh{}, just
 under the 0.6 threshold. The rule stops as soon as an estimate is precise enough, even when it sits
 next to a level boundary. \premOver{} of the \premMisses{} are too high and \premUnder{} too low.
@@ -591,8 +601,8 @@ stopping only when the estimate is clearly inside one level's band.
 \begin{itemize}
   \item \textbf{Simulated candidates.} Real candidates are less consistent and less tidy. The
   results show how the interviewer behaves against a controlled population, not how it would rate
-  real people. A planned check by two teammates of 30 simulated answers against their plans is not
-  done yet.
+  real people. The additional independent difficulty ratings and 30-answer annotation were
+  deferred. Human-supported precision and inter-rater agreement are not measured.
   \item \textbf{Small sample.} \nCandidates{} candidates give wide intervals. The accuracy gain is
   clear; the recall target and the verdict comparison are not settled either way.
   \item \textbf{Unequal length.} A2 asked more than B1 in the live run. The equal-length controls
@@ -600,43 +610,46 @@ stopping only when the estimate is clearly inside one level's band.
   \item \textbf{One grader model.} Every grade comes from one Gemini model. We have not yet compared
   it with hand marks.
   \item \textbf{Pre-review bank.} The live run used the question bank before the team's review,
-  which later corrected 43 questions. The final run will use the reviewed bank.
+  which later received the team's correctness and wording revisions. The reviewed bank is available;
+  its comparative live evaluation is pending.
   \item \textbf{Tuning on stubs.} The cut points and the threshold were tuned with a perfect grader.
   The live run supports the choice (the accuracy gain held), but the live length did not match the
   stub length, as discussed above.
 \end{itemize}
 
+\input{implementation_update}
+
 \section{Next steps}
 \label{sec:next}
-
 \begin{enumerate}
-  \item Rerun B1 and A2 on the reviewed question bank.
-  \item Run A4 on the same candidates. A4 is not just one more ablation: it is A2 without the belief
-  model, so the difference between A2 and A4 in misconception recall, precision and false alarms is
-  the main answer to RQ2. It comes first among the new runs.
-  \item Hand-label the extra misconception confirmations. Then require confirmations from two
-  different questions, and tighten the diagnosis prompt so a misconception is only chosen when the
-  reply states it. We expect this to cut both the false confirmations and the length.
-  \item Run the equal-length controls (adaptive choice at exactly 12 questions) with the live
-  models, to split the live accuracy gain between adaptivity and length.
-  \item Run all 60 candidates on B1, A2, A4 and A5 (job-blind retrieval); A5 measures what
-  job-aware question choice adds.
-  \item Hand checks. Two teammates independently mark a sample of answers against the rubric (to
-  check the grader) and label 30 simulated answers against their plans (to check the simulator). We
-  report Cohen's $\kappa$ between the two and treat $\kappa \ge 0.6$ as acceptable. If it is lower,
-  the labelling guide is ambiguous: we rewrite it, settle the disagreements together and label a
-  fresh sample. If the two agree with each other but not with the model, the fault is the model's.
-  For the grader we report its error rate beside every accuracy figure and try a stronger grading
-  model. For the simulator we score answers against what was actually written instead of the plan,
-  and report this as a limitation.
-  \item Look at the fit rule's 80\% threshold, which sends about half the candidates to review.
+  \item Complete a bounded readiness check using the models chosen for the final experiment.
+  The attempted all-Groq pilot was stopped: one B1 interview completed and the A2E smoke failed.
+  Neither a complete pilot nor a revised-system accuracy improvement is claimed.
+  \item Freeze code, prompts, bank, candidates, model settings, conditions and budget before
+  Kushal executes the final experiment. The proposed main conditions are B1, A2E, A4,
+  ADAPT12 and A5E. Use the same candidates for each paired comparison.
+  \item Make A2E versus A4 central to RQ2, with recall, precision, false alarms, interview
+  length and cost reported together. Describe it as a diagnosis-package comparison.
+  Compare ADAPT12 with B1 to assess the adaptive selection package at equal exchange count.
+  \item Keep the stopping variants and SQL verification separately named and optional.
+  A changed full-system stopping rule needs a correspondingly matched job-blind condition
+  before the retrieval comparison; do not compare A2EB with unchanged A5E as a retrieval-only test.
+  \item Human checks remain deferred. If reinstated, collect independent blinded labels and
+  report agreement and uncertainty. If kappa is below the project's declared 0.6 threshold,
+  inspect ambiguity and rater differences, revise guidance, adjudicate and label a fresh sample.
+  Persistent low agreement limits the claim; agreement between raters alone does not prove a model
+  is at fault, and a model's disagreement is not an adjudicated error without examining the reply.
+  \item Populate final results and discussion only from versioned outputs, including errors,
+  exclusions, paired denominators, uncertainty intervals and resource consumption.
 \end{enumerate}
 
 \section*{Reproducing this report}
 The code, question bank, candidates and this report are at
-\url{https://github.com/Srinjoy003/LMA-RAG/tree/part4-and-bank-growth}.
-Every figure and every number in this report is produced by \texttt{report/make\_figures.py} from
-the saved interview results, so nothing is copied by hand. Every LLM response is cached on disk, so
+\url{https://github.com/Srinjoy003/LMA-RAG}.
+The historical figures and numerical macros are produced by \texttt{report/make\_figures.py} from
+saved interview results. The original historical transcripts are absent from this checkout,
+so those numbers have not been recomputed during this update. The implementation and smoke
+status are documented separately in \texttt{docs/implementation\_handoff.md}. Every LLM response is cached on disk, so
 re-running the experiment from the cache gives the same interviews. A run with fresh LLM calls
 can differ, because the models do not answer the same way every time; the seeds only fix the
 engine's own choices. The stub runs (Sections~\ref{sec:tuning} and~\ref{sec:equal-length})

@@ -267,9 +267,58 @@ def test_gives_up_after_max_attempts(tmp_path):
 def test_client_errors_are_not_retried(tmp_path):
     server = Server(err(400, "Request contains an invalid argument."))
     c, clock = make(server, tmp_path)
-    with pytest.raises(LLMError, match="HTTP 400"):
+    with pytest.raises(LLMError, match="HTTP 400") as caught:
         c.complete(MSGS, model="m")
+    assert not isinstance(caught.value, LLMOutputError)
     assert len(server.requests) == 1 and clock.sleeps == []
+
+
+def test_provider_rejected_json_is_an_output_error_and_is_not_cached(tmp_path):
+    rejected = httpx.Response(400, json={"error": {"code": "json_validate_failed",
+        "message": "Failed to generate JSON", "failed_generation": '{"score":99}'}})
+    server = Server(rejected, ok())
+    c, clock = make(server, tmp_path)
+    with pytest.raises(LLMOutputError, match="provider rejected generated JSON"):
+        c.complete(MSGS, model="m", json_schema=SCHEMA)
+    assert len(server.requests) == 1 and clock.sleeps == []
+    assert not list((tmp_path / "cache").glob("*.json"))
+    assert c.complete(MSGS, model="m", json_schema=SCHEMA)["parsed"] == {"score": 2}
+    assert len(server.requests) == 2
+
+
+def test_grading_drops_provider_rejected_vote_but_keeps_successful_votes(tmp_path):
+    from part3.grader import PromptedGrader
+    rejected = httpx.Response(400, json={"error": {"code": "json_validate_failed",
+                                                "message": "Failed to generate JSON"}})
+    server = Server(rejected, ok('{"rationale":"correct","score":2}'))
+    c, _ = make(server, tmp_path)
+    question = {"id": "PY-L1-001", "skill": "py", "level": 1, "type": "explain",
+                "question": "Explain assignment.", "model_answer": "Binds a name.",
+                "key_points": ["Binds a name"], "rubric": {}, "misconceptions": []}
+    grade = PromptedGrader(c, model="m", votes=3, misconceptions={}).grade(question, "Binds a name.")
+    assert grade["score"] == 2 and grade["votes"] == [2, 2]
+    assert len(server.requests) == 3
+
+
+@pytest.mark.parametrize("component", ["grader", "diagnoser"])
+def test_all_provider_rejected_votes_fail_instead_of_inventing_an_answer(tmp_path, component):
+    from part3.grader import PromptedGrader
+    from part3.diagnoser import StructuredDiagnoser
+    rejected = httpx.Response(400, json={"error": {"code": "json_validate_failed",
+                                                "message": "Failed to generate JSON"}})
+    server = Server(rejected)
+    c, _ = make(server, tmp_path)
+    question = {"id": "PY-L1-001", "skill": "py", "level": 1, "type": "explain",
+                "question": "Explain assignment.", "model_answer": "Binds a name.",
+                "key_points": ["Binds a name"], "rubric": {}, "misconceptions": []}
+    if component == "grader":
+        call = PromptedGrader(c, model="m", votes=3, misconceptions={}).grade
+    else:
+        call = StructuredDiagnoser(c, model="m", votes=3, misconceptions={}, evidence_mode=True).diagnose
+    with pytest.raises(LLMOutputError, match="no usable .* vote out of 3"):
+        call(question, "Binds a name.")
+    assert len(server.requests) == 3
+    assert not list((tmp_path / "cache").glob("*.json"))
 
 
 def test_daily_quota_fails_fast(tmp_path):

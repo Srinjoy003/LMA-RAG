@@ -1,0 +1,96 @@
+\clearpage
+\section{Implementation update: 14 November 2026}
+\label{sec:implementation-update}
+
+This section records implementation after the mid-term experiment. The bank now contains
+135 team-checked questions and 95 misconceptions. Code, schemas, controls and evaluation
+support have changed; the historical B1/A2 results above are not results for these successors.
+
+\subsection{Evidence-backed candidate-belief modelling}
+The historical A2 confirms a misconception from two replies, which can belong to the same
+question. A2Q instead counts distinct main-question identifiers: repeated supporting replies
+within one question supply provenance but not a second independent question. Confirmation
+across questions is still model-generated evidence, not independent human validation.
+
+A2E extends A2Q with an evidence prompt. Each positive vote must name an allowed misconception,
+give a non-empty exact substring of the current candidate reply, and explain its relevance.
+Code validates the identifier, quote and offsets. Unsupported positive votes become gaps.
+A positive diagnosis needs a strict majority of the configured diagnosis votes; missing or
+unusable votes do not lower that majority requirement. Matching quotations establish
+provenance, while the semantic relationship between quote and misconception still depends on
+the model.
+
+The tracker stores question, turn, reply index, reply text, vote share and supporting evidence.
+Correct main replies are also diagnosed in A2E, without adding follow-ups to those replies,
+so explicit corrections may contradict previously attributed beliefs. Accepted contradictory
+evidence marks an existing finding \emph{disputed}, with confirmation false, for the remainder
+of that interview. Silence or an unrelated correct answer is not itself a contradiction.
+This increases diagnosis calls and does not establish improved precision or shorter interviews.
+
+A4 is unchanged: one main-answer diagnosis, generic follow-ups, and one-reply confirmation.
+The A2E/A4 comparison tests this combined package. The optional tracker-reset control A2M
+is not implemented, so there is no isolated experimental claim about persistent memory.
+
+\subsection{Level uncertainty and stopping alternative}
+New reports include the posterior mass in each level band, and the mass in the reported
+EAP level's band. The bands retain cuts $-1.25$, $-0.25$, $0.75$ on the existing finite
+ability grid; each cut belongs to its upper band. These are probabilities conditional on the
+score model, not calibrated probabilities of the simulated ground-truth labels.
+
+A2EB differs from A2E only in its stopping rule: every skill requires at least two main
+answers, SE below 0.6, and mass at least 0.7 in its reported level. A2B is the matched
+alternative for historical A2. The 15-main-question cap and the fit/review rules are unchanged.
+Neither alternative is adopted as the main condition.
+
+On the separate 12-candidate stub validation set, A2E reported 30/36 skill levels correctly
+and A2EB 31/36, with mean exchanges 15.58 and 17.67 respectively. Every A2EB interview hit
+the cap. Its paired accuracy difference was 2.8 points (95\% candidate-bootstrap interval
+$-5.6$ to $+11.1$ points); true-level-0 errors remained 1/2 assessed skills for both.
+This does not establish an improvement. Eliminating confident stops trivially eliminates
+errors conditional on confident stops; all-stop error and cap frequencies remain necessary.
+
+\subsection{Tool calling and trusted SQL verification}
+The existing agent driver is now exposed by a runnable demonstration. It calls rule-enforcing
+question, grading, follow-up, scorecard and stopping tools. Deliberately invalid actions are
+refused. A summary-consistency check compares the written conclusion with the computed outcome;
+it is a heuristic rather than a proof of faithful language generation. The main evaluation
+still uses the code driver; live agent overhead and quality are not established by a script.
+
+A2EV is the optional A2E condition with SQL verification. For eligible bank SQL read-code
+questions, the tool executes the bank's query on its supplied tables using in-memory SQLite.
+Only outputs matching the bank's checked expected result are supplied to the grader.
+Mismatch or execution error supplies no verified evidence and flags the report. Candidate
+text is never executed, candidate prompts are unchanged, and result rows are not given to the
+agent. All 18 eligible bank queries pass the offline execution checks. This validates bank
+execution, not the grader's semantic judgements or arbitrary candidate-written SQL.
+
+The reproducible offline example uses VAL-P-004. A2E and A2EV each produce 14 exchanges;
+their obedient code and scripted-agent runs agree on questions, skill levels and decision.
+The probed agents take 56 and 61 scripted steps respectively, with consistent summaries.
+These steps make no network calls and do not measure live model performance or latency.
+
+\subsection{Evaluation and stopped live smoke}
+ADAPT12 is an actual preset with adaptive selection, 12 main questions, no diagnosis and no
+follow-ups: exactly 12 exchanges. Its selection retains weak-topic ranking as part of the
+adaptive package. A5E differs from A2E only in job-blind retrieval. A manifest fingerprints
+source, bank, prompts, setup, configurations and candidate files; CRLF is normalised to LF for
+cross-platform hashing. Incompatible runs cannot be silently resumed. Pairing, failures,
+exclusions and denominators are recorded, and human-supported endpoints remain unmeasured.
+
+The attempted all-Groq pilot used Qwen 3.8 27B for grading and GPT-OSS 120B for simulation.
+Two initial B1 attempts failed because Groq rejected generated JSON. A narrow client fix now
+classifies that exact output-error code like malformed HTTP-200 JSON, allowing the existing
+vote-handling code to reject unusable votes. Invalid requests remain fatal; rejected output
+is not cached or accepted, and an all-invalid batch still fails. Fewer usable grading votes
+can increase agreement among the survivors, so vote counts require review.
+
+Under a fresh manifest, one B1 interview completed: 12 main questions, no interview errors,
+and 37 successful interviewer completions, of which 27 were uncached. It took 11 minutes
+24 seconds, including waits, simulation and cache reuse. The A2E smoke then failed with no
+usable diagnosis votes. The full 60-interview pilot never started and no process remains active.
+These observations establish a compatibility/resource problem, not an accuracy comparison.
+
+The successful-completion meter excludes failed HTTP attempts and simulator usage; token
+totals can include locally cached completions. It must not be treated as a complete invoice.
+The independent human checks were deferred. No revised-bank live improvement, isolated memory
+benefit, or SQL-assisted grading gain is claimed. Final comparative results remain pending.
