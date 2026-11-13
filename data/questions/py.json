@@ -25,7 +25,7 @@
       "py.control-flow.or-distributes"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-002",
@@ -52,7 +52,7 @@
       "py.collections.tuple-mutable"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-003",
@@ -71,14 +71,14 @@
     ],
     "rubric": {
       "0": "Says strip()/title() change the string in place, or that the first loop should have worked",
-      "1": "Explains string immutability but not why the second attempt fails, or gives no working fix",
+      "1": "Correctly explains one of the two failures but not the other, or explains both but gives no working fix",
       "2": "Explains both failures (new string discarded; loop variable rebound) and gives a correct fix"
     },
     "misconceptions": [
       "py.variables-mutability.string-method-mutates"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-004",
@@ -104,7 +104,7 @@
       "py.control-flow.elif-checks-all"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-005",
@@ -131,7 +131,7 @@
       "py.collections.unhashable-key"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-006",
@@ -158,7 +158,7 @@
       "py.variables-mutability.assignment-copies"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-007",
@@ -187,7 +187,7 @@
       "py.control-flow.elif-checks-all"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-008",
@@ -218,7 +218,7 @@
       "py.control-flow.or-distributes"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-009",
@@ -249,7 +249,7 @@
       "py.functions-scope.assign-updates-global"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-010",
@@ -280,7 +280,7 @@
       "py.variables-mutability.string-method-mutates"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-011",
@@ -307,7 +307,7 @@
       "py.control-flow.no-short-circuit"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-012",
@@ -334,7 +334,7 @@
       "py.control-flow.elif-checks-all"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-013",
@@ -362,7 +362,7 @@
       "py.collections.tuple-mutable"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-014",
@@ -394,7 +394,7 @@
       "py.variables-mutability.variable-holds-expression"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L1-015",
@@ -424,7 +424,7 @@
       "py.variables-mutability.assignment-copies"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-001",
@@ -451,7 +451,7 @@
       "py.pandas.nan-treated-as-zero"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-002",
@@ -479,7 +479,7 @@
       "py.exceptions.resumes-after-raise"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-003",
@@ -489,13 +489,13 @@
     "topics": [
       "py-concurrency"
     ],
-    "question": "In Python, what is the difference between using threads, processes and asyncio? Which would you choose to download 200 web pages, and which to resize 10,000 images in pure Python code, and why?",
-    "model_answer": "Threads run in one process and share memory, but in standard CPython the GIL lets only one thread run Python bytecode at a time, so threads help with I/O waiting but not with CPU-heavy Python code. Processes each have their own interpreter and memory, so they run in parallel on several cores and suit CPU-bound work, at the cost of more overhead. asyncio runs many coroutines on a single thread, switching between them only at await points, which suits large numbers of network waits. Downloading pages is I/O-bound, so asyncio or threads; resizing images in pure Python is CPU-bound, so multiprocessing.",
+    "question": "In Python, what is the difference between using threads, processes and asyncio? Which would you choose to download 200 web pages, and which to do CPU-heavy pixel processing on 10,000 images in pure Python code, and why?",
+    "model_answer": "Threads run in one process and share memory, but in standard CPython the GIL lets only one thread run Python bytecode at a time, so threads help with I/O waiting but not with CPU-heavy Python code. Processes each have their own interpreter and memory, so they run in parallel on several cores and suit CPU-bound work, at the cost of more overhead. asyncio runs many coroutines on a single thread, switching between them only when an await actually suspends (for example, waiting on the network), which suits large numbers of network waits. Downloading pages is I/O-bound, so asyncio or threads; pixel processing in pure Python is CPU-bound, so multiprocessing.",
     "key_points": [
       "Threads share memory but the GIL stops them speeding up CPU-bound Python code",
       "Processes give true parallelism on several cores for CPU-bound work",
-      "asyncio is single-threaded concurrency that switches at await points; good for I/O",
-      "Downloads: asyncio or threads; image resizing: processes"
+      "asyncio is single-threaded concurrency that switches when an await suspends; good for I/O",
+      "Downloads: asyncio or threads; pixel processing: processes"
     ],
     "rubric": {
       "0": "Recommends threads for CPU-bound speed-up, or describes asyncio as running coroutines in parallel threads",
@@ -507,7 +507,7 @@
       "py.concurrency.async-multithreaded"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-004",
@@ -534,7 +534,7 @@
       "py.oop.self-reassign-replaces-object"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-005",
@@ -563,7 +563,7 @@
       "py.comprehensions-generators.generator-eager"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-006",
@@ -574,8 +574,8 @@
       "py-variables-mutability",
       "py-collections"
     ],
-    "question": "A service keeps DEFAULTS = {\"retries\": 3, \"headers\": {\"Accept\": \"json\"}}. Each request does cfg = DEFAULTS.copy(), then cfg[\"retries\"] = 5 and cfg[\"headers\"][\"Auth\"] = token. Later requests start with retries 3, as expected, but they all carry the first user's Auth header. Explain why, and how to fix it.",
-    "model_answer": "dict.copy() is a shallow copy: it creates a new outer dict, but its values are the same objects as in DEFAULTS. Setting cfg[\"retries\"] replaces a value in the new outer dict, so DEFAULTS is untouched. But cfg[\"headers\"] is the same inner dict object as DEFAULTS[\"headers\"], so adding Auth to it mutates the shared defaults. Fix it with copy.deepcopy(DEFAULTS), or by copying the inner dict too, e.g. cfg[\"headers\"] = dict(DEFAULTS[\"headers\"]).",
+    "question": "A service keeps DEFAULTS = {\"retries\": 3, \"headers\": {\"Accept\": \"json\"}}. Each request does cfg = DEFAULTS.copy(), then cfg[\"retries\"] = 5 and cfg[\"headers\"][\"Auth\"] = token. Later requests start with retries 3, as expected, but DEFAULTS[\"headers\"] now holds an Auth token, and under concurrent load some requests go out with another user's token. Explain why, and how to fix it.",
+    "model_answer": "dict.copy() is a shallow copy: it creates a new outer dict, but its values are the same objects as in DEFAULTS. Setting cfg[\"retries\"] replaces a value in the new outer dict, so DEFAULTS is untouched. But cfg[\"headers\"] is the same inner dict object as DEFAULTS[\"headers\"], so adding Auth to it mutates the shared defaults. Every request writes into that one inner dict, so it holds whichever token was set last, and concurrent requests can send each other's tokens. Fix it with copy.deepcopy(DEFAULTS), or by copying the inner dict too, e.g. cfg[\"headers\"] = dict(DEFAULTS[\"headers\"]).",
     "key_points": [
       "copy() is shallow: the outer dict is new but nested objects are shared",
       "Replacing a top-level key only affects the copy; mutating the nested dict affects DEFAULTS",
@@ -591,7 +591,7 @@
       "py.variables-mutability.assignment-copies"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-007",
@@ -621,7 +621,7 @@
       "py.pandas.positional-alignment"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-008",
@@ -652,7 +652,7 @@
       "py.functions-scope.mutable-default-fresh"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-009",
@@ -682,7 +682,7 @@
       "py.comprehensions-generators.generator-reusable"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-010",
@@ -712,7 +712,7 @@
       "py.variables-mutability.shallow-copy-is-deep"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-011",
@@ -741,7 +741,7 @@
       "py.exceptions.most-specific-except-wins"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-012",
@@ -752,11 +752,11 @@
       "py-concurrency"
     ],
     "question": "An asyncio service handles many slow API calls with 'await session.get(...)'. One handler also runs a pure-Python loop that takes 3 seconds of CPU time. Explain how asyncio runs many requests at once, what happens to the other requests during that loop, and whether moving the loop into a thread would let it run on a second core in parallel with the rest.",
-    "model_answer": "asyncio runs all coroutines on a single thread: an event loop switches between them only at await points, so while one waits for the network another can run. A CPU loop has no await, so it holds the event loop for the full 3 seconds and every other request is frozen. Moving the loop to a thread (e.g. asyncio.to_thread) keeps the event loop responsive, because CPython switches between threads, but the GIL means the CPU work still does not run in parallel with other Python code; for real parallelism you would use a process pool.",
+    "model_answer": "asyncio runs all coroutines on a single thread: an event loop switches between them only when an await actually suspends, so while one waits for the network another can run. A CPU loop has no await, so it holds the event loop for the full 3 seconds and every other request is frozen. Moving the loop to a thread (e.g. asyncio.to_thread) keeps the event loop responsive, because CPython switches between threads, but in standard (GIL-enabled) CPython the GIL means the CPU work still does not run in parallel with other Python code; for real parallelism you would use a process pool.",
     "key_points": [
-      "asyncio is single-threaded; coroutines switch only at await",
+      "asyncio is single-threaded; coroutines switch only when an await suspends",
       "A CPU-bound loop without await blocks every other coroutine",
-      "A thread keeps the loop responsive but, because of the GIL, gives no CPU parallelism; use processes for that"
+      "A thread keeps the loop responsive but, because of the GIL in standard CPython, gives no CPU parallelism; use processes for that"
     ],
     "rubric": {
       "0": "Says asyncio runs each coroutine on its own thread or core, or that a thread makes the CPU loop run in parallel",
@@ -765,10 +765,11 @@
     },
     "misconceptions": [
       "py.concurrency.async-multithreaded",
-      "py.concurrency.threads-cpu-parallel"
+      "py.concurrency.threads-cpu-parallel",
+      "py.concurrency.async-preempts"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-013",
@@ -795,7 +796,7 @@
       "py.comprehensions-generators.generator-reusable"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-014",
@@ -824,7 +825,7 @@
       "py.pandas.nan-treated-as-zero"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L2-015",
@@ -854,7 +855,7 @@
       "py.exceptions.resumes-after-raise"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-001",
@@ -881,7 +882,7 @@
       "py.oop.self-reassign-replaces-object"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-002",
@@ -909,7 +910,7 @@
       "py.collections.tuple-mutable"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-003",
@@ -920,9 +921,9 @@
       "py-concurrency"
     ],
     "question": "A team scores 1 million records with a pure-Python function. To speed it up they split the work across 8 threads, and each thread adds its scores to a shared global with total += score. On an 8-core machine it is no faster than one thread, and occasionally the total is slightly wrong. Explain both problems and how you would fix each.",
-    "model_answer": "In standard CPython the GIL lets only one thread run Python bytecode at a time, so CPU-bound pure-Python work in threads takes turns instead of running in parallel; the fix is a process pool (multiprocessing or ProcessPoolExecutor). The wrong total is a race: total += score is a read, an add and a write, and a thread switch between those steps loses an update, because the GIL protects the interpreter, not your code. Fix it with a threading.Lock around the update, or better, have each worker return a partial sum and add those up at the end.",
+    "model_answer": "In standard (GIL-enabled) CPython the GIL lets only one thread run Python bytecode at a time, so CPU-bound pure-Python work in threads takes turns instead of running in parallel; the fix is a process pool (multiprocessing or ProcessPoolExecutor). The wrong total is a race: total += score is a read, an add and a write, and a thread switch between those steps loses an update, because the GIL protects the interpreter, not your code. Fix it with a threading.Lock around the update, or better, have each worker return a partial sum and add those up at the end (with processes there is no shared global anyway, so returning partial sums is the natural design).",
     "key_points": [
-      "The GIL means threads give no speed-up for CPU-bound pure-Python code",
+      "In standard GIL-enabled CPython, the GIL means threads give no speed-up for CPU-bound pure-Python code",
       "Use processes (multiprocessing / ProcessPoolExecutor) for CPU-bound work",
       "total += score is not atomic; the GIL does not prevent lost updates",
       "Fix the race with a Lock or by combining per-worker partial results"
@@ -937,7 +938,7 @@
       "py.concurrency.gil-thread-safe"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-004",
@@ -948,7 +949,7 @@
       "py-functions-scope"
     ],
     "question": "What is a closure in Python? If you create several functions in a loop that each refer to the loop variable, what value do they see when you call them later? And why does a nested function that does count += 1 on an outer variable fail unless you use nonlocal?",
-    "model_answer": "A closure is an inner function that remembers variables from the enclosing function's scope, even after that function has returned. It keeps a reference to the variable, not a copy of its value, and looks it up when it is called; so functions made in a loop all see the loop variable's final value (fix: bind it with a default argument, e.g. lambda i=i: i). Assigning to a name inside a function makes it local to that function, so count += 1 tries to read a local count that has no value yet and raises UnboundLocalError; nonlocal (or global, for module variables) tells Python to rebind the outer variable instead.",
+    "model_answer": "A closure is an inner function that remembers variables from the enclosing function's scope, even after that function has returned. It keeps a reference to the variable, not a copy of its value, and looks it up when it is called; so functions made in a loop, which all share the same loop variable, see its final value when called after the loop (fix: bind it with a default argument, e.g. lambda i=i: i). Assigning to a name inside a function makes it local to that function, so count += 1 tries to read a local count that has no value yet and raises UnboundLocalError; nonlocal tells Python to rebind the enclosing function's variable instead, and global does the same for a module-level variable.",
     "key_points": [
       "A closure remembers variables from its enclosing scope",
       "It looks the variable up at call time (late binding), so loop-made functions all see the last value",
@@ -964,7 +965,7 @@
       "py.functions-scope.assign-updates-global"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-005",
@@ -991,7 +992,7 @@
       "py.oop.class-attr-per-instance"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-006",
@@ -1019,7 +1020,7 @@
       "py.concurrency.async-multithreaded"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-007",
@@ -1049,7 +1050,7 @@
       "py.functions-scope.closure-captures-value"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-008",
@@ -1079,7 +1080,7 @@
       "py.pandas.loc-end-exclusive"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-009",
@@ -1110,7 +1111,7 @@
       "py.functions-scope.closure-captures-value"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-010",
@@ -1139,7 +1140,7 @@
       "py.exceptions.most-specific-except-wins"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-011",
@@ -1149,12 +1150,12 @@
     "topics": [
       "py-concurrency"
     ],
-    "question": "Two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines that never await inside the increment?",
-    "model_answer": "counter += 1 is not atomic: it reads the value, adds one and writes it back, and the interpreter can switch threads between those steps, so two threads can read the same value and one update is lost. The GIL does not prevent this; a threading.Lock around the increment does. With asyncio, all coroutines run on one thread and switch only at await points, so an increment with no await inside it cannot be interrupted and no update is lost. Races in async code can still happen when a read and write are separated by an await.",
+    "question": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+    "model_answer": "counter += 1 is not atomic: it reads the value, adds one and writes it back, and the interpreter can switch threads between those steps, so two threads can read the same value and one update is lost. The GIL does not prevent this; a threading.Lock around the increment does. With asyncio, all coroutines run on one thread and switch only when an await actually suspends, so an increment with no await inside it cannot be interrupted and no update is lost. Races in async code can still happen when a read and write are separated by an await.",
     "key_points": [
       "counter += 1 is a read-modify-write that can be interrupted between threads",
       "The GIL does not prevent this; use a Lock",
-      "asyncio runs on one thread and switches only at await, so this increment cannot race"
+      "asyncio runs on one event-loop thread and switches only when an await suspends, so this increment cannot race"
     ],
     "rubric": {
       "0": "Says the GIL makes the result always 200,000, or that asyncio runs the coroutines in parallel threads with the same race",
@@ -1163,10 +1164,11 @@
     },
     "misconceptions": [
       "py.concurrency.gil-thread-safe",
-      "py.concurrency.async-multithreaded"
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-012",
@@ -1194,7 +1196,7 @@
       "py.pandas.method-modifies-inplace"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-013",
@@ -1205,11 +1207,11 @@
       "py-comprehensions-generators"
     ],
     "question": "Explain what happens, step by step, when you call a function that contains yield and then loop over the result. Why is a generator a good fit for processing a 10 GB log file line by line?",
-    "model_answer": "Calling the function does not run its body; it returns a generator object. Each time the loop asks for the next value, the body runs until the next yield, hands that value out, and pauses with its local state saved; the next request resumes right after the yield. When the body finishes, StopIteration ends the loop. For a 10 GB file this means only one line is in memory at a time and processing can start immediately, instead of loading everything into a list first.",
+    "model_answer": "Calling the function does not run its body; it returns a generator object. Each time the loop asks for the next value, the body runs until the next yield, hands that value out, and pauses with its local state saved; the next request resumes right after the yield. When the body finishes, StopIteration ends the loop. For a 10 GB file this means lines are read and processed one at a time, so memory stays small (as long as the caller does not keep every line, e.g. in a list) and processing can start immediately, instead of loading everything into a list first.",
     "key_points": [
       "Calling the function returns a generator without running the body",
       "Each next() runs to the next yield and pauses, keeping local state",
-      "Only one item is in memory at a time, so huge files can be processed lazily"
+      "Items are produced one at a time, so huge files can be processed lazily with little memory, unless the caller keeps them all"
     ],
     "rubric": {
       "0": "Says the body runs fully when called, or that the function ends at the first yield",
@@ -1221,7 +1223,7 @@
       "py.comprehensions-generators.yield-is-return"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-014",
@@ -1250,7 +1252,7 @@
       "py.oop.self-reassign-replaces-object"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "PY-L3-015",
@@ -1276,10 +1278,9 @@
     },
     "misconceptions": [
       "py.functions-scope.mutable-default-fresh",
-      "py.functions-scope.closure-captures-value",
       "py.functions-scope.assign-updates-global"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   }
 ]

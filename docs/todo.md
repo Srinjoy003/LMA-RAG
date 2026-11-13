@@ -5,7 +5,7 @@
 The build is done: bank, misconceptions, job descriptions, validator, search index and tests. These items were deliberately skipped for later.
 
 ### Human review
-- [ ] Review the 135 questions in `data/questions/` against spec section 13 and change `status` from `draft` to `checked`. The 45 added on 2026-10-23 are numbered 011–015 in every cell. In progress since 2026-10-23 on the team's shared review page: 4 batches, verdict keep / needs a fix (with note) / drop. When done, read the verdicts, apply them, and refill any dropped questions from the 36 drafts left in `data/pool/` so every level stays the same size.
+- [x] Review the 135 questions in `data/questions/` against spec section 13. Done 2026-11-13 on the team's review page: 69 keep, 66 needs a fix, 0 drop. Applied: wording and correctness fixes to the model answers, key points and question text; misconceptions that the question does not test removed (DS-L2-010, PY-L3-015, SQL-L3-006, SQL-L3-014); one new misconception, `py.concurrency.async-preempts` (PY-L2-012, PY-L3-011); `sql.subqueries-cte.cte-unused-still-applies` widened to cover SQL-L3-008. Level notes were resolved by widening the spec's level table to match `typical_levels` in `data/topics.json` (SQL-L1-004 now accepts computing the average in a separate query). Rubric-overlap notes were left as they are: the grader already scores a listed misconception 0 even when other parts are right. All 135 are now `checked`.
 - [ ] Difficulty check (spec section 14): two people rate the same 21 questions blind.
 - [ ] Verify the adapted citations:
     - [ ] the 4 data-structures misconceptions (Karpierz & Wolfman 2014; Gal-Ezer & Zur 2004), which were cited from summaries only

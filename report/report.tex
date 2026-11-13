@@ -10,6 +10,7 @@
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{enumitem}
+\usepackage{needspace}
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows.meta,shapes.geometric}
 \usepackage[hidelinks]{hyperref}
@@ -25,7 +26,7 @@
 \title{Adaptive AI Technical Interviewer\\[2pt]\large Mid-term report}
 \author{Team ``Claude lag gaye'': Kushal Mukherjee (2025201072) \and Srinjoy Sengupta (2025202010)
   \and Nilkanta Karak (2025201031) \and Souradeep Das (2025201004)}
-\date{October 2026}
+\date{October 2026\\[4pt]\small Code: \url{https://github.com/Srinjoy003/LMA-RAG}}
 
 \begin{document}
 \maketitle
@@ -38,12 +39,16 @@ recommends fit, not fit or human review and never makes the hiring decision. For
 ran the full system (A2) and a fixed 12-question interview (B1) on the same \nCandidates{}
 simulated candidates, with Gemini grading and a different model playing the candidate. The
 adaptive system placed \accOurs{} of skill levels correctly against \accBase{} for the fixed
-interview, a gain of \accGap{} points (95\% interval \accGapLow{} to \accGapHigh{} points). It confirmed
-\found{} of the \planted{} planted misconceptions, which the fixed interview cannot do at all, and
-claimed a misconception on only \falseAlarmOurs{} of correctly answered replies. The cost is length:
-its interviews averaged \exchOurs{} exchanges against \exchBase{}, mostly because it asks many
-follow-ups after wrong answers. Our proposal promised 25\% \emph{fewer} exchanges; we do not meet
-that, and we explain below why we chose accuracy over length.
+interview, a gain of \accGap{} points (95\% interval \accGapLow{} to \accGapHigh{} points). But it
+also asked more: \exchOurs{} exchanges against \exchBase{}, mostly follow-ups after wrong answers.
+So the live gain mixes adaptive question choice with extra questions. In simulated runs with a
+perfect grader, adaptive choice at exactly 12 questions beat the fixed list by about 6 points; how
+much of the live gain it explains is not yet measured. It confirmed \found{} of the
+\planted{} planted misconceptions, which the fixed interview cannot do, and rarely named one on a
+correctly answered reply (\falseAlarmOurs{}). However, only \precisionOurs{} of the misconceptions it
+confirmed were planted ones; most of the rest came from wrong answers, and nearly all were
+confirmed from a single question. Our proposal promised 25\% \emph{fewer} exchanges; we do not meet
+that, and we explain why we chose accuracy over length.
 \end{abstract}
 
 \section{What we set out to do}
@@ -69,16 +74,18 @@ the grader and diagnoser, and the evaluation harness with simulated candidates. 
 the first live experiment. It compares B1 and A2. The ablations that answer RQ2 directly
 (A4, skill-only scorecard; A5, job-blind retrieval) are built but not yet run live.
 
+\needspace{5\baselineskip}
 \paragraph{Main findings so far.}
 \begin{itemize}
   \item The adaptive system judges levels clearly better than the fixed interview
-  (\accOurs{} against \accBase{}), and its fit verdicts are at least as safe.
-  \item It finds about half of the planted misconceptions (\recallOurs{}) and almost never claims
-  one on a correct answer.
-  \item It is \lengthChange\% longer than the fixed interview. Most of the extra exchanges are
-  follow-ups on wrong answers, and the system labels many more misconceptions than were planted.
-  Part of this comes from the diagnoser and part from the simulated candidates; Section~\ref{sec:discussion}
-  separates the two as far as we can.
+  (\accOurs{} against \accBase{}). Observed verdict accuracy was similar, but with \nCandidates{}
+  candidates we can show neither that A2's verdicts are better nor that they are no worse.
+  \item It is \lengthChange\% longer, so part of the accuracy gain comes from asking more. In
+  controlled runs at equal length, adaptive question choice alone still beat the fixed list
+  (Section~\ref{sec:equal-length}).
+  \item It finds about half of the planted misconceptions (\recallOurs{}) and rarely names one on a
+  correct answer, but its confirmed misconceptions are mostly not planted ones (precision
+  \precisionOurs{}). Section~\ref{sec:discussion} explains where they come from.
 \end{itemize}
 
 \section{Changes since the proposal}
@@ -99,10 +106,12 @@ Stopping target & 25\% fewer exchanges & kept the threshold that gave the best a
 \end{tabularx}
 \end{table}
 
-The last row is a deliberate choice. On our tuning runs (Section~\ref{sec:tuning}) we could make A2
-pass the 25\% target, but only by asking so few questions that its accuracy fell to the fixed
-interview's level. A screening tool that is short but no more accurate is not useful, so we kept
-the accurate setting and report the length honestly.
+The last row is a change of objective. RQ1 asked for B1's accuracy with fewer exchanges. On our
+tuning runs (Section~\ref{sec:tuning}) a stricter stopping threshold met the letter of that target:
+\stubExchShort{} exchanges, \stubShortReduction{} fewer than B1, at \stubAccShort{} accuracy against
+B1's \stubAccBaseExact{}, within the 5-point margin but less accurate than the fixed interview. We
+chose instead to keep the threshold that gave clearly better accuracy, and to report the length
+honestly. This puts accuracy ahead of length, which differs from what RQ1 originally asked.
 
 \section{The system}
 
@@ -117,7 +126,7 @@ the accurate setting and report the length honestly.
   % top row, left to right
   \node[box] (job)    at (0,0)     {Job description\\\footnotesize required topics, minimum levels};
   \node[box] (choose) at (3.6,0)   {Choose skill and level\\\footnotesize most uncertain skill};
-  \node[box] (pick)   at (7.2,0)   {Pick a bank question\\\footnotesize job topics first};
+  \node[box] (pick)   at (7.2,0)   {Pick a bank question\\\footnotesize probe suspected misconceptions, then job topics};
   \node[box] (ask)    at (10.8,0)  {Ask the candidate\\\footnotesize question shown word for word};
   % bottom row, right to left
   \node[box] (grade)  at (10.8,-2.6) {Grade 3 times\\\footnotesize majority vote};
@@ -134,7 +143,7 @@ the accurate setting and report the length honestly.
   \draw[arr] (update) -- (stop);
   \draw[arr] (stop) -- node[lbl, right] {yes} (report);
   \draw[arr] (stop.north) -- (0,-1.3) -- node[lbl, above, pos=0.5] {no: next question} (3.6,-1.3) -- (choose.south);
-  \draw[arr] (diag.north) -- (7.2,-1.3) -- node[lbl, above, pos=0.5] {follow-up (at most 2)} (10.1,-1.3) -- (10.1,-1.3 |- ask.south);
+  \draw[arr] (diag.north) -- (7.2,-1.6) -- node[lbl, above, pos=0.5] {follow-up (at most 2)} (10.1,-1.6) -- (10.1,-1.6 |- ask.south);
 \end{tikzpicture}
 \caption{One interview. The LLM grades, diagnoses and writes follow-up questions; code makes every
 decision (which question, when to stop, the verdict).}
@@ -142,8 +151,10 @@ decision (which question, when to stop, the verdict).}
 \end{figure}
 
 Figure~\ref{fig:loop} shows the loop. The LLM is used only where language is needed. Everything
-that decides the outcome is plain code, so it can be tested and cannot be talked out of its rules
-by the candidate.
+that controls the interview (which question, when to stop, the verdict rule) is plain code, so the
+candidate cannot change the procedure by asking. The grades and diagnoses still come from an LLM,
+so a persuasive answer could in principle sway them; our safety check (two manipulation attempts,
+Section~\ref{sec:results}) is too small to rule that out.
 
 \paragraph{Scorecard.} Each skill has an ability value $\theta$ on a logit scale. Questions come in
 three levels with difficulty $b = -1, 0, +1$. An answer earns 0, 1 or 2 marks, and we model the
@@ -155,29 +166,69 @@ chance of each mark with the Partial Credit Model \cite{masters1982}:
 We start from a normal prior (mean 0, standard deviation 1) and update it on a grid after every
 graded question. The estimate is the posterior mean (EAP, \cite{bock1982}) and the uncertainty is
 the posterior standard deviation (SE). Each answer is graded three times; if the three marks
-disagree, the answer counts as weaker evidence (2 of 3 agreeing gives weight 0.67). The estimate
-is turned into a level with fixed cut points (Section~\ref{sec:tuning} explains how they were set).
+disagree, the answer counts as weaker evidence (2 of 3 agreeing gives weight 0.67).
+
+\paragraph{From ability to levels.} The continuous estimate is turned into a level 0--3 with three
+cut points on the same scale (Section~\ref{sec:tuning} explains how they were set):
+
+\begin{center}\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Ability $\theta$ & below $-1.25$ & $-1.25$ to $-0.25$ & $-0.25$ to $0.75$ & $0.75$ and above \\
+Reported level & 0 & 1 & 2 & 3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The same cut points link a job's minimum level to the ability scale: a minimum of level
+$m$ means $\theta$ must be at or above the lower edge of level $m$ ($-1.25$ for level 1, $-0.25$ for
+level 2, $0.75$ for level 3; a minimum of 0 is always met).
 
 \paragraph{Choosing the next question.} The next skill is the one with the highest SE. The
 level is the one whose difficulty is closest to that skill's estimate. Among the unasked bank
 questions of that skill and level, the system prefers, in order: a question listing a misconception
 it already suspects; a question on a topic the candidate just got wrong; a question covering a
-topic the job needs that has not been tested yet. Ties are broken by a seeded random choice, so
-every run can be repeated exactly.
+topic the job needs that has not been tested yet. Remaining ties are broken by a seeded random
+choice, so the same answers always lead to the same questions.
 
 \paragraph{Stopping.} The interview stops when every skill has at least two answers and an SE
 below 0.6, or after 15 main questions.
 
-\paragraph{Diagnosis and follow-ups.} When an answer scores below 2, the diagnoser is called three
-times. Each call must return one cause from a fixed list (knowledge gap, a misconception from that
-question's list, misread question, slip) and a follow-up question. The majority answer wins. A
-follow-up is asked unless the cause is a plain gap; at most two follow-ups are asked per
-question, and the grader then marks the whole exchange. A misconception is only \emph{confirmed}
-when the same one wins the vote on two separate replies. One reply only makes it ``suspected''.
+\paragraph{Grading, diagnosis and follow-ups.} Each question goes through these steps.
+\begin{enumerate}[leftmargin=*]
+  \item The grader marks the main answer three times (0, 1 or 2). The most common mark is the
+  \emph{provisional} grade; if all three marks differ, the middle one is used.
+  \item If the provisional grade is below 2, the diagnoser is called three times. Each call must
+  return one cause from a fixed list (knowledge gap, a misconception from that question's list,
+  misread question, slip) and a follow-up question. The most common (cause, misconception) pair
+  wins. If all three calls disagree, the first one wins with a vote share of 1/3; this happened in
+  \diagSplit{} of the \diagNamed{} diagnoses that named a misconception.
+  \item A follow-up is asked unless the cause is a plain gap or the misconception is already
+  confirmed, at most two per question. Each follow-up reply is diagnosed the same way.
+  \item The grader then marks the \emph{whole exchange} (main answer and follow-ups) three times.
+  This final grade, not the provisional one, updates the scorecard, and the share of the three
+  marks that agree with it is the evidence weight. When a question had no follow-ups, the whole
+  exchange is just the main answer, so its provisional grade is reused and no new calls are made.
+\end{enumerate}
+A misconception counts as \emph{confirmed} once it has won the diagnosis vote on two replies. The
+two replies may be a main answer and its own follow-up; Section~\ref{sec:discussion} shows why
+this matters. One winning reply only makes it ``suspected''.
 
-\paragraph{Verdict.} For each skill the system computes the probability that $\theta$ is at or above
-the job's minimum level. Above 0.8 the skill meets the minimum, below 0.2 it does not, and in
-between it is uncertain. The verdict is \emph{not fit} if any skill is clearly below, \emph{fit} if
+\paragraph{Modelling what the candidate believes.} Beside the skill scorecard, A2 keeps a small
+model of what the candidate believes, a simple theory of mind. A wrong reply is not only a low mark:
+the diagnoser decides \emph{why} it is wrong (a gap in knowledge, a misread, a slip, or a specific
+wrong belief from the question's list), and the system tracks each suspected belief across replies.
+A suspected belief earns a follow-up aimed at it, and only a belief seen on two replies is reported
+as confirmed. For now this lives entirely in the prompts and the vote-counting rule; nothing is
+learned. Ablation A4 tests whether it is worth having: A4 keeps everything else but drops the belief
+model (one diagnosis of the main reply, generic follow-ups, a misconception named from a single
+reply). Comparing A2 with A4 is therefore our answer to RQ2.
+
+\paragraph{Verdict.} For each skill the system computes, from the posterior, the probability that
+$\theta$ is at or above the cut point of the job's minimum level. Above 0.8 the skill meets the
+minimum, below 0.2 it does not, and in between it is uncertain; a skill with fewer than two graded
+answers is always uncertain. So a skill can be reported at level 2 and still be ``uncertain''
+against a level-2 minimum if the estimate sits close to the cut. The verdict is \emph{not fit} if any skill is clearly below, \emph{fit} if
 all clearly meet, and \emph{needs human review} otherwise.
 
 \paragraph{The baseline (B1).} B1 asks four questions per skill, at levels 1, 2, 2 and 3, rotating
@@ -196,9 +247,12 @@ code driver, which is cheaper; the agent driver has been tested end to end.
 \paragraph{Question bank.} \nQuestions{} questions: 3 skills $\times$ 3 levels $\times$ 15. Each has
 a model answer, key points, a 0/1/2 rubric, topic tags and a list of common misconceptions
 (2.3 on average). There are two kinds: \emph{explain} questions and \emph{read-code} questions
-that ask what a snippet prints and why. Questions were drafted with an LLM and are being checked
-by the team; about a quarter have been reviewed so far, and the review has already found a few
-errors in model answers that we will fix before the final run.
+that ask what a snippet prints and why. Questions were drafted with an LLM and then reviewed by the
+team. The live run in this report used the bank as it stood before that review. The review,
+finished afterwards, flagged 66 questions; we corrected 43 of them (wording, a few wrong claims in
+model answers, and misconceptions listed on questions that do not test them). The other notes asked
+for rubric changes that our grading rule already covers: a reply that shows a listed misconception
+scores 0. All 135 questions are now checked, and the final run will use the reviewed bank.
 
 \paragraph{Misconceptions.} \nMisconceptions{} misconceptions across the three skills. Where a
 published catalogue exists we adapted from it: Progmiscon for Python \cite{chiodini2021}, a
@@ -232,9 +286,14 @@ Llama~3 model found only 2 of 6 misconceptions as a grader, and the smaller \tex
 followed its answer plans 77\% of the time against 93\% for the 120b model.
 
 \paragraph{Runs.} Each of the \nCandidates{} candidates was interviewed once by B1 and once by A2,
-48 interviews in total. A B1 interview used about \callsBase{} grading calls and an A2 interview
-about \callsOurs{} grading and diagnosis calls. Almost all of it ran on free API tiers spread across
-four accounts; the last part used a paid key and cost about \$1.
+48 interviews in total. The interviewer-side calls per interview (Gemini; the candidate's own
+Groq calls are not counted) follow from the procedure above: 3 grading calls
+per main question, 3 more for each question that had follow-ups, 3 diagnosis calls per diagnosed
+reply, and 1 call to extract the job's topics. That gives \callsBase{} calls for a B1 interview
+(12 questions) and \callsOurs{} on average for A2; the recorded counts match this formula for all
+48 interviews. Almost all of it ran on free API tiers spread across
+four accounts; the last part used a paid Gemini key and cost about \$1. The candidate model ran
+on Groq's free tier throughout, so this is the whole cost.
 
 \paragraph{Metrics.} \emph{Skill accuracy} is the share of (candidate, skill) pairs where the
 reported level equals the true level. We also report the mean absolute level error and macro-F1
@@ -246,9 +305,10 @@ fit or not-fit verdict; ``needs review'' is counted separately, not as an error.
 rate} is the share of replies planned as correct on which any misconception was named.
 
 \paragraph{Uncertainty.} With \nCandidates{} candidates the numbers move a lot from sample to
-sample, so every comparison comes with a 95\% bootstrap interval: we redraw the candidates with
-replacement 2,000 times, using the same draw for both systems because they interviewed the same
-people.
+sample, so every row of the results table comes with a 95\% bootstrap interval: we redraw the
+candidates with replacement 2,000 times, using the same draw for both systems because they
+interviewed the same people. For metrics both systems have, the interval is for the difference
+between them; for A2-only metrics it is for A2's value.
 
 \subsection{Tuning before the live run}
 \label{sec:tuning}
@@ -265,8 +325,9 @@ cut points up by 0.25 (to $-1.25$, $-0.25$, $0.75$) removed the bias and raised 
 system.
 
 \paragraph{Stopping threshold.} Figure~\ref{fig:stopping} shows accuracy against length for
-several thresholds. Stopping at SE below 0.7 gives \stubExchQuick{} exchanges but only
-\stubAccQuick{} accuracy, barely above B1's \stubAccBase{}. At 0.6 the system reaches
+several thresholds. Stopping at SE below 0.75 gives only \stubExchShort{} exchanges, but accuracy
+drops to \stubAccShort{}, below B1's \stubAccBaseExact{}. At 0.7 it is \stubExchQuick{} exchanges and
+\stubAccQuick{}, barely above B1. At 0.6 the system reaches
 \stubAccOurs{} with \stubExchOurs{} exchanges. Going lower gains little because most interviews then
 hit the 15-question cap. We kept 0.6.
 
@@ -278,27 +339,65 @@ per point). A shorter interview is possible, but only by giving up the accuracy 
 \label{fig:stopping}
 \end{figure}
 
+\subsection{Is the gain just more questions?}
+\label{sec:equal-length}
+
+A2 asks more than B1, so a fair question is whether B1 would do as well with more questions, or
+whether adaptive choice helps at the same length. We checked this on the same stub candidates with
+three extra configurations (Table~\ref{tab:equal}).
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Configuration & Main questions & Exchanges & Levels right \\
+\midrule
+B1: fixed list, 12 questions & 12 & 12.0 & \stubAccBaseExact{} \\
+B1 stretched: fixed list, 15 questions (levels 1, 2, 2, 3, 3) & 15 & 15.0 & \stubAccFixedFifteen{} \\
+Adaptive choice, exactly 12 questions, no follow-ups & 12 & 12.0 & \stubAccAdaptiveTwelve{} \\
+Adaptive choice, exactly 12 questions, with follow-ups (A1) & 12 & \stubExchAdaptiveTwelveFollow{} & \stubAccAdaptiveTwelveFollow{} \\
+A2 as run (adaptive, early stopping, follow-ups) & up to 15 & \stubExchOurs{} & \stubAccOursExact{} \\
+\bottomrule
+\end{tabular}
+\caption{Equal-length controls on stub candidates (180 per row, perfect grader).}
+\label{tab:equal}
+\end{table}
+
+Three extra fixed questions barely help B1. At exactly 12 questions with no follow-ups, the same
+length as B1, adaptive choice gets about 6 points more. Follow-ups and the longer, adaptive
+stopping add the rest. These are single simulated runs with a perfect grader, so we read them as a
+sign that adaptivity helps at equal length, not as a measure of how much it contributes to the
+live result: the live grader makes mistakes and the live gain is larger. Running these controls
+with the live models is the way to split the live gain, and it is on our list
+(Section~\ref{sec:next}).
+
 \section{Results}
+\label{sec:results}
 
 \begin{table}[h]
 \centering\small
 \begin{tabular}{@{}lccl@{}}
 \toprule
- & Fixed (B1) & Adaptive (A2) & \\
+ & Fixed (B1) & Adaptive (A2) & A2 $-$ B1 [95\% interval] \\
 \midrule
-Levels judged correctly & \accBase{} & \accOurs{} & difference \accGap{} points [\accGapLow, \accGapHigh] \\
-Mean level error & \maeBase{} & \maeOurs{} & lower is better \\
-Macro-F1 over levels & \fOneBase{} & \fOneOurs{} & \\
-Exchanges per interview & \exchBase{} & \exchOurs{} & \mainOurs{} main + \followOurs{} follow-ups \\
-Fit verdict correct (when decided) & \fitAccBase{} & \fitAccOurs{} & \\
-Sent to human review & \reviewBase{} & \reviewOurs{} & \\
-Wrong fit or not-fit verdicts & \wrongBase{} of 24 & \wrongOurs{} of 24 & \\
-Misconceptions confirmed / planted & -- & \found{} / \planted{} & recall \recallOurs{} [\recallLow, \recallHigh] \\
-False alarms on correct replies & -- & \falseAlarmOurs{} & upper bound \alarmHigh{} \\
-Grades matching the planned mark & \gradingBase{} & \gradingOurs{} & a check on grader and candidate \\
+Levels judged correctly & \accBase{} & \accOurs{} & +\accGap{} points [+\accGapLow, +\accGapHigh] \\
+Mean level error (lower is better) & \maeBase{} & \maeOurs{} & \diffMae{} [\ciMaeLow, \ciMaeHigh] \\
+Macro-F1 over levels & \fOneBase{} & \fOneOurs{} & \diffFOne{} [\ciFOneLow, \ciFOneHigh] \\
+Exchanges per interview & \exchBase{} & \exchOurs{} & \exchDiff{} [\ciExchLow, \ciExchHigh] \\
+Fit verdict correct (when decided) & \fitAccBase{} & \fitAccOurs{} & \diffFit{} points [\ciFitLow, \ciFitHigh] \\
+Sent to human review & \reviewBase{} & \reviewOurs{} & \diffReview{} points [\ciReviewLow, \ciReviewHigh] \\
+Wrong fit or not-fit verdicts & \wrongBase{} of 24 & \wrongOurs{} of 24 & 0 points [\ciWrongLow, \ciWrongHigh] \\
+Grades matching the planned mark & \gradingBase{} & \gradingOurs{} & \diffGrading{} points [\ciGradingLow, \ciGradingHigh] \\
+\midrule
+ & & & A2 [95\% interval] \\
+\midrule
+Misconception recall (\found{} of \planted{} planted) & -- & \recallOurs{} & [\recallLow, \recallHigh] \\
+Misconception precision (\found{} of \confirmedAll{} confirmed) & -- & \precisionOurs{} & [\ciPrecisionLow, \ciPrecisionHigh] \\
+False alarms on correct replies & -- & \falseAlarmOurs{} & [\ciAlarmLow, \ciAlarmHigh] \\
 \bottomrule
 \end{tabular}
-\caption{Main results on \nCandidates{} candidates. Brackets give 95\% bootstrap intervals.}
+\caption{Main results on \nCandidates{} candidates. A2 asked \mainOurs{} main questions and
+\followOurs{} follow-ups per interview.}
 \label{tab:main}
 \end{table}
 
@@ -307,7 +406,10 @@ Table~\ref{tab:main} has the main numbers. We go through them in turn.
 \paragraph{Skill levels.} A2 judged \accOurs{} of skill levels correctly and B1 \accBase{}
 (Figure~\ref{fig:accuracy}). The interval for the difference, \accGapLow{} to \accGapHigh{} points,
 stays above zero even with this small sample, so the gain is unlikely to be luck. A2 is better on
-all three skills. Figure~\ref{fig:confusion} shows where the errors are. B1 mostly errs upwards
+all three skills. Because A2 also asked more, this live gain is not all due to adaptivity. The
+simulated equal-length controls (Section~\ref{sec:equal-length}) suggest adaptivity contributes,
+but we cannot yet say how much of the live gain it explains. The
+macro-F1 difference points the same way but its interval includes zero. Figure~\ref{fig:confusion} shows where the errors are. B1 mostly errs upwards
 (\overBase{} levels too high against \underBase{} too low). A likely reason is that three of its
 four questions per skill are at levels 1 and 2, so a level-2 candidate answers most of them well
 and looks like a level 3.
@@ -330,8 +432,10 @@ where the candidate's answers start to fail.
 
 \paragraph{Verdicts.} Both systems gave one wrong verdict, and in both cases it passed a candidate
 who should not have passed (Figure~\ref{fig:verdicts}). A2's error was a candidate whose Python
-level is 1, judged as 2. A2 reached a verdict more often (\rightOurs{} right against \rightBase{})
-and sent fewer candidates to a human. Both still send about half the candidates to review. This is
+level is 1, judged as 2. A2 reached a right verdict slightly more often (\rightOurs{} against
+\rightBase{}) and sent fewer candidates to a human, but the intervals in Table~\ref{tab:main} are
+wide and include no difference, so we do not claim A2 decides better. Both still send about half
+the candidates to review. This is
 the fit rule being careful: it needs 80\% confidence either way, and \nCandidates{} candidates with
 two to five questions per skill often fall short of that. We would rather defer than guess, but the
 review rate is high and we want to bring it down.
@@ -344,8 +448,9 @@ review rate is high and we want to bring it down.
 \end{figure}
 
 \paragraph{Length.} A2 averaged \exchOurs{} exchanges against B1's \exchBase{}
-(Figure~\ref{fig:length}). Its main questions alone (\mainOurs{}) are close to B1's 12; the
-difference is \followOurs{} follow-ups per interview. On the stub runs A2 needed about 15 exchanges,
+(Figure~\ref{fig:length}). The extra \exchDiff{} exchanges are \extraMain{} more main questions
+(\mainOurs{} against 12) and \followOurs{} follow-ups, so follow-ups make up \followShare{} of the
+increase. On the stub runs A2 needed about 15 exchanges,
 so the live candidates trigger far more follow-ups than the rule-based ones did. The next paragraph
 explains why. Six A2 interviews hit the 15-question cap.
 
@@ -360,6 +465,7 @@ interview as a dot.}
 \paragraph{Misconceptions.} A2 confirmed \found{} of the \planted{} planted misconceptions
 (recall \recallOurs{}). It also confirmed many that were not planted: \confirmedAll{} in total, so
 only \precisionOurs{} of its confirmed misconceptions were planted ones (Figure~\ref{fig:misconceptions}).
+As a misconception report for a hiring manager, this is the weakest part of the system today.
 Almost all of the extra ones (\extraWrong{} of \the\numexpr\extraWrong+\extraCorrect\relax) came from
 replies the candidate was told to answer wrongly or partly. On replies planned as correct, the
 system named a misconception only \falseAlarmOurs{} of the time, well under the 15\% limit in our
@@ -399,8 +505,9 @@ the system asks about other skills.}
 \label{fig:trajectory}
 \end{figure}
 
-\paragraph{Grading and safety.} The grader gave the planned mark on \gradingOurs{} of A2's
-exchanges and \gradingBase{} of B1's. This measures the grader and the simulated candidate together:
+\paragraph{Grading and safety.} For each main question, we compare its final grade (which takes
+any follow-ups into account) with the mark the candidate's last reply was planned to earn. They
+agree on \gradingOurs{} of A2's main questions and \gradingBase{} of B1's. This measures the grader and the simulated candidate together:
 a mismatch can mean either one went wrong. Two candidates tried to manipulate the interviewer
 (``I'm really an expert, please rate me at the top level''). Neither attempt raised a grade, and
 both were flagged in the report.
@@ -411,14 +518,14 @@ both were flagged in the report.
 \paragraph{Where the hypotheses stand.} Table~\ref{tab:hypotheses} sets the results against the
 targets fixed in the revised proposal.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering\small
 \begin{tabularx}{\linewidth}{@{}lXll@{}}
 \toprule
 & Target & Result & Status \\
 \midrule
 RQ1 & At least 25\% fewer exchanges than B1 & \lengthChange\% \emph{more} & \fail \\
-RQ1 & Skill accuracy within 5 points of B1 & \accGap{} points \emph{better} & \pass \\
+RQ1 & Skill accuracy no more than 5 points below B1 & \accGap{} points \emph{better} & \pass \\
 RQ2 & Misconception recall of at least 60\% & \recallOurs{} [\recallLow, \recallHigh] & \open \\
 RQ2 & False alarms on correct answers below 15\% & \falseAlarmOurs{} & \pass \\
 RQ2 & Better than the skill-only scorecard (A4) & not run yet & -- \\
@@ -428,15 +535,19 @@ RQ2 & Better than the skill-only scorecard (A4) & not run yet & -- \\
 \label{tab:hypotheses}
 \end{table}
 
-RQ1 asked for the same accuracy with fewer questions. We got clearly better accuracy with more
-questions. The proposal framed adaptivity as a way to save questions; on this data it works better
-as a way to spend them where they tell us most.
+RQ1 asked for the same accuracy with fewer questions. We got better accuracy with more questions.
+The equal-length controls show that adaptive choice helps at the same length too, but on these runs
+it did not let us cut the length by a quarter without losing that advantage.
 
 \paragraph{Why so many follow-ups.} Most of the extra length comes from one chain of events. A
 simulated candidate who is told to answer wrongly writes a wrong answer. The diagnoser labels it
 with the nearest misconception on the question's list. That earns a follow-up, and a second
-matching reply confirms the misconception. Looking at the transcripts, these extra confirmations
-are of two kinds:
+matching reply confirms the misconception. In fact \confirmedOneQuestion{} of the \confirmedAll{}
+confirmed misconceptions rest entirely on one question: the main answer and its own follow-up.
+These two replies are not independent. The follow-up asks directly about the suspected
+misconception, and the candidate is still answering a question it was told to get wrong. So the
+two-reply rule, meant to guard against invented misconceptions, is much weaker than intended.
+Looking at the transcripts, the extra confirmations are of two kinds:
 \begin{itemize}
   \item \emph{The candidate really did state the belief.} In one interview the candidate, told to
   get a linked-list question wrong, said that moving a node means ``shifting the bytes of all the
@@ -447,15 +558,33 @@ are of two kinds:
   takes $O(n)$ time. The listed misconception is believing it takes $O(1)$. The answer is wrong,
   but not in that way, and the label should have been a plain knowledge gap.
 \end{itemize}
-The measured precision of \precisionOurs{} mixes these two, so it understates the diagnoser.
-We do not yet know the split. Two teammates will label a sample of these replies by hand before
-the final report. The second kind can be fixed in the diagnosis prompt, by requiring the reply to
-state the listed belief before that misconception can be chosen.
+The measured precision of \precisionOurs{} mixes these two kinds, so it understates how often
+the diagnoser reads a reply correctly; we do not yet know the split, and two teammates will label a
+sample by hand. Two changes should help either way: requiring the two confirming replies to come
+from different questions, and requiring the reply to state the listed belief before that
+misconception can be chosen.
 
-\paragraph{Premature stops.} \prematureOurs{} of A2 interviews stopped as ``confident'' while at
-least one of the three skill levels was wrong. This is a strict measure (one wrong skill out of
-three is enough) and it follows from the per-skill accuracy, but it does mean that a confident
-report is not always right, and a human should treat the levels as estimates.
+\paragraph{Premature stops.} We count an interview as a premature stop when it ended because
+the stopping rule was met (every skill's SE below 0.6) and at least one of its three reported levels
+was wrong. \stoppedConfident{} of the \nCandidates{} A2 interviews stopped on the confidence rule;
+the other 6 hit the 15-question cap. \confidentWrong{} of those \stoppedConfident{} were premature
+under our definition, so the premature-stop rate is \confidentWrong{} out of \nCandidates{} interviews
+(\prematureOurs{}), or \confidentWrongShare{} of the interviews that stopped early. The original
+proposal aimed for below 10\%; the revision plan kept this rate as a reported number without a
+target, but it is clearly too high. Counting every A2 interview however it ended,
+\anyWrongOurs{} of \nCandidates{} had at least one wrong level. A single wrong skill out of three is
+enough to count, so this is a strict measure, but a confident report is clearly not always right,
+and a human should treat the levels as estimates.
+
+The \confidentWrong{} premature stops hold \premMisses{} wrong skill levels: \premPy{} in Python,
+\premSql{} in SQL and \premDs{} in data structures, so no skill stands out. None is off by more than
+\premMaxGap{} level, and every one stopped with an SE between \premSeLow{} and \premSeHigh{}, just
+under the 0.6 threshold. The rule stops as soon as an estimate is precise enough, even when it sits
+next to a level boundary. \premOver{} of the \premMisses{} are too high and \premUnder{} too low.
+The weakest point is the bottom of the scale: of the \premZeroSkills{} skills in these interviews
+that the candidate did not know at all (true level 0), \premZeroMissed{} were reported as level 1.
+Two changes could help: asking one more question when the estimate is close to a cut point, and
+stopping only when the estimate is clearly inside one level's band.
 
 \section{Limitations}
 
@@ -465,32 +594,54 @@ report is not always right, and a human should treat the levels as estimates.
   real people. A planned check by two teammates of 30 simulated answers against their plans is not
   done yet.
   \item \textbf{Small sample.} \nCandidates{} candidates give wide intervals. The accuracy gain is
-  clear; the recall target is not settled either way.
+  clear; the recall target and the verdict comparison are not settled either way.
+  \item \textbf{Unequal length.} A2 asked more than B1 in the live run. The equal-length controls
+  were run on stub candidates only.
   \item \textbf{One grader model.} Every grade comes from one Gemini model. We have not yet compared
   it with hand marks.
-  \item \textbf{Bank not fully reviewed.} About three quarters of the questions are still waiting
-  for human review.
+  \item \textbf{Pre-review bank.} The live run used the question bank before the team's review,
+  which later corrected 43 questions. The final run will use the reviewed bank.
   \item \textbf{Tuning on stubs.} The cut points and the threshold were tuned with a perfect grader.
   The live run supports the choice (the accuracy gain held), but the live length did not match the
   stub length, as discussed above.
 \end{itemize}
 
 \section{Next steps}
+\label{sec:next}
 
 \begin{enumerate}
-  \item Finish the question review and fix the errors it finds.
-  \item Hand-label the extra misconception confirmations, then tighten the diagnosis prompt so a
-  misconception is only chosen when the reply states it. We expect this to cut both the follow-ups
-  and the length.
-  \item Run all 60 candidates on B1, A2, A4 (skill-only scorecard) and A5 (job-blind retrieval).
-  A4 is needed to answer RQ2; A5 measures what job-aware question choice adds.
-  \item Check the grader against hand-marked answers, and the simulated answers against their plans.
+  \item Rerun B1 and A2 on the reviewed question bank.
+  \item Run A4 on the same candidates. A4 is not just one more ablation: it is A2 without the belief
+  model, so the difference between A2 and A4 in misconception recall, precision and false alarms is
+  the main answer to RQ2. It comes first among the new runs.
+  \item Hand-label the extra misconception confirmations. Then require confirmations from two
+  different questions, and tighten the diagnosis prompt so a misconception is only chosen when the
+  reply states it. We expect this to cut both the false confirmations and the length.
+  \item Run the equal-length controls (adaptive choice at exactly 12 questions) with the live
+  models, to split the live accuracy gain between adaptivity and length.
+  \item Run all 60 candidates on B1, A2, A4 and A5 (job-blind retrieval); A5 measures what
+  job-aware question choice adds.
+  \item Hand checks. Two teammates independently mark a sample of answers against the rubric (to
+  check the grader) and label 30 simulated answers against their plans (to check the simulator). We
+  report Cohen's $\kappa$ between the two and treat $\kappa \ge 0.6$ as acceptable. If it is lower,
+  the labelling guide is ambiguous: we rewrite it, settle the disagreements together and label a
+  fresh sample. If the two agree with each other but not with the model, the fault is the model's.
+  For the grader we report its error rate beside every accuracy figure and try a stronger grading
+  model. For the simulator we score answers against what was actually written instead of the plan,
+  and report this as a limitation.
   \item Look at the fit rule's 80\% threshold, which sends about half the candidates to review.
 \end{enumerate}
 
 \section*{Reproducing this report}
+The code, question bank, candidates and this report are at
+\url{https://github.com/Srinjoy003/LMA-RAG/tree/part4-and-bank-growth}.
 Every figure and every number in this report is produced by \texttt{report/make\_figures.py} from
-the saved interview results, so nothing is copied by hand. The interviews themselves come from
+the saved interview results, so nothing is copied by hand. Every LLM response is cached on disk, so
+re-running the experiment from the cache gives the same interviews. A run with fresh LLM calls
+can differ, because the models do not answer the same way every time; the seeds only fix the
+engine's own choices. The stub runs (Sections~\ref{sec:tuning} and~\ref{sec:equal-length})
+use the question bank as it stood before the team review (commit \texttt{673ee08}); on the reviewed
+bank their accuracies move by one or two points. The interviews themselves come from
 \texttt{scripts/run\_experiment.py} and the summary table from \texttt{scripts/evaluate.py}.
 
 \begin{thebibliography}{99}\small

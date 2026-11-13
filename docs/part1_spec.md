@@ -94,9 +94,11 @@ Defined in `schemas/question.schema.json`.
 
 | Level | Python | SQL | Data structures |
 | --- | --- | --- | --- |
-| 1 Basics | Built-in types, control flow, simple functions | SELECT, WHERE, ORDER BY, DISTINCT, simple aggregates | Arrays, stacks, queues; what Big-O means |
-| 2 Everyday use | Dicts and sets, comprehensions, classes, exceptions, mutability and aliasing, pandas basics | JOINs, GROUP BY / HAVING, NULL handling, subqueries | Hash tables, linked lists, BSTs, sorting and searching, choosing a structure |
+| 1 Basics | Built-in types, control flow, simple functions | SELECT, WHERE, ORDER BY, DISTINCT, simple aggregates, keys and why repeated data goes wrong | Arrays, stacks, queues, linked lists against arrays; what Big-O means |
+| 2 Everyday use | Dicts and sets, comprehensions, classes, exceptions, mutability and aliasing, pandas basics, threads, processes and asyncio basics | JOINs, GROUP BY / HAVING, NULL handling, subqueries, index and transaction basics | Hash tables, linked lists, BSTs, sorting and searching, choosing a structure |
 | 3 Tricky cases and trade-offs | Generators and lazy evaluation, mutable default arguments, closures, GIL and concurrency, pandas pitfalls | Window functions, CTEs, indexes and query plans, transactions and isolation, `NOT IN` with NULL | Heaps, graphs (BFS/DFS, shortest path), amortised cost, worst cases (hash collisions, unbalanced trees) |
+
+A topic can appear one level below the one it is centred on, in its basic form: for example, linked lists against arrays at level 1, or which rows a transaction makes visible at level 2. `typical_levels` in `data/topics.json` lists the levels each topic may use. This table was widened on 2026-11-13 to match it, after the team review flagged questions as off-syllabus that `topics.json` allowed.
 
 ## 6. Size and split
 

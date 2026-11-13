@@ -25,7 +25,7 @@
       "sql.null.equals-null-matches"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-002",
@@ -55,7 +55,7 @@
       "sql.schema-constraints.pk-needs-distinct"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-003",
@@ -81,7 +81,7 @@
       "sql.select-filter.and-or-precedence"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-004",
@@ -93,22 +93,22 @@
       "sql-select-filter"
     ],
     "question": "To list the products priced above the average price, a colleague writes SELECT name FROM products WHERE price > AVG(price). Why does the database reject this, and how would you write the query instead?",
-    "model_answer": "WHERE is checked one row at a time, before any aggregation happens, while AVG(price) needs the whole set of rows, so an aggregate is not allowed inside WHERE. Moving it to HAVING does not help either, because HAVING filters groups, not individual products. The usual fix is to compute the average separately in a subquery: SELECT name FROM products WHERE price > (SELECT AVG(price) FROM products), so each product is compared with that single value.",
+    "model_answer": "WHERE is checked one row at a time, before any aggregation happens, while AVG(price) needs the whole set of rows, so an aggregate is not allowed inside WHERE. Moving it to HAVING does not help either, because HAVING filters groups, not individual products. The fix is to compute the average first: run SELECT AVG(price) FROM products and use that number, or do both in one query with a subquery: SELECT name FROM products WHERE price > (SELECT AVG(price) FROM products), so each product is compared with that single value.",
     "key_points": [
       "WHERE filters individual rows before aggregates are computed, so aggregates cannot appear there",
       "HAVING is for filtering groups, not single rows",
-      "Compute the average in a subquery and compare each price with it"
+      "Compute the average first (a separate query or a subquery) and compare each price with it"
     ],
     "rubric": {
       "0": "Says the query works, or that WHERE and HAVING are interchangeable so it just needs HAVING",
       "1": "Knows aggregates are not allowed in WHERE but gives no working rewrite, or the reason is vague",
-      "2": "Explains that WHERE runs per row before aggregation and rewrites it with a scalar subquery"
+      "2": "Explains that WHERE runs per row before aggregation and gives a working approach: compute the average first, in a separate query or a scalar subquery"
     },
     "misconceptions": [
       "sql.aggregation.aggregate-in-where"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-005",
@@ -135,7 +135,7 @@
       "sql.schema-constraints.fk-must-be-unique"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-006",
@@ -163,7 +163,7 @@
       "sql.aggregation.count-column-counts-nulls"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-007",
@@ -252,7 +252,7 @@
       "sql.select-filter.distinct-returns-first"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-008",
@@ -326,7 +326,7 @@
       "sql.null.equals-null-matches"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-009",
@@ -390,7 +390,7 @@
         "Delhi"
       ]
     ],
-    "model_answer": "Three rows: (Asha, Mumbai), (Asha, Pune) and (Ben, Delhi). DISTINCT removes rows only when the whole (customer, city) pair repeats, so Asha appears twice because she has two different cities. That shows an inconsistency: her city was changed on one order but not the others, the kind of update anomaly that storing the city once in a customers table prevents.",
+    "model_answer": "Three rows: (Asha, Mumbai), (Asha, Pune) and (Ben, Delhi). DISTINCT removes rows only when the whole (customer, city) pair repeats, so Asha appears twice because she has two different cities. That shows an inconsistency: the data cannot tell us whether she moved or which city is right, only that the copies disagree, the kind of update anomaly that storing the city once in a customers table prevents.",
     "key_points": [
       "Three rows, with Asha appearing twice",
       "DISTINCT works on the combination of both columns",
@@ -407,7 +407,7 @@
       "sql.schema-constraints.normalisation-only-saves-space"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-010",
@@ -475,7 +475,7 @@
       "sql.null.aggregates-treat-null-as-zero"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-011",
@@ -502,7 +502,7 @@
       "sql.null.not-equal-includes-null"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-012",
@@ -528,7 +528,7 @@
       "sql.schema-constraints.normalisation-only-saves-space"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-013",
@@ -540,11 +540,11 @@
       "sql-null"
     ],
     "question": "A staff table has a bonus column, and some bonuses are NULL. How do SUM(bonus) and AVG(bonus) treat those NULLs, and how would AVG(bonus) compare with SUM(bonus) divided by COUNT(*)?",
-    "model_answer": "SUM and AVG ignore NULLs. SUM adds only the non-NULL bonuses, and AVG divides that sum by the number of non-NULL bonuses, so AVG(bonus) equals SUM(bonus) / COUNT(bonus). Dividing by COUNT(*) uses all rows, so it gives a smaller number whenever some bonuses are NULL; it matches only if you deliberately treat missing bonuses as zero, for example AVG(COALESCE(bonus, 0)).",
+    "model_answer": "SUM and AVG ignore NULLs. SUM adds only the non-NULL bonuses, and AVG divides that sum by the number of non-NULL bonuses, so AVG(bonus) equals SUM(bonus) / COUNT(bonus). Dividing by COUNT(*) uses all rows, so it differs when some bonuses are NULL and the sum is not zero (for positive bonuses it gives a smaller value); it matches only if you deliberately treat missing bonuses as zero, for example AVG(COALESCE(bonus, 0)).",
     "key_points": [
       "SUM and AVG skip NULLs rather than treating them as 0",
       "AVG divides by the count of non-NULL values",
-      "SUM / COUNT(*) is smaller when there are NULLs (equivalent to treating NULL as 0)"
+      "SUM / COUNT(*) differs when there are NULLs (smaller for positive bonuses) (equivalent to treating NULL as 0)"
     ],
     "rubric": {
       "0": "Says NULLs count as 0 in AVG (dividing by all rows), or that AVG(bonus) equals SUM(bonus) / COUNT(*)",
@@ -556,7 +556,7 @@
       "sql.aggregation.count-column-counts-nulls"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-014",
@@ -641,7 +641,7 @@
       "sql.schema-constraints.pk-needs-distinct"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L1-015",
@@ -728,7 +728,7 @@
       "sql.select-filter.and-or-precedence"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-001",
@@ -740,11 +740,11 @@
       "sql-schema-constraints"
     ],
     "question": "orders.customer_id is a foreign key to customers.id, and orders has an index on (customer_id, created_at). Does that index help joins to customers and queries like WHERE customer_id = 7? Could it be declared UNIQUE on customer_id alone? Would a query that filters only on created_at use it efficiently?",
-    "model_answer": "Yes: the index is sorted by customer_id first, so it can find all rows for one customer quickly, which serves both WHERE customer_id = 7 and the join on customer_id. It could not be UNIQUE on customer_id, because a foreign-key column normally repeats: one customer has many orders. A filter on created_at alone cannot seek in it, because created_at is only sorted within each customer_id; that query needs an index that starts with created_at, or it scans.",
+    "model_answer": "Yes: the index is sorted by customer_id first, so it can find all rows for one customer quickly, which serves both WHERE customer_id = 7 and the join on customer_id. A UNIQUE constraint on customer_id alone is allowed for a foreign key in general, but it would be wrong here: it would stop a customer from having more than one order. A filter on created_at alone typically cannot use it efficiently (some databases can do an index skip scan, but it is rarely as good), because created_at is only sorted within each customer_id; that query needs an index that starts with created_at, or it scans.",
     "key_points": [
       "The leading column customer_id can be used on its own (lookups and joins)",
-      "Foreign-key values repeat, so the column cannot be unique",
-      "A filter on only the second column (created_at) cannot use the index efficiently"
+      "A foreign key may be unique in general, but here customer_id must repeat (many orders per customer), so UNIQUE would be wrong",
+      "A filter on only the second column (created_at) typically cannot use the index efficiently"
     ],
     "rubric": {
       "0": "Says the index helps a created_at-only filter just as well, or that a foreign key column must be unique",
@@ -756,7 +756,7 @@
       "sql.schema-constraints.fk-must-be-unique"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-002",
@@ -767,7 +767,7 @@
       "sql-aggregation"
     ],
     "question": "To show each department's highest-paid employee, a colleague writes SELECT dept, name, MAX(salary) FROM staff GROUP BY dept. PostgreSQL rejects it. Why? How could you get the right names, and how would you then keep only departments whose top salary is above 100000?",
-    "model_answer": "GROUP BY collapses each department into a single output row, and a department has many names, so name is ambiguous unless it is grouped or aggregated; MAX(salary) does not bring along the name from the row it came from. One fix is to compute each department's maximum in a subquery and join it back to staff on dept and salary (or rank the rows with a window function). The salary threshold is a condition on a group, so it belongs in HAVING MAX(salary) > 100000, not in WHERE, which filters single rows before grouping.",
+    "model_answer": "GROUP BY collapses each department into a single output row, and a department has many names, so name is ambiguous unless it is grouped or aggregated; MAX(salary) does not bring along the name from the row it came from. One fix is to compute each department's maximum in a subquery and join it back to staff on dept and salary (or rank the rows with a window function). The salary threshold is a condition on a group, so it belongs in HAVING MAX(salary) > 100000, not in WHERE, which filters single rows before grouping. For example: SELECT s.dept, s.name, s.salary FROM staff s JOIN (SELECT dept, MAX(salary) AS top FROM staff GROUP BY dept HAVING MAX(salary) > 100000) m ON s.dept = m.dept AND s.salary = m.top.",
     "key_points": [
       "GROUP BY returns one row per group, so a non-grouped column like name is ambiguous",
       "MAX does not return the matching row's other columns; join back or use a window function",
@@ -783,7 +783,7 @@
       "sql.aggregation.aggregate-in-where"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-003",
@@ -794,9 +794,9 @@
       "sql-indexes-performance"
     ],
     "question": "orders.amount has an index. WHERE amount > 1000 is fast, but WHERE amount * 1.18 > 1180 (the same rows, with tax added) scans the whole table. Why, and how would you rewrite it? A teammate suggests indexing every column of orders so that nothing is slow again. What is wrong with that idea?",
-    "model_answer": "The index stores the amount values in sorted order, but amount * 1.18 is a computed value that is not in the index, so the database has to calculate it for every row and cannot seek. Keeping the column bare fixes it: WHERE amount > 1000 (1180 / 1.18), or an expression index if the database supports one. Indexing every column is not free: each index takes storage and must be updated on every INSERT, UPDATE and DELETE, which slows writes, and the planner will ignore indexes that do not suit a query anyway.",
+    "model_answer": "The index stores the amount values in sorted order, but amount * 1.18 is a computed value that is not in the index, so with an ordinary index the database typically has to calculate it for every row instead of seeking. Keeping the column bare fixes it: WHERE amount > 1000 (1180 / 1.18), or an expression index if the database supports one. Indexing every column is not free: each index takes storage and must be updated on every INSERT, UPDATE and DELETE, which slows writes, and the planner will ignore indexes that do not suit a query anyway.",
     "key_points": [
-      "An expression on the indexed column prevents the index from being used",
+      "An expression on the indexed column typically prevents efficient use of an ordinary index",
       "Rewrite so the column stands alone (or use an expression index)",
       "Every index costs storage and slows writes, and may not be used"
     ],
@@ -810,7 +810,7 @@
       "sql.indexes-performance.index-always-helps"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-004",
@@ -821,7 +821,7 @@
       "sql-transactions"
     ],
     "question": "A nightly job runs in one transaction: DELETE every row from daily_sales, then INSERT the fresh rows. Halfway through the INSERT the job crashes and the transaction is rolled back. While the job was running, what did analysts querying daily_sales see, and what do they see after the rollback? What would be different if each statement committed on its own?",
-    "model_answer": "While the transaction is open, other sessions keep seeing the last committed data, the old rows, not the deletion or the half-finished inserts. The rollback undoes the whole transaction, including the DELETE, so afterwards the table is exactly as it was before the job started. If each statement committed on its own, the DELETE would be permanent and visible straight away, and after the crash analysts would see a half-loaded table.",
+    "model_answer": "Assuming a typical isolation level such as READ COMMITTED, while the transaction is open, other sessions keep seeing the last committed data, the old rows, not the deletion or the half-finished inserts. The rollback undoes the whole transaction, including the DELETE, so afterwards the table is exactly as it was before the job started. If each statement committed on its own, the DELETE would be permanent and visible straight away, and after the crash analysts would see a half-loaded table.",
     "key_points": [
       "Other sessions do not see uncommitted changes; they see the old rows",
       "ROLLBACK undoes every statement in the transaction, including the earlier DELETE",
@@ -837,7 +837,7 @@
       "sql.transactions.rollback-partial"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-005",
@@ -866,7 +866,7 @@
       "sql.joins.where-filter-keeps-left-rows"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-006",
@@ -877,7 +877,7 @@
       "sql-transactions"
     ],
     "question": "Explain the four ACID properties of a database transaction in a sentence each. Does 'isolation' mean that concurrent transactions always behave exactly as if they had run one after another?",
-    "model_answer": "Atomicity means all of a transaction's changes happen or none do; consistency means it moves the database from one valid state to another, respecting constraints; isolation means concurrent transactions do not interfere beyond what the isolation level allows; durability means committed changes survive a crash. Isolation is not automatically one-at-a-time behaviour: most databases default to a weaker level such as READ COMMITTED, which still allows anomalies like non-repeatable reads and lost updates, and only SERIALIZABLE guarantees results equivalent to running the transactions one after another.",
+    "model_answer": "Atomicity means all of a transaction's changes happen or none do; consistency means it moves the database from one valid state to another, respecting constraints; isolation means concurrent transactions do not interfere beyond what the isolation level allows; durability means committed changes survive a crash. Isolation is not automatically one-at-a-time behaviour: most databases default to a weaker level such as READ COMMITTED, which still allows anomalies like non-repeatable reads and lost updates, and SERIALIZABLE is the standard level that guarantees results equivalent to some serial order of the transactions.",
     "key_points": [
       "Atomicity: all or nothing, even if a later statement fails",
       "Consistency and durability: constraints hold; committed data survives crashes",
@@ -886,14 +886,14 @@
     "rubric": {
       "0": "Says that statements before a failure stay applied, or that any transaction behaves as if run alone",
       "1": "Defines most properties correctly but does not explain the isolation-level caveat, or one definition is wrong",
-      "2": "Defines all four properties and explains that only SERIALIZABLE gives one-at-a-time behaviour, while the default level allows anomalies"
+      "2": "Defines all four properties and explains that SERIALIZABLE is the level that guarantees behaviour equivalent to some serial order, while the default level allows anomalies"
     },
     "misconceptions": [
       "sql.transactions.rollback-partial",
       "sql.transactions.default-isolation-prevents-all"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-007",
@@ -986,7 +986,7 @@
     "key_points": [
       "Returns Asha 10, Ben NULL, Dana 14",
       "Ben is kept: the LEFT JOIN gives him a NULL row that matches o.id IS NULL",
-      "Chen is removed because WHERE filters after the join and his only row is a cancelled order",
+      "Chen is removed because WHERE filters after the join and his only row is a cancelled order; Dana's order 13 is dropped too, because NULL = 'paid' is UNKNOWN",
       "Moving the status condition into ON gives the intended result"
     ],
     "rubric": {
@@ -999,7 +999,7 @@
       "sql.joins.left-join-drops-unmatched"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-008",
@@ -1088,7 +1088,7 @@
       "sql.schema-constraints.normalisation-only-saves-space"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-009",
@@ -1180,12 +1180,12 @@
         1
       ]
     ],
-    "model_answer": "Three rows: Asha 25 and 4, Ben 8 and 0, Chen NULL and 1. The join produces one row per order-item pair, so order 1's fee of 5 appears three times and Asha's shipping becomes 5 + 5 + 5 + 10 = 25 instead of the real 15. Ben's order has no items, but the LEFT JOIN keeps it with a NULL product, so his fee is counted once and COUNT(i.product) is 0. Chen's fee is NULL, so SUM gives NULL; to get correct shipping totals, sum the fees before joining to items.",
+    "model_answer": "Three rows: Asha 25 and 4, Ben 8 and 0, Chen NULL and 1. The join produces one row per order-item pair, so order 1's fee of 5 appears three times and Asha's shipping becomes 5 + 5 + 5 + 10 = 25 instead of the real 15. Ben's order has no items, but the LEFT JOIN keeps it with a NULL product, so his fee is counted once and COUNT(i.product) is 0. Chen's fee is NULL, so SUM gives NULL; to get correct totals, sum the shipping fees per customer from orders alone and count items per customer in a separate subquery, then join the two results.",
     "key_points": [
       "Asha's shipping is 25, not 15, because the join repeats order 1 for each item",
       "Ben is kept by the LEFT JOIN with 0 items, since COUNT(i.product) skips NULL",
       "Chen's shipping is NULL and he has 1 item",
-      "Aggregate shipping before joining (or in a subquery) to avoid double counting"
+      "Aggregate shipping and item counts in separate subqueries, then join them, to avoid double counting"
     ],
     "rubric": {
       "0": "Gives Asha 15 (assumes one row per order), drops Ben, or gives Ben 1 item",
@@ -1198,7 +1198,7 @@
       "sql.aggregation.count-column-counts-nulls"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-010",
@@ -1300,7 +1300,7 @@
       "sql.aggregation.count-group-column-is-one"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-011",
@@ -1311,16 +1311,17 @@
       "sql-aggregation"
     ],
     "question": "To find cities with at least two stores, a colleague starts from SELECT city, COUNT(city) FROM stores GROUP BY city. What does GROUP BY do to the rows, and what does COUNT(city) give for each group? Should the 'at least two stores' condition go in WHERE or HAVING, and why?",
-    "model_answer": "GROUP BY collapses the rows into one output row per city, and COUNT(city) counts the rows in each group whose city is not NULL, which is the number of stores in that city, not 1 (for the NULL-city group it gives 0, so COUNT(*) is safer). The condition must be HAVING COUNT(*) >= 2: WHERE is applied to individual rows before grouping and cannot use aggregates, while HAVING filters whole groups after they are counted.",
+    "model_answer": "GROUP BY collapses the rows into one output row per city, and COUNT(city) counts the rows in each group whose city is not NULL, which is the number of stores in that city, not 1 (for the group of stores with a NULL city it gives 0). The condition must be HAVING COUNT(city) >= 2, which also leaves out the NULL-city group (with COUNT(*) you would add WHERE city IS NOT NULL): WHERE is applied to individual rows before grouping and cannot use aggregates, while HAVING filters whole groups after they are counted.",
     "key_points": [
       "GROUP BY returns one row per group, not every row",
       "COUNT(city) counts the (non-NULL) rows in each group, not 1",
-      "WHERE filters rows before grouping; conditions on aggregates go in HAVING"
+      "WHERE filters rows before grouping; conditions on aggregates go in HAVING",
+      "COUNT(city) is 0 for the NULL-city group, so HAVING COUNT(city) >= 2 excludes it"
     ],
     "rubric": {
       "0": "Says COUNT(city) is always 1, that GROUP BY keeps every row, or that the aggregate condition can go in WHERE",
       "1": "Chooses HAVING correctly but misdescribes what COUNT(city) returns, or vice versa",
-      "2": "Explains one row per group, the per-group count, and that the condition needs HAVING because WHERE runs before grouping"
+      "2": "Explains one row per group, the per-group count, and that the condition needs HAVING because WHERE runs before grouping, with the NULL-city group kept out"
     },
     "misconceptions": [
       "sql.aggregation.aggregate-in-where",
@@ -1328,7 +1329,7 @@
       "sql.aggregation.group-by-only-sorts"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-012",
@@ -1356,7 +1357,7 @@
       "sql.joins.where-filter-keeps-left-rows"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-013",
@@ -1383,7 +1384,7 @@
       "sql.subqueries-cte.in-subquery-duplicates"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-014",
@@ -1484,7 +1485,7 @@
       "sql.aggregation.count-column-counts-nulls"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L2-015",
@@ -1563,7 +1564,7 @@
         1
       ]
     ],
-    "model_answer": "Two rows: Asha 3 and Chen 1. IN only checks whether the customer's id appears in the subquery's list, so Asha is returned once even though she has three orders; Ben and Dana have no orders, and the NULL in the list does not match them. The subquery in SELECT is correlated: it is re-run for each customer with that customer's id, so it counts only that customer's own orders.",
+    "model_answer": "Two rows: Asha 3 and Chen 1. IN only checks whether the customer's id appears in the subquery's list, so Asha is returned once even though she has three orders; Ben and Dana have no orders, and the NULL in the list does not match them. The subquery in SELECT is correlated: it is logically evaluated for each customer using that customer's id (the optimiser may execute it differently), so it counts only that customer's own orders.",
     "key_points": [
       "Returns Asha with 3 and Chen with 1",
       "IN returns each customer at most once, unlike a join",
@@ -1572,14 +1573,14 @@
     "rubric": {
       "0": "Lists Asha three times, or gives every customer the same count (e.g. 5 or 4)",
       "1": "Correct rows but a wrong count for one customer, or correct output without explaining the correlation",
-      "2": "Asha 3 and Chen 1, explaining that IN does not duplicate rows and the subquery runs per customer"
+      "2": "Asha 3 and Chen 1, explaining that IN does not duplicate rows and the subquery is evaluated per customer"
     },
     "misconceptions": [
       "sql.subqueries-cte.in-subquery-duplicates",
       "sql.subqueries-cte.correlated-runs-once"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-001",
@@ -1590,7 +1591,7 @@
       "sql-window-functions"
     ],
     "question": "A daily_sales table has one row per day. Explain what SUM(amount) OVER (ORDER BY day) returns on each row, and how AVG(amount) OVER (ORDER BY day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) differs. How many rows does each query return compared with the table?",
-    "model_answer": "With ORDER BY inside OVER, the frame runs from the first day up to the current row, so SUM gives a running total that grows day by day; only SUM(amount) OVER () with no ORDER BY gives the grand total on every row. The ROWS BETWEEN 6 PRECEDING AND CURRENT ROW frame slides: each row averages itself and the six rows before it, a 7-day moving average (over fewer days at the start). Both return exactly one row per day, the same number as the table, because window functions add a column instead of collapsing rows like GROUP BY.",
+    "model_answer": "With ORDER BY inside OVER, the default frame (RANGE UNBOUNDED PRECEDING to the current row) runs from the first day up to the current day; rows tied on day would share a total, but here each day has one row, so SUM gives a running total that grows day by day; only SUM(amount) OVER () with no ORDER BY gives the grand total on every row. The ROWS BETWEEN 6 PRECEDING AND CURRENT ROW frame slides: each row averages itself and the six rows before it, a 7-day moving average (over fewer days at the start). Both return exactly one row per day, the same number as the table, because window functions add a column instead of collapsing rows like GROUP BY.",
     "key_points": [
       "ORDER BY in OVER gives a cumulative (running) total, not the grand total",
       "The ROWS frame gives a sliding 7-row moving average",
@@ -1606,7 +1607,7 @@
       "sql.window-functions.collapses-rows"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-002",
@@ -1617,11 +1618,11 @@
       "sql-indexes-performance"
     ],
     "question": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
-    "model_answer": "First, if the condition matches a large share of the table (or the table is small), the planner estimates that reading it sequentially is cheaper than many random index lookups, so an index is not automatically faster. Second, wrapping the column in a function or expression, such as EXTRACT(YEAR FROM order_date) = 2024 or customer_id + 0 = 42, hides the stored values from the index; rewriting it as a range on the bare column fixes that. Third, a filter on order_date alone skips the leading column, and since entries are sorted by customer_id first the index cannot be searched for a date; that needs an index that starts with order_date.",
+    "model_answer": "First, if the condition matches a large share of the table (or the table is small), the planner estimates that reading it sequentially is cheaper than many random index lookups, so an index is not automatically faster. Second, wrapping the column in a function or expression, such as EXTRACT(YEAR FROM order_date) = 2024 or customer_id + 0 = 42, typically stops an ordinary index from being used (an expression index can help); rewriting it as a range on the bare column fixes that. Third, a filter on order_date alone skips the leading column, and since entries are sorted by customer_id first the index typically cannot be searched efficiently for a date (some databases can do a skip scan, but it is rarely as good); that needs an index that starts with order_date.",
     "key_points": [
       "Low selectivity or small tables: the planner may prefer a full scan",
-      "A function or expression on the column prevents index use",
-      "A composite index cannot be searched on its second column alone"
+      "A function or expression on the column typically prevents use of an ordinary index",
+      "A composite index typically cannot be searched efficiently on its second column alone"
     ],
     "rubric": {
       "0": "Insists the index is always used or always faster, or says a filter on order_date alone uses it fine",
@@ -1634,7 +1635,7 @@
       "sql.indexes-performance.composite-any-column"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-003",
@@ -1662,7 +1663,7 @@
       "sql.window-functions.collapses-rows"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-004",
@@ -1689,7 +1690,7 @@
       "sql.transactions.uncommitted-visible"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-005",
@@ -1699,7 +1700,7 @@
     "topics": [
       "sql-transactions"
     ],
-    "question": "Two transactions run at the same time under READ COMMITTED. Each reads a product's stock (10), subtracts 1 in the application, writes back 9 and commits. What is the final stock, why, and how could you prevent this?",
+    "question": "Two transactions run at the same time under READ COMMITTED. Both read the product's stock (10) before either writes; each then subtracts 1 in the application, writes back 9 and commits. What is the final stock, why, and how could you prevent this?",
     "model_answer": "The final stock is 9, not 8: this is a lost update. Neither transaction sees the other's uncommitted write, so both read 10, and READ COMMITTED does not stop the second write from overwriting the first. You can prevent it with a single atomic statement (UPDATE products SET stock = stock - 1 ...), by locking the row first with SELECT ... FOR UPDATE, or by running at SERIALIZABLE and retrying when the database reports a conflict.",
     "key_points": [
       "Final stock is 9 (a lost update), not 8",
@@ -1716,7 +1717,7 @@
       "sql.transactions.uncommitted-visible"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-006",
@@ -1728,12 +1729,12 @@
       "sql-null",
       "sql-joins"
     ],
-    "question": "For 'customers who have placed an order', compare joining customers to orders with WHERE id IN (SELECT customer_id FROM orders). For 'customers who have never ordered', why can WHERE id NOT IN (SELECT customer_id FROM orders) go wrong when NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id) does not?",
-    "model_answer": "The join returns one row per matching order, so a customer with three orders appears three times unless you add DISTINCT, while IN only tests membership and returns each customer at most once. NOT IN breaks if the subquery returns any NULL: id NOT IN (1, 3, NULL) means id <> 1 AND id <> 3 AND id <> NULL, and the last part is UNKNOWN, so no customer is returned. NOT EXISTS is a correlated subquery checked for each customer and only asks whether a matching order exists, so a NULL customer_id simply never matches and does not affect the result.",
+    "question": "For 'customers who have placed an order', compare joining customers to orders with WHERE c.id IN (SELECT customer_id FROM orders). For 'customers who have never ordered', why can WHERE c.id NOT IN (SELECT customer_id FROM orders) go wrong when NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id) does not?",
+    "model_answer": "The join returns one row per matching order, so a customer with three orders appears three times unless you add DISTINCT, while IN only tests membership and returns each customer at most once. NOT IN breaks if the subquery returns any NULL: id NOT IN (1, 3, NULL) means id <> 1 AND id <> 3 AND id <> NULL, and the last part is UNKNOWN, so no customer is returned. NOT EXISTS is a correlated subquery, logically evaluated for each customer, and only asks whether a matching order exists, so a NULL customer_id simply never matches and does not affect the result.",
     "key_points": [
       "The join repeats a customer per order; IN returns each customer at most once",
       "A NULL in the NOT IN list makes the condition UNKNOWN for every row, giving an empty result",
-      "NOT EXISTS is evaluated per customer and is not broken by NULLs"
+      "NOT EXISTS is logically evaluated per customer and is not broken by NULLs"
     ],
     "rubric": {
       "0": "Says IN duplicates customers like a join, or that NOT IN works normally with a NULL in the list",
@@ -1742,11 +1743,10 @@
     },
     "misconceptions": [
       "sql.subqueries-cte.in-subquery-duplicates",
-      "sql.null.not-in-with-null",
-      "sql.subqueries-cte.correlated-runs-once"
+      "sql.null.not-in-with-null"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-007",
@@ -1819,7 +1819,7 @@
         "Surat"
       ]
     ],
-    "model_answer": "Four rows: customer 1 twice (Delhi and Goa), customer 2 with Agra and customer 3 with Surat. RANK numbers rows within each customer, and Delhi and Goa tie on the latest date, so both get rank 1; Kochi's NULL date is sorted last, so Agra is customer 2's rank 1. The window function itself keeps every row; only the outer WHERE rk = 1 reduces them. ROW_NUMBER would return exactly one row per customer, but it would pick Delhi or Goa arbitrarily unless a tie-breaker is added to the ORDER BY.",
+    "model_answer": "Four rows: customer 1 twice (Delhi and Goa), customer 2 with Agra and customer 3 with Surat. RANK numbers rows within each customer, and Delhi and Goa tie on the latest date, so both get rank 1; Kochi's NULL date is sorted last, so Agra is customer 2's rank 1. The window function itself keeps every row; only the outer WHERE rk = 1 reduces them. ROW_NUMBER would return exactly one row per customer, but it would pick Delhi or Goa arbitrarily unless a tie-breaker that makes the order unique is added to the ORDER BY (for example a unique address id, if the table has one).",
     "key_points": [
       "Customer 1 appears twice because RANK gives tied rows the same rank",
       "NULLS LAST makes Agra, not Kochi, customer 2's latest address",
@@ -1835,7 +1835,7 @@
       "sql.window-functions.collapses-rows"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-008",
@@ -1943,7 +1943,7 @@
       "sql.aggregation.group-by-only-sorts"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-009",
@@ -2036,7 +2036,7 @@
       "sql.subqueries-cte.correlated-runs-once"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-010",
@@ -2130,7 +2130,7 @@
       "sql.window-functions.collapses-rows"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-011",
@@ -2157,7 +2157,7 @@
       "sql.indexes-performance.composite-any-column"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-012",
@@ -2178,7 +2178,7 @@
     "rubric": {
       "0": "Says the window function returns one row per customer, that GROUP BY keeps every row, or that ORDER BY only sorts the output",
       "1": "Explains the row difference but not the running total, or vice versa",
-      "2": "Explains one row per group vs every row kept, and that ORDER BY in OVER produces a running total"
+      "2": "Explains one row per group vs every row kept, and that ORDER BY in OVER produces a running total (rows with the same date share a value)"
     },
     "misconceptions": [
       "sql.window-functions.collapses-rows",
@@ -2186,7 +2186,7 @@
       "sql.aggregation.group-by-only-sorts"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-013",
@@ -2197,7 +2197,7 @@
       "sql-window-functions"
     ],
     "question": "Five products sold 50, 40, 40, 30 and 20 units. You need every product whose sales are among the three highest distinct sales figures. What numbers do ROW_NUMBER(), RANK() and DENSE_RANK() (ordered by units descending) assign, which function's '<= 3' filter gives the right products, and why must that filter go in an outer query or CTE rather than in the same query's WHERE?",
-    "model_answer": "ROW_NUMBER gives 1, 2, 3, 4, 5 (the two 40s get different numbers in an arbitrary order), RANK gives 1, 2, 2, 4, 5 (ties share a rank and the next one is skipped), and DENSE_RANK gives 1, 2, 2, 3, 4 (ties share a rank with no gap). The three highest distinct figures are 50, 40 and 30, so DENSE_RANK <= 3 is right and returns four products; ROW_NUMBER and RANK would stop at 50, 40, 40. The ranking query still returns all five rows, and window functions are computed after WHERE, so the rank can only be filtered in an outer query or CTE.",
+    "model_answer": "ROW_NUMBER gives 1, 2, 3, 4, 5 (the two 40s get 2 and 3 in either order, unless a tie-breaker such as product_id is added), RANK gives 1, 2, 2, 4, 5 (ties share a rank and the next one is skipped), and DENSE_RANK gives 1, 2, 2, 3, 4 (ties share a rank with no gap). The three highest distinct figures are 50, 40 and 30, so DENSE_RANK <= 3 is right and returns four products; ROW_NUMBER and RANK would stop at 50, 40, 40. The ranking query still returns all five rows, and window functions are computed after WHERE, so the rank can only be filtered in an outer query or CTE.",
     "key_points": [
       "ROW_NUMBER 1-5, RANK 1,2,2,4,5, DENSE_RANK 1,2,2,3,4",
       "DENSE_RANK <= 3 returns the four products with 50, 40, 40 and 30",
@@ -2213,7 +2213,7 @@
       "sql.window-functions.collapses-rows"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-014",
@@ -2284,11 +2284,10 @@
     },
     "misconceptions": [
       "sql.subqueries-cte.cte-unused-still-applies",
-      "sql.null.not-in-with-null",
-      "sql.null.not-equal-includes-null"
+      "sql.null.not-in-with-null"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   },
   {
     "id": "SQL-L3-015",
@@ -2408,6 +2407,6 @@
       "sql.window-functions.collapses-rows"
     ],
     "source": "generated",
-    "status": "draft"
+    "status": "checked"
   }
 ]
