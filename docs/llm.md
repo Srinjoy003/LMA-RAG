@@ -64,6 +64,7 @@ Default for grading, diagnosis and topic extraction: `DEFAULT_REASONING_EFFORT =
 - `gemini-flash-lite-latest` worked for 60+ calls in one session without hitting a limit, with a 1 s minimum interval. The 54-call smoke test needed 3 automatic retries (transient errors, handled by the client).
 - Use the cache: a full smoke run is 54 calls and a topic evaluation 3; repeats are free.
 - `GET {base}/models` lists the models (it does not count as a generation request).
+- **Free keys first, paid key last:** `scripts/run_rotating.py` runs an experiment with one Gemini key (grader) and one Groq key (simulator) and, when the run stops on a quota limit, moves only the used-up role to its next key. List free keys first and the paid key last, e.g. `--grader-keys 2 3 main --simulator-keys main 2 3 4`, then the usual `run_experiment.py` options. When a role runs out of keys it stops; rerun the same command the next day. Responses are cached across keys, so switching keys never repeats a call.
 
 ## Smoke test and evaluation
 
