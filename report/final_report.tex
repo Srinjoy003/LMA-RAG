@@ -97,6 +97,30 @@ research questions:
   the fixed interview passed one unfit candidate.
 \end{itemize}
 
+\section{Related work}
+
+\paragraph{Theory of mind.} Premack and Woodruff introduced the term for the capacity to attribute
+mental states, such as knowledge, belief and purpose, to others \cite{premack1978}. Rabinowitz et al.\
+built a machine version, a network that learns models of other agents from their behaviour alone
+\cite{rabinowitz2018}. With large language models the question became whether the models themselves
+have a theory of mind: Kosinski reports that GPT-4 solves 75\% of a set of false-belief tasks
+\cite{kosinski2024}, while Ullman shows that small changes to such tasks, which keep the reasoning the
+same, reverse these successes \cite{ullman2023}. We take a different position. We do not rely on the
+LLM \emph{having} a theory of mind; we build an explicit, inspectable theory of mind of the candidate
+around it. The LLM only proposes a belief together with a quote from the answer; code holds the belief
+as a hypothesis, decides which question tests it, and confirms or withdraws it. Because LLM belief
+reasoning is brittle \cite{ullman2023}, no single model judgement is trusted: three votes, a quote
+check and a second question are required.
+
+\paragraph{Student modelling.} Intelligent tutoring systems have long modelled learners in two ways.
+Diagnostic ``bug'' models explain \emph{why} a student makes an error by finding the faulty procedure
+behind it \cite{brown1978}; our misconception diagnosis follows this idea with a catalogue of known
+wrong beliefs per question. Knowledge tracing estimates \emph{how much} of each skill a learner has
+mastered \cite{corbett1995}; our skill scorecard plays that role with an item-response model. Our
+system combines the two in one interview and uses the belief model to choose questions, not only to
+explain errors afterwards. Recent work uses LLMs to find misconceptions in student code
+\cite{alhossami2025}; we add the testing and revision of each attributed belief during the interview.
+
 \section{What changed since the mid-term report}
 
 \begin{table}[h]
@@ -624,15 +648,27 @@ Every LLM response is cached on disk, so re-running from the cache gives the sam
   misconceptions in student code. In \emph{EACL} (short papers), 2026. arXiv:2510.08827.
 \bibitem{bock1982} R.~D.~Bock and R.~J.~Mislevy. Adaptive EAP estimation of ability in a
   microcomputer environment. \emph{Applied Psychological Measurement}, 6(4):431--444, 1982.
+\bibitem{brown1978} J.~S.~Brown and R.~R.~Burton. Diagnostic models for procedural bugs in basic
+  mathematical skills. \emph{Cognitive Science}, 2(2):155--192, 1978.
 \bibitem{chiodini2021} L.~Chiodini, I.~Moreno Santos, A.~Gallidabino, A.~Tafliovich, A.~L.~Santos
   and M.~Hauswirth. A curated inventory of programming language misconceptions. In \emph{ITiCSE},
   pages 380--386, 2021.
+\bibitem{corbett1995} A.~T.~Corbett and J.~R.~Anderson. Knowledge tracing: modeling the acquisition
+  of procedural knowledge. \emph{User Modeling and User-Adapted Interaction}, 4(4):253--278, 1995.
 \bibitem{karpierz2014} K.~Karpierz and S.~A.~Wolfman. Misconceptions and concept inventory
   questions for binary search trees and hash tables. In \emph{SIGCSE}, pages 109--114, 2014.
+\bibitem{kosinski2024} M.~Kosinski. Evaluating large language models in theory of mind tasks.
+  \emph{Proceedings of the National Academy of Sciences}, 121(45):e2405460121, 2024.
 \bibitem{masters1982} G.~N.~Masters. A Rasch model for partial credit scoring.
   \emph{Psychometrika}, 47(2):149--174, 1982.
 \bibitem{miedema2021} D.~Miedema, E.~Aivaloglou and G.~Fletcher. Identifying SQL misconceptions of
   novices: findings from a think-aloud study. In \emph{ICER}, pages 355--367, 2021.
+\bibitem{premack1978} D.~Premack and G.~Woodruff. Does the chimpanzee have a theory of mind?
+  \emph{Behavioral and Brain Sciences}, 1(4):515--526, 1978.
+\bibitem{rabinowitz2018} N.~C.~Rabinowitz, F.~Perbet, H.~F.~Song, C.~Zhang, S.~M.~A.~Eslami and
+  M.~Botvinick. Machine theory of mind. In \emph{ICML}, PMLR 80:4218--4227, 2018.
+\bibitem{ullman2023} T.~Ullman. Large language models fail on trivial alterations to theory-of-mind
+  tasks. arXiv:2302.08399, 2023.
 \bibitem{yu2025} J.~Yu, Y.~Zhuang, Y.~Sun, W.~Gao, Q.~Liu, M.~Cheng, Z.~Huang and E.~Chen.
   TestAgent: an adaptive and intelligent expert for human assessment. In \emph{Findings of ACL},
   pages 724--747, 2025.
