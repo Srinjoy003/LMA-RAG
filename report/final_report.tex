@@ -12,7 +12,7 @@
 \usepackage{enumitem}
 \usepackage{needspace}
 \usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta,shapes.geometric}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,calc}
 \usepackage[hidelinks]{hyperref}
 
 \setlist{itemsep=2pt,topsep=4pt}
@@ -24,7 +24,7 @@
 \newcommand{\open}{\textcolor[HTML]{8a6d00}{\textbf{not settled}}}
 \newcommand{\ci}[2]{{\small[#1, #2]}}
 
-\title{Adaptive AI Technical Interviewer\\[2pt]\large Final report}
+\title{An Adaptive Technical Interviewer with a\\Theory of Mind of the Candidate\\[4pt]\large Final report}
 \author{Team ``Claude lag gaye'': Kushal Mukherjee (2025201072) \and Srinjoy Sengupta (2025202010)
   \and Nilkanta Karak (2025201031) \and Souradeep Das (2025201004)}
 \date{November 2026\\[4pt]\small Code: \url{https://github.com/Srinjoy003/LMA-RAG}}
@@ -33,23 +33,23 @@
 \maketitle
 
 \begin{abstract}
-We built an interviewer for junior technical screening in Python, SQL and data structures. It keeps
-an estimate of the candidate's level in each skill, picks each question to reduce its uncertainty,
-stops when it is confident, and works out \emph{why} a wrong answer is wrong, including which
-misconception the candidate holds. It recommends fit, not fit or human review and never makes the
-hiring decision. In the final experiment five systems interviewed the same \fN{} simulated
-candidates (\fInterviews{} interviews), with Gemini grading and a different model family playing the
-candidate. \textbf{Belief modelling:} the full system confirms fewer planted misconceptions than a
-version without the belief model (\fRecallFull{} against \fRecallAfour{}), but its findings are far
-more trustworthy: \fPrecisionFull{} of what it confirms is a planted misconception, against
-\fPrecisionAfour{} (difference \fFullVsAfourPrecisionDiff{} points, 95\% interval
-\fFullVsAfourPrecisionLow{} to \fFullVsAfourPrecisionHigh{}), and it never named a misconception on
-a correct answer. \textbf{Skill levels:} adaptive question choice at the fixed interview's length
-judged \fAccAdapt{} of levels correctly against \fAccBOne{} (\fAdaptVsFixedSkillAccuracyDiff{} points,
-interval \fAdaptVsFixedSkillAccuracyLow{} to \fAdaptVsFixedSkillAccuracyHigh{}). The full system did
-not beat the fixed interview on levels (\fAccFull{}) and asked more (\fExchFull{} exchanges against
-\fExchBOne{}). We trace this to a trade-off built into the design: to confirm a belief it re-asks
-about it, and those deliberately wrong answers pull the level estimate down.
+A good interviewer does not only mark answers right or wrong; it forms a view of what the candidate
+\emph{believes}, and asks the next question to test that view. We built an interviewer for junior
+technical screening in Python, SQL and data structures with this \textbf{theory of mind} at its
+centre. For every answer it decides whether the candidate does not know, slipped, misread the
+question, or holds a specific false belief; it keeps each attributed belief as a hypothesis, steers
+the interview to test it on a second question, confirms it only with the candidate's own words as
+evidence, and withdraws it when the candidate contradicts it. Alongside this it estimates a level per
+skill, picks questions to reduce its uncertainty, stops when confident, and leaves the hiring decision
+to a human. Five systems interviewed the same \fN{} simulated candidates (\fInterviews{} interviews).
+\textbf{With the theory of mind, \fPrecisionFull{} of the beliefs the system attributes to a candidate
+are correct, against \fPrecisionAfour{} without it} (difference \fFullVsAfourPrecisionDiff{} points,
+95\% interval \fFullVsAfourPrecisionLow{} to \fFullVsAfourPrecisionHigh{}), and it never attributed a
+false belief to a correct answer. It is more cautious: it confirms \fRecallFull{} of the planted
+beliefs against \fRecallAfour{}. Adaptive question choice judged \fAccAdapt{} of skill levels correctly
+against \fAccBOne{} for a fixed interview of the same length. Probing beliefs has a cost: the full
+system was not more accurate on levels (\fAccFull{}) and asked more (\fExchFull{} exchanges against
+\fExchBOne{}).
 \end{abstract}
 
 \section{Introduction}
@@ -60,28 +60,39 @@ make screening cheap, but they decide what to ask and when to stop from a prompt
 record of how sure they are. Adaptive testing solves this for multiple-choice tests by asking the
 most informative question and stopping once the estimate is precise \cite{zhuang2024}, and
 TestAgent \cite{yu2025} brings the idea to conversational assessment. We apply it to open answers
-across several skills, and add a model of what the candidate \emph{believes}: which known
-misconception, if any, explains a wrong answer. Our two research questions:
+across several skills.
+
+Adaptive testing tracks \emph{how much} a candidate knows. A human interviewer also tracks \emph{what
+the candidate thinks}: after a wrong answer they ask themselves whether the candidate simply does not
+know, made a careless slip, misread the question, or confidently holds a wrong idea, and they choose
+the next question to find out. This is a theory of mind of the candidate: attributing beliefs to
+another person from what they say, holding those beliefs as hypotheses, and revising them as evidence
+arrives. The distinction matters for feedback and for hiring, because a false belief (``\texttt{COUNT}
+counts \texttt{NULL}s'') needs different training from a gap in knowledge. Our system makes this
+theory of mind explicit (Section~\ref{sec:tom}), and the experiment tests whether it works. Our two
+research questions:
 
 \begin{description}[leftmargin=1.2cm,style=nextline]
   \item[RQ1] Can uncertainty-driven questioning with early stopping match a fixed 12-question
   interview's accuracy with fewer exchanges?
-  \item[RQ2] Does modelling what the candidate believes find their misconceptions better than a
-  system without that model?
+  \item[RQ2] Does a theory-of-mind model of the candidate, which attributes, tests and revises
+  beliefs, identify their misconceptions better than a system without it?
 \end{description}
 
 \needspace{6\baselineskip}
 \paragraph{Main findings.}
 \begin{itemize}
-  \item \textbf{The belief model makes misconception findings trustworthy (RQ2).} With it,
-  \fPrecisionFull{} of confirmed misconceptions are planted ones; without it, \fPrecisionAfour{}. The
-  price is lower recall (\fRecallFull{} against \fRecallAfour{}).
+  \item \textbf{The theory of mind makes belief attributions trustworthy (RQ2).} With it,
+  \fPrecisionFull{} of the beliefs the system confirms are ones the candidate really holds; without
+  it, \fPrecisionAfour{}. It never attributed a false belief to a correct answer, and it withdrew
+  beliefs the candidate contradicted. The price is caution: it confirms \fRecallFull{} of the planted
+  beliefs against \fRecallAfour{}.
   \item \textbf{Adaptive question choice helps at equal length (RQ1).} At exactly 12 questions it
   judged \fAccAdapt{} of levels correctly against \fAccBOne{} for the fixed list; the interval
   includes a small loss, so this is a likely gain, not a proven one.
   \item \textbf{The full system is not more accurate on levels and is longer (RQ1).} It judged
   \fAccFull{} of levels correctly with \fExchFull{} exchanges. Section~\ref{sec:levels-why} shows
-  why: the belief model's probing questions cost level accuracy.
+  why: the questions the theory of mind asks to test a belief cost level accuracy.
   \item \textbf{Safe decisions.} No adaptive system passed an unfit candidate or rejected a fit one;
   the fixed interview passed one unfit candidate.
 \end{itemize}
@@ -95,7 +106,7 @@ misconception, if any, explains a wrong answer. Our two research questions:
 Part & Mid-term & Final \\
 \midrule
 Question bank & 135 drafted questions, a quarter reviewed & all 135 reviewed by the team; 43 corrected \\
-Belief model & A2: a misconception confirmed by two replies, which could be one question and its own follow-up & A2E: two \emph{different} questions, each backed by a quote from the candidate's answer (Section~\ref{sec:beliefs}) \\
+Theory of mind & A2: a belief confirmed by two replies, which could be one question and its own follow-up & A2E: beliefs tested on two \emph{different} questions, backed by the candidate's own words, withdrawn when contradicted (Section~\ref{sec:tom}) \\
 Systems run & B1 and A2 & B1, A2E, A4, ADAPT12, A5E on the same candidates \\
 Equal-length control & stub candidates only & live (ADAPT12) \\
 Run records & results folders & a manifest per run that fingerprints code, bank, prompts and setup \\
@@ -180,41 +191,6 @@ at or above the job's minimum level. Above 0.8 the skill meets the minimum, belo
 otherwise it is uncertain. The verdict is \emph{not fit} if any skill is clearly below, \emph{fit} if
 all clearly meet, and \emph{needs human review} otherwise.
 
-\subsection{Modelling what the candidate believes}
-\label{sec:beliefs}
-
-Beside the skill scorecard, the full system keeps a model of what the candidate believes, a simple
-theory of mind. A wrong answer is not only a low mark: the diagnoser decides \emph{why} it is wrong
-(a gap in knowledge, a misread, a slip, or a specific wrong belief from the question's list), and the
-system tracks each belief across the interview. In A2E this works as follows.
-
-\begin{enumerate}[leftmargin=*]
-  \item \textbf{Three votes with evidence.} The diagnoser runs three times. A vote for a
-  misconception must quote the words in the candidate's answer that show it and say why. Code checks
-  that the quote really is in the answer; a vote without a valid quote counts as a knowledge gap. A
-  misconception needs a strict majority of the three votes.
-  \item \textbf{Suspected, then confirmed.} One supported reply makes a belief \emph{suspected}; the
-  system then prefers a later question that lists it. The belief is \emph{confirmed} only when it is
-  supported on two different main questions. A question and its own follow-up count once.
-  \item \textbf{Contradictions.} Correct answers are diagnosed too. If the candidate later states the
-  opposite of a suspected belief, with a quote, the finding becomes \emph{disputed} and is not
-  reported as confirmed.
-\end{enumerate}
-
-\noindent Nothing here is learned; it is prompts plus counting rules in code
-(\texttt{src/part3/diagnoser.py}, \texttt{src/engine/followups.py}, \texttt{src/shared/evidence.py}).
-The ablation \textbf{A4} removes it: one diagnosis on the main answer, no quotes, generic
-follow-ups, and confirmation from a single reply. Comparing A2E with A4 answers RQ2.
-
-\paragraph{A correction before the final run.} The quote check first required an exact character
-match. In the first final-run attempt we found that the candidate model writes narrow no-break
-spaces and backticks around code, which Gemini drops when it quotes, so correct diagnoses with
-correct quotes were being discarded. In a replay of that attempt's diagnoses, 32 of the 150
-misconception votes (21\%) were rejected for formatting alone. We changed the check to ignore spaces,
-backticks, quotation marks and letter case; the quote must still be the candidate's own words, and
-the stored evidence is the exact span of the answer. The attempt was discarded and the final run
-restarted under a new version with this fix (Section~\ref{sec:setup}).
-
 \subsection{Tool calling}
 
 The engine can also be run by an LLM agent instead of the code loop. The agent calls six tools
@@ -227,6 +203,102 @@ while a question is still open, and calling a tool that does not exist. All five
 reason, the agent's written summary agrees with the computed decision, and the agent reaches the same
 questions, levels and verdict as the code driver. The experiments use the code driver, which gives
 the same result with about 55 fewer model calls per interview.
+
+\section{Theory of mind: modelling what the candidate believes}
+\label{sec:tom}
+
+The skill scorecard answers \emph{how much} the candidate knows. The theory-of-mind component answers
+\emph{what the candidate thinks}. It does four things a human interviewer does:
+
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Attribute a belief from behaviour.} From the words of an answer, infer which belief, if
+  any, the candidate holds (from the question's list of known misconceptions).
+  \item \textbf{Tell a false belief from other causes.} A wrong answer can come from not knowing (a
+  gap), a careless slip, misreading the question, or a false belief. Only the last is a belief about
+  the subject; the others call for different follow-ups and are not reported as misconceptions.
+  \item \textbf{Hold beliefs as hypotheses and test them.} An attributed belief is first only
+  \emph{suspected}. The interviewer then steers the interview to test it: it prefers a later question
+  that would expose the same belief, and asks follow-ups aimed at it.
+  \item \textbf{Revise beliefs on evidence.} A belief is \emph{confirmed} only when the candidate shows
+  it again on a different question, and \emph{disputed} (withdrawn) if the candidate says the opposite.
+\end{enumerate}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+  st/.style={draw=black!45, rounded corners=3pt, align=center, font=\small, text width=2.7cm,
+             minimum height=1.15cm, inner sep=3pt},
+  arr/.style={-{Stealth[length=2mm]}, black!55},
+  lbl/.style={font=\scriptsize, text=black!70, align=center}]
+  \node[st] (ans) at (0,0) {Wrong answer\\\footnotesize diagnosed 3 times};
+  \node[st] (none) at (0,-2.5) {Gap, slip or misread\\\footnotesize no belief\\\footnotesize attributed};
+  \node[st, fill=yellow!12] (sus) at (5.3,0) {\textbf{Suspected}\\\footnotesize seen on one question};
+  \node[st, fill=green!12] (conf) at (10.6,0) {\textbf{Confirmed}\\\footnotesize seen on a 2nd, different question};
+  \node[st, fill=red!8] (disp) at (7.95,-2.5) {\textbf{Disputed}\\\footnotesize candidate said the opposite};
+  \draw[arr] (ans) -- node[lbl, above=2pt] {belief quoted\\in the answer} (sus);
+  \draw[arr] (ans) -- node[lbl, right=2pt] {no quoted belief} (none);
+  \draw[arr] (sus) -- node[lbl, above=2pt] {shown again on a\\chosen question} (conf);
+  \draw[arr] (sus.south) |- node[lbl, pos=0.3, left=2pt] {contradicted} (disp.west);
+  \draw[arr] (conf.south) |- node[lbl, pos=0.3, right=2pt] {contradicted} (disp.east);
+  \draw[arr, dashed] (sus.north) -- ++(0,0.6) -| node[lbl, above=1pt, pos=0.25] {choose a later question that lists this belief; ask targeted follow-ups} ($(ans.north)+(0.6,0)$);
+\end{tikzpicture}
+\caption{How the system's theory of mind treats one belief. Only confirmed beliefs are reported;
+disputed ones are withdrawn. Every step that needs language is done by the LLM; every state change is
+made by code.}
+\label{fig:tom}
+\end{figure}
+
+\paragraph{How each step is made reliable.} Figure~\ref{fig:tom} shows the life of one belief.
+\begin{itemize}
+  \item \textbf{Three votes with evidence.} The diagnoser runs three times. A vote that attributes a
+  belief must quote the words in the candidate's answer that show it and say why. Code checks that the
+  quote really is in the answer; a vote without a valid quote counts as a gap. A belief needs a strict
+  majority of the three votes.
+  \item \textbf{Two different questions.} A question and its own follow-up count as one piece of
+  evidence, so the candidate must show the belief again on a separate question.
+  \item \textbf{Correct answers are read too.} If a later answer states the opposite of a suspected or
+  confirmed belief, with a quote, the belief becomes disputed and is not reported.
+\end{itemize}
+Nothing here is learned: it is prompts plus counting rules in code (\texttt{src/part3/diagnoser.py},
+\texttt{src/engine/followups.py}, \texttt{src/shared/evidence.py}). The comparison system \textbf{A4}
+has no theory of mind in this sense: it runs one diagnosis on the main answer, needs no quote, asks
+generic follow-ups, never steers questions towards a belief, and reports a misconception after a
+single reply. Comparing A2E with A4 answers RQ2.
+
+\paragraph{A worked example from the final run.} Candidate CAND-003 (data engineer) was planted with
+the belief that a running sum (\texttt{SUM(...) OVER (ORDER BY ...)}) shows the grand total on every row.
+\begin{enumerate}[leftmargin=*]
+  \item \emph{Attribution.} On question SQL-L3-010 the candidate answered: ``The query will list each
+  row with the same running value equal to the total sales amount (100 + 50 + 30 + 20 = 200) for every
+  day''. All three diagnosis votes attributed the belief and quoted this sentence; the belief became
+  \emph{suspected}.
+  \item \emph{Probing.} The follow-up asked what the running sum would show on day 2 of a three-day
+  table; the candidate replied ``It would show the overall total''. This is more evidence from the
+  same question, so the belief stayed suspected.
+  \item \emph{Testing on a new question.} Six questions later the system chose SQL-L3-012 with the
+  recorded reason ``lists a suspected misconception to confirm''. The candidate wrote: ``Adding
+  \texttt{ORDER BY order\_date} inside the OVER clause just sorts the rows, so every row still shows the
+  overall total for that customer.'' The belief was \emph{confirmed}, with both quotes in the report.
+\end{enumerate}
+The same candidate's report also listed two beliefs as only suspected, so a human reading it can see
+which attributions are firm and which are hypotheses.
+
+\paragraph{Revising a belief.} For CAND-006 the system first attributed the belief that Python's
+\texttt{or} evaluates both sides, from ``the right side is still evaluated''. In the follow-up the
+candidate said the opposite: ``Because the overall result is already determined to be true, the right
+side is never executed or needed.'' The belief was marked disputed and not reported, which was
+correct: it was not one of the candidate's planted beliefs. Without this revision, the report would
+have accused the candidate of a misconception they do not hold.
+
+\paragraph{A correction before the final run.} The quote check first required an exact character
+match. In the first final-run attempt we found that the candidate model writes narrow no-break
+spaces and backticks around code, which Gemini drops when it quotes, so correct diagnoses with
+correct quotes were being discarded. In a replay of that attempt's diagnoses, 32 of the 150
+misconception votes (21\%) were rejected for formatting alone. We changed the check to ignore spaces,
+backticks, quotation marks and letter case; the quote must still be the candidate's own words, and
+the stored evidence is the exact span of the answer. The attempt was discarded and the final run
+restarted under a new version with this fix (Section~\ref{sec:setup}).
+
 
 \section{Data}
 
@@ -266,8 +338,8 @@ System & What it is & Compared with \\
 \midrule
 B1 & Fixed: 12 questions (levels 1, 2, 2, 3 per skill), no follow-ups, no diagnosis & -- \\
 ADAPT12 & Adaptive question choice, exactly 12 questions, no follow-ups, no diagnosis & B1 (RQ1, equal length) \\
-A2E & Full system: adaptive choice, early stopping, belief model with evidence & B1 (RQ1), A4 (RQ2) \\
-A4 & A2E without the belief model (single diagnosis, no quotes, one-reply confirmation) & A2E (RQ2) \\
+A2E & Full system: adaptive choice, early stopping, theory of mind of the candidate & B1 (RQ1), A4 (RQ2) \\
+A4 & A2E without the theory of mind (single diagnosis, no quotes, no belief testing, one-reply confirmation) & A2E (RQ2) \\
 A5E & A2E with job-blind question choice & A2E (job-aware retrieval) \\
 \bottomrule
 \end{tabularx}
@@ -367,7 +439,7 @@ human (between a third and 60\%), because the 0.8 rule demands a clear margin ab
 \label{fig:verdicts}
 \end{figure}
 
-\subsection{RQ2: does modelling beliefs help?}
+\subsection{RQ2: does the theory of mind help?}
 
 \begin{figure}[h]
 \centering
@@ -377,10 +449,10 @@ trustworthy, right finds more.}
 \label{fig:beliefs}
 \end{figure}
 
-Figure~\ref{fig:beliefs} shows the trade-off. Without the belief model, A4 confirmed
+Figure~\ref{fig:beliefs} shows the trade-off. Without the theory of mind, A4 confirmed
 \fConfirmedAfour{} misconceptions in \fN{} interviews and found \fFoundAfour{} of the \fPlanted{}
 planted ones (recall \fRecallAfour{}), but only \fPrecisionAfour{} of its findings were planted. With
-the belief model, A2E confirmed \fConfirmedFull{} and found \fFoundFull{} (recall \fRecallFull{}),
+the theory of mind, A2E confirmed \fConfirmedFull{} and found \fFoundFull{} (recall \fRecallFull{}),
 and \fPrecisionFull{} of its findings were planted:
 
 \begin{center}\small
@@ -397,9 +469,9 @@ False alarms on correct replies & \fFullVsAfourFalseAlarmRateDiff{} points & \fF
 
 \noindent Both differences are clear. For a screening tool, precision matters more: telling a
 candidate they hold a misconception they do not is worse than missing one, and A4 is wrong about four
-times in five. A2E also kept \fSuspectedFull{} beliefs as suspected (seen on one question only) and
-marked \fDisputedFull{} as disputed after the candidate contradicted them; neither counts as a
-finding. Neither system named a misconception on a correctly answered reply. The recall target of
+times in five. The theory of mind also kept \fSuspectedFull{} beliefs as hypotheses only (seen on one
+question) and withdrew \fDisputedFull{} after the candidate contradicted them, none of them planted;
+neither counts as a finding, but both are visible to the human reading the report. Neither system named a misconception on a correctly answered reply. The recall target of
 60\% from the proposal is not met. Precision here is against planted misconceptions only: a
 simulated candidate told to answer wrongly sometimes states a common misconception that was not
 planted, so some ``false'' findings may be right about the reply.
@@ -410,7 +482,7 @@ planted, so some ``false'' findings may be right about the reply.
 A4 judged \fAccAfour{} of levels correctly and A2E \fAccFull{}, a difference of
 \fFullVsAfourSkillAccuracyDiff{} points \ci{\fFullVsAfourSkillAccuracyLow}{\fFullVsAfourSkillAccuracyHigh}.
 Both use the same scorecard, question-choice rules and stopping rule, so the difference comes
-from the belief model. To confirm a belief on a second question, A2E prefers questions that list a suspected
+from the theory of mind. To confirm a belief on a second question, A2E prefers questions that list a suspected
 misconception. A candidate who holds it answers those wrongly by design. A2E asked \fHeldBeliefFull{}
 such questions per interview, A4 \fHeldBeliefAfour{} and B1 \fHeldBeliefBOne{}. Each scores 0 and
 pulls the estimate down, but the true level ignores planted misconceptions, so the result shows up
@@ -463,7 +535,7 @@ grading and three diagnosis votes per answer, including correct ones. A4 needed 
 RQ1 & Skill accuracy within 5 points of B1 & \fFullVsFixedSkillAccuracyDiff{} points \ci{\fFullVsFixedSkillAccuracyLow}{\fFullVsFixedSkillAccuracyHigh} & \open \\
 RQ1 & At least 25\% fewer exchanges than B1 & \fExchFull{} against \fExchBOne{} & \fail \\
 RQ1 & Adaptive choice beats the fixed list at equal length & \fAdaptVsFixedSkillAccuracyDiff{} points \ci{\fAdaptVsFixedSkillAccuracyLow}{\fAdaptVsFixedSkillAccuracyHigh} & \open \\
-RQ2 & More trustworthy findings than without the belief model & \fFullVsAfourPrecisionDiff{} points precision & \pass \\
+RQ2 & More trustworthy belief attributions than without the theory of mind & \fFullVsAfourPrecisionDiff{} points precision & \pass \\
 RQ2 & Misconception recall of at least 60\% & \fRecallFull{} & \fail \\
 RQ2 & False alarms on correct answers below 15\% & \fFalseAlarmFull{} & \pass \\
 \bottomrule
@@ -472,13 +544,19 @@ RQ2 & False alarms on correct answers below 15\% & \fFalseAlarmFull{} & \pass \\
 \label{tab:targets}
 \end{table}
 
-\paragraph{What we learned.} Adaptive question choice does what adaptive testing promises: at the same
-length it places candidates better than a fixed list, though our sample cannot prove it. The belief
-model does what it was redesigned to do: its findings are trustworthy where the mid-term version's
-were not. The two do not combine for free. Confirming a belief needs evidence from a second question,
+\paragraph{What we learned.} The theory of mind works where it matters most for a screening tool:
+when it says a candidate holds a misconception, it is right most of the time, it never says so about
+a correct answer, and it withdraws a belief when the candidate contradicts it. A system without it
+finds more planted beliefs only by attributing beliefs freely, and four in five of its attributions
+are wrong. The mid-term version, whose confirmations could come from a single question, had the same
+problem (18\% precision); testing each belief on a second question and requiring the candidate's own
+words fixed it. Adaptive question choice also does what adaptive testing promises: at the same length
+it places candidates better than a fixed list, though our sample cannot prove it. The two do not
+combine for free. Confirming a belief needs evidence from a second question,
 and that evidence comes from deliberately probing a weakness, which costs level accuracy and length.
-A2E is therefore not the best system on every measure: A4 judges levels best, ADAPT12 is the best
-short interview, and A2E gives the most trustworthy explanation of \emph{why} a candidate is wrong.
+A2E is therefore not the best system on every measure: A4 judges levels best and ADAPT12 is the
+best short interview, but only A2E gives a trustworthy account of \emph{what the candidate believes}
+and why they are wrong.
 
 \paragraph{Mid-term against final.} In the mid-term, A2 beat B1 on levels by 17 points. With A2E on
 the reviewed bank and new candidates it does not. Two things changed: the stricter belief
@@ -512,19 +590,21 @@ cases, caught it.
   grader's error rate beside every accuracy figure, and score simulated answers against what was
   written rather than the plan.
   \item \textbf{Settings tuned before A2E.} The stopping threshold and cut points were tuned on stub
-  runs before the belief model was changed.
+  runs before the theory-of-mind component was changed.
   \item \textbf{Safety.} Only one manipulation attempt per system was in this sample. It did not raise
   the grade and was flagged, but one case shows little.
 \end{itemize}
 
 \section{Conclusion and future work}
 
-We built an adaptive interviewer that estimates skill levels, stops on its own uncertainty, and
-explains wrong answers with evidence from the candidate's own words, while leaving the hiring
-decision to a human. On \fN{} simulated candidates, its belief model made misconception findings
-about three times as trustworthy as a version without it, and adaptive question choice placed
-candidates better than a fixed list at equal length. The full system did not combine both
-advantages: probing beliefs cost level accuracy and length. The most useful next steps are to keep
+We built an interviewer with an explicit theory of mind of the candidate: it attributes beliefs from
+what the candidate says, tells a false belief from a gap, a slip or a misreading, holds each belief as
+a hypothesis, steers the interview to test it, and confirms or withdraws it on evidence in the
+candidate's own words. Alongside, it estimates skill levels adaptively and leaves the hiring decision
+to a human. On \fN{} simulated candidates, the theory of mind made belief attributions about three
+times as trustworthy as a version without it (\fPrecisionFull{} against \fPrecisionAfour{}), and
+adaptive question choice placed candidates better than a fixed list at equal length. The full system
+did not combine both advantages: testing beliefs cost level accuracy and length. The most useful next steps are to keep
 belief-probing questions out of the level estimate, to stop probing a belief once it is confirmed, to
 require a clear margin from the nearest cut point before stopping, to finish the run on all 60
 candidates, and to complete the human checks.

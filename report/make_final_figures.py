@@ -31,7 +31,7 @@ FIGURES = OUT / "figures"
 SKILLS = ("py", "sql", "ds")
 SYSTEMS = ("B1", "ADAPT12", "A2E", "A5E", "A4")       # the order used everywhere
 NAMES = {"B1": "Fixed (B1)", "ADAPT12": "Adaptive, 12 questions (ADAPT12)", "A2E": "Full system (A2E)",
-         "A5E": "Job-blind (A5E)", "A4": "No belief model (A4)"}
+         "A5E": "Job-blind (A5E)", "A4": "No theory of mind (A4)"}
 # Categorical slots 1-5 of the reference palette, in fixed order (validated: CVD and normal-vision
 # separation pass; three slots are below 3:1 contrast, so every figure also names the systems).
 COLOR = {"B1": "#2a78d6", "A2E": "#eb6834", "A4": "#1baf7a", "ADAPT12": "#eda100", "A5E": "#e87ba4"}
