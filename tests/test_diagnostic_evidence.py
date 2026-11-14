@@ -170,3 +170,25 @@ def test_factory_stub_and_agent_use_evidence_preset_and_old_results_still_valida
     assert_valid(agent_result)
     assert_valid(json.loads((ROOT / "examples/interview_result.example.json").read_text()))
     assert not SYSTEMS["A2Q"].diagnostic_evidence and not SYSTEMS["A4"].diagnostic_evidence
+
+
+@pytest.mark.parametrize("text, quote, expected", [
+    # the candidate's narrow no-break space, quoted with a plain space
+    ("and COUNT counts those NULL id values as well.", "COUNT counts those NULL id values",
+     "COUNT counts those NULL id values"),
+    # inline-code backticks dropped in the quote
+    ("so the statement `counter += 1` is effectively atomic.", "the statement counter += 1 is effectively atomic",
+     "the statement `counter += 1` is effectively atomic"),
+    # different case and a line break
+    ("Python picks the MOST specific\nexcept clause.", "most specific except clause", "MOST specific\nexcept clause"),
+])
+def test_quote_that_differs_only_in_formatting_is_found(text, quote, expected):
+    span = claim_span(dict(misconception_id=A, supporting_quote=quote, reason="r"), text, [A])
+    assert span is not None
+    assert span["supporting_quote"] == expected == text[span["quote_start"]:span["quote_end"]]
+
+
+def test_formatting_tolerance_does_not_accept_other_words():
+    text = "so the statement `counter += 1` is effectively atomic."
+    assert claim_span(dict(misconception_id=A, supporting_quote="counter += 1 is always atomic", reason="r"),
+                      text, [A]) is None
