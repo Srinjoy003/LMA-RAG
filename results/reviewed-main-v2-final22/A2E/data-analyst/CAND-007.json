@@ -1,0 +1,2476 @@
+{
+  "interview_id": "A2E-data-analyst-CAND-007-0",
+  "system": "A2E",
+  "config": {
+    "system": "A2E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-007",
+  "started_at": "2026-11-14T05:38:06Z",
+  "finished_at": "2026-11-14T05:38:20Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-pandas",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "It prints  \n\n```\n['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10.0, nan, 30.0, 25.0]\n```  \n\nbecause `sort_values` returns a new DataFrame and does not reorder `df` in‑place, so the original order is kept; `.loc[1:2,\"name\"]` selects rows with index labels 1 and 2 (inclusive); and when assigning `passed[\"score\"]‑60` to the new column `bonus`, pandas aligns the values by index, leaving a `NaN` for the row whose index (1) is not present in `passed`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly gives all three output lines and accurately explains the reasoning for each: sort_values is not in-place, .loc slicing is inclusive of the end label, and column assignment aligns by index labels resulting in NaN for missing indices.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly gives all three output lines and accurately explains the reasoning for each: sort_values is not in-place, .loc slicing is inclusive of the end label, and column assignment aligns by index labels resulting in NaN for missing indices.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-aggregation, sql-joins, sql-null",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "It will list each customer's name together with the total number of rows in the orders table and the sum of all order amounts, because the LEFT JOIN duplicates the customers for every order regardless of the customer_id.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.join-never-duplicates",
+        "follow_up": "How many rows does the LEFT JOIN produce in total before grouping for Asha, who has two orders?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "follow_up": "How many rows does the LEFT JOIN produce in total before grouping for Asha, who has two orders?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the LEFT JOIN duplicates the customers for every order regardless of the customer_id",
+            "evidence_reason": "The candidate incorrectly asserts that the LEFT JOIN duplicates customers for every single order in the table regardless of customer_id, demonstrating the listed misconception sql.joins.join-never-duplicates.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "follow_up": "What happens to Asha in the result when she has two orders in the orders table?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the LEFT JOIN duplicates the customers for every order regardless of the customer_id",
+            "evidence_reason": "The candidate explicitly believes the join duplicates customers for every order in the table regardless of the customer_id, demonstrating the misconception that joins do not match on the join condition.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "follow_up": "How many rows does the intermediate result of the LEFT JOIN have before grouping, given Asha has two orders?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the LEFT JOIN duplicates the customers for every order regardless of the customer_id",
+            "evidence_reason": "The candidate explicitly states that the LEFT JOIN duplicates customers for every order regardless of customer_id, demonstrating the misconception that joins duplicate or relate rows without regard to the join condition.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "the LEFT JOIN duplicates the customers for every order regardless of the customer_id",
+        "evidence_reason": "The candidate incorrectly asserts that the LEFT JOIN duplicates customers for every single order in the table regardless of customer_id, demonstrating the listed misconception sql.joins.join-never-duplicates.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How many rows does the LEFT JOIN produce in total before grouping for Asha, who has two orders?",
+          "answer": "I think the LEFT JOIN would create three rows for Asha – one for each of her two orders plus an extra row for the order that has a NULL customer_id, so there would be three rows before the GROUP BY.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 0.3333333333333333,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "Can you check where the order with the NULL customer_id comes from and whether it matches any customer id in the join condition?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.left-join-drops-unmatched",
+                "follow_up": "How does an order with a NULL customer_id join to the customers table in this query?",
+                "confidence_expressed": "high",
+                "supporting_quote": "an extra row for the order that has a NULL customer_id",
+                "evidence_reason": "The candidate believes that an unmatched order with a NULL customer_id will somehow be included in the LEFT JOIN results, demonstrating a misunderstanding of how LEFT JOIN handles unmatchable rows from the right table.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that the LEFT JOIN brings in unmatched rows (like order 13 with NULL customer_id) to the left table's rows, showing a fundamental misunderstanding of how join conditions work and missing the correct output values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that the LEFT JOIN duplicates customers for every order regardless of customer_id, showing a misunderstanding of how the ON clause works and what the result set actually contains.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-sorting-searching",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-complexity",
+      "prompt": "You have an unsorted list of n product prices. If you only need to check once whether a given price is present, should you sort the list and then use binary search, or just scan it? What changes if you need to answer thousands of such queries?",
+      "answer": "I’d sort the prices first and then run a binary search even if I only have to check one price, since the sorted order makes the lookup straightforward; if I have thousands of queries I’d just keep the original unsorted list and scan through it each time because the overhead of sorting would outweigh the benefit.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+        "follow_up": "What happens if you run a binary search on an unsorted list like [4, 1, 3, 2] to find 3?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+            "follow_up": "What happens if you run a binary search on an unsorted list like [4, 1, 3, 2] to find 3?",
+            "confidence_expressed": "high",
+            "supporting_quote": "I’d sort the prices first and then run a binary search even if I only have to check one price, since the sorted order makes the lookup straightforward; if I have thousands of queries I’d just keep the original unsorted list and scan through it each time",
+            "evidence_reason": "The candidate has inverted the performance trade-off, recommending sorting for a single query but a linear scan for thousands, and believes binary search can be applied to an unsorted list (or misunderstandings why it is needed), while failing to see the amortized benefit for multiple queries.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+            "follow_up": "How does binary search decide which half of the list to discard if the elements are not in order?",
+            "confidence_expressed": "high",
+            "supporting_quote": "I’d sort the prices first and then run a binary search even if I only have to check one price, since the sorted order makes the lookup straightforward; if I have thousands of queries I’d just keep the original unsorted list and scan through it each time",
+            "evidence_reason": "The candidate recommends sorting for a single query (missing the O(n log n) overhead) and inversely suggests keeping the list unsorted for thousands of queries, while expressing the belief that sorted order is just a matter of making lookups 'straightforward'.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "I’d sort the prices first and then run a binary search even if I only have to check one price, since the sorted order makes the lookup straightforward; if I have thousands of queries I’d just keep the original unsorted list and scan through it each time",
+        "evidence_reason": "The candidate has inverted the performance trade-off, recommending sorting for a single query but a linear scan for thousands, and believes binary search can be applied to an unsorted list (or misunderstandings why it is needed), while failing to see the amortized benefit for multiple queries.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens if you run a binary search on an unsorted list like [4, 1, 3, 2] to find 3?",
+          "answer": "It will still walk through the list comparing the middle element each time, eventually landing on the right spot, so you’ll end up finding the 3 after a few steps.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+            "follow_up": "What happens if you perform a binary search on an unsorted array where the target value happens to be located past the midpoint in the opposite direction of what the algorithm expects?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+                "follow_up": "What happens if you perform a binary search on an unsorted array where the target value happens to be located past the midpoint in the opposite direction of what the algorithm expects?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It will still walk through the list comparing the middle element each time, eventually landing on the right spot",
+                "evidence_reason": "The candidate explicitly asserts that binary search will successfully find the target on an unsorted list by walking through and comparing the middle element.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+                "follow_up": "What happens during the first step of binary search if the array is completely unsorted and the middle element is neither the target nor helps you eliminate half the data?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It will still walk through the list comparing the middle element each time, eventually landing on the right spot",
+                "evidence_reason": "The candidate asserts that binary search will successfully find the element by checking middle elements even in a list that implies no sorted order, demonstrating the belief that binary search works correctly on unsorted data.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+                "follow_up": "What happens if the target value is not present in the unsorted list during a binary search, and how does the algorithm decide which half to discard?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It will still walk through the list comparing the middle element each time, eventually landing on the right spot",
+                "evidence_reason": "The candidate explicitly claims that binary search will work and find the element even when walking through an unspecified list by comparing the middle element, showing a belief that sorted order is not strictly required.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "It will still walk through the list comparing the middle element each time, eventually landing on the right spot",
+            "evidence_reason": "The candidate explicitly asserts that binary search will successfully find the target on an unsorted list by walking through and comparing the middle element.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens if you perform a binary search on an unsorted array where the target value happens to be located past the midpoint in the opposite direction of what the algorithm expects?",
+          "answer": "If the target is after the midpoint but the algorithm goes the other way, it will just keep cutting the array in half until it eventually wraps around and finds the element on the wrong side.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+            "follow_up": "Can you trace step-by-step what indices a binary search would check when looking for 1 in the list [4, 1, 3, 2]?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+                "follow_up": "Can you trace step-by-step what indices a binary search would check when looking for 1 in the list [4, 1, 3, 2]?",
+                "confidence_expressed": "high",
+                "supporting_quote": "it will just keep cutting the array in half until it eventually wraps around and finds the element on the wrong side.",
+                "evidence_reason": "The candidate asserts that binary search will successfully find an element even if it initially goes the wrong way and 'wraps around', which shows a fundamental misunderstanding of how binary search relies on sorted order to safely discard halves.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+                "follow_up": "How does binary search decide which half of the array to discard, and what happens if the numbers are completely out of order?",
+                "confidence_expressed": "medium",
+                "supporting_quote": "it will just keep cutting the array in half until it eventually wraps around and finds the element on the wrong side.",
+                "evidence_reason": "The candidate believes binary search can still function correctly even when going the wrong way, implying it can search unsorted data by wrapping around or eventually finding elements despite being on the wrong side.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+                "follow_up": "Can you trace step-by-step how the middle element of [4, 1, 3, 2] is chosen and which half is discarded if you are searching for 3?",
+                "confidence_expressed": "high",
+                "supporting_quote": "it will just keep cutting the array in half until it eventually wraps around and finds the element on the wrong side.",
+                "evidence_reason": "The candidate clearly believes that binary search can still successfully locate an element in an unsorted list by somehow wrapping around or eventually finding it, showing a fundamental misunderstanding of why sorted order is required.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "it will just keep cutting the array in half until it eventually wraps around and finds the element on the wrong side.",
+            "evidence_reason": "The candidate asserts that binary search will successfully find an element even if it initially goes the wrong way and 'wraps around', which shows a fundamental misunderstanding of how binary search relies on sorted order to safely discard halves.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate recommends sorting for a single query and scanning for many, which is completely backwards, and insists binary search works on unsorted lists by walking through the list or wrapping around, demonstrating fundamental misconceptions about searching and sorting.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate has completely inverted the correct strategy for both scenarios: recommending sorting for a single query and a linear scan for thousands of queries, which demonstrates a fundamental misunderstanding of the time complexities involved.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-011",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: py-comprehensions-generators, py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "I know that calling a generator function doesn’t execute its body until you call next() on the resulting generator. Beyond that, I’m not sure.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that calling a generator function does not execute its body until next() is called, but is unable to provide the output or explain the rest of the code.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that calling a generator function does not execute its body until next() is called, but is unable to provide the output or explain the rest of the code.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-null",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-null (sql.null.equals-null-matches, sql.null.not-equal-includes-null)",
+      "prompt": "A colleague wrote this query to list every customer who is not in Pune, including customers with no city recorded. What does it return, and why?\n\nSELECT name\nFROM customers\nWHERE city <> 'Pune' OR city = NULL\nORDER BY name;\n\nTable customers:\nid | name | city\n1 | Asha | Pune\n2 | Ben | NULL\n3 | Chen | Delhi\n4 | Dana | Mumbai\n5 | Eli | NULL",
+      "answer": "The condition `city = NULL` will never be true, so you need to use `IS NULL` to check for missing city values.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does the query treat customers whose city is NULL in the `city <> 'Pune'` part of the condition?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the query treat customers whose city is NULL in the `city <> 'Pune'` part of the condition?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the query treat the rows where the city is NULL, such as for Ben and Eli?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What will the query actually return for customers whose city is NULL?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that city = NULL does not work and needs IS NULL, but missed explaining what the query actually returns and why city <> 'Pune' drops NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that city = NULL does not work and needs IS NULL, but missed explaining what the query actually returns and why city <> 'Pune' drops NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-complexity",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; lists a suspected misconception to confirm: ds.sorting-searching.binary-search-unsorted",
+      "prompt": "A teammate needs to check whether a customer ID is in an unsorted Python list of one million IDs. They say: \"`if cid in ids:` is O(1) because it is a single line, so it beats any loop I could write; and if it ever got slow, I would just run binary search on the list instead.\" What is wrong with each of these two claims?",
+      "answer": "`cid in ids` does a linear scan of the list, so its time is O(n) just like an explicit loop (it’s only a bit faster because the loop runs in C). Binary search can’t be applied to an unsorted list—without sorting first it would discard the half containing the target and give a false‑negative, so you’d need to sort once (or use a set) for fast membership checks.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that `in` on a list is an O(n) linear scan, and correctly identified that binary search fails on unsorted data because it can discard the target item. They also suggested the correct fixes (sorting first or using a set), meeting all key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that `in` on a list is an O(n) linear scan, and correctly identified that binary search fails on unsorted data because it can discard the target item. They also suggested the correct fixes (sorting first or using a set), meeting all key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; lists a suspected misconception to confirm: ds.sorting-searching.binary-search-unsorted",
+      "prompt": "`bsearch` is a standard binary search that also counts how many elements it compares. What does this code print, and why are the two results different?\n\ndef bsearch(a, x):\n    lo, hi, steps = 0, len(a) - 1, 0\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        steps += 1\n        if a[mid] == x:\n            return mid, steps\n        if a[mid] < x:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1, steps\n\ndata = [7, 3, 9, 1, 5, 8, 2]\nprint(bsearch(data, 9), bsearch(sorted(data), 9))",
+      "answer": "It prints `(-1, 3) (6, 3)` – on the unsorted list the binary search discards the half that actually contains 9, so it reports “not found” after three comparisons, whereas on the sorted list it correctly finds 9 at index 6 in three steps; binary search only works on sorted data and typically needs about log₂ n comparisons (≈3 for 7 items, ≈20 for a million).",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly states the output, explains why binary search fails on unsorted data because it discards the half containing the target, and correctly identifies the logarithmic complexity log2(n).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly states the output, explains why binary search fails on unsorted data because it discards the half containing the target, and correctly identifies the logarithmic complexity log2(n).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 3 is nearest its estimate +0.76; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-functions-scope (py.functions-scope.assign-updates-global, py.functions-scope.mutable-default-fresh)",
+      "prompt": "What does this code print, and why?\n\ncount = 100\ndef make_counter(log=[]):\n    count = 0\n    def step():\n        nonlocal count\n        count += 1\n        log.append(count)\n        return count\n    return step, log\n\nc1, log1 = make_counter()\nc2, log2 = make_counter()\nc1(); c1()\nprint(c1(), c2(), count)\nprint(log1, log1 is log2)",
+      "answer": "The global count remains 100 because the function creates its own local count initialized to 0, which doesn’t affect the global variable.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What does the code print for the two counters and the shared log list?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What does the code print for the two counters and the shared log list?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What does the code print for the two counters and the shared log list, and why?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What does the code print for the two counter values and the final count?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that the global count remains 100 due to the local variable masking it, but failed to answer the rest of the question regarding the output values, the behavior of the closures, and the shared mutable default argument.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that the global count remains 100 due to the local variable masking it, but failed to answer the rest of the question regarding the output values, the behavior of the closures, and the shared mutable default argument.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.4964,
+          "se": 0.6709,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-select-filter",
+        "sql-schema-constraints"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 1 is nearest its estimate -0.76; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-select-filter (sql.schema-constraints.normalisation-only-saves-space, sql.select-filter.distinct-per-column, sql.select-filter.distinct-returns-first)",
+      "prompt": "What does this query return? What does the result tell you about storing the customer's city on every order row?\n\nSELECT DISTINCT customer, city\nFROM orders_flat\nORDER BY customer, city;\n\nTable orders_flat:\norder_id | customer | city\n101 | Asha | Pune\n102 | Asha | Pune\n103 | Ben | Delhi\n104 | Asha | Mumbai\n105 | Ben | Delhi",
+      "answer": "It will list each customer once with the city that appears most often for them, so you’ll see Asha – Pune and Ben – Delhi. That suggests the city field is redundant on the order rows because you can just keep one copy per customer.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.select-filter.distinct-returns-first",
+        "follow_up": "If Asha has one order in Mumbai and one in Pune, does the query output show both of those combinations or just one?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-returns-first",
+            "follow_up": "If Asha has one order in Mumbai and one in Pune, does the query output show both of those combinations or just one?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will list each customer once with the city that appears most often for them",
+            "evidence_reason": "The candidate explicitly states that the query reduces each customer to a single row/value ('list each customer once'), which aligns with the misconception that DISTINCT picks a single value or first occurrence rather than preserving all distinct multi-column combinations.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-returns-first",
+            "follow_up": "If a customer has two different cities listed in the table, what happens to those rows when you use DISTINCT on both columns together?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will list each customer once with the city that appears most often for them, so you’ll see Asha – Pune and Ben – Delhi.",
+            "evidence_reason": "The candidate explicitly believes that DISTINCT reduces the output to a single entry per customer showing a majority city, rather than keeping all distinct pairs of (customer, city).",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-returns-first",
+            "follow_up": "If a customer has two different cities associated with them in the table, what happens to those rows when you use DISTINCT?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will list each customer once with the city that appears most often for them",
+            "evidence_reason": "The candidate explicitly states that DISTINCT reduces the result to a single value per customer, picking the one that appears most often, which matches the belief that DISTINCT returns a single value per column/entity rather than keeping all distinct pairs.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "It will list each customer once with the city that appears most often for them",
+        "evidence_reason": "The candidate explicitly states that the query reduces each customer to a single row/value ('list each customer once'), which aligns with the misconception that DISTINCT picks a single value or first occurrence rather than preserving all distinct multi-column combinations.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If Asha has one order in Mumbai and one in Pune, does the query output show both of those combinations or just one?",
+          "answer": "It would only show a single row for Asha, picking whichever city happens to be stored first for that customer.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-returns-first",
+            "follow_up": "If a customer has two different cities associated with them in the table, how does DISTINCT decide which one to drop versus keeping both?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.select-filter.distinct-returns-first",
+                "follow_up": "If a customer has two different cities associated with them in the table, how does DISTINCT decide which one to drop versus keeping both?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It would only show a single row for Asha, picking whichever city happens to be stored first for that customer.",
+                "evidence_reason": "The candidate explicitly states that DISTINCT reduces the result to a single row per customer by picking the first stored value, which matches the misconception that DISTINCT keeps only the first row it finds.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.select-filter.distinct-returns-first",
+                "follow_up": "If Asha has two different cities listed in the table, why would the query only keep the first one?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It would only show a single row for Asha, picking whichever city happens to be stored first for that customer.",
+                "evidence_reason": "The candidate explicitly asserts that DISTINCT reduces the customer's entries to a single row by picking the first one it finds.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.select-filter.distinct-returns-first",
+                "follow_up": "If Asha has two different cities associated with her orders, how does DISTINCT decide which of the two rows to drop?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It would only show a single row for Asha, picking whichever city happens to be stored first for that customer.",
+                "evidence_reason": "The candidate explicitly states that DISTINCT reduces the rows for a customer to a single value by picking the first one found, matching the listed misconception.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "It would only show a single row for Asha, picking whichever city happens to be stored first for that customer.",
+            "evidence_reason": "The candidate explicitly states that DISTINCT reduces the result to a single row per customer by picking the first stored value, which matches the misconception that DISTINCT keeps only the first row it finds.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a customer has two different cities associated with them in the table, how does DISTINCT decide which one to drop versus keeping both?",
+          "answer": "It just keeps the first city it sees for each customer and discards any later ones, so whichever row shows up earlier in the table determines which city stays.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-returns-first",
+            "follow_up": "If you ran that query on a table where Asha has two rows with Mumbai and Pune, what exact row combinations would be sent to the client?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.select-filter.distinct-returns-first",
+                "follow_up": "If you ran that query on a table where Asha has two rows with Mumbai and Pune, what exact row combinations would be sent to the client?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It just keeps the first city it sees for each customer and discards any later ones",
+                "evidence_reason": "The candidate explicitly asserts that DISTINCT reduces the result to a single entry per customer by keeping only the first one seen and discarding later ones.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.select-filter.distinct-returns-first",
+                "follow_up": "If a customer has two rows with different cities, what determines which city appears first in the unordered table before DISTINCT is applied?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It just keeps the first city it sees for each customer and discards any later ones",
+                "evidence_reason": "The candidate explicitly asserts that DISTINCT reduces the result by keeping only the first city it finds for a customer and discarding the rest, matching the listed misconception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.select-filter.distinct-returns-first",
+                "follow_up": "If a customer has orders in two different cities, how does SQL's DISTINCT decide which row to keep and which to discard?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It just keeps the first city it sees for each customer and discards any later ones",
+                "evidence_reason": "The candidate explicitly states that DISTINCT keeps only the first city seen and discards subsequent rows per customer, matching the belief that DISTINCT reduces columns to a single value by keeping the first occurrence.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "It just keeps the first city it sees for each customer and discards any later ones",
+            "evidence_reason": "The candidate explicitly asserts that DISTINCT reduces the result to a single entry per customer by keeping only the first one seen and discarding later ones.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that DISTINCT collapses rows per customer based on the first value or frequency, demonstrating the misconception that DISTINCT applies to a single column rather than the tuple of selected columns.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes DISTINCT returns the most frequent value per customer rather than filtering by the combined pair (missing Asha's second city, Mumbai), and misses the key concept of update anomalies due to data inconsistency.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.4964,
+          "se": 0.6709,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -1.2338,
+          "se": 0.6586,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-009",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-collections",
+        "py-comprehensions-generators"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.67); level 2 is nearest its estimate +0.50; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-comprehensions-generators (py.collections.sort-returns-list, py.comprehensions-generators.generator-reusable)",
+      "prompt": "What does this code print, and why?\n\nwords = [\"apple\", \"avocado\", \"banana\", \"blueberry\", \"cherry\"]\nby_letter = {w[0]: w for w in words}\nlengths = [len(w) for w in words]\nloud = (w.upper() for w in words if \"e\" in w)\nprint(by_letter)\nprint(lengths.sort(), lengths)\nprint(next(loud), list(loud))\nprint(list(loud))",
+      "answer": "It prints `{'a': 'avocado', 'b': 'blueberry', 'c': 'cherry'}` because the dict comprehension keeps the last word for each first‑letter key, then `None [5, 6, 6, 7, 9]` since `lengths.sort()` sorts the list in place and returns `None`, followed by `APPLE ['BLUEBERRY', 'CHERRY']` because `next(loud)` yields the first uppercase word and the subsequent `list(loud)` consumes the remaining generator items, and finally `[]` because the generator has already been exhausted.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the overwritten dictionary key behavior, the in-place behavior and None return value of sort(), the consumption of items by next() and list() on the generator, and the final empty list due to exhaustion.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the overwritten dictionary key behavior, the in-place behavior and None return value of sort(), the consumption of items by next() and list() on the generator, and the final empty list due to exhaustion.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7795,
+          "se": 0.6123,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -1.2338,
+          "se": 0.6586,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-hash-tables",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.66); level 2 is nearest its estimate +0.23; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-sorting-searching (ds.hash-tables.keys-kept-sorted, ds.sorting-searching.sort-not-stable)",
+      "prompt": "What does this code print, and why do the words appear in that order on each line?\n\nwords = [\"pear\", \"apple\", \"fig\", \"apple\", \"pear\", \"kiwi\"]\ncounts = {}\nfor w in words:\n    counts[w] = counts.get(w, 0) + 1\nprint(list(counts))\nranked = sorted(counts.items(), key=lambda kv: kv[1], reverse=True)\nprint(ranked)\n",
+      "answer": "It will first print `['pear', 'apple', 'fig', 'kiwi']` because the dictionary stores the items in the order they were first seen, and then it prints `[('pear', 2), ('apple', 2), ('fig', 1), ('kiwi', 1)]` since the sorting groups the words by how many times they appear, putting the most frequent ones at the top.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly gives both outputs and explains that the dictionary preserves insertion order and that the sort handles frequencies while maintaining stable order for ties.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly gives both outputs and explains that the dictionary preserves insertion order and that the sort handles frequencies while maintaining stable order for ties.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7795,
+          "se": 0.6123,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -1.2338,
+          "se": 0.6586,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.5532,
+          "se": 0.6145,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-select-filter",
+        "sql-schema-constraints"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.66); level 1 is nearest its estimate -1.23; lists a suspected misconception to confirm: sql.select-filter.distinct-returns-first",
+      "prompt": "A products table has 6 rows and a primary key column id. SELECT DISTINCT category FROM products returns 3 rows. How many rows could SELECT DISTINCT category, supplier return, and how many will SELECT DISTINCT id, category return? Explain what DISTINCT actually compares.",
+      "answer": "SELECT DISTINCT category, supplier could return anywhere from three up to six rows, depending on how many different category‑supplier combinations exist, while SELECT DISTINCT id, category will always return six rows because the id column is unique, so every (id, category) pair is already distinct. DISTINCT compares the entire set of columns in the select list, removing a row only when every column value matches another row’s values.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that DISTINCT compares the entire combination of selected columns, correctly deduced that category, supplier returns between 3 and 6 rows, and that id, category returns exactly 6 rows due to the primary key uniqueness.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that DISTINCT compares the entire combination of selected columns, correctly deduced that category, supplier returns between 3 and 6 rows, and that id, category returns exactly 6 rows due to the primary key uniqueness.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7795,
+          "se": 0.6123,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.841,
+          "se": 0.587,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.5532,
+          "se": 0.6145,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +0.55; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-complexity (ds.arrays-strings.append-always-copies, ds.complexity.big-o-is-exact-time, ds.complexity.constants-change-class)",
+      "prompt": "This class simulates how a dynamic array such as a Python list grows: when it is full, it moves every item into a new block twice as large and counts the moved items. What does it print? What do the numbers tell you about the cost of a single append and of n appends?\n\nclass DynArray:\n    def __init__(self):\n        self.size, self.cap, self.copies = 0, 1, 0\n\n    def append(self, x):\n        if self.size == self.cap:\n            self.copies += self.size  # move every item to a bigger block\n            self.cap *= 2\n        self.size += 1\n\nfor n in [16, 17, 1000]:\n    arr = DynArray()\n    for i in range(n):\n        arr.append(i)\n    print(n, arr.cap, arr.copies)",
+      "answer": "It will always print the original size, the capacity stays exactly n and the number of copies stays 0 for every case, showing that each append is truly O(1) and that even a sequence of n appends costs only O(n) with no extra overhead.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.arrays-strings.append-always-copies",
+        "follow_up": "Can you check what happens inside the `if self.size == self.cap:` condition when `self.size` reaches capacity for the first time?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.append-always-copies",
+            "follow_up": "Can you check what happens inside the `if self.size == self.cap:` condition when `self.size` reaches capacity for the first time?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the number of copies stays 0 for every case, showing that each append is truly O(1)",
+            "evidence_reason": "The candidate claims the number of copies stays 0 and each append is simply O(1), entirely missing that the simulation explicitly tracks and increases copies whenever the array resizes.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.append-always-copies",
+            "follow_up": "Looking at the append method in the code, under what condition does it actually update `self.copies`?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the number of copies stays 0 for every case, showing that each append is truly O(1)",
+            "evidence_reason": "The candidate asserts that no copies ever happen and that appends are always purely O(1) without resizing overhead, reflecting the misconception that dynamic arrays do not trigger bulk copy operations.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.append-always-copies",
+            "follow_up": "If every append copied zero items, what would trigger the capacity doubling in the code?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the number of copies stays 0 for every case, showing that each append is truly O(1)",
+            "evidence_reason": "The candidate asserts that zero copies are made and every append is O(1) in the traditional constant-time sense, missing the resizing behavior and the amortized nature of dynamic arrays.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "the number of copies stays 0 for every case, showing that each append is truly O(1)",
+        "evidence_reason": "The candidate claims the number of copies stays 0 and each append is simply O(1), entirely missing that the simulation explicitly tracks and increases copies whenever the array resizes.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "Can you check what happens inside the `if self.size == self.cap:` condition when `self.size` reaches capacity for the first time?",
+          "answer": "When `self.size` hits the current capacity, the `if` block runs, adds the current size to `self.copies` (so the copy count jumps up by exactly that many items) and then doubles `self.cap`; after that the append proceeds normally. This shows that the first resize copies all existing elements once and then the array simply grows with a constant‑time append thereafter.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.append-always-copies",
+            "follow_up": "If you append 17 items to a fresh DynArray, how many items are copied on the 17th append, and why?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.append-always-copies",
+                "follow_up": "If you append 17 items to a fresh DynArray, how many items are copied on the 17th append, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the first resize copies all existing elements once and then the array simply grows with a constant‑time append thereafter.",
+                "evidence_reason": "The candidate incorrectly believes that resizing only happens once ('the first resize') and that subsequent appends never trigger another resize, implying a misunderstanding of how dynamic arrays continually grow and copy elements whenever capacity is reached.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.append-always-copies",
+                "follow_up": "How many items are copied when you append the 5th element if the capacity is currently 4?",
+                "confidence_expressed": "high",
+                "supporting_quote": "This shows that the first resize copies all existing elements once and then the array simply grows with a constant‑time append thereafter.",
+                "evidence_reason": "The candidate asserts that resizing happens only once ('the first resize'), implying that subsequent appends never trigger another resize or copy, which stems from a misunderstanding of how dynamic array capacity and repeated resizing work.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.append-always-copies",
+                "follow_up": "What happens to the capacity and the number of copies when you append a 17th item after the capacity has already reached 16?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the first resize copies all existing elements once and then the array simply grows with a constant‑time append thereafter",
+                "evidence_reason": "The candidate asserts that resizing only happens once ('the first resize copies all existing elements once and then the array simply grows'), which matches the misconception that dynamic arrays do not continue to resize and copy whenever subsequent capacities are exceeded.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the first resize copies all existing elements once and then the array simply grows with a constant‑time append thereafter.",
+            "evidence_reason": "The candidate incorrectly believes that resizing only happens once ('the first resize') and that subsequent appends never trigger another resize, implying a misunderstanding of how dynamic arrays continually grow and copy elements whenever capacity is reached.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "ds.complexity.big-o-is-exact-time",
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If you append 17 items to a fresh DynArray, how many items are copied on the 17th append, and why?",
+          "answer": "On the 17th append no items are copied at all – the array’s capacity is already big enough, so that operation is just a constant‑time O(1) append with zero copying.",
+          "diagnosis": {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "Could you check which value of n causes the capacity to double from 16 to 32, and whether the 17th append triggers the if statement?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "Could you check which value of n causes the capacity to double from 16 to 32, and whether the 17th append triggers the if statement?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "Can you check what the capacity of the array is after 16 appends, and what happens when you try to perform the 17th append?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "Could you check which value of n makes the array reach capacity of 16, and what happens on the very next append when n is 17?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "ds.complexity.big-o-is-exact-time",
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claimed in the final follow-up that the 17th append copies zero items, missing the fact that 17 exceeds the initial capacity of 16 and triggers a resize.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate's answer is entirely incorrect regarding both the output values and the underlying mechanics, claiming that capacity stays equal to n and copies stay 0, which contradicts the provided code and shows fundamental misconceptions about dynamic arrays.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7795,
+          "se": 0.6123,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.841,
+          "se": 0.587,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.3047,
+          "se": 0.5546,
+          "level": 2,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-007",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "ds.complexity.big-o-is-exact-time",
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +0.78; lists misconceptions not yet probed: py.concurrency.async-multithreaded, py.concurrency.async-preempts, py.concurrency.gil-thread-safe",
+      "prompt": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+      "answer": "The GIL doesn’t stop the race condition, so you need to protect the increment with a Lock; I’m not sure about the asyncio case.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does the asyncio event loop decide when to switch between different coroutines?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the asyncio event loop decide when to switch between different coroutines?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the event loop decide when to switch between different asyncio coroutines?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the asyncio event loop decide when to switch between different coroutines?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the thread race condition and the need for a Lock, but is unsure about the asyncio behavior, matching the level-1 criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the thread race condition and the need for a Lock, but is unsure about the asyncio behavior, matching the level-1 criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8119,
+          "se": 0.5611,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": -0.841,
+          "se": 0.587,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.3047,
+          "se": 0.5546,
+          "level": 2,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 21,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 0.8119,
+        "se": 0.5611,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.55972,
+        "level_probabilities": {
+          "0": 0.00013,
+          "1": 0.025447,
+          "2": 0.414703,
+          "3": 0.55972
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 1,
+        "estimate": -0.841,
+        "se": 0.587,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.607925,
+        "level_probabilities": {
+          "0": 0.22693,
+          "1": 0.607925,
+          "2": 0.160921,
+          "3": 0.004224
+        },
+        "meets_minimum": false
+      },
+      "ds": {
+        "level": 2,
+        "estimate": 0.3047,
+        "se": 0.5546,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.633075,
+        "level_probabilities": {
+          "0": 0.002159,
+          "1": 0.14373,
+          "2": 0.633075,
+          "3": 0.221036
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "not_fit",
+    "decision_reason": "sql is below the job minimum (level 2; estimated level 1).",
+    "misconceptions": [
+      {
+        "id": "sql.joins.join-never-duplicates",
+        "confirmed": false,
+        "evidence_turns": [
+          2
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 0,
+            "reply_text": "It will list each customer's name together with the total number of rows in the orders table and the sum of all order amounts, because the LEFT JOIN duplicates the customers for every order regardless of the customer_id.",
+            "vote_share": 1.0,
+            "supporting_quote": "the LEFT JOIN duplicates the customers for every order regardless of the customer_id",
+            "quote_start": 135,
+            "quote_end": 219,
+            "reason": "The candidate incorrectly asserts that the LEFT JOIN duplicates customers for every single order in the table regardless of customer_id, demonstrating the listed misconception sql.joins.join-never-duplicates."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.sorting-searching.binary-search-unsorted",
+        "confirmed": false,
+        "evidence_turns": [
+          3
+        ],
+        "vote_share": 0.889,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "I’d sort the prices first and then run a binary search even if I only have to check one price, since the sorted order makes the lookup straightforward; if I have thousands of queries I’d just keep the original unsorted list and scan through it each time because the overhead of sorting would outweigh the benefit.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "I’d sort the prices first and then run a binary search even if I only have to check one price, since the sorted order makes the lookup straightforward; if I have thousands of queries I’d just keep the original unsorted list and scan through it each time",
+            "quote_start": 0,
+            "quote_end": 253,
+            "reason": "The candidate has inverted the performance trade-off, recommending sorting for a single query but a linear scan for thousands, and believes binary search can be applied to an unsorted list (or misunderstandings why it is needed), while failing to see the amortized benefit for multiple queries."
+          },
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 1,
+            "reply_text": "It will still walk through the list comparing the middle element each time, eventually landing on the right spot, so you’ll end up finding the 3 after a few steps.",
+            "vote_share": 1.0,
+            "supporting_quote": "It will still walk through the list comparing the middle element each time, eventually landing on the right spot",
+            "quote_start": 0,
+            "quote_end": 112,
+            "reason": "The candidate explicitly asserts that binary search will successfully find the target on an unsorted list by walking through and comparing the middle element."
+          },
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 2,
+            "reply_text": "If the target is after the midpoint but the algorithm goes the other way, it will just keep cutting the array in half until it eventually wraps around and finds the element on the wrong side.",
+            "vote_share": 1.0,
+            "supporting_quote": "it will just keep cutting the array in half until it eventually wraps around and finds the element on the wrong side.",
+            "quote_start": 74,
+            "quote_end": 191,
+            "reason": "The candidate asserts that binary search will successfully find an element even if it initially goes the wrong way and 'wraps around', which shows a fundamental misunderstanding of how binary search relies on sorted order to safely discard halves."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.select-filter.distinct-returns-first",
+        "confirmed": false,
+        "evidence_turns": [
+          9
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L1-009",
+            "turn": 9,
+            "reply_index": 0,
+            "reply_text": "It will list each customer once with the city that appears most often for them, so you’ll see Asha – Pune and Ben – Delhi. That suggests the city field is redundant on the order rows because you can just keep one copy per customer.",
+            "vote_share": 1.0,
+            "supporting_quote": "It will list each customer once with the city that appears most often for them",
+            "quote_start": 0,
+            "quote_end": 78,
+            "reason": "The candidate explicitly states that the query reduces each customer to a single row/value ('list each customer once'), which aligns with the misconception that DISTINCT picks a single value or first occurrence rather than preserving all distinct multi-column combinations."
+          },
+          {
+            "question_id": "SQL-L1-009",
+            "turn": 9,
+            "reply_index": 1,
+            "reply_text": "It would only show a single row for Asha, picking whichever city happens to be stored first for that customer.",
+            "vote_share": 1.0,
+            "supporting_quote": "It would only show a single row for Asha, picking whichever city happens to be stored first for that customer.",
+            "quote_start": 0,
+            "quote_end": 110,
+            "reason": "The candidate explicitly states that DISTINCT reduces the result to a single row per customer by picking the first stored value, which matches the misconception that DISTINCT keeps only the first row it finds."
+          },
+          {
+            "question_id": "SQL-L1-009",
+            "turn": 9,
+            "reply_index": 2,
+            "reply_text": "It just keeps the first city it sees for each customer and discards any later ones, so whichever row shows up earlier in the table determines which city stays.",
+            "vote_share": 1.0,
+            "supporting_quote": "It just keeps the first city it sees for each customer and discards any later ones",
+            "quote_start": 0,
+            "quote_end": 82,
+            "reason": "The candidate explicitly asserts that DISTINCT reduces the result to a single entry per customer by keeping only the first one seen and discarding later ones."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.arrays-strings.append-always-copies",
+        "confirmed": false,
+        "evidence_turns": [
+          13
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L3-007",
+            "turn": 13,
+            "reply_index": 0,
+            "reply_text": "It will always print the original size, the capacity stays exactly n and the number of copies stays 0 for every case, showing that each append is truly O(1) and that even a sequence of n appends costs only O(n) with no extra overhead.",
+            "vote_share": 1.0,
+            "supporting_quote": "the number of copies stays 0 for every case, showing that each append is truly O(1)",
+            "quote_start": 73,
+            "quote_end": 156,
+            "reason": "The candidate claims the number of copies stays 0 and each append is simply O(1), entirely missing that the simulation explicitly tracks and increases copies whenever the array resizes."
+          },
+          {
+            "question_id": "DS-L3-007",
+            "turn": 13,
+            "reply_index": 1,
+            "reply_text": "When `self.size` hits the current capacity, the `if` block runs, adds the current size to `self.copies` (so the copy count jumps up by exactly that many items) and then doubles `self.cap`; after that the append proceeds normally. This shows that the first resize copies all existing elements once and then the array simply grows with a constant‑time append thereafter.",
+            "vote_share": 1.0,
+            "supporting_quote": "the first resize copies all existing elements once and then the array simply grows with a constant‑time append thereafter.",
+            "quote_start": 246,
+            "quote_end": 368,
+            "reason": "The candidate incorrectly believes that resizing only happens once ('the first resize') and that subsequent appends never trigger another resize, implying a misunderstanding of how dynamic arrays continually grow and copy elements whenever capacity is reached."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.complexity.big-o-is-exact-time",
+      "ds.complexity.constants-change-class",
+      "ds.complexity.short-code-is-fast",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.sorting-searching.binary-search-half-of-linear",
+      "ds.sorting-searching.binary-search-unsorted",
+      "ds.sorting-searching.sort-not-stable",
+      "ds.sorting-searching.sorting-is-linear",
+      "py.collections.sort-returns-list",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.generator-reusable",
+      "py.comprehensions-generators.yield-is-return",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.gil-thread-safe",
+      "py.functions-scope.assign-updates-global",
+      "py.functions-scope.closure-captures-value",
+      "py.functions-scope.mutable-default-fresh",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.null.equals-null-matches",
+      "sql.null.not-equal-includes-null",
+      "sql.schema-constraints.normalisation-only-saves-space",
+      "sql.schema-constraints.pk-needs-distinct",
+      "sql.select-filter.distinct-per-column",
+      "sql.select-filter.distinct-returns-first"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "untested": [
+        "sql-subqueries-cte",
+        "sql-window-functions"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: not fit. sql is below the job minimum (level 2; estimated level 1). Estimated levels: py level 3 (needs 2), sql level 1 (needs 2), ds level 2 (needs 1). Suspected (insufficient corroboration) misconception: Believes a join returns at most one row per row of the left table, rather than one row for every matching pair. Suspected (insufficient corroboration) misconception: Believes binary search works correctly on unsorted data, or does not know why sorted order is required for it. Suspected (insufficient corroboration) misconception: Believes DISTINCT reduces a column to a single value, keeping the first row it finds, rather than keeping every different value. Suspected (insufficient corroboration) misconception: Believes every append to a dynamic array (Python list) allocates a new array and copies all existing elements, so a single append is always O(n) and n appends cost O(n^2)."
+  },
+  "usage": {
+    "llm_calls": 118,
+    "api_calls": 9,
+    "input_tokens": 131235,
+    "output_tokens": 9790,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 118,
+        "api_calls": 9,
+        "input_tokens": 131235,
+        "output_tokens": 9790
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 0,
+      "ds": 1
+    },
+    "fit": false,
+    "misconceptions": [
+      "ds.complexity.big-o-is-exact-time"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

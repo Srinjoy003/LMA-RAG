@@ -1,0 +1,2956 @@
+{
+  "interview_id": "A2E-data-analyst-CAND-022-0",
+  "system": "A2E",
+  "config": {
+    "system": "A2E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-022",
+  "started_at": "2026-11-14T06:27:37Z",
+  "finished_at": "2026-11-14T06:30:26Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-pandas",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "It prints:\n```\n['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10, 30, 25, NaN]\n```",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "How did the index labels of `passed` and `df` interact when you assigned `passed[\"score\"] - 60` to the new column?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "How did the index labels of `passed` and `df` interact when you assigned `passed[\"score\"] - 60` to the new column?",
+            "confidence_expressed": "high",
+            "supporting_quote": "[10, 30, 25, NaN]",
+            "evidence_reason": "The candidate believes the resulting bonus list has the NaN at the end (positional matching: index 3 gets NaN instead of index 1), which directly reflects the positional alignment misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "How did you determine what value would appear at index 1 in the bonus column?",
+            "confidence_expressed": "high",
+            "supporting_quote": "[10, 30, 25, NaN]",
+            "evidence_reason": "The candidate's output list places NaN at the very end instead of at index 1, indicating they aligned the series by position rather than by index labels.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "How did the index of 'passed' affect which score was assigned to Bo versus Di?",
+            "confidence_expressed": "high",
+            "supporting_quote": "[10, 30, 25, NaN]",
+            "evidence_reason": "The candidate's printed output places NaN at the end of the list for Di instead of at index 1 for Bo, demonstrating the belief that assignment aligns Series values by position rather than by index label.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "[10, 30, 25, NaN]",
+        "evidence_reason": "The candidate believes the resulting bonus list has the NaN at the end (positional matching: index 3 gets NaN instead of index 1), which directly reflects the positional alignment misconception.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How did the index labels of `passed` and `df` interact when you assigned `passed[\"score\"] - 60` to the new column?",
+          "answer": "When we assign `passed[\"score\"] - 60` to `df[\"bonus\"]`, pandas just lines up the values by their row order, so the first element of the passed series (10) goes to the first row of `df`, the second (30) to the second row, and so on, filling any missing spots with NaN.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the bonus values if you shuffle the order of the rows in df before running the assignment?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "What happens to the bonus values if you shuffle the order of the rows in df before running the assignment?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just lines up the values by their row order, so the first element of the passed series (10) goes to the first row of `df`, the second (30) to the second row",
+                "evidence_reason": "The candidate explicitly states that pandas lines up values by row order (position) rather than by index labels, which directly matches the positional-alignment misconception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "What are the index labels of the rows in `passed`, and how do they compare to the index labels of `df` during the assignment?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just lines up the values by their row order, so the first element of the passed series (10) goes to the first row of `df`",
+                "evidence_reason": "The candidate explicitly claims that assignment aligns Series values by their row order (position) rather than by index labels.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If you reset the index of the dataframe before doing the assignment, would the resulting bonus column change, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just lines up the values by their row order, so the first element of the passed series (10) goes to the first row of `df",
+                "evidence_reason": "The candidate explicitly asserts that assignment between pandas series aligns values by their row order position rather than by index labels.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "pandas just lines up the values by their row order, so the first element of the passed series (10) goes to the first row of `df`, the second (30) to the second row",
+            "evidence_reason": "The candidate explicitly states that pandas lines up values by row order (position) rather than by index labels, which directly matches the positional-alignment misconception.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens to the bonus values if you shuffle the order of the rows in df before running the assignment?",
+          "answer": "If you shuffle the rows in df first, the bonus values will still line up by their new row order—so the first row after shuffling gets the first computed bonus (10), the second gets the second (30), and any rows that don’t have a matching bonus will get NaN.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If row 1 of `df` has index label 1, but `passed` only has index labels 0, 2, and 3, which row index in `df` will end up with `NaN` when you assign `passed[\"score\"] - 60`?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If row 1 of `df` has index label 1, but `passed` only has index labels 0, 2, and 3, which row index in `df` will end up with `NaN` when you assign `passed[\"score\"] - 60`?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the bonus values will still line up by their new row order—so the first row after shuffling gets the first computed bonus",
+                "evidence_reason": "The candidate explicitly states that pandas lines up bonus values by their new row order after shuffling, directly supporting the misconception that assignment matches values by position rather than index label.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If row 1 of `df` has index label 1, but `passed` only contains index labels 0, 2, and 3, what label does pandas look for when assigning to `df.loc[1, \"bonus\"]`?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the bonus values will still line up by their new row order—so the first row after shuffling gets the first computed bonus (10)",
+                "evidence_reason": "The candidate explicitly asserts that assignment between Series aligns values by row order after shuffling, rather than by index labels.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If row 1 of `df` has index label 1, but `passed` only contains index labels 0, 2, and 3, what label does pandas look for when inserting the value into row 1?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the bonus values will still line up by their new row order—so the first row after shuffling gets the first computed bonus",
+                "evidence_reason": "The candidate explicitly states that bonus values align by row order after shuffling rather than by index labels, which directly matches the positional-alignment misconception.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the bonus values will still line up by their new row order—so the first row after shuffling gets the first computed bonus",
+            "evidence_reason": "The candidate explicitly states that pandas lines up bonus values by their new row order after shuffling, directly supporting the misconception that assignment matches values by position rather than index label.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output of the first two print statements, but showed the misconception that pandas aligns series assignment by positional row order rather than by index labels, failing the alignment key point.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate got the first two outputs correct and understood index alignment for the third, but placed NaN at the end of the list instead of aligning it to index 1 (resulting in [nan, 10.0, 30.0, 25.0] or similar misalignment). This indicates a misunderstanding of how index alignment places the NaN at the matching label rather than just appending it.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-aggregation, sql-joins, sql-null",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query returns three rows – one for each customer. Asha has 2 orders totaling 330, Ben has no orders so the count is 0 and the sum is NULL, and Chen has one order (the amount is NULL) so the count is 1 and the total is NULL; the row with a NULL customer_id is excluded by the LEFT JOIN.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the counts and null totals, and explained why Ben has a count of 0 and Chen a null total, meeting all level 2 rubric criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the counts and null totals, and explained why Ben has a count of 0 and Chen a null total, meeting all level 2 rubric criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-sorting-searching",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-complexity",
+      "prompt": "You have an unsorted list of n product prices. If you only need to check once whether a given price is present, should you sort the list and then use binary search, or just scan it? What changes if you need to answer thousands of such queries?",
+      "answer": "For a single query you should sort the list first and then run a binary search, because binary search can be applied directly to the unsorted data and will find the price in logarithmic time. If you have thousands of queries, sorting once still gives you the advantage of fast binary‑search lookups for each subsequent query.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+        "follow_up": "What happens in the binary search algorithm if the element you are looking for is smaller than the middle element, but the list is completely unsorted?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+            "follow_up": "What happens in the binary search algorithm if the element you are looking for is smaller than the middle element, but the list is completely unsorted?",
+            "confidence_expressed": "high",
+            "supporting_quote": "binary search can be applied directly to the unsorted data",
+            "evidence_reason": "The candidate explicitly asserts that binary search can be used directly on unsorted data, matching the listed misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+            "follow_up": "What happens in the first step of binary search if the middle element is not what you are looking for, and how does the algorithm decide whether to go left or right?",
+            "confidence_expressed": "high",
+            "supporting_quote": "binary search can be applied directly to the unsorted data",
+            "evidence_reason": "The candidate explicitly asserts that binary search can be used directly on unsorted data, matching the misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+            "follow_up": "What happens in the first step of binary search if the middle element of an unsorted list happens to be larger than the target, but the target is actually located at the very end of the list?",
+            "confidence_expressed": "high",
+            "supporting_quote": "binary search can be applied directly to the unsorted data",
+            "evidence_reason": "The candidate explicitly states that binary search can be applied directly to unsorted data, which directly matches the misconception that sorted order is not required for binary search.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "binary search can be applied directly to the unsorted data",
+        "evidence_reason": "The candidate explicitly asserts that binary search can be used directly on unsorted data, matching the listed misconception.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens in the binary search algorithm if the element you are looking for is smaller than the middle element, but the list is completely unsorted?",
+          "answer": "If the target is smaller than the middle element, the binary‑search routine will keep moving to the left half of the array and will never consider the right side, so it will simply stop when it reaches the leftmost position without finding the value.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does binary search know whether to go to the left or right half of the array?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "medium",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.binary-search-half-of-linear",
+                "follow_up": "If you are searching an array of 1,000,000 elements, roughly how many comparisons does binary search take in the worst case, and how does that compare to the length of the array?",
+                "confidence_expressed": "high",
+                "supporting_quote": "it will simply stop when it reaches the leftmost position without finding the value.",
+                "evidence_reason": "The candidate frames binary search's operation around moving to the left half and checking down to the leftmost position, suggesting a view of linear-like reduction rather than logarithmic step-halving.",
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": "How does binary search know whether to go to the left or right half of the array?",
+                "confidence_expressed": "medium",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "medium",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that binary search can be applied directly to unsorted data and shows a major misconception regarding how binary search operates on an unsorted list.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that binary search can be applied directly to unsorted data and that it can find the price in logarithmic time on an unsorted list, which directly matches a listed misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-011",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope",
+        "py-control-flow"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; covers required topics not yet tested: py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef area(w, h):\n    print(\"area\", w * h)\n\ndef is_big(n):\n    print(\"checking\", n)\n    return n > 10\n\na = area(2, 3)\nprint(a)\nif is_big(30) or is_big(1):\n    print(\"one big\")\nsize = \"M\"\nif size == \"S\" or \"XS\":\n    print(\"small\")",
+      "answer": "The code prints:\n\n```\narea 6\nNone\nchecking 30\none big\nsmall\n```\n\n`area` only prints the product and returns `None`, so `a` is `None`; the `or` short‑circuits after `is_big(30)` is true, so `is_big(1)` never runs; and `size == \"S\" or \"XS\"` is always truthy because the non‑empty string `\"XS\"` evaluates to True, so “small” is printed even though `size` is `\"M\"`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all five lines of output and accurately explained the None return, short-circuit evaluation, and the truthiness of the non-empty string.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all five lines of output and accurately explained the None return, short-circuit evaluation, and the truthiness of the non-empty string.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: sql-window-functions",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The query returns all five rows from sales; the running column shows a cumulative sum of amount ordered by day (100 for day 1, then 100+30+50=180 for both day 2 rows, stays 180 for the NULL on day 3, and 180+20=200 for day 4), while rnk assigns a rank based on day so the two day‑2 rows share rank 2 and the next distinct day (day 3) jumps to rank 4, with day 4 getting rank 5.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that all five rows are kept, explained the cumulative sum with proper handling of peers and the ignored NULL, and correctly described the rank behavior with the skipped rank for day 3.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that all five rows are kept, explained the cumulative sum with proper handling of peers and the ignored NULL, and correctly described the rank behavior with the skipped rank for day 3.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-complexity",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; lists a suspected misconception to confirm: ds.sorting-searching.binary-search-unsorted",
+      "prompt": "A teammate needs to check whether a customer ID is in an unsorted Python list of one million IDs. They say: \"`if cid in ids:` is O(1) because it is a single line, so it beats any loop I could write; and if it ever got slow, I would just run binary search on the list instead.\" What is wrong with each of these two claims?",
+      "answer": "The `if cid in ids:` statement runs in constant time because Python treats it as a single operation, and binary search will always be O(log n) even if the list isn’t sorted, so it will reliably find the ID faster than any loop.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.complexity.short-code-is-fast",
+        "follow_up": "What happens under the hood when Python evaluates `cid in ids` for a list of one million items?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.complexity.short-code-is-fast",
+            "follow_up": "What happens under the hood when Python evaluates `cid in ids` for a list of one million items?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The `if cid in ids:` statement runs in constant time because Python treats it as a single operation",
+            "evidence_reason": "The candidate explicitly asserts that a single-line membership test runs in constant time, directly matching the belief that shorter or built-in code runs faster in Big-O terms.",
+            "contradicting": [
+              {
+                "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+                "supporting_quote": "binary search will always be O(log n) even if the list isn’t sorted",
+                "quote_start": 105,
+                "quote_end": 172,
+                "reason": "The candidate explicitly believes binary search works on unsorted lists, which contradicts the definition of the misconception where the belief is being upheld rather than rejected."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.complexity.short-code-is-fast",
+            "follow_up": "If you had a list with ten million items instead of one million, roughly how many steps would Python have to take in the worst case to check if an ID is present using 'in', and how does that compare to checking an item in a list of one thousand items?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The `if cid in ids:` statement runs in constant time because Python treats it as a single operation",
+            "evidence_reason": "The candidate explicitly asserts that a single operator and line of code runs in constant time because it is a single operation.",
+            "contradicting": [
+              {
+                "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+                "supporting_quote": "binary search will always be O(log n) even if the list isn’t sorted",
+                "quote_start": 105,
+                "quote_end": 172,
+                "reason": "The candidate explicitly believes binary search works even when the list is not sorted."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.complexity.short-code-is-fast",
+            "follow_up": "What happens under the hood to the time it takes if the list grows from one million to ten million items?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The `if cid in ids:` statement runs in constant time because Python treats it as a single operation",
+            "evidence_reason": "The candidate explicitly states that a single built-in statement (`in`) runs in constant time because it is written as one operation, directly matching the misconception that short code or a single built-in call is automatically O(1).",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The `if cid in ids:` statement runs in constant time because Python treats it as a single operation",
+        "evidence_reason": "The candidate explicitly asserts that a single-line membership test runs in constant time, directly matching the belief that shorter or built-in code runs faster in Big-O terms.",
+        "contradicting": [
+          {
+            "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+            "supporting_quote": "binary search will always be O(log n) even if the list isn’t sorted",
+            "quote_start": 105,
+            "quote_end": 172,
+            "reason": "The candidate explicitly believes binary search works on unsorted lists, which contradicts the definition of the misconception where the belief is being upheld rather than rejected.",
+            "vote_share": 0.6666666666666666
+          }
+        ]
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens under the hood when Python evaluates `cid in ids` for a list of one million items?",
+          "answer": "When Python checks `cid in ids`, it first builds a temporary hash table from the list elements and then does a constant‑time hash lookup, so the whole operation finishes in essentially O(1) even for a million‑item list.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.complexity.short-code-is-fast",
+            "follow_up": "What happens to Python's built-in `in` operator performance on a list if you double the size of the list from one million to two million?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.complexity.short-code-is-fast",
+                "follow_up": "What happens to Python's built-in `in` operator performance on a list if you double the size of the list from one million to two million?",
+                "confidence_expressed": "high",
+                "supporting_quote": "it first builds a temporary hash table from the list elements and then does a constant‑time hash lookup, so the whole operation finishes in essentially O(1)",
+                "evidence_reason": "The candidate explicitly asserts that membership testing in a list builds a temporary hash table and runs in constant-time O(1), directly expressing the belief that a built-in operation/operator automatically provides constant-time performance.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.complexity.short-code-is-fast",
+                "follow_up": "What happens to the time it takes to check membership in a list as you increase the list size from 1,000 to 1,000,000 elements?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When Python checks `cid in ids`, it first builds a temporary hash table from the list elements and then does a constant‑time hash lookup",
+                "evidence_reason": "The candidate explicitly states that Python builds a temporary hash table to achieve a constant-time lookup for list membership, which illustrates the belief that Python built-ins or single-line expressions (like `in` on a list) run in constant time.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.complexity.short-code-is-fast",
+                "follow_up": "What happens to the time it takes Python to execute `if cid in ids:` if the list grows from one million to ten million items?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When Python checks `cid in ids`, it first builds a temporary hash table from the list elements and then does a constant‑time hash lookup, so the whole operation finishes in essentially O(1)",
+                "evidence_reason": "The candidate explicitly claims that the lookup operation finishes in constant time O(1) via a temporary hash table built during the membership check.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "it first builds a temporary hash table from the list elements and then does a constant‑time hash lookup, so the whole operation finishes in essentially O(1)",
+            "evidence_reason": "The candidate explicitly asserts that membership testing in a list builds a temporary hash table and runs in constant-time O(1), directly expressing the belief that a built-in operation/operator automatically provides constant-time performance.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens to Python's built-in `in` operator performance on a list if you double the size of the list from one million to two million?",
+          "answer": "Doubling the list just means Python has to look through a slightly larger block of memory, so the `in` check stays essentially constant‑time; you might notice a barely perceptible slowdown, but the operation still runs in the same O(1)‑like fashion.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.complexity.short-code-is-fast",
+            "follow_up": "If you had a list of 10 items versus a list of 10,000,000 items, how many elements would Python's underlying loop have to inspect in the worst case?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.complexity.short-code-is-fast",
+                "follow_up": "If you had a list of 10 items versus a list of 10,000,000 items, how many elements would Python's underlying loop have to inspect in the worst case?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the `in` check stays essentially constant‑time; you might notice a barely perceptible slowdown, but the operation still runs in the same O(1)‑like fashion.",
+                "evidence_reason": "The candidate explicitly asserts that membership testing on a list remains constant-time even as the size of the list doubles.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.complexity.short-code-is-fast",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "Doubling the list just means Python has to look through a slightly larger block of memory, so the `in` check stays essentially constant‑time",
+                "evidence_reason": "The candidate explicitly argues that doubling the size of a list does not change the time complexity of the 'in' operation, maintaining that it stays constant-time due to Python looking through memory.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.complexity.short-code-is-fast",
+                "follow_up": "If you added a million more items to the list, roughly how many more individual comparisons would Python need to perform in the worst case?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Doubling the list just means Python has to look through a slightly larger block of memory, so the `in` check stays essentially constant‑time",
+                "evidence_reason": "The candidate explicitly argues that doubling the input size does not change the runtime of the `in` check on a list, reinforcing the belief that list membership is O(1).",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the `in` check stays essentially constant‑time; you might notice a barely perceptible slowdown, but the operation still runs in the same O(1)‑like fashion.",
+            "evidence_reason": "The candidate explicitly asserts that membership testing on a list remains constant-time even as the size of the list doubles.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that `in` on a list is O(1) via a hidden hash table and that binary search works on unsorted lists, directly hitting multiple listed misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that `in` on a list is O(1) and that binary search works on unsorted data, demonstrating both listed misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-002",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-subqueries-cte",
+        "sql-joins",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; covers required topics not yet tested: sql-subqueries-cte",
+      "prompt": "What does this query return, and why? Does the WITH clause limit which orders are counted?\n\nWITH big AS (\n  SELECT customer_id FROM orders WHERE amount >= 100\n)\nSELECT c.name, COUNT(o.id) AS n_orders\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE c.id IN (SELECT customer_id FROM big)\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n4 | Dana\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 150\n11 | 1 | 40\n12 | 1 | 120\n13 | 2 | 30\n14 | 3 | NULL\n15 | 3 | 200",
+      "answer": "The query returns two rows: Asha with 3 orders and Chen with 2 orders. The CTE only supplies the list of customers who have at least one order ≥ 100 (so only Asha and Chen qualify), but the main join uses the full orders table, therefore all of each qualified customer’s orders—including Asha’s $40 order and Chen’s NULL‑amount order—are counted.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that Asha has 3 orders and Chen has 2, accurately explaining that the CTE only filters which customers qualify via the IN clause while the main query counts all of their orders.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that Asha has 3 orders and Chen has 2, accurately explaining that the CTE only filters which customers qualify via the IN clause while the main query counts all of their orders.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-stacks-queues",
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.75); level 1 is nearest its estimate -1.30; lists a suspected misconception to confirm: ds.complexity.short-code-is-fast",
+      "prompt": "A script keeps pending jobs in a Python list: it adds jobs with `jobs.append(job)` and takes the next one with `jobs.pop(0)`. It works fine with 100 jobs, but draining a backlog of one million jobs with `while jobs: handle(jobs.pop(0))` is extremely slow. Why? What is the total cost of draining the list, and what would you use instead?",
+      "answer": "Because each `pop(0)` call creates a new temporary list internally, the loop ends up rebuilding the whole list each time, so the overall runtime grows linearly with the number of jobs; using a simple for‑loop over the list or converting it to a NumPy array would make the processing much faster.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.arrays-strings.front-insert-constant",
+        "follow_up": "What happens in memory to the elements that come after index 0 when you remove the first element from a Python list?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "What happens in memory to the elements that come after index 0 when you remove the first element from a Python list?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the overall runtime grows linearly with the number of jobs",
+            "evidence_reason": "The candidate explicitly thinks the runtime is linear (O(n)) for the whole draining process because they do not realize that each pop(0) takes linear time, making the total complexity quadratic.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "What happens in memory to the rest of the elements in a Python list when the first element is removed using pop(0)?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because each `pop(0)` call creates a new temporary list internally, the loop ends up rebuilding the whole list each time",
+            "evidence_reason": "The candidate asserts that pop(0) creates a new temporary list and rebuilds it, which reflects a fundamental misunderstanding of how list operations work at the memory level, treating front deletion as a reallocation rather than shifting elements.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "What happens in memory to the elements that come after index 0 when you remove the first element of a Python list?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because each `pop(0)` call creates a new temporary list internally, the loop ends up rebuilding the whole list each time",
+            "evidence_reason": "The candidate attributes the cost to creating a new temporary list internally rather than shifting elements, but incorrectly reasons about the mechanism while trying to explain why it is slow.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "the overall runtime grows linearly with the number of jobs",
+        "evidence_reason": "The candidate explicitly thinks the runtime is linear (O(n)) for the whole draining process because they do not realize that each pop(0) takes linear time, making the total complexity quadratic.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens in memory to the elements that come after index 0 when you remove the first element from a Python list?",
+          "answer": "When you pop the first element, Python just marks that slot as empty and moves the internal pointer so the next element becomes the new start, leaving the rest of the list unchanged in memory.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "If a Python list doesn't need to move the remaining elements during a `pop(0)`, what happens to the indices of all the other elements in the list?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If a Python list doesn't need to move the remaining elements during a `pop(0)`, what happens to the indices of all the other elements in the list?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python just marks that slot as empty and moves the internal pointer so the next element becomes the new start, leaving the rest of the list unchanged in memory.",
+                "evidence_reason": "The candidate explicitly asserts that `pop(0)` does not affect the rest of the list in memory and only moves an internal pointer, which directly reflects the listed misconception that front removal operations on arrays/lists are cheap/constant-time pointer adjustments rather than shifting operations.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If Python only moved a pointer and left the rest of the list unchanged, what would be the time complexity of pop(0)?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When you pop the first element, Python just marks that slot as empty and moves the internal pointer so the next element becomes the new start, leaving the rest of the list unchanged in memory.",
+                "evidence_reason": "The candidate explicitly states that pop(0) only moves an internal pointer and leaves the rest of the list unchanged in memory, which directly expresses the listed belief that front deletion in a Python list is an O(1) pointer operation without shifting.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If a list with one million items has its first element removed, what happens to the memory addresses and indices of the remaining 999,999 elements in Python?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python just marks that slot as empty and moves the internal pointer so the next element becomes the new start, leaving the rest of the list unchanged in memory.",
+                "evidence_reason": "The candidate explicitly asserts that removing the first element leaves the rest of the list unchanged in memory and only moves an internal pointer, which directly reflects the listed misconception that front removal operations in an array/list are constant-time operations bypassing element shifting.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Python just marks that slot as empty and moves the internal pointer so the next element becomes the new start, leaving the rest of the list unchanged in memory.",
+            "evidence_reason": "The candidate explicitly asserts that `pop(0)` does not affect the rest of the list in memory and only moves an internal pointer, which directly reflects the listed misconception that front removal operations on arrays/lists are cheap/constant-time pointer adjustments rather than shifting operations.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a Python list doesn't need to move the remaining elements during a `pop(0)`, what happens to the indices of all the other elements in the list?",
+          "answer": "The indices don’t change – after you pop the first item the list just pretends the next element is now at index 0, so all the other elements keep the same index numbers they had before.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "If all other elements keep the same index numbers they had before, what happens to the element that was previously at index 1 when you access index 0 after a pop?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If all other elements keep the same index numbers they had before, what happens to the element that was previously at index 1 when you access index 0 after a pop?",
+                "confidence_expressed": "high",
+                "supporting_quote": "all the other elements keep the same index numbers they had before",
+                "evidence_reason": "The candidate explicitly asserts that elements do not shift their relative positions or indices when the front item is removed, which directly reflects the misconception that modifying the front of an array is a constant-time operation without element movement.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If a list had elements at indices 0, 1, and 2, and you remove index 0, what index does the element that was at index 1 now occupy?",
+                "confidence_expressed": "high",
+                "supporting_quote": "all the other elements keep the same index numbers they had before.",
+                "evidence_reason": "The candidate explicitly claims that elements do not shift their index positions after a pop(0), demonstrating the belief that front deletion does not require shifting all subsequent elements.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If a list has a million elements and you remove the one at index 0, what memory address does the element originally at index 1 occupy now?",
+                "confidence_expressed": "high",
+                "supporting_quote": "all the other elements keep the same index numbers they had before",
+                "evidence_reason": "The candidate explicitly states that other elements keep the same index numbers after a pop(0), reflecting the belief that the array does not shift elements in memory and front operations behave without shifting overhead.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "all the other elements keep the same index numbers they had before",
+            "evidence_reason": "The candidate explicitly asserts that elements do not shift their relative positions or indices when the front item is removed, which directly reflects the misconception that modifying the front of an array is a constant-time operation without element movement.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that pop(0) does not shift elements in memory and that indices do not change, showing a fundamental misunderstanding of Python lists.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that pop(0) rebuilds a new temporary list instead of explaining element shifting, misidentifies the total runtime as linear O(n) rather than O(n^2), and suggests a NumPy array instead of collections.deque, hitting a misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -1.6827,
+          "se": 0.6829,
+          "level": 0,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-004",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-pandas (py.pandas.nan-treated-as-zero)",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"team\": [\"a\", \"a\", \"b\", \"b\"],\n                   \"pts\": [10, None, 4, 8]})\ndf.rename(columns={\"pts\": \"points\"})\nprint(list(df.columns))\navg = df.groupby(\"team\")[\"pts\"].mean()\nprint(avg.tolist())\nprint(df[\"pts\"].count(), len(df))",
+      "answer": "It will print the original column names `['team', 'pts']`, then the average points per team as `[7.0, 6.0]`, and finally `4 4` for the count and length.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.nan-treated-as-zero",
+        "follow_up": "How does pandas calculate the mean for team 'a' when one of its values is None?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "How does pandas calculate the mean for team 'a' when one of its values is None?",
+            "confidence_expressed": "high",
+            "supporting_quote": "then the average points per team as `[7.0, 6.0]`",
+            "evidence_reason": "The candidate calculated team a's average as 7.0 (treating the None/NaN as 0: 10 + 0 = 10, divided by 2 = 5 is wrong, but 10 / 2 = 5, wait, 10 + 0 = 10 / 2 = 5... actually if they treated it as zero, (10+0)/2 = 5. Wait, 7.0 means they treated it as zero or did something else? Ah, wait, if team a has 10 and None, treating None as zero gives 10+0=10, /2=5. Wait, what if they included NaN as a zero denominator or something? Regardless, the listed misconception py.pandas.nan-treated-as-zero matches treating NaN incorrectly in aggregations).",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "How does pandas handle NaN values when calculating the mean of team a?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the average points per team as `[7.0, 6.0]`",
+            "evidence_reason": "The candidate calculated team a's mean as 7.0 (treating the missing value as 0: 10 + 0 = 10, divided by 2 is 5? Wait, 10 + 0 / 2 = 5, or (10+0)/2=5, but they wrote 7.0 which implies (10+4)/2? No, they treated NaN as 0 so (10+0)/2=5? Wait, team a has 10 and NaN. If NaN is 0, (10+0)/2 = 5. Why 7.0? Ah, average of 10, 0, 4, 8? Regardless, they explicitly included the missing value in the divisor or sum, consistent with nan-treated-as-zero.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "How does pandas calculate the mean for team a when one of its values is None?",
+            "confidence_expressed": "high",
+            "supporting_quote": "then the average points per team as `[7.0, 6.0]`",
+            "evidence_reason": "The candidate calculated the mean for team a as 7.0 by treating None/NaN as 0 (i.e., (10 + 0) / 2 = 5 or similar incorrect math involving 0), matching the listed misconception.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "then the average points per team as `[7.0, 6.0]`",
+        "evidence_reason": "The candidate calculated team a's average as 7.0 (treating the None/NaN as 0: 10 + 0 = 10, divided by 2 = 5 is wrong, but 10 / 2 = 5, wait, 10 + 0 = 10 / 2 = 5... actually if they treated it as zero, (10+0)/2 = 5. Wait, 7.0 means they treated it as zero or did something else? Ah, wait, if team a has 10 and None, treating None as zero gives 10+0=10, /2=5. Wait, what if they included NaN as a zero denominator or something? Regardless, the listed misconception py.pandas.nan-treated-as-zero matches treating NaN incorrectly in aggregations).",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How does pandas calculate the mean for team 'a' when one of its values is None?",
+          "answer": "Pandas treats the `None` as a zero when it does the aggregation, so for team ‘a’ it adds 10 + 0 and then divides by the two rows, giving a mean of 5.0.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "If team 'a' had values [10, None], what would you expect df['pts'].sum() and df['pts'].count() to return?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.nan-treated-as-zero",
+                "follow_up": "If team 'a' had values [10, None], what would you expect df['pts'].sum() and df['pts'].count() to return?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Pandas treats the `None` as a zero when it does the aggregation, so for team ‘a’ it adds 10 + 0 and then divides by the two rows, giving a mean of 5.0.",
+                "evidence_reason": "The candidate explicitly asserts that pandas treats None as zero during aggregation, which directly matches the listed misconception py.pandas.nan-treated-as-zero.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.nan-treated-as-zero",
+                "follow_up": "What is the count of non-missing values in the 'pts' column for team 'a'?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Pandas treats the `None` as a zero when it does the aggregation, so for team ‘a’ it adds 10 + 0 and then divides by the two rows, giving a mean of 5.0.",
+                "evidence_reason": "The candidate explicitly claims that pandas treats None as zero during aggregation and divides by two rows to get 5.0, matching the misconception that NaN is treated as zero.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.nan-treated-as-zero",
+                "follow_up": "If team 'a' had values [10, None], how many non-missing values does pandas count for team 'a', and what does it divide the sum by?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Pandas treats the `None` as a zero when it does the aggregation, so for team ‘a’ it adds 10 + 0 and then divides by the two rows",
+                "evidence_reason": "The candidate explicitly states that pandas treats None as zero and divides by the total number of rows (two rows), matching the misconception that NaN is treated as zero.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Pandas treats the `None` as a zero when it does the aggregation, so for team ‘a’ it adds 10 + 0 and then divides by the two rows, giving a mean of 5.0.",
+            "evidence_reason": "The candidate explicitly asserts that pandas treats None as zero during aggregation, which directly matches the listed misconception py.pandas.nan-treated-as-zero.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If team 'a' had values [10, None], what would you expect df['pts'].sum() and df['pts'].count() to return?",
+          "answer": "I’d expect the sum to treat the missing value as zero, so df['pts'].sum() would be 10, and the count would include both rows, giving df['pts'].count() of 2.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "If a column has values [5, None], what does count() return and why?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.nan-treated-as-zero",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "I’d expect the sum to treat the missing value as zero",
+                "evidence_reason": "The candidate explicitly states the belief that missing values are treated as zero during aggregation.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.nan-treated-as-zero",
+                "follow_up": "If a column has values [5, None], what does count() return and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "I’d expect the sum to treat the missing value as zero",
+                "evidence_reason": "The candidate explicitly states the belief that missing values are treated as zero during aggregation.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.nan-treated-as-zero",
+                "follow_up": "If a column has 10 and NaN, what does count() return?",
+                "confidence_expressed": "high",
+                "supporting_quote": "I’d expect the sum to treat the missing value as zero",
+                "evidence_reason": "The candidate explicitly states that missing values are treated as zero in calculations like sum, matching the listed misconception py.pandas.nan-treated-as-zero.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "I’d expect the sum to treat the missing value as zero",
+            "evidence_reason": "The candidate explicitly states the belief that missing values are treated as zero during aggregation.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that pandas treats NaN as zero during aggregations (specifically stating the mean of team a is 5.0 and sum treats missing values as zero), which falls under the listed misconception py.pandas.nan-treated-as-zero.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate missed that group a's mean is 10.0 (because NaN is skipped, not treated as 0) and that count() ignores missing values returning 3, showing misconceptions covered in the rubric.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -1.6827,
+          "se": 0.6829,
+          "level": 0,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-014",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists misconceptions not yet probed: sql.indexes-performance.composite-any-column, sql.indexes-performance.function-on-column-uses-index, sql.indexes-performance.index-always-helps",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "Even if the (customer_id, order_date) index exists, the planner may still choose a sequential scan when the predicate matches a large fraction of rows (or the table is tiny), when the WHERE clause applies a function or expression to a indexed column (e.g., EXTRACT(YEAR FROM order_date)=2024), or when the query filters only on order_date, which is the second column of the composite index and therefore cannot be used efficiently without a leading customer_id condition.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three reasons why EXPLAIN might show a full table scan: selectivity/table size, a function or expression on the column, and querying on the non-leading column of a composite index.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three reasons why EXPLAIN might show a full table scan: selectivity/table size, a function or expression on the column, and querying on the non-leading column of a composite index.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -1.6827,
+          "se": 0.6829,
+          "level": 0,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-linked-lists",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.68); level 1 is nearest its estimate -1.68; lists a suspected misconception to confirm: ds.arrays-strings.front-insert-constant",
+      "prompt": "You need to delete the item at position k from a sequence of n items. Compare doing this on a Python list (`del lst[k]`) and on a singly linked list that you walk from the head. In each case, how much work goes into reaching position k, and how much into removing the item?",
+      "answer": "In a Python list the element at position k can be accessed instantly by computing its address, so reaching that index takes constant O(1) time. However, deleting it requires shifting all later elements, which dominates the cost.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does the work required to reach and remove an item in a singly linked list compare to what you described for a Python list?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the work required to reach and remove an item in a singly linked list compare to what you described for a Python list?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the work required to reach and remove an item in a singly linked list compare to what you described for a Python list?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the work required to reach and remove an item in a singly linked list compare to what you described for a Python list?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that reaching an index in a Python list is O(1) and that deleting requires shifting later elements, but fails to discuss the singly linked list structure entirely.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that reaching an index in a Python list is O(1) and that deleting requires shifting later elements, but fails to discuss the singly linked list structure entirely.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -1.5528,
+          "se": 0.6137,
+          "level": 0,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-variables-mutability",
+        "py-collections"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 1 is nearest its estimate -0.61; covers required topics not yet tested: py-collections",
+      "prompt": "What does this code print, and why?\n\na = [1, 2, 3]\nb = a\nn = len(a)\nb.append(4)\ns = \"hi\"\ns.upper()\nprint(a, n, s)",
+      "answer": "It prints `[1, 2, 3, 4] 3 hi` because `b = a` makes `b` refer to the same list as `a`, so appending to `b` also modifies `a`; `n` was set to the length of the list before the append (3) and never updates; and `s.upper()` returns a new string but does not change `s`, which remains `\"hi\"`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output as '[1, 2, 3, 4] 3 hi' and provided accurate, complete explanations for list mutability via shared references, variable assignment timing for n, and string immutability for s.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output as '[1, 2, 3, 4] 3 hi' and provided accurate, complete explanations for list mutability via shared references, variable assignment timing for n, and string immutability for s.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -1.5528,
+          "se": 0.6137,
+          "level": 0,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-transactions"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.64); level 3 is nearest its estimate +1.95; lists misconceptions not yet probed: sql.transactions.default-isolation-prevents-all, sql.transactions.uncommitted-visible",
+      "prompt": "Two transactions run at the same time under READ COMMITTED. Both read the product's stock (10) before either writes; each then subtracts 1 in the application, writes back 9 and commits. What is the final stock, why, and how could you prevent this?",
+      "answer": "The final stock ends up as 9 because both transactions read the initial value 10 under READ COMMITTED, each subtracts 1 in the application and then write back 9, so the second write overwrites the first (a lost‑update). This can be avoided by making the decrement atomic—e.g., UPDATE products SET stock = stock‑1 WHERE id = …—or by locking the row first (SELECT … FOR UPDATE) or using a stricter isolation level such as SERIALIZABLE with retry logic.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly states the final stock is 9 due to a lost update under READ COMMITTED and provides valid fixes including an atomic update and SELECT ... FOR UPDATE.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly states the final stock is 9 due to a lost update under READ COMMITTED and provides valid fixes including an atomic update and SELECT ... FOR UPDATE.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 2.1444,
+          "se": 0.6105,
+          "level": 3,
+          "n": 5
+        },
+        "ds": {
+          "estimate": -1.5528,
+          "se": 0.6137,
+          "level": 0,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-005",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 1 is nearest its estimate -1.55; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-arrays-strings (ds.arrays-strings.append-always-copies, ds.arrays-strings.strings-mutable)",
+      "prompt": "Python strings are immutable. What does that mean for `s.upper()` and for `s += 'x'`, and what happens if you run `s[0] = 'X'`? If you build a 100,000-character string one character at a time, compare doing `s += ch` in a loop with appending each character to a list and calling `''.join(chars)` at the end.",
+      "answer": "Because strings can’t be changed, calling s.upper() actually changes s in place, and using s += 'x' just appends to the same string, while assigning to s[0] is allowed; therefore building a huge string with s += ch in a loop is usually faster than collecting characters in a list and joining them at the end.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.arrays-strings.strings-mutable",
+        "follow_up": "Can you check the id of s before and after calling s.upper() or s += 'x', or test what s[0] = 'X' actually does in Python?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.strings-mutable",
+            "follow_up": "Can you check the id of s before and after calling s.upper() or s += 'x', or test what s[0] = 'X' actually does in Python?",
+            "confidence_expressed": "high",
+            "supporting_quote": "calling s.upper() actually changes s in place, and using s += 'x' just appends to the same string, while assigning to s[0] is allowed",
+            "evidence_reason": "The candidate explicitly states the exact opposite of immutability: that upper() modifies in place, += appends to the same string, and assignment to s[0] is allowed, which matches ds.arrays-strings.strings-mutable.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.strings-mutable",
+            "follow_up": "Can you check the id of the string object before and after doing s += 'x'?",
+            "confidence_expressed": "high",
+            "supporting_quote": "calling s.upper() actually changes s in place, and using s += 'x' just appends to the same string, while assigning to s[0] is allowed",
+            "evidence_reason": "The candidate explicitly claims that strings can be changed in place, that upper() and s += 'x' modify the existing string, and that item assignment is allowed, which directly expresses the listed misconception that strings are mutable.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.strings-mutable",
+            "follow_up": "Can you check what the value of `s` is after you run `s = 'hello'; s.upper(); print(s)`?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because strings can’t be changed, calling s.upper() actually changes s in place, and using s += 'x' just appends to the same string, while assigning to s[0] is allowed",
+            "evidence_reason": "The candidate explicitly claims that string methods modify the string in place and that index assignment like s[0] is allowed, which directly expresses the listed misconception that strings are mutable despite starting the sentence by claiming they cannot be changed.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "calling s.upper() actually changes s in place, and using s += 'x' just appends to the same string, while assigning to s[0] is allowed",
+        "evidence_reason": "The candidate explicitly states the exact opposite of immutability: that upper() modifies in place, += appends to the same string, and assignment to s[0] is allowed, which matches ds.arrays-strings.strings-mutable.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "Can you check the id of s before and after calling s.upper() or s += 'x', or test what s[0] = 'X' actually does in Python?",
+          "answer": "Sure, if you print id(s) before and after s.upper() or s += 'x' you’ll see the same value, and actually assigning s[0] = 'X' will just modify that character in place without any error.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.strings-mutable",
+            "follow_up": "What happens if you try to run s = 'hello'; s[0] = 'H' in your Python interpreter?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.strings-mutable",
+                "follow_up": "What happens if you try to run s = 'hello'; s[0] = 'H' in your Python interpreter?",
+                "confidence_expressed": "high",
+                "supporting_quote": "assigning s[0] = 'X' will just modify that character in place without any error",
+                "evidence_reason": "The candidate explicitly asserts that string indexing assignment modifies the character in place without raising an error, directly demonstrating the listed belief that Python strings are mutable.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.strings-mutable",
+                "follow_up": "What specific exception or error type do you expect to see if you try to execute s[0] = 'X' on a string in Python?",
+                "confidence_expressed": "high",
+                "supporting_quote": "assigning s[0] = 'X' will just modify that character in place without any error",
+                "evidence_reason": "The candidate explicitly states that item assignment on a string modifies it in place without error, directly demonstrating the belief that strings are mutable.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.strings-mutable",
+                "follow_up": "What happens if you try to run s = 'hello'; s[0] = 'H' in your Python interpreter?",
+                "confidence_expressed": "high",
+                "supporting_quote": "assigning s[0] = 'X' will just modify that character in place without any error",
+                "evidence_reason": "The candidate explicitly asserts that string indexing and assignment modifies the character in place without raising an error, directly expressing the belief that Python strings are mutable.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "assigning s[0] = 'X' will just modify that character in place without any error",
+            "evidence_reason": "The candidate explicitly asserts that string indexing assignment modifies the character in place without raising an error, directly demonstrating the listed belief that Python strings are mutable.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens if you try to run s = 'hello'; s[0] = 'H' in your Python interpreter?",
+          "answer": "If you try `s = 'hello'; s[0] = 'H'` the interpreter will silently change the first character of the string to `'H'`, so `s` becomes `'Hello'` without raising any error.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.strings-mutable",
+            "follow_up": "What specific exception or error type do you expect Python to raise if you try to mutate an immutable object like a tuple or a string, or have you ever actually run s[0] = 'H' in an interactive interpreter?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.strings-mutable",
+                "follow_up": "What specific exception or error type do you expect Python to raise if you try to mutate an immutable object like a tuple or a string, or have you ever actually run s[0] = 'H' in an interactive interpreter?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the interpreter will silently change the first character of the string to `'H'`, so `s` becomes `'Hello'` without raising any error.",
+                "evidence_reason": "The candidate explicitly asserts that Python strings can be mutated in place and that s[0] = 'H' succeeds without error, which directly matches the misconception that strings are mutable.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.strings-mutable",
+                "follow_up": "Can you actually run this exact assignment in a Python terminal right now and paste the exact traceback or output it produces?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the interpreter will silently change the first character of the string to `'H'`, so `s` becomes `'Hello'` without raising any error.",
+                "evidence_reason": "The candidate asserts with high confidence that modifying a string by index is supported and succeeds silently, which directly matches the misconception that Python strings are mutable.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.strings-mutable",
+                "follow_up": "What specific exception or error type do you expect Python to raise if you try to modify any element of a tuple, and why might that be similar to strings?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you try `s = 'hello'; s[0] = 'H'` the interpreter will silently change the first character of the string to `'H'`",
+                "evidence_reason": "The candidate explicitly asserts a confident, incorrect belief that Python strings can be mutated in place via item assignment without raising an error.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the interpreter will silently change the first character of the string to `'H'`, so `s` becomes `'Hello'` without raising any error.",
+            "evidence_reason": "The candidate explicitly asserts that Python strings can be mutated in place and that s[0] = 'H' succeeds without error, which directly matches the misconception that strings are mutable.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that Python strings are mutable, that methods like upper() and += modify strings in place, that item assignment works without error, and that repeated += is faster than list joining. These errors persist even after follow-up prompts.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that strings are mutable, claiming that s.upper() changes s in place, s += 'x' appends to the same string, and s[0] = 'X' is allowed, which triggers the misconception that strings are mutable and earns a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 2.1444,
+          "se": 0.6105,
+          "level": 3,
+          "n": 5
+        },
+        "ds": {
+          "estimate": -1.7881,
+          "se": 0.5829,
+          "level": 0,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-005",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 15,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-subqueries-cte",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +2.14; lists misconceptions not yet probed: sql.null.not-in-with-null, sql.subqueries-cte.correlated-runs-once",
+      "prompt": "Both columns are meant to answer 'does nobody report to this person?'. What does the query return, and why do the two columns disagree?\n\nSELECT s.name,\n       CASE WHEN s.id NOT IN (SELECT manager_id FROM staff)\n            THEN 'yes' ELSE 'no' END AS not_in_check,\n       CASE WHEN NOT EXISTS (SELECT 1 FROM staff r WHERE r.manager_id = s.id)\n            THEN 'yes' ELSE 'no' END AS not_exists_check\nFROM staff s\nORDER BY s.id;\n\nTable staff:\nid | name | manager_id\n1 | Asha | NULL\n2 | Ben | 1\n3 | Chen | 1\n4 | Dana | 2\n5 | Eli | 2",
+      "answer": "The first column always returns “no” because the subquery returns a NULL manager_id, so the predicate `s.id NOT IN (…)` evaluates to UNKNOWN for every row (NULL in the list makes NOT IN never true) and the CASE falls to the ELSE branch. The second column correctly returns “yes” for Chen, Dana and Eli (and “no” for Asha and Ben) because NOT EXISTS is evaluated per row and simply checks whether any staff row has that person’s id as manager, which works even when the subquery contains NULLs.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the NOT IN column returns 'no' for all rows due to the NULL value making the condition UNKNOWN, and correctly explained the per-row evaluation of the NOT EXISTS column.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the NOT IN column returns 'no' for all rows due to the NULL value making the condition UNKNOWN, and correctly explained the per-row evaluation of the NOT EXISTS column.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 2.3021,
+          "se": 0.5867,
+          "level": 3,
+          "n": 6
+        },
+        "ds": {
+          "estimate": -1.7881,
+          "se": 0.5829,
+          "level": 0,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 26,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 1,
+        "estimate": -0.3256,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.483581,
+        "level_probabilities": {
+          "0": 0.052999,
+          "1": 0.483581,
+          "2": 0.424654,
+          "3": 0.038767
+        },
+        "meets_minimum": null
+      },
+      "sql": {
+        "level": 3,
+        "estimate": 2.3021,
+        "se": 0.5867,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.998055,
+        "level_probabilities": {
+          "0": 0.0,
+          "1": 1e-06,
+          "2": 0.001945,
+          "3": 0.998055
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 0,
+        "estimate": -1.7881,
+        "se": 0.5829,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.811059,
+        "level_probabilities": {
+          "0": 0.811059,
+          "1": 0.185772,
+          "2": 0.003166,
+          "3": 3e-06
+        },
+        "meets_minimum": false
+      }
+    },
+    "decision": "not_fit",
+    "decision_reason": "ds is below the job minimum (level 1; estimated below level 1).",
+    "misconceptions": [
+      {
+        "id": "py.pandas.positional-alignment",
+        "confirmed": false,
+        "evidence_turns": [
+          1
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L2-007",
+            "turn": 1,
+            "reply_index": 0,
+            "reply_text": "It prints:\n```\n['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10, 30, 25, NaN]\n```",
+            "vote_share": 1.0,
+            "supporting_quote": "[10, 30, 25, NaN]",
+            "quote_start": 54,
+            "quote_end": 71,
+            "reason": "The candidate believes the resulting bonus list has the NaN at the end (positional matching: index 3 gets NaN instead of index 1), which directly reflects the positional alignment misconception."
+          },
+          {
+            "question_id": "PY-L2-007",
+            "turn": 1,
+            "reply_index": 1,
+            "reply_text": "When we assign `passed[\"score\"] - 60` to `df[\"bonus\"]`, pandas just lines up the values by their row order, so the first element of the passed series (10) goes to the first row of `df`, the second (30) to the second row, and so on, filling any missing spots with NaN.",
+            "vote_share": 1.0,
+            "supporting_quote": "pandas just lines up the values by their row order, so the first element of the passed series (10) goes to the first row of `df`, the second (30) to the second row",
+            "quote_start": 56,
+            "quote_end": 219,
+            "reason": "The candidate explicitly states that pandas lines up values by row order (position) rather than by index labels, which directly matches the positional-alignment misconception."
+          },
+          {
+            "question_id": "PY-L2-007",
+            "turn": 1,
+            "reply_index": 2,
+            "reply_text": "If you shuffle the rows in df first, the bonus values will still line up by their new row order—so the first row after shuffling gets the first computed bonus (10), the second gets the second (30), and any rows that don’t have a matching bonus will get NaN.",
+            "vote_share": 1.0,
+            "supporting_quote": "the bonus values will still line up by their new row order—so the first row after shuffling gets the first computed bonus",
+            "quote_start": 37,
+            "quote_end": 158,
+            "reason": "The candidate explicitly states that pandas lines up bonus values by their new row order after shuffling, directly supporting the misconception that assignment matches values by position rather than index label."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.sorting-searching.binary-search-unsorted",
+        "confirmed": false,
+        "evidence_turns": [
+          3
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "For a single query you should sort the list first and then run a binary search, because binary search can be applied directly to the unsorted data and will find the price in logarithmic time. If you have thousands of queries, sorting once still gives you the advantage of fast binary‑search lookups for each subsequent query.",
+            "vote_share": 1.0,
+            "supporting_quote": "binary search can be applied directly to the unsorted data",
+            "quote_start": 88,
+            "quote_end": 146,
+            "reason": "The candidate explicitly asserts that binary search can be used directly on unsorted data, matching the listed misconception."
+          }
+        ],
+        "status": "disputed",
+        "contradicting": [
+          {
+            "misconception_id": "ds.sorting-searching.binary-search-unsorted",
+            "supporting_quote": "binary search will always be O(log n) even if the list isn’t sorted",
+            "quote_start": 105,
+            "quote_end": 172,
+            "reason": "The candidate explicitly believes binary search works on unsorted lists, which contradicts the definition of the misconception where the belief is being upheld rather than rejected.",
+            "vote_share": 0.6666666666666666,
+            "question_id": "DS-L1-002",
+            "turn": 6,
+            "reply_index": 0,
+            "reply_text": "The `if cid in ids:` statement runs in constant time because Python treats it as a single operation, and binary search will always be O(log n) even if the list isn’t sorted, so it will reliably find the ID faster than any loop."
+          }
+        ]
+      },
+      {
+        "id": "ds.complexity.short-code-is-fast",
+        "confirmed": false,
+        "evidence_turns": [
+          6
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L1-002",
+            "turn": 6,
+            "reply_index": 0,
+            "reply_text": "The `if cid in ids:` statement runs in constant time because Python treats it as a single operation, and binary search will always be O(log n) even if the list isn’t sorted, so it will reliably find the ID faster than any loop.",
+            "vote_share": 1.0,
+            "supporting_quote": "The `if cid in ids:` statement runs in constant time because Python treats it as a single operation",
+            "quote_start": 0,
+            "quote_end": 99,
+            "reason": "The candidate explicitly asserts that a single-line membership test runs in constant time, directly matching the belief that shorter or built-in code runs faster in Big-O terms."
+          },
+          {
+            "question_id": "DS-L1-002",
+            "turn": 6,
+            "reply_index": 1,
+            "reply_text": "When Python checks `cid in ids`, it first builds a temporary hash table from the list elements and then does a constant‑time hash lookup, so the whole operation finishes in essentially O(1) even for a million‑item list.",
+            "vote_share": 1.0,
+            "supporting_quote": "it first builds a temporary hash table from the list elements and then does a constant‑time hash lookup, so the whole operation finishes in essentially O(1)",
+            "quote_start": 33,
+            "quote_end": 189,
+            "reason": "The candidate explicitly asserts that membership testing in a list builds a temporary hash table and runs in constant-time O(1), directly expressing the belief that a built-in operation/operator automatically provides constant-time performance."
+          },
+          {
+            "question_id": "DS-L1-002",
+            "turn": 6,
+            "reply_index": 2,
+            "reply_text": "Doubling the list just means Python has to look through a slightly larger block of memory, so the `in` check stays essentially constant‑time; you might notice a barely perceptible slowdown, but the operation still runs in the same O(1)‑like fashion.",
+            "vote_share": 1.0,
+            "supporting_quote": "the `in` check stays essentially constant‑time; you might notice a barely perceptible slowdown, but the operation still runs in the same O(1)‑like fashion.",
+            "quote_start": 94,
+            "quote_end": 249,
+            "reason": "The candidate explicitly asserts that membership testing on a list remains constant-time even as the size of the list doubles."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.arrays-strings.front-insert-constant",
+        "confirmed": false,
+        "evidence_turns": [
+          8
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L1-004",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "Because each `pop(0)` call creates a new temporary list internally, the loop ends up rebuilding the whole list each time, so the overall runtime grows linearly with the number of jobs; using a simple for‑loop over the list or converting it to a NumPy array would make the processing much faster.",
+            "vote_share": 1.0,
+            "supporting_quote": "the overall runtime grows linearly with the number of jobs",
+            "quote_start": 125,
+            "quote_end": 183,
+            "reason": "The candidate explicitly thinks the runtime is linear (O(n)) for the whole draining process because they do not realize that each pop(0) takes linear time, making the total complexity quadratic."
+          },
+          {
+            "question_id": "DS-L1-004",
+            "turn": 8,
+            "reply_index": 1,
+            "reply_text": "When you pop the first element, Python just marks that slot as empty and moves the internal pointer so the next element becomes the new start, leaving the rest of the list unchanged in memory.",
+            "vote_share": 1.0,
+            "supporting_quote": "Python just marks that slot as empty and moves the internal pointer so the next element becomes the new start, leaving the rest of the list unchanged in memory.",
+            "quote_start": 32,
+            "quote_end": 192,
+            "reason": "The candidate explicitly asserts that `pop(0)` does not affect the rest of the list in memory and only moves an internal pointer, which directly reflects the listed misconception that front removal operations on arrays/lists are cheap/constant-time pointer adjustments rather than shifting operations."
+          },
+          {
+            "question_id": "DS-L1-004",
+            "turn": 8,
+            "reply_index": 2,
+            "reply_text": "The indices don’t change – after you pop the first item the list just pretends the next element is now at index 0, so all the other elements keep the same index numbers they had before.",
+            "vote_share": 1.0,
+            "supporting_quote": "all the other elements keep the same index numbers they had before",
+            "quote_start": 118,
+            "quote_end": 184,
+            "reason": "The candidate explicitly asserts that elements do not shift their relative positions or indices when the front item is removed, which directly reflects the misconception that modifying the front of an array is a constant-time operation without element movement."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.pandas.nan-treated-as-zero",
+        "confirmed": false,
+        "evidence_turns": [
+          9
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L2-014",
+            "turn": 9,
+            "reply_index": 0,
+            "reply_text": "It will print the original column names `['team', 'pts']`, then the average points per team as `[7.0, 6.0]`, and finally `4 4` for the count and length.",
+            "vote_share": 1.0,
+            "supporting_quote": "then the average points per team as `[7.0, 6.0]`",
+            "quote_start": 59,
+            "quote_end": 107,
+            "reason": "The candidate calculated team a's average as 7.0 (treating the None/NaN as 0: 10 + 0 = 10, divided by 2 = 5 is wrong, but 10 / 2 = 5, wait, 10 + 0 = 10 / 2 = 5... actually if they treated it as zero, (10+0)/2 = 5. Wait, 7.0 means they treated it as zero or did something else? Ah, wait, if team a has 10 and None, treating None as zero gives 10+0=10, /2=5. Wait, what if they included NaN as a zero denominator or something? Regardless, the listed misconception py.pandas.nan-treated-as-zero matches treating NaN incorrectly in aggregations)."
+          },
+          {
+            "question_id": "PY-L2-014",
+            "turn": 9,
+            "reply_index": 1,
+            "reply_text": "Pandas treats the `None` as a zero when it does the aggregation, so for team ‘a’ it adds 10 + 0 and then divides by the two rows, giving a mean of 5.0.",
+            "vote_share": 1.0,
+            "supporting_quote": "Pandas treats the `None` as a zero when it does the aggregation, so for team ‘a’ it adds 10 + 0 and then divides by the two rows, giving a mean of 5.0.",
+            "quote_start": 0,
+            "quote_end": 151,
+            "reason": "The candidate explicitly asserts that pandas treats None as zero during aggregation, which directly matches the listed misconception py.pandas.nan-treated-as-zero."
+          },
+          {
+            "question_id": "PY-L2-014",
+            "turn": 9,
+            "reply_index": 2,
+            "reply_text": "I’d expect the sum to treat the missing value as zero, so df['pts'].sum() would be 10, and the count would include both rows, giving df['pts'].count() of 2.",
+            "vote_share": 1.0,
+            "supporting_quote": "I’d expect the sum to treat the missing value as zero",
+            "quote_start": 0,
+            "quote_end": 53,
+            "reason": "The candidate explicitly states the belief that missing values are treated as zero during aggregation."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.arrays-strings.strings-mutable",
+        "confirmed": false,
+        "evidence_turns": [
+          14
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L1-005",
+            "turn": 14,
+            "reply_index": 0,
+            "reply_text": "Because strings can’t be changed, calling s.upper() actually changes s in place, and using s += 'x' just appends to the same string, while assigning to s[0] is allowed; therefore building a huge string with s += ch in a loop is usually faster than collecting characters in a list and joining them at the end.",
+            "vote_share": 1.0,
+            "supporting_quote": "calling s.upper() actually changes s in place, and using s += 'x' just appends to the same string, while assigning to s[0] is allowed",
+            "quote_start": 34,
+            "quote_end": 167,
+            "reason": "The candidate explicitly states the exact opposite of immutability: that upper() modifies in place, += appends to the same string, and assignment to s[0] is allowed, which matches ds.arrays-strings.strings-mutable."
+          },
+          {
+            "question_id": "DS-L1-005",
+            "turn": 14,
+            "reply_index": 1,
+            "reply_text": "Sure, if you print id(s) before and after s.upper() or s += 'x' you’ll see the same value, and actually assigning s[0] = 'X' will just modify that character in place without any error.",
+            "vote_share": 1.0,
+            "supporting_quote": "assigning s[0] = 'X' will just modify that character in place without any error",
+            "quote_start": 104,
+            "quote_end": 183,
+            "reason": "The candidate explicitly asserts that string indexing assignment modifies the character in place without raising an error, directly demonstrating the listed belief that Python strings are mutable."
+          },
+          {
+            "question_id": "DS-L1-005",
+            "turn": 14,
+            "reply_index": 2,
+            "reply_text": "If you try `s = 'hello'; s[0] = 'H'` the interpreter will silently change the first character of the string to `'H'`, so `s` becomes `'Hello'` without raising any error.",
+            "vote_share": 1.0,
+            "supporting_quote": "the interpreter will silently change the first character of the string to `'H'`, so `s` becomes `'Hello'` without raising any error.",
+            "quote_start": 37,
+            "quote_end": 169,
+            "reason": "The candidate explicitly asserts that Python strings can be mutated in place and that s[0] = 'H' succeeds without error, which directly matches the misconception that strings are mutable."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.index-needs-scan",
+      "ds.arrays-strings.strings-mutable",
+      "ds.complexity.count-loops-for-big-o",
+      "ds.complexity.short-code-is-fast",
+      "ds.linked-lists.index-constant-time",
+      "ds.sorting-searching.binary-search-half-of-linear",
+      "ds.sorting-searching.binary-search-unsorted",
+      "ds.sorting-searching.sorting-is-linear",
+      "py.control-flow.no-short-circuit",
+      "py.control-flow.or-distributes",
+      "py.functions-scope.print-is-return",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.string-method-mutates",
+      "py.variables-mutability.variable-holds-expression",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.null.not-in-with-null",
+      "sql.subqueries-cte.correlated-runs-once",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.subqueries-cte.in-subquery-duplicates",
+      "sql.transactions.default-isolation-prevents-all",
+      "sql.transactions.uncommitted-visible",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-pandas",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings"
+      ],
+      "untested": [
+        "py-comprehensions-generators",
+        "sql-select-filter",
+        "ds-hash-tables"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: not fit. ds is below the job minimum (level 1; estimated below level 1). Estimated levels: py level 1 (needs 2), sql level 3 (needs 2), ds below level 1 (needs 1). Suspected (insufficient corroboration) misconception: Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN. Disputed (contradictory evidence; not confirmed) misconception: Believes binary search works correctly on unsorted data, or does not know why sorted order is required for it. Suspected (insufficient corroboration) misconception: Believes that shorter code, or a single built-in call or operator (such as `x in lst`, `sorted(...)` or `lst.index(x)`), runs in constant time or is automatically more efficient than an explicit loop. Suspected (insufficient corroboration) misconception: Believes inserting or deleting at the front or middle of an array/Python list (insert(0, x), pop(0), inserting into a sorted array) is O(1) like appending at the end, unaware that every later element must shift. Suspected (insufficient corroboration) misconception: Believes missing values (NaN) count as 0 in aggregations such as mean() or sum(), not knowing pandas skips them by default. Suspected (insufficient corroboration) misconception: Believes strings can be changed in place, so methods like upper() or replace(), or `s += t`, modify the existing string object, unaware that Python strings are immutable and these operations build new strings."
+  },
+  "usage": {
+    "llm_calls": 142,
+    "api_calls": 123,
+    "input_tokens": 162747,
+    "output_tokens": 13871,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 142,
+        "api_calls": 123,
+        "input_tokens": 162747,
+        "output_tokens": 13871
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 3,
+      "ds": 0
+    },
+    "fit": false,
+    "misconceptions": [
+      "py.pandas.positional-alignment"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

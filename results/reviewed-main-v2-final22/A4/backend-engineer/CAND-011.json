@@ -1,0 +1,1677 @@
+{
+  "interview_id": "A4-backend-engineer-CAND-011-0",
+  "system": "A4",
+  "config": {
+    "system": "A4",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "single",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 1,
+    "misconception_confirmations": 1,
+    "misconception_confirmation_unit": "reply",
+    "diagnostic_evidence": false,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-011",
+  "started_at": "2026-11-14T05:42:31Z",
+  "finished_at": "2026-11-14T05:42:31Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-exceptions",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "`try` encloses code that may raise an exception; if an exception occurs the remaining statements in the `try` are skipped and Python jumps to the first `except` clause (checked in order) whose type matches, runs that handler, then continues after the whole `try…except…else…finally` block. `else` runs only when the `try` finishes without an exception, and `finally` is executed in all cases—including when the `try` or an `except` block executes a `return`—just before control actually leaves the statement.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, noted that the first matching except clause in order runs, and correctly stated that finally runs even when a return statement is executed.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, noted that the first matching except clause in order runs, and correctly stated that finally runs even when a return statement is executed.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-subqueries-cte",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-joins",
+      "prompt": "A teammate wants the number of employees in each department. What does this query return, and why?\n\nWITH staff_per_dept AS (\n  SELECT d.name, e.id\n  FROM departments d\n  JOIN employees e ON e.dept_id = d.id\n)\nSELECT d.name, COUNT(d.name) AS n_rows, COUNT(e.dept_id) AS n_staff\nFROM departments d, employees e\nGROUP BY d.name\nORDER BY d.name;\n\nTable departments:\nid | name\n1 | Sales\n2 | IT\n3 | HR\n\nTable employees:\nid | name | dept_id\n1 | Asha | 1\n2 | Ben | 1\n3 | Chen | 2\n4 | Dana | NULL",
+      "answer": "The query returns three rows (one per department) with n_rows always 4 and n_staff always 3, because the CTE is never used and the FROM clause does a Cartesian product of all departments with all employees; COUNT(d.name) counts the four rows in each group, while COUNT(e.dept_id) ignores the single NULL dept_id from Dana, giving three.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the counts (4 and 3 for every department), explained the unused CTE, the Cartesian product from the missing join condition, and the behavior of COUNT with null values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the counts (4 and 3 for every department), explained the unused CTE, the Cartesian product from the missing join condition, and the behavior of COUNT with null values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-hash-tables, ds-trees-bst",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "I’d go with a hash table because it gives O(1) time for both inserting new scores and retrieving the whole leaderboard, so it’s the simplest and fastest choice.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "follow_up": "If you add several scores to a hash table in a random order and then immediately iterate through its keys, in what order do they come out?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you add several scores to a hash table in a random order and then immediately iterate through its keys, in what order do they come out?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "I figured a hash table works because it can keep the scores keyed by player ID and still let us walk through the entries in the order they were added, which effectively gives us the leaderboard without any extra work.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate chose a hash table and claimed it provides O(1) time for retrieving the whole leaderboard in sorted order, which demonstrates the misconception that hash tables keep keys sorted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate chose a hash table and incorrectly claimed it provides O(1) time for retrieving the whole leaderboard in order, showing a complete misunderstanding of hash table properties and hitting the listed misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: py-concurrency",
+      "prompt": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+      "answer": "`counter += 1` is a read‑modify‑write operation that can be interleaved between the two OS threads; the GIL may be released between the bytecode that loads the old value and the one that stores the new value, so both threads can read the same value and one increment gets lost, which is why the final count can be below 200 000 (a lock would prevent it). In asyncio the two coroutines run on a single thread and only switch at `await` points, so an increment that contains no `await` cannot be pre‑empted and no race occurs (races appear only when the read and write are separated by an `await`).",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that counter += 1 is non-atomic and subject to race conditions under threads, correctly notes that a lock is needed, and accurately explains that asyncio coroutines on a single thread only switch at await points, preventing races in synchronous blocks.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that counter += 1 is non-atomic and subject to race conditions under threads, correctly notes that a lock is needed, and accurately explains that asyncio coroutines on a single thread only switch at await points, preventing races in synchronous blocks.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: sql-indexes-performance",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "Because the optimizer might think the index is outdated or corrupted, it could ignore it and scan the whole table, especially if the query includes a JOIN or a GROUP BY that the index doesn’t cover.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.indexes-performance.index-always-helps",
+        "follow_up": "If a table has 10 rows and a query wants to retrieve 8 of them, how do you think the database reads them faster, by using the index or scanning the whole table directly?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": "If a table has 10 rows and a query wants to retrieve 8 of them, how do you think the database reads them faster, by using the index or scanning the whole table directly?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "I think the optimizer might skip the index if it expects the query to return most of the rows, or if the WHERE clause uses a range that spans the whole index, and also because the index can’t help when the query selects columns that aren’t part of the indexed key, so it just does a full scan.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate mentions selectivity (expecting most rows), which is a key point, but misses the issues of functions/expressions on columns and using only the non-leading column of a composite index.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate failed to mention any of the three key points (low selectivity/planner cost, function on column, or non-leading column of a composite index), instead attributing the full scan to the optimizer thinking the index is outdated or corrupted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-linked-lists",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; covers required topics not yet tested: ds-linked-lists",
+      "prompt": "Compare an array (like a Python list) and a singly linked list for two tasks: reading the 1,000th element, and inserting a new element at the very front. Which structure is faster for each task, and why?",
+      "answer": "Front insertion is O(1) in a singly linked list (just relink the head) but O(n) in an array because all existing elements must be shifted.",
+      "diagnosis": {
+        "cause": "slip",
+        "misconception_id": null,
+        "follow_up": "What about the other part of the question regarding reading the 1,000th element in each data structure?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "What about the other part of the question regarding reading the 1,000th element in each data structure?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "In a singly linked list, inserting at the front only requires creating a new node and updating the head pointer, which takes constant time O(1). In an array (Python list), inserting at the front forces every existing element to be shifted one position to make room, so the operation takes linear time O(n).",
+          "truth": {
+            "outcome": "partial",
+            "misconception_id": null,
+            "expected_score": 1,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that front insertion is O(1) for a linked list and O(n) for an array, but completely failed to address the other task of reading the 1,000th element as required by the question.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained front insertion for both a linked list and an array, but completely omitted the task of reading the 1,000th element.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-011",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; covers required topics not yet tested: py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "I know that calling a generator function doesn’t execute its body; the code runs only when next() or iteration starts.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that calling a generator function does not execute its body immediately, but the answer is incomplete because it fails to evaluate the full code output and explain the remaining key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that calling a generator function does not execute its body immediately, but the answer is incomplete because it fails to evaluate the full code output and explain the remaining key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-transactions"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 3 is nearest its estimate +0.76; covers required topics not yet tested: sql-transactions",
+      "prompt": "Two transactions run at the same time under READ COMMITTED. Both read the product's stock (10) before either writes; each then subtracts 1 in the application, writes back 9 and commits. What is the final stock, why, and how could you prevent this?",
+      "answer": "The final stock will end up as 8 because each transaction reads the original value, subtracts one and then writes its result, so the two decrements are both applied. To avoid this you’d need to make the update atomic—e.g., wrap the read‑modify‑write in a single statement or use a lock so only one transaction can change the row at a time.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.transactions.default-isolation-prevents-all",
+        "follow_up": "If both transactions read the value 10 at the exact same time under READ COMMITTED, what value does the second transaction actually overwrite when it writes back 9?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.default-isolation-prevents-all",
+            "follow_up": "If both transactions read the value 10 at the exact same time under READ COMMITTED, what value does the second transaction actually overwrite when it writes back 9?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "I think the final stock will still be 10 because each transaction will see the other’s update and effectively cancel each other out, so the net effect is zero change. The read‑committed level makes the database automatically merge the two writes back to the original value.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate's final answer and follow-up display multiple fundamental misconceptions about READ COMMITTED and transaction isolation, claiming the final stock will be 8 and then 10 due to database merging, and failing to correctly explain the lost update mechanism.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly stated the final stock is 8 instead of 9, failing to recognize the classic lost update problem where the second write overwrites the first.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.3903,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-005",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-stacks-queues",
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 1 is nearest its estimate -0.76; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-arrays-strings (ds.complexity.count-loops-for-big-o, ds.complexity.short-code-is-fast)",
+      "prompt": "A script keeps pending jobs in a Python list: it adds jobs with `jobs.append(job)` and takes the next one with `jobs.pop(0)`. It works fine with 100 jobs, but draining a backlog of one million jobs with `while jobs: handle(jobs.pop(0))` is extremely slow. Why? What is the total cost of draining the list, and what would you use instead?",
+      "answer": "I would use collections.deque since it provides O(1) append and popleft, making draining the queue O(n).",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          1,
+          2,
+          2
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified collections.deque, the O(1) complexity of popleft, and the O(n) total cost. Although they didn't explicitly explain the shifting mechanism of list.pop(0) in their very brief answer, they understood the core issue and provided the exact correct solution.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          1,
+          2,
+          2
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified collections.deque, the O(1) complexity of popleft, and the O(n) total cost. Although they didn't explicitly explain the shifting mechanism of list.pop(0) in their very brief answer, they understood the core issue and provided the exact correct solution.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.3903,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.4964,
+          "se": 0.6709,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.67); level 2 is nearest its estimate -0.50; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-linked-lists (ds.hash-tables.lookup-is-linear, ds.linked-lists.pointer-order-irrelevant)",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map stores the values while the linked list just keeps them in the order they were inserted, so on a hit we look up the key in the map, then move the corresponding node to the front of the list by copying its data over the head element; because both structures are constant‑size, get and put end up being constant‑time operations on average.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+        "follow_up": "If you need to move a node from the middle of a linked list to the front, do you need to shift the data of the other nodes, or just change some pointers?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "If you need to move a node from the middle of a linked list to the front, do you need to shift the data of the other nodes, or just change some pointers?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "The hash map lets us quickly find the entry’s value and the list just gives us a place to move that entry to the front, so on a hit we simply look up the key, replace the head node’s contents with the found value and treat the old head as the most‑recently used; because we only do a couple of lookups and assignments, both get and put end up being constant‑time on average.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate believes that moving a node to the front involves copying data over the head element rather than rewiring pointers, which shows a fundamental misunderstanding of doubly linked list operations.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly states that moving a node involves copying its data over the head element rather than rewiring pointers, and misses the roles of the doubly linked list in maintaining recency order and handling eviction at the tail.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.3903,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.7795,
+          "se": 0.6123,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.66); level 3 is nearest its estimate +1.23; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-functions-scope (py.functions-scope.assign-updates-global, py.functions-scope.mutable-default-fresh)",
+      "prompt": "What does this code print, and why?\n\ncount = 100\ndef make_counter(log=[]):\n    count = 0\n    def step():\n        nonlocal count\n        count += 1\n        log.append(count)\n        return count\n    return step, log\n\nc1, log1 = make_counter()\nc2, log2 = make_counter()\nc1(); c1()\nprint(c1(), c2(), count)\nprint(log1, log1 is log2)",
+      "answer": "It prints `3 1 100` because each `make_counter` call creates its own `count` that `step` increments via `nonlocal`, so `c1` reaches 3 while `c2` is still at 1 and the global `count` remains the original 100; the default `log` list is created once, so both counters share it, resulting in `[1, 2, 3, 1] True`.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the outputs and explained the separate closures, the local vs global count, and the shared mutable default argument.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the outputs and explained the separate closures, the local vs global count, and the shared mutable default argument.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.3903,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.7795,
+          "se": 0.6123,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-aggregation",
+        "sql-schema-constraints",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.65); level 2 is nearest its estimate +0.39; covers required topics not yet tested: sql-schema-constraints",
+      "prompt": "Each product row stores its supplier's phone number. What does this query return, and what does the result tell you about this table design?\n\nSELECT supplier, supplier_phone,\n       COUNT(supplier) AS n_rows,\n       COUNT(supplier_phone) AS n_phone\nFROM products\nGROUP BY supplier, supplier_phone\nORDER BY supplier, supplier_phone NULLS LAST;\n\nTable products:\nname | supplier | supplier_phone\nPen | Acme | 555-0101\nInk | Acme | 555-0101\nPad | Acme | 555-0199\nCup | Bolt | NULL\nMug | Bolt | NULL",
+      "answer": "The query returns three rows: Acme with phone 555‑0101 (2 rows, 2 phones), Acme with phone 555‑0199 (1 row, 1 phone), and Bolt with a NULL phone (2 rows, 0 phones). It shows that the supplier phone is stored redundantly in the product table, causing inconsistent values (Acme appears in two groups) and a NULL‑count anomaly, indicating the design should be normalized by moving the phone to a separate suppliers table.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows and their counts, explained why Acme is split into two groups, and correctly noted that the table design suffers from update anomalies and needs normalisation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows and their counts, explained why Acme is split into two groups, and correctly noted that the table design suffers from update anomalies and needs normalisation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.6744,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.7795,
+          "se": 0.6123,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-collections"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +1.55; covers required topics not yet tested: py-collections",
+      "prompt": "Why does Python allow a tuple such as (1, 2) as a dictionary key but not a list such as [1, 2]? What would go wrong if a key could be changed after it was inserted? And can the tuple (1, [2, 3]) be used as a key?",
+      "answer": "Python requires dictionary keys to be immutable so their hash value stays constant; a tuple satisfies this because its contents can’t change, whereas a list can be modified and thus isn’t allowed as a key. Since a tuple’s hash doesn’t depend on the mutability of its elements, even a tuple like (1, [2, 3]) can be used safely as a dictionary key.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": null,
+        "follow_up": "What happens if you actually try to run `my_dict = {(1, [2, 3]): 'test'}` in Python?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": null,
+            "follow_up": "What happens if you actually try to run `my_dict = {(1, [2, 3]): 'test'}` in Python?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "Tuples are considered a single, fixed‑size container so Python lets them be keys, whereas lists are seen as expandable collections and therefore aren’t accepted; even if a tuple contains a mutable object like a list, the outer tuple’s fixed shape lets it be used as a key.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly explains the hash requirement and why lists cannot be keys, but incorrectly states that the tuple (1, [2, 3]) can be used as a dictionary key, missing the rule that a tuple is only hashable if all its elements are hashable.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the hash requirement for dictionary keys and why lists are excluded, but gets the final part wrong by stating that the tuple (1, [2, 3]) can be used as a key, failing to recognise that it contains a mutable list and is therefore unhashable.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.4893,
+          "se": 0.5763,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 0.6744,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.7795,
+          "se": 0.6123,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-002",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 1 is nearest its estimate -0.78; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-arrays-strings (ds.arrays-strings.append-always-copies, ds.arrays-strings.strings-mutable)",
+      "prompt": "Python strings are immutable. What does that mean for `s.upper()` and for `s += 'x'`, and what happens if you run `s[0] = 'X'`? If you build a 100,000-character string one character at a time, compare doing `s += ch` in a loop with appending each character to a list and calling `''.join(chars)` at the end.",
+      "answer": "`s.upper()` returns a new string and `s += 'x'` also creates a new string and rebinds the name, while `s[0] = 'X'` raises a TypeError because strings are immutable; building a large string by appending characters to a list and then doing `''.join(chars)` is much more efficient than repeatedly using `s += ch` in a loop.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that strings are immutable, how upper(), s += 'x', and s[0] = 'X' behave, and correctly identified the efficiency difference between list append/join and repeated s += ch.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that strings are immutable, how upper(), s += 'x', and s[0] = 'X' behave, and correctly identified the efficiency difference between list append/join and repeated s += ch.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.4893,
+          "se": 0.5763,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 0.6744,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.4991,
+          "se": 0.559,
+          "level": 1,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-005",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 20,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 1.4893,
+        "se": 0.5763,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.911708,
+        "level_probabilities": {
+          "0": 1e-06,
+          "1": 0.000805,
+          "2": 0.087486,
+          "3": 0.911708
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.6744,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.483581,
+        "level_probabilities": {
+          "0": 0.000591,
+          "1": 0.052408,
+          "2": 0.483581,
+          "3": 0.46342
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 1,
+        "estimate": -0.4991,
+        "se": 0.559,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.577079,
+        "level_probabilities": {
+          "0": 0.081222,
+          "1": 0.577079,
+          "2": 0.326545,
+          "3": 0.015154
+        },
+        "meets_minimum": null
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether ds reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "ds.hash-tables.keys-kept-sorted",
+        "confirmed": true,
+        "evidence_turns": [
+          3
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "reply",
+        "confirmation_count": 1,
+        "required_confirmations": 1,
+        "evidence": [
+          {
+            "question_id": "DS-L2-001",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "I’d go with a hash table because it gives O(1) time for both inserting new scores and retrieving the whole leaderboard, so it’s the simplest and fastest choice.",
+            "vote_share": 1.0
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "sql.indexes-performance.index-always-helps",
+        "confirmed": true,
+        "evidence_turns": [
+          5
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "reply",
+        "confirmation_count": 1,
+        "required_confirmations": 1,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-002",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "Because the optimizer might think the index is outdated or corrupted, it could ignore it and scan the whole table, especially if the query includes a JOIN or a GROUP BY that the index doesn’t cover.",
+            "vote_share": 1.0
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "sql.transactions.default-isolation-prevents-all",
+        "confirmed": true,
+        "evidence_turns": [
+          8
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "reply",
+        "confirmation_count": 1,
+        "required_confirmations": 1,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-005",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "The final stock will end up as 8 because each transaction reads the original value, subtracts one and then writes its result, so the two decrements are both applied. To avoid this you’d need to make the update atomic—e.g., wrap the read‑modify‑write in a single statement or use a lock so only one transaction can change the row at a time.",
+            "vote_share": 1.0
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "ds.linked-lists.insert-shifts-nodes",
+        "confirmed": true,
+        "evidence_turns": [
+          10
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "reply",
+        "confirmation_count": 1,
+        "required_confirmations": 1,
+        "evidence": [
+          {
+            "question_id": "DS-L2-006",
+            "turn": 10,
+            "reply_index": 0,
+            "reply_text": "The hash map stores the values while the linked list just keeps them in the order they were inserted, so on a hit we look up the key in the map, then move the corresponding node to the front of the list by copying its data over the head element; because both structures are constant‑size, get and put end up being constant‑time operations on average.",
+            "vote_share": 1.0
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.index-needs-scan",
+      "ds.arrays-strings.strings-mutable",
+      "ds.complexity.count-loops-for-big-o",
+      "ds.complexity.short-code-is-fast",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.index-constant-time",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.trees-bst.inorder-not-sorted",
+      "py.collections.tuple-mutable",
+      "py.collections.unhashable-key",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.gil-thread-safe",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.assign-updates-global",
+      "py.functions-scope.closure-captures-value",
+      "py.functions-scope.mutable-default-fresh",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.schema-constraints.normalisation-only-saves-space",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.transactions.default-isolation-prevents-all",
+      "sql.transactions.uncommitted-visible"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "untested": [
+        "py-variables-mutability",
+        "py-oop"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether ds reaches level 2. Estimated levels: py level 3 (needs 2), sql level 2 (needs 2), ds level 1 (needs 2). Confirmed misconception: Believes a hash table stores its keys in sorted order, so iterating over it yields keys sorted and it can produce ordered output or the smallest key without extra sorting. Confirmed misconception: Believes adding an index always makes the database faster with no downside, ignoring the extra storage, the slower INSERT/UPDATE/DELETE, and that the planner may not use it. Confirmed misconception: Believes that wrapping statements in a transaction at the default isolation level (such as READ COMMITTED) makes concurrent transactions behave as if they ran one after another, so lost updates and non-repeatable reads cannot happen. Confirmed misconception: Believes inserting a node into a linked list requires shifting all later elements along (as in an array), so insertion after a known node is O(n), or that later nodes reattach automatically."
+  },
+  "usage": {
+    "llm_calls": 68,
+    "api_calls": 0,
+    "input_tokens": 65051,
+    "output_tokens": 3933,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 68,
+        "api_calls": 0,
+        "input_tokens": 65051,
+        "output_tokens": 3933
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 0
+    },
+    "fit": false,
+    "misconceptions": [
+      "sql.joins.join-never-duplicates"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

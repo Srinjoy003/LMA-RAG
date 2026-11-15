@@ -1,0 +1,2321 @@
+{
+  "interview_id": "A2E-backend-engineer-CAND-011-0",
+  "system": "A2E",
+  "config": {
+    "system": "A2E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-011",
+  "started_at": "2026-11-14T05:42:18Z",
+  "finished_at": "2026-11-14T05:42:31Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-exceptions",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "`try` encloses code that may raise an exception; if an exception occurs the remaining statements in the `try` are skipped and Python jumps to the first `except` clause (checked in order) whose type matches, runs that handler, then continues after the whole `try…except…else…finally` block. `else` runs only when the `try` finishes without an exception, and `finally` is executed in all cases—including when the `try` or an `except` block executes a `return`—just before control actually leaves the statement.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, noted that the first matching except clause in order runs, and correctly stated that finally runs even when a return statement is executed.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, noted that the first matching except clause in order runs, and correctly stated that finally runs even when a return statement is executed.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-subqueries-cte",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-joins",
+      "prompt": "A teammate wants the number of employees in each department. What does this query return, and why?\n\nWITH staff_per_dept AS (\n  SELECT d.name, e.id\n  FROM departments d\n  JOIN employees e ON e.dept_id = d.id\n)\nSELECT d.name, COUNT(d.name) AS n_rows, COUNT(e.dept_id) AS n_staff\nFROM departments d, employees e\nGROUP BY d.name\nORDER BY d.name;\n\nTable departments:\nid | name\n1 | Sales\n2 | IT\n3 | HR\n\nTable employees:\nid | name | dept_id\n1 | Asha | 1\n2 | Ben | 1\n3 | Chen | 2\n4 | Dana | NULL",
+      "answer": "The query returns three rows (one per department) with n_rows always 4 and n_staff always 3, because the CTE is never used and the FROM clause does a Cartesian product of all departments with all employees; COUNT(d.name) counts the four rows in each group, while COUNT(e.dept_id) ignores the single NULL dept_id from Dana, giving three.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the counts (4 and 3 for every department), explained the unused CTE, the Cartesian product from the missing join condition, and the behavior of COUNT with null values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the counts (4 and 3 for every department), explained the unused CTE, the Cartesian product from the missing join condition, and the behavior of COUNT with null values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-hash-tables, ds-trees-bst",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "I’d go with a hash table because it gives O(1) time for both inserting new scores and retrieving the whole leaderboard, so it’s the simplest and fastest choice.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "follow_up": "If you add several players with random scores into a hash table and immediately iterate through its keys, what exact order do you get them in?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you add several players with random scores into a hash table and immediately iterate through its keys, what exact order do you get them in?",
+            "confidence_expressed": "high",
+            "supporting_quote": "it gives O(1) time for both inserting new scores and retrieving the whole leaderboard",
+            "evidence_reason": "The candidate claims the hash table retrieves the whole leaderboard in O(1) without extra sorting, which demonstrates the listed misconception that hash tables store or yield keys in sorted order.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "How do you get the entries out of a hash table in sorted order when you need to display the leaderboard?",
+            "confidence_expressed": "high",
+            "supporting_quote": "I’d go with a hash table because it gives O(1) time for both inserting new scores and retrieving the whole leaderboard",
+            "evidence_reason": "The candidate claims that retrieving the whole leaderboard from a hash table takes O(1) time, which directly demonstrates the listed misconception that a hash table can produce ordered output directly without extra sorting.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "How do you get the elements out of a hash table in sorted order, and what is the time complexity of that retrieval step?",
+            "confidence_expressed": "high",
+            "supporting_quote": "it gives O(1) time for both inserting new scores and retrieving the whole leaderboard",
+            "evidence_reason": "The candidate asserts that retrieving the whole leaderboard from a hash table takes O(1) time, directly implying the keys are already maintained or accessible in sorted order instantly without extra sorting.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "it gives O(1) time for both inserting new scores and retrieving the whole leaderboard",
+        "evidence_reason": "The candidate claims the hash table retrieves the whole leaderboard in O(1) without extra sorting, which demonstrates the listed misconception that hash tables store or yield keys in sorted order.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you add several players with random scores into a hash table and immediately iterate through its keys, what exact order do you get them in?",
+          "answer": "You’ll get them in the order the hash function placed the keys – basically a deterministic “random‑looking” sequence that depends on the hash values, not on insertion order or score.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate chose a hash table and claimed it gives O(1) time for retrieving the whole leaderboard in order, showing a fundamental misunderstanding of hash tables. Although the follow-up correctly identified that keys are not in score order, the candidate's initial choice and reasoning reflect the misconception that hash tables can do both efficiently without sorting, failing to meet the requirements.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate chose a hash table and incorrectly claimed it provides O(1) time for retrieving the whole leaderboard in order, showing a complete misunderstanding of hash table properties and hitting the listed misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: py-concurrency",
+      "prompt": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+      "answer": "`counter += 1` is a read‑modify‑write operation that can be interleaved between the two OS threads; the GIL may be released between the bytecode that loads the old value and the one that stores the new value, so both threads can read the same value and one increment gets lost, which is why the final count can be below 200 000 (a lock would prevent it). In asyncio the two coroutines run on a single thread and only switch at `await` points, so an increment that contains no `await` cannot be pre‑empted and no race occurs (races appear only when the read and write are separated by an `await`).",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that counter += 1 is non-atomic and subject to race conditions under threads, correctly notes that a lock is needed, and accurately explains that asyncio coroutines on a single thread only switch at await points, preventing races in synchronous blocks.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that counter += 1 is non-atomic and subject to race conditions under threads, correctly notes that a lock is needed, and accurately explains that asyncio coroutines on a single thread only switch at await points, preventing races in synchronous blocks.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: sql-indexes-performance",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "Because the optimizer might think the index is outdated or corrupted, it could ignore it and scan the whole table, especially if the query includes a JOIN or a GROUP BY that the index doesn’t cover.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.indexes-performance.index-always-helps",
+        "follow_up": "If a table contains 1000 rows and a query selects 999 of them, how do you think fetching them via index lookups would compare to reading the table sequentially?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": "If a table contains 1000 rows and a query selects 999 of them, how do you think fetching them via index lookups would compare to reading the table sequentially?",
+            "confidence_expressed": "medium",
+            "supporting_quote": "Because the optimizer might think the index is outdated or corrupted, it could ignore it and scan the whole table",
+            "evidence_reason": "The candidate attributes the planner's choice to ignore the index to misconceptions about index corruption or outdated state rather than cost-based statistics and selectivity.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": "If a table contains 1000 rows and a query selects 999 of them, how does reading the index first compare to reading the table directly?",
+            "confidence_expressed": "medium",
+            "supporting_quote": "Because the optimizer might think the index is outdated or corrupted, it could ignore it and scan the whole table",
+            "evidence_reason": "The candidate attributes the planner's choice of a full table scan to the index being outdated or corrupted rather than cost-based estimations regarding selectivity or table size, reflecting a view that an index should inherently be used if valid.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": "If a table contains 1000 rows and a query selects 950 of them, why might the database engine choose a full table scan over using an index?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because the optimizer might think the index is outdated or corrupted, it could ignore it",
+            "evidence_reason": "The candidate attributes the decision not to use an index to the optimizer incorrectly suspecting the index is outdated or corrupted, reflecting a belief that the index is inherently supposed to always help unless damaged.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Because the optimizer might think the index is outdated or corrupted, it could ignore it and scan the whole table",
+        "evidence_reason": "The candidate attributes the planner's choice to ignore the index to misconceptions about index corruption or outdated state rather than cost-based statistics and selectivity.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If a table contains 1000 rows and a query selects 999 of them, how do you think fetching them via index lookups would compare to reading the table sequentially?",
+          "answer": "I’d guess that even when you need 999 out of 1000 rows, using the index is still quicker because the database can jump straight to each matching row instead of reading the whole block of data sequentially.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": "If you had to read almost every page of a large book to find your answers, would flipping to the index page for every single word be faster than just reading straight through?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": "If you had to read almost every page of a large book to find your answers, would flipping to the index page for every single word be faster than just reading straight through?",
+                "confidence_expressed": "high",
+                "supporting_quote": "using the index is still quicker because the database can jump straight to each matching row instead of reading the whole block of data sequentially",
+                "evidence_reason": "The candidate explicitly argues that using the index remains faster even when retrieving almost all rows (999 out of 1000), showing the belief that the index is always beneficial and that sequential block reads are always slower than random lookups, which reflects the listed misconception that an index always helps.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": "What happens to the performance of a query that retrieves most of the rows in a table when using random index lookups versus a sequential scan?",
+                "confidence_expressed": "high",
+                "supporting_quote": "using the index is still quicker because the database can jump straight to each matching row",
+                "evidence_reason": "The candidate explicitly argues that using an index is always quicker even when fetching 999 out of 1000 rows, demonstrating the belief that an index always helps performance.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": "If you had to read almost all the rows in a large table via an index compared to reading them all in one sequential pass, how would the number of disk accesses compare?",
+                "confidence_expressed": "high",
+                "supporting_quote": "using the index is still quicker because the database can jump straight to each matching row instead of reading the whole block of data sequentially",
+                "evidence_reason": "The candidate asserts that index lookups remain faster even when retrieving almost all rows (999 out of 1000), which directly expresses the listed belief that indexes always help performance and ignores the cost of random I/O vs sequential scans.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "using the index is still quicker because the database can jump straight to each matching row instead of reading the whole block of data sequentially",
+            "evidence_reason": "The candidate explicitly argues that using the index remains faster even when retrieving almost all rows (999 out of 1000), showing the belief that the index is always beneficial and that sequential block reads are always slower than random lookups, which reflects the listed misconception that an index always helps.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If you had to read almost every page of a large book to find your answers, would flipping to the index page for every single word be faster than just reading straight through?",
+          "answer": "I’d say flipping to the index for each word would still be quicker, because you can jump straight to the exact spot you need instead of wading through pages you don’t need.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "I’d say flipping to the index for each word would still be quicker, because you can jump straight to the exact spot you need instead of wading through pages you don’t need.",
+                "evidence_reason": "The candidate explicitly asserts that using an index is always quicker even when retrieving almost all the rows, which directly matches the misconception that an index always helps and is always faster.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "I’d say flipping to the index for each word would still be quicker, because you can jump straight to the exact spot you need instead of wading through pages you don’t need.",
+                "evidence_reason": "The candidate explicitly asserts that using an index is always quicker even when fetching almost all the rows, which directly aligns with the belief that an index always helps.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "I’d say flipping to the index for each word would still be quicker, because you can jump straight to the exact spot you need instead of wading through pages you don’t need.",
+                "evidence_reason": "The candidate explicitly argues that using an index is always quicker even when retrieving almost all rows, directly reflecting the misconception that an index always helps and is always faster.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "I’d say flipping to the index for each word would still be quicker, because you can jump straight to the exact spot you need instead of wading through pages you don’t need.",
+            "evidence_reason": "The candidate explicitly asserts that using an index is always quicker even when retrieving almost all the rows, which directly matches the misconception that an index always helps and is always faster.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate fails to provide the three required reasons and explicitly demonstrates the misconception that index lookups are always faster even when fetching almost all rows, ignoring the book analogy.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate failed to mention any of the three key points (low selectivity/planner cost, function on column, or non-leading column of a composite index), instead attributing the full scan to the optimizer thinking the index is outdated or corrupted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-linked-lists",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-arrays-strings (ds.arrays-strings.index-needs-scan, ds.linked-lists.index-constant-time, ds.linked-lists.insert-shifts-nodes)",
+      "prompt": "Compare an array (like a Python list) and a singly linked list for two tasks: reading the 1,000th element, and inserting a new element at the very front. Which structure is faster for each task, and why?",
+      "answer": "Front insertion is O(1) in a singly linked list (just relink the head) but O(n) in an array because all existing elements must be shifted.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How would you compare the two structures when reading the 1,000th element?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would you compare the two structures when reading the 1,000th element?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would you compare the two structures when reading the 1,000th element?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would you find the 1,000th element in an array versus a singly linked list, and what is the time complexity of each?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained front insertion for both a linked list and an array, but completely omitted the task of reading the 1,000th element.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained front insertion for both a linked list and an array, but completely omitted the task of reading the 1,000th element.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; covers required topics not yet tested: py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "I know that calling a generator function doesn’t execute its body; the code runs only when next() or iteration starts.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What does the code print when you call next(gen) and then list(gen)?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What does the code print when you call next(gen) and then list(gen)?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What does the generator expression print if you evaluate it after step is changed to 10?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What will print next after 'begin', and what happens if you call list(gen) a second time?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that calling a generator function does not execute its body immediately, but the answer is incomplete because it fails to evaluate the full code output and explain the remaining key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that calling a generator function does not execute its body immediately, but the answer is incomplete because it fails to evaluate the full code output and explain the remaining key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; lists a suspected misconception to confirm: sql.indexes-performance.index-always-helps",
+      "prompt": "orders.amount has an index. WHERE amount > 1000 is fast, but WHERE amount * 1.18 > 1180 (the same rows, with tax added) scans the whole table. Why, and how would you rewrite it? A teammate suggests indexing every column of orders so that nothing is slow again. What is wrong with that idea?",
+      "answer": "The index can only be used when the predicate matches the indexed column directly, so `amount * 1.18 > 1180` forces a full scan because the computed value isn’t stored; rewrite it as `amount > 1180/1.18` (or create an expression index on `amount*1.18`). Adding indexes on every column wastes space, slows writes, and many of them will never be used by the optimizer.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained why the expression prevents index usage, provided the correct bare-column rewrite, and accurately described the storage and write performance costs of indexing every column.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained why the expression prevents index usage, provided the correct bare-column rewrite, and accurately described the storage and write performance costs of indexing every column.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-stacks-queues",
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 1 is nearest its estimate -0.76; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-arrays-strings (ds.complexity.count-loops-for-big-o, ds.complexity.short-code-is-fast)",
+      "prompt": "A script keeps pending jobs in a Python list: it adds jobs with `jobs.append(job)` and takes the next one with `jobs.pop(0)`. It works fine with 100 jobs, but draining a backlog of one million jobs with `while jobs: handle(jobs.pop(0))` is extremely slow. Why? What is the total cost of draining the list, and what would you use instead?",
+      "answer": "`pop(0)` on a list shifts all the remaining items each time, so draining a million‑item list costs O(n²). Using a `collections.deque` gives O(1) append and popleft, so the whole queue can be emptied in O(n) time.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that pop(0) on a Python list requires shifting elements resulting in an O(n^2) total cost, and proposed collections.deque as the correct O(n) alternative.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that pop(0) on a Python list requires shifting elements resulting in an O(n^2) total cost, and proposed collections.deque as the correct O(n) alternative.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.3903,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.66); level 3 is nearest its estimate +1.23; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-functions-scope (py.functions-scope.assign-updates-global, py.functions-scope.mutable-default-fresh)",
+      "prompt": "What does this code print, and why?\n\ncount = 100\ndef make_counter(log=[]):\n    count = 0\n    def step():\n        nonlocal count\n        count += 1\n        log.append(count)\n        return count\n    return step, log\n\nc1, log1 = make_counter()\nc2, log2 = make_counter()\nc1(); c1()\nprint(c1(), c2(), count)\nprint(log1, log1 is log2)",
+      "answer": "It prints `3 1 100` because each `make_counter` call creates its own `count` that `step` increments via `nonlocal`, so `c1` reaches 3 while `c2` is still at 1 and the global `count` remains the original 100; the default `log` list is created once, so both counters share it, resulting in `[1, 2, 3, 1] True`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the outputs and explained the separate closures, the local vs global count, and the shared mutable default argument.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the outputs and explained the separate closures, the local vs global count, and the shared mutable default argument.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.3903,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.65); level 2 is nearest its estimate -0.39; lists a suspected misconception to confirm: ds.hash-tables.keys-kept-sorted",
+      "prompt": "You keep a Python dict that maps about 100,000 product names to their prices. What does it cost to (a) get one product's price, (b) list all products in alphabetical order, and (c) find the cheapest product? Explain each.",
+      "answer": "(a) Getting a price is O(log n) because the dict does a binary search on the hashed keys; (b) listing all products alphabetically is just O(n) since the dict already stores keys in sorted order; (c) finding the cheapest product is O(1) because the smallest price is kept at the front of the hash table.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "follow_up": "If you insert product 'Banana' and then product 'Apple' into a Python dictionary in that order, what order do they appear when you loop through the dictionary keys?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you insert product 'Banana' and then product 'Apple' into a Python dictionary in that order, what order do they appear when you loop through the dictionary keys?",
+            "confidence_expressed": "high",
+            "supporting_quote": "listing all products alphabetically is just O(n) since the dict already stores keys in sorted order",
+            "evidence_reason": "The candidate explicitly states that the dictionary already stores its keys in sorted order, which directly matches the misconception ds.hash-tables.keys-kept-sorted.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "How does a hash table use the key to locate its position in memory, and does that process involve keeping keys in order?",
+            "confidence_expressed": "high",
+            "supporting_quote": "dict already stores keys in sorted order",
+            "evidence_reason": "The candidate explicitly states that the dictionary stores keys in sorted order, which directly matches the misconception that hash tables keep their keys sorted.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "Can you check what order iterating over a Python dict produces by default, or if its keys are stored sorted?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the dict already stores keys in sorted order",
+            "evidence_reason": "The candidate explicitly states that the dictionary stores keys in sorted order, which directly matches the listed misconception that hash tables keep their keys sorted.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "listing all products alphabetically is just O(n) since the dict already stores keys in sorted order",
+        "evidence_reason": "The candidate explicitly states that the dictionary already stores its keys in sorted order, which directly matches the misconception ds.hash-tables.keys-kept-sorted.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate missed all three costs and displayed major misconceptions: claiming lookup is O(log n), that the dict stores keys in sorted order, and that the cheapest product is kept at the front of the hash table.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate missed all three costs and displayed major misconceptions: claiming lookup is O(log n), that the dict stores keys in sorted order, and that the cheapest product is kept at the front of the hash table.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.6744,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-transactions"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.61; covers required topics not yet tested: sql-transactions",
+      "prompt": "Two transactions run at the same time under READ COMMITTED. Both read the product's stock (10) before either writes; each then subtracts 1 in the application, writes back 9 and commits. What is the final stock, why, and how could you prevent this?",
+      "answer": "The final stock will end up as 8 because each transaction reads the original value, subtracts one and then writes its result, so the two decrements are both applied. To avoid this you’d need to make the update atomic—e.g., wrap the read‑modify‑write in a single statement or use a lock so only one transaction can change the row at a time.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.transactions.default-isolation-prevents-all",
+        "follow_up": "If Transaction A reads the stock as 10 and has not yet committed, what value does Transaction B see when it reads the stock under READ COMMITTED?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.default-isolation-prevents-all",
+            "follow_up": "If Transaction A reads the stock as 10 and has not yet committed, what value does Transaction B see when it reads the stock under READ COMMITTED?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The final stock will end up as 8 because each transaction reads the original value, subtracts one and then writes its result, so the two decrements are both applied.",
+            "evidence_reason": "The candidate asserts that both decrements are successfully applied resulting in 8, showing the belief that concurrent transactions running in a transaction will safely apply both updates without one overwriting the other.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.default-isolation-prevents-all",
+            "follow_up": "If Transaction A reads the stock as 10 and hasn't committed yet, what exact value does Transaction B read under READ COMMITTED?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The final stock will end up as 8 because each transaction reads the original value, subtracts one and then writes its result, so the two decrements are both applied.",
+            "evidence_reason": "The candidate incorrectly believes that under READ COMMITTED, concurrent read-modify-write transactions will both successfully apply their decrements resulting in 8, assuming the isolation level prevents concurrent interference or queueing issues without realizing the second write overwrites the first.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.default-isolation-prevents-all",
+            "follow_up": "If both transactions read the stock as 10 and write back 9, how does the database handle the second write arriving after the first has already committed?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The final stock will end up as 8 because each transaction reads the original value, subtracts one and then writes its result, so the two decrements are both applied.",
+            "evidence_reason": "The candidate states that both decrements are applied resulting in 8, which assumes that concurrent transactions under standard isolation automatically sequence or preserve both updates without interference.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The final stock will end up as 8 because each transaction reads the original value, subtracts one and then writes its result, so the two decrements are both applied.",
+        "evidence_reason": "The candidate asserts that both decrements are successfully applied resulting in 8, showing the belief that concurrent transactions running in a transaction will safely apply both updates without one overwriting the other.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If Transaction A reads the stock as 10 and has not yet committed, what value does Transaction B see when it reads the stock under READ COMMITTED?",
+          "answer": "Transaction B will see the value 9, because it reads the row after Transaction A’s update has been written to the page even though A hasn’t committed yet.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.uncommitted-visible",
+            "follow_up": "What does the 'READ COMMITTED' isolation level guarantee about whether uncommitted changes from other transactions are visible?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "What does the 'READ COMMITTED' isolation level guarantee about whether uncommitted changes from other transactions are visible?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Transaction B will see the value 9, because it reads the row after Transaction A’s update has been written to the page even though A hasn’t committed yet.",
+                "evidence_reason": "The candidate explicitly asserts that Transaction B can see Transaction A's update before A has committed.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "What happens in READ COMMITTED if Transaction A modifies a row but has not yet committed when Transaction B tries to read it?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Transaction B will see the value 9, because it reads the row after Transaction A’s update has been written to the page even though A hasn’t committed yet.",
+                "evidence_reason": "The candidate explicitly states that Transaction B sees the uncommitted update from Transaction A, which matches the listed misconception sql.transactions.uncommitted-visible.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "What happens in READ COMMITTED if Transaction A modifies a row but has not yet committed when Transaction B tries to read it?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Transaction B will see the value 9, because it reads the row after Transaction A’s update has been written to the page even though A hasn’t committed yet.",
+                "evidence_reason": "The candidate explicitly states that Transaction B sees an uncommitted update from Transaction A before A has committed.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Transaction B will see the value 9, because it reads the row after Transaction A’s update has been written to the page even though A hasn’t committed yet.",
+            "evidence_reason": "The candidate explicitly asserts that Transaction B can see Transaction A's update before A has committed.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What does the 'READ COMMITTED' isolation level guarantee about whether uncommitted changes from other transactions are visible?",
+          "answer": "READ COMMITTED guarantees that you’ll always see the most recent committed value, but it also allows you to see other sessions’ uncommitted changes as long as they were written to the buffer pool, so you can get a mix of committed and uncommitted data in the same query.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.uncommitted-visible",
+            "follow_up": "Can you check the definition of READ COMMITTED regarding whether uncommitted changes from other active transactions are visible to a separate transaction?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "Can you check the definition of READ COMMITTED regarding whether uncommitted changes from other active transactions are visible to a separate transaction?",
+                "confidence_expressed": "high",
+                "supporting_quote": "it also allows you to see other sessions’ uncommitted changes as long as they were written to the buffer pool",
+                "evidence_reason": "The candidate explicitly claims that READ COMMITTED allows seeing uncommitted changes of other sessions, which directly matches the listed misconception sql.transactions.uncommitted-visible.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "If a transaction updates a row and then rolls back before committing, what value would another transaction running under READ COMMITTED see?",
+                "confidence_expressed": "high",
+                "supporting_quote": "allows you to see other sessions’ uncommitted changes as long as they were written to the buffer pool",
+                "evidence_reason": "The candidate explicitly states that READ COMMITTED allows transactions to see uncommitted changes from other sessions as long as they are written to the buffer pool, matching the misconception that uncommitted changes are visible.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "Can you explain what the word 'committed' in 'READ COMMITTED' refers to regarding when changes made by a transaction become visible to other transactions?",
+                "confidence_expressed": "high",
+                "supporting_quote": "it also allows you to see other sessions’ uncommitted changes as long as they were written to the buffer pool",
+                "evidence_reason": "The candidate explicitly states that READ COMMITTED allows seeing uncommitted changes of other sessions, which directly matches the listed misconception that uncommitted changes are visible before commit.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "it also allows you to see other sessions’ uncommitted changes as long as they were written to the buffer pool",
+            "evidence_reason": "The candidate explicitly claims that READ COMMITTED allows seeing uncommitted changes of other sessions, which directly matches the listed misconception sql.transactions.uncommitted-visible.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly demonstrates the misconception that uncommitted changes are visible under READ COMMITTED (misconception sql.transactions.uncommitted-visible) and incorrectly states the final stock is 8. According to the rules, showing a listed misconception results in a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly stated the final stock is 8 instead of 9, failing to recognize the classic lost update problem where the second write overwrites the first.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.3256,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.6744,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-005",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-collections"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +1.55; covers required topics not yet tested: py-collections",
+      "prompt": "Why does Python allow a tuple such as (1, 2) as a dictionary key but not a list such as [1, 2]? What would go wrong if a key could be changed after it was inserted? And can the tuple (1, [2, 3]) be used as a key?",
+      "answer": "Because tuples are defined as fixed collections while lists are meant to be expandable, Python treats them differently when storing data, so a tuple can serve as an identifier but a list cannot; however, if a tuple contains a mutable object like a list, it still works as a key because the outer tuple itself doesn’t change.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.collections.tuple-mutable",
+        "follow_up": "What happens if you try to create a dictionary with the key (1, [2, 3])?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.collections.tuple-mutable",
+            "follow_up": "What happens if you try to create a dictionary with the key (1, [2, 3])?",
+            "confidence_expressed": "high",
+            "supporting_quote": "if a tuple contains a mutable object like a list, it still works as a key because the outer tuple itself doesn’t change",
+            "evidence_reason": "The candidate asserts that a tuple containing a mutable object like a list still works as a dictionary key because the outer tuple is immutable, which explicitly demonstrates a misunderstanding of how tuple hashability and immutability rules work in Python.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.collections.tuple-mutable",
+            "follow_up": "What happens if you try to use a tuple containing a list, like (1, [2, 3]), as a dictionary key in Python?",
+            "confidence_expressed": "high",
+            "supporting_quote": "however, if a tuple contains a mutable object like a list, it still works as a key because the outer tuple itself doesn’t change",
+            "evidence_reason": "The candidate explicitly asserts that a tuple containing a list can still be used as a dictionary key, which directly misinterprets the hashability rule for nested tuples where the inner mutable object makes the entire tuple unhashable.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "if a tuple contains a mutable object like a list, it still works as a key because the outer tuple itself doesn’t change",
+        "evidence_reason": "The candidate asserts that a tuple containing a mutable object like a list still works as a dictionary key because the outer tuple is immutable, which explicitly demonstrates a misunderstanding of how tuple hashability and immutability rules work in Python.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens if you try to create a dictionary with the key (1, [2, 3])?",
+          "answer": "It will create the entry without any error, but later lookups using a similar tuple won’t match because the inner list is stored by reference, so the dictionary treats it as a different key.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.collections.tuple-mutable",
+                "follow_up": "What happens if you try to create a dictionary with the key (1, [2, 3]) right now?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It will create the entry without any error",
+                "evidence_reason": "The candidate explicitly asserts that using a tuple containing a list as a dictionary key will succeed without raising an error, which directly conflicts with Python's rule that tuples containing mutable elements are unhashable.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claimed that a tuple containing a list can still be used as a key and that it would create the entry without error, showing a misunderstanding of hashability requirements for tuples.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate explains why tuples work and lists do not, but incorrectly claims that a tuple containing a mutable object like a list can still be used as a dictionary key, showing a misunderstanding of hashability rules.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.1579,
+          "se": 0.5456,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 0.3256,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.6744,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-002",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 19,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 1.1579,
+        "se": 0.5456,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.78769,
+        "level_probabilities": {
+          "0": 6e-06,
+          "1": 0.004083,
+          "2": 0.20822,
+          "3": 0.78769
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.3256,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.598903,
+        "level_probabilities": {
+          "0": 0.004218,
+          "1": 0.148681,
+          "2": 0.598903,
+          "3": 0.248198
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 1,
+        "estimate": -0.6744,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.598903,
+        "level_probabilities": {
+          "0": 0.152899,
+          "1": 0.598903,
+          "2": 0.239153,
+          "3": 0.009045
+        },
+        "meets_minimum": null
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether ds reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "ds.hash-tables.keys-kept-sorted",
+        "confirmed": true,
+        "evidence_turns": [
+          3,
+          11
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-001",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "I’d go with a hash table because it gives O(1) time for both inserting new scores and retrieving the whole leaderboard, so it’s the simplest and fastest choice.",
+            "vote_share": 1.0,
+            "supporting_quote": "it gives O(1) time for both inserting new scores and retrieving the whole leaderboard",
+            "quote_start": 33,
+            "quote_end": 118,
+            "reason": "The candidate claims the hash table retrieves the whole leaderboard in O(1) without extra sorting, which demonstrates the listed misconception that hash tables store or yield keys in sorted order."
+          },
+          {
+            "question_id": "DS-L2-004",
+            "turn": 11,
+            "reply_index": 0,
+            "reply_text": "(a) Getting a price is O(log n) because the dict does a binary search on the hashed keys; (b) listing all products alphabetically is just O(n) since the dict already stores keys in sorted order; (c) finding the cheapest product is O(1) because the smallest price is kept at the front of the hash table.",
+            "vote_share": 1.0,
+            "supporting_quote": "listing all products alphabetically is just O(n) since the dict already stores keys in sorted order",
+            "quote_start": 94,
+            "quote_end": 193,
+            "reason": "The candidate explicitly states that the dictionary already stores its keys in sorted order, which directly matches the misconception ds.hash-tables.keys-kept-sorted."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "sql.indexes-performance.index-always-helps",
+        "confirmed": false,
+        "evidence_turns": [
+          5
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-002",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "Because the optimizer might think the index is outdated or corrupted, it could ignore it and scan the whole table, especially if the query includes a JOIN or a GROUP BY that the index doesn’t cover.",
+            "vote_share": 1.0,
+            "supporting_quote": "Because the optimizer might think the index is outdated or corrupted, it could ignore it and scan the whole table",
+            "quote_start": 0,
+            "quote_end": 113,
+            "reason": "The candidate attributes the planner's choice to ignore the index to misconceptions about index corruption or outdated state rather than cost-based statistics and selectivity."
+          },
+          {
+            "question_id": "SQL-L3-002",
+            "turn": 5,
+            "reply_index": 1,
+            "reply_text": "I’d guess that even when you need 999 out of 1000 rows, using the index is still quicker because the database can jump straight to each matching row instead of reading the whole block of data sequentially.",
+            "vote_share": 1.0,
+            "supporting_quote": "using the index is still quicker because the database can jump straight to each matching row instead of reading the whole block of data sequentially",
+            "quote_start": 56,
+            "quote_end": 204,
+            "reason": "The candidate explicitly argues that using the index remains faster even when retrieving almost all rows (999 out of 1000), showing the belief that the index is always beneficial and that sequential block reads are always slower than random lookups, which reflects the listed misconception that an index always helps."
+          },
+          {
+            "question_id": "SQL-L3-002",
+            "turn": 5,
+            "reply_index": 2,
+            "reply_text": "I’d say flipping to the index for each word would still be quicker, because you can jump straight to the exact spot you need instead of wading through pages you don’t need.",
+            "vote_share": 1.0,
+            "supporting_quote": "I’d say flipping to the index for each word would still be quicker, because you can jump straight to the exact spot you need instead of wading through pages you don’t need.",
+            "quote_start": 0,
+            "quote_end": 172,
+            "reason": "The candidate explicitly asserts that using an index is always quicker even when retrieving almost all the rows, which directly matches the misconception that an index always helps and is always faster."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.transactions.default-isolation-prevents-all",
+        "confirmed": false,
+        "evidence_turns": [
+          12
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-005",
+            "turn": 12,
+            "reply_index": 0,
+            "reply_text": "The final stock will end up as 8 because each transaction reads the original value, subtracts one and then writes its result, so the two decrements are both applied. To avoid this you’d need to make the update atomic—e.g., wrap the read‑modify‑write in a single statement or use a lock so only one transaction can change the row at a time.",
+            "vote_share": 1.0,
+            "supporting_quote": "The final stock will end up as 8 because each transaction reads the original value, subtracts one and then writes its result, so the two decrements are both applied.",
+            "quote_start": 0,
+            "quote_end": 165,
+            "reason": "The candidate asserts that both decrements are successfully applied resulting in 8, showing the belief that concurrent transactions running in a transaction will safely apply both updates without one overwriting the other."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.transactions.uncommitted-visible",
+        "confirmed": false,
+        "evidence_turns": [
+          12
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-005",
+            "turn": 12,
+            "reply_index": 1,
+            "reply_text": "Transaction B will see the value 9, because it reads the row after Transaction A’s update has been written to the page even though A hasn’t committed yet.",
+            "vote_share": 1.0,
+            "supporting_quote": "Transaction B will see the value 9, because it reads the row after Transaction A’s update has been written to the page even though A hasn’t committed yet.",
+            "quote_start": 0,
+            "quote_end": 154,
+            "reason": "The candidate explicitly asserts that Transaction B can see Transaction A's update before A has committed."
+          },
+          {
+            "question_id": "SQL-L3-005",
+            "turn": 12,
+            "reply_index": 2,
+            "reply_text": "READ COMMITTED guarantees that you’ll always see the most recent committed value, but it also allows you to see other sessions’ uncommitted changes as long as they were written to the buffer pool, so you can get a mix of committed and uncommitted data in the same query.",
+            "vote_share": 1.0,
+            "supporting_quote": "it also allows you to see other sessions’ uncommitted changes as long as they were written to the buffer pool",
+            "quote_start": 86,
+            "quote_end": 195,
+            "reason": "The candidate explicitly claims that READ COMMITTED allows seeing uncommitted changes of other sessions, which directly matches the listed misconception sql.transactions.uncommitted-visible."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.collections.tuple-mutable",
+        "confirmed": false,
+        "evidence_turns": [
+          13
+        ],
+        "vote_share": 0.667,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-002",
+            "turn": 13,
+            "reply_index": 0,
+            "reply_text": "Because tuples are defined as fixed collections while lists are meant to be expandable, Python treats them differently when storing data, so a tuple can serve as an identifier but a list cannot; however, if a tuple contains a mutable object like a list, it still works as a key because the outer tuple itself doesn’t change.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "if a tuple contains a mutable object like a list, it still works as a key because the outer tuple itself doesn’t change",
+            "quote_start": 204,
+            "quote_end": 323,
+            "reason": "The candidate asserts that a tuple containing a mutable object like a list still works as a dictionary key because the outer tuple is immutable, which explicitly demonstrates a misunderstanding of how tuple hashability and immutability rules work in Python."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.index-needs-scan",
+      "ds.complexity.count-loops-for-big-o",
+      "ds.complexity.short-code-is-fast",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.index-constant-time",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.trees-bst.inorder-not-sorted",
+      "py.collections.tuple-mutable",
+      "py.collections.unhashable-key",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.gil-thread-safe",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.assign-updates-global",
+      "py.functions-scope.closure-captures-value",
+      "py.functions-scope.mutable-default-fresh",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.transactions.default-isolation-prevents-all",
+      "sql.transactions.uncommitted-visible"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "untested": [
+        "py-variables-mutability",
+        "py-oop",
+        "sql-schema-constraints"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether ds reaches level 2. Estimated levels: py level 3 (needs 2), sql level 2 (needs 2), ds level 1 (needs 2). Confirmed misconception: Believes a hash table stores its keys in sorted order, so iterating over it yields keys sorted and it can produce ordered output or the smallest key without extra sorting. Suspected (insufficient corroboration) misconception: Believes adding an index always makes the database faster with no downside, ignoring the extra storage, the slower INSERT/UPDATE/DELETE, and that the planner may not use it. Suspected (insufficient corroboration) misconception: Believes that wrapping statements in a transaction at the default isolation level (such as READ COMMITTED) makes concurrent transactions behave as if they ran one after another, so lost updates and non-repeatable reads cannot happen. Suspected (insufficient corroboration) misconception: Believes other sessions see a transaction's changes as soon as each statement runs, before COMMIT. Suspected (insufficient corroboration) misconception: Believes tuples can be changed in place like lists, for example by assigning to an index or calling append() or sort() on them."
+  },
+  "usage": {
+    "llm_calls": 109,
+    "api_calls": 9,
+    "input_tokens": 117192,
+    "output_tokens": 9223,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 109,
+        "api_calls": 9,
+        "input_tokens": 117192,
+        "output_tokens": 9223
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 0
+    },
+    "fit": false,
+    "misconceptions": [
+      "sql.joins.join-never-duplicates"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

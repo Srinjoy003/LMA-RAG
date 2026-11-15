@@ -1,0 +1,2589 @@
+{
+  "interview_id": "A2E-backend-engineer-CAND-020-0",
+  "system": "A2E",
+  "config": {
+    "system": "A2E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-020",
+  "started_at": "2026-11-14T06:18:05Z",
+  "finished_at": "2026-11-14T06:20:37Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-exceptions",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "`try` contains the code that may raise an exception; if an exception occurs, the remaining statements in the `try` are skipped and Python looks for the first `except` clause, in order, whose type matches and executes that handler. The `else` block runs only when the `try` finishes without any exception, and the `finally` block runs no matter what—whether an exception was raised, a `return` happened in the `try` or an `except`, or the code completed normally. If two `except` clauses could both match, the one that appears first is the one that is executed.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, the first-match order of except clauses, and that finally runs even when return is executed, meeting all level 2 criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, the first-match order of except clauses, and that finally runs even when return is executed, meeting all level 2 criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-subqueries-cte",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-joins",
+      "prompt": "A teammate wants the number of employees in each department. What does this query return, and why?\n\nWITH staff_per_dept AS (\n  SELECT d.name, e.id\n  FROM departments d\n  JOIN employees e ON e.dept_id = d.id\n)\nSELECT d.name, COUNT(d.name) AS n_rows, COUNT(e.dept_id) AS n_staff\nFROM departments d, employees e\nGROUP BY d.name\nORDER BY d.name;\n\nTable departments:\nid | name\n1 | Sales\n2 | IT\n3 | HR\n\nTable employees:\nid | name | dept_id\n1 | Asha | 1\n2 | Ben | 1\n3 | Chen | 2\n4 | Dana | NULL",
+      "answer": "The query will give you one row per department, where n_rows shows the number of department rows (which is always 1 for each department) and n_staff shows the count of employees that belong to that department. Because the two tables are listed together in the FROM clause, the database automatically matches each employee to its department via dept_id, so the counts are calculated correctly for each department.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.auto-join-on-shared-column",
+        "follow_up": "What would happen to the number of output rows if you added another employee to the employees table without changing the departments table, and why?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "follow_up": "What would happen to the number of output rows if you added another employee to the employees table without changing the departments table, and why?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because the two tables are listed together in the FROM clause, the database automatically matches each employee to its department via dept_id",
+            "evidence_reason": "The candidate explicitly expresses the belief that listing two tables in the FROM clause automatically matches them on their shared key.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "follow_up": "How many total rows would you expect if departments had 3 rows and employees had 4 rows, and why?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because the two tables are listed together in the FROM clause, the database automatically matches each employee to its department via dept_id",
+            "evidence_reason": "The candidate explicitly states that listing two tables in the FROM clause causes the database to automatically match them on their related key (dept_id), which directly matches the listed misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "follow_up": "How many total rows would you expect from a query like 'SELECT * FROM departments, employees;' if departments has 3 rows and employees has 4?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because the two tables are listed together in the FROM clause, the database automatically matches each employee to its department via dept_id",
+            "evidence_reason": "The candidate explicitly states that listing two tables in the FROM clause causes the database to automatically match them on their related key (dept_id), which matches the listed misconception.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Because the two tables are listed together in the FROM clause, the database automatically matches each employee to its department via dept_id",
+        "evidence_reason": "The candidate explicitly expresses the belief that listing two tables in the FROM clause automatically matches them on their shared key.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What would happen to the number of output rows if you added another employee to the employees table without changing the departments table, and why?",
+          "answer": "Adding another employee would add one more result row for the department that employee belongs to, because the FROM list automatically matches the new employee to its department and the GROUP BY will produce an extra group. If the new employee’s dept_id is NULL, it would still create an additional row for the “NULL” department group.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "follow_up": "If you query FROM departments d, employees e with no WHERE or JOIN ON clause, how many total rows does the raw cartesian product produce for 3 departments and 4 employees?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If you query FROM departments d, employees e with no WHERE or JOIN ON clause, how many total rows does the raw cartesian product produce for 3 departments and 4 employees?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the FROM list automatically matches the new employee to its department",
+                "evidence_reason": "The candidate explicitly reaffirms the listed misconception that listing multiple tables in the FROM clause automatically joins them on matching keys.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If you query `SELECT * FROM departments, employees;` without any WHERE or ON clause, how many rows come back for a department with 3 employees?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the FROM list automatically matches the new employee to its department",
+                "evidence_reason": "The candidate explicitly repeats their belief that listing tables in the FROM clause without a join condition automatically performs a matching join on the department id.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If you have 3 departments and 4 employees, and you write `FROM departments d, employees e` without any WHERE clause, how many total rows does that produce before grouping?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the FROM list automatically matches the new employee to its department",
+                "evidence_reason": "The candidate explicitly reaffirms the belief that listing tables in the FROM clause with a comma automatically performs an inner join on matching IDs.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the FROM list automatically matches the new employee to its department",
+            "evidence_reason": "The candidate explicitly reaffirms the listed misconception that listing multiple tables in the FROM clause automatically joins them on matching keys.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If you query FROM departments d, employees e with no WHERE or JOIN ON clause, how many total rows does the raw cartesian product produce for 3 departments and 4 employees?",
+          "answer": "Since the two tables are listed together, the database treats each employee as belonging to its own department automatically. So the raw result set will have one row for each department, which means only 3 rows in total. This is why you don’t see the full cross‑join of all employees with all departments.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "follow_up": "If you have 3 departments and 4 employees, and you write 'FROM departments, employees' without any WHERE or ON clause, how many total row combinations does the database engine create before grouping?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If you have 3 departments and 4 employees, and you write 'FROM departments, employees' without any WHERE or ON clause, how many total row combinations does the database engine create before grouping?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Since the two tables are listed together, the database treats each employee as belonging to its own department automatically.",
+                "evidence_reason": "The candidate explicitly asserts that listing two tables in the FROM clause without a join condition causes the database to automatically match employees to their respective departments, which directly matches the sql.joins.auto-join-on-shared-column misconception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If you have 3 departments and 4 employees, and you write 'FROM departments, employees' with no join condition, how many total rows does the database produce before grouping?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the database treats each employee as belonging to its own department automatically. So the raw result set will have one row for each department, which means only 3 rows in total.",
+                "evidence_reason": "The candidate explicitly claims that listing two tables together causes the database to automatically match employees to their departments rather than forming a cross product, which directly matches the misconception that tables in FROM without a join condition automatically match on their related key.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If departments has 3 rows and employees has 4 rows, and you query 'SELECT * FROM departments, employees;', how many total rows does that produce?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the database treats each employee as belonging to its own department automatically. So the raw result set will have one row for each department, which means only 3 rows in total",
+                "evidence_reason": "The candidate explicitly asserts that listing two tables in the FROM clause without a join condition automatically matches them on their relationship ('belongs to its own department automatically') instead of producing a cross join of 3 * 4 = 12 rows.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Since the two tables are listed together, the database treats each employee as belonging to its own department automatically.",
+            "evidence_reason": "The candidate explicitly asserts that listing two tables in the FROM clause without a join condition causes the database to automatically match employees to their respective departments, which directly matches the sql.joins.auto-join-on-shared-column misconception.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate firmly believes that listing two tables in the FROM clause without a join condition automatically matches them on their related key (falling under the sql.joins.auto-join-on-shared-column misconception), and completely misunderstands Cartesian products.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assumes that listing two tables in the FROM clause automatically joins them on their related key and states that count of the group column gives 1, falling under listed misconceptions and rubric level 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-010",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.joins.auto-join-on-shared-column",
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-hash-tables, ds-trees-bst",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "A hash table lets you insert new scores quickly, but it doesn’t keep them in any order, so producing a full leaderboard would require sorting the whole collection each time (≈ O(n log n)). A sorted array can be read in order instantly, yet inserting a new score means shifting many elements, which is O(n) per update. A balanced binary search tree gives O(log n) inserts and an in‑order traversal that yields the scores already sorted in O(n), so it handles both frequent updates and full‑list retrieval most efficiently.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly analyzed all three data structures, noting the O(n log n) sorting cost for hash tables, the O(n) shift cost for sorted arrays, and the efficient O(log n) inserts and O(n) in-order traversal of a balanced BST.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly analyzed all three data structures, noting the O(n log n) sorting cost for hash tables, the O(n) shift cost for sorted arrays, and the efficient O(log n) inserts and O(n) in-order traversal of a balanced BST.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: py-concurrency",
+      "prompt": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+      "answer": "Because the two threads are scheduled by the operating system, sometimes one thread can finish its whole loop before the other even starts, so the interpreter ends up counting some of the increments twice. When using asyncio, the coroutines run in the same thread but the event loop may still interleave their execution, causing the same kind of double‑counting effect.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.concurrency.async-multithreaded",
+        "follow_up": "If asyncio coroutines run on a single thread and never hit an await statement inside a loop, at what exact points can the event loop switch execution to another coroutine?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.concurrency.async-multithreaded",
+            "follow_up": "If asyncio coroutines run on a single thread and never hit an await statement inside a loop, at what exact points can the event loop switch execution to another coroutine?",
+            "confidence_expressed": "high",
+            "supporting_quote": "When using asyncio, the coroutines run in the same thread but the event loop may still interleave their execution, causing the same kind of double‑counting effect.",
+            "evidence_reason": "The candidate asserts that asyncio coroutines can interleave even without await points, mimicking the thread-like race, which reflects a misunderstanding of how cooperative multitasking operates in asyncio.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.concurrency.async-multithreaded",
+            "follow_up": "How many OS threads are actively executing Python bytecode at once when running an asyncio event loop?",
+            "confidence_expressed": "high",
+            "supporting_quote": "When using asyncio, the coroutines run in the same thread but the event loop may still interleave their execution, causing the same kind of double‑counting effect.",
+            "evidence_reason": "The candidate claims that asyncio interleaves execution in a way that causes the same race condition (described as double-counting) even without await points, showing a misunderstanding of cooperative scheduling on a single thread where synchronous blocks cannot be interrupted.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.concurrency.async-multithreaded",
+            "follow_up": "If asyncio coroutines run on the same single thread, how does the event loop decide when to switch from one coroutine to another?",
+            "confidence_expressed": "high",
+            "supporting_quote": "When using asyncio, the coroutines run in the same thread but the event loop may still interleave their execution, causing the same kind of double‑counting effect.",
+            "evidence_reason": "The candidate claims that asyncio interleaves execution without await points in a way that causes race conditions analogous to multithreading, indicating a misunderstanding of how single-threaded cooperative scheduling works in asyncio.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "When using asyncio, the coroutines run in the same thread but the event loop may still interleave their execution, causing the same kind of double‑counting effect.",
+        "evidence_reason": "The candidate asserts that asyncio coroutines can interleave even without await points, mimicking the thread-like race, which reflects a misunderstanding of how cooperative multitasking operates in asyncio.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If asyncio coroutines run on a single thread and never hit an await statement inside a loop, at what exact points can the event loop switch execution to another coroutine?",
+          "answer": "If the coroutine never hits an await, the interpreter will still pre‑empt it at regular bytecode‑execution checkpoints, like after each Python opcode or when the interpreter checks for signals, so the event loop can hop to the other coroutine at those points. In practice that means the loop may switch right after the `+=` statement finishes its whole operation, or even in the middle of evaluating the expression, because the scheduler inserts tiny time‑slices regardless of awaiting.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.concurrency.async-preempts",
+            "follow_up": "Can you check how asyncio's event loop decides when to switch between coroutines, specifically whether it uses OS-level time-slices or cooperative suspension at await points?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.concurrency.async-preempts",
+                "follow_up": "Can you check how asyncio's event loop decides when to switch between coroutines, specifically whether it uses OS-level time-slices or cooperative suspension at await points?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the interpreter will still pre‑empt it at regular bytecode‑execution checkpoints, like after each Python opcode or when the interpreter checks for signals",
+                "evidence_reason": "The candidate explicitly states that the asyncio event loop or interpreter pre-empts coroutines at bytecode checkpoints or via time-slices without awaiting, which directly matches the misconception that asyncio can pause coroutines anywhere like OS threads.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.concurrency.async-preempts",
+                "follow_up": "If asyncio coroutines were preempted by the event loop during normal bytecode execution without an await, how would you write an asynchronous task that yields control back to the loop?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the interpreter will still pre‑empt it at regular bytecode‑execution checkpoints, like after each Python opcode or when the interpreter checks for signals, so the event loop can hop to the other coroutine at those points.",
+                "evidence_reason": "The candidate explicitly states that the asyncio event loop or interpreter preempts coroutines at regular bytecode execution checkpoints or opcodes, which matches the listed misconception that asyncio can pause or interrupt a coroutine at any point like an OS thread.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.concurrency.async-preempts",
+                "follow_up": "If asyncio coroutines were preempted by the interpreter at arbitrary opcodes like OS threads, what would be the purpose of the await keyword?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the interpreter will still pre‑empt it at regular bytecode‑execution checkpoints, like after each Python opcode",
+                "evidence_reason": "The candidate explicitly states that the asyncio event loop or interpreter preempts coroutines at arbitrary bytecode opcodes even without an await, which directly matches the listed misconception that asyncio can pause a coroutine at any point like OS thread preemption.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the interpreter will still pre‑empt it at regular bytecode‑execution checkpoints, like after each Python opcode or when the interpreter checks for signals",
+            "evidence_reason": "The candidate explicitly states that the asyncio event loop or interpreter pre-empts coroutines at bytecode checkpoints or via time-slices without awaiting, which directly matches the misconception that asyncio can pause coroutines anywhere like OS threads.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "Can you check how asyncio's event loop decides when to switch between coroutines, specifically whether it uses OS-level time-slices or cooperative suspension at await points?",
+          "answer": "From what I’ve seen, the asyncio loop actually relies on the operating system’s scheduler to pre‑empt a coroutine after a short time slice, just like threads do, and it also checks for pending callbacks at each bytecode step. So even if you never hit an `await`, the loop may still be interrupted by the OS timer and give control to the other coroutine.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.concurrency.async-preempts",
+            "follow_up": "Can you check how standard Python coroutines are defined and whether they yield control voluntarily or get interrupted by a hardware timer?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.concurrency.async-preempts",
+                "follow_up": "Can you check how standard Python coroutines are defined and whether they yield control voluntarily or get interrupted by a hardware timer?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the asyncio loop actually relies on the operating system’s scheduler to pre‑empt a coroutine after a short time slice, just like threads do",
+                "evidence_reason": "The candidate explicitly states that the asyncio event loop relies on the operating system scheduler to pre-empt a coroutine using a time slice, which matches the belief that asyncio can pause execution anywhere like OS threads.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.concurrency.async-preempts",
+                "follow_up": "Can you show where in the standard Python documentation or event loop specification an OS timer is used to interrupt running Python bytecode without an await statement?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the asyncio loop actually relies on the operating system’s scheduler to pre‑empt a coroutine after a short time slice, just like threads do",
+                "evidence_reason": "The candidate explicitly asserts that the asyncio event loop relies on the OS scheduler to pre-empt coroutines via time slices, mirroring how OS threads are interrupted, which matches the belief that asyncio pre-empts code without await points.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.concurrency.async-preempts",
+                "follow_up": "Can you show where in the standard Python documentation or event loop design a CPU-bound coroutine without an await is pre-empted by the OS timer?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the asyncio loop actually relies on the operating system’s scheduler to pre‑empt a coroutine after a short time slice, just like threads do",
+                "evidence_reason": "The candidate explicitly states that the asyncio event loop relies on the operating system's scheduler to pre-empt a coroutine using a time slice, which matches the belief that asyncio pre-empts tasks like OS threads.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the asyncio loop actually relies on the operating system’s scheduler to pre‑empt a coroutine after a short time slice, just like threads do",
+            "evidence_reason": "The candidate explicitly states that the asyncio event loop relies on the operating system scheduler to pre-empt a coroutine using a time slice, which matches the belief that asyncio can pause execution anywhere like OS threads.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that asyncio coroutines are pre-empted by OS time-slices or bytecode checks without an await statement, showing the listed misconception that asyncio pre-empts tasks like OS threads.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims threads might count increments twice (rather than missing updates) and falsely believes asyncio can interleave execution without await points, showing a misunderstanding of both concurrency models.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-011",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation (sql.aggregation.count-column-counts-nulls, sql.null.aggregates-treat-null-as-zero)",
+      "prompt": "A staff table has a bonus column, and some bonuses are NULL. How do SUM(bonus) and AVG(bonus) treat those NULLs, and how would AVG(bonus) compare with SUM(bonus) divided by COUNT(*)?",
+      "answer": "SUM will add up the bonus values and treat any NULL entries as 0, so they don’t change the total. AVG also counts the NULLs as 0, so it simply takes the sum (including those zeros) and divides by the total number of rows in the table. Because both functions include the NULLs as zeros, AVG(bonus) will be the same as SUM(bonus) divided by COUNT(*).",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+        "follow_up": "What happens to the divisor in AVG(bonus) if a table has 5 rows total, but 2 of them have NULL for bonus?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+            "follow_up": "What happens to the divisor in AVG(bonus) if a table has 5 rows total, but 2 of them have NULL for bonus?",
+            "confidence_expressed": "high",
+            "supporting_quote": "SUM will add up the bonus values and treat any NULL entries as 0",
+            "evidence_reason": "The candidate explicitly states that SUM and AVG treat NULL entries as 0, which directly matches the misconception that aggregate functions treat NULL as zero.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+            "follow_up": "What would be the difference in the row count used if you ran COUNT(bonus) versus COUNT(*) on a table where some bonus values are NULL?",
+            "confidence_expressed": "high",
+            "supporting_quote": "SUM will add up the bonus values and treat any NULL entries as 0",
+            "evidence_reason": "The candidate explicitly states that SUM treats NULL entries as 0, which directly matches the listed misconception that SQL aggregate functions treat NULL as zero.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+            "follow_up": "What would COUNT(bonus) return if there are NULL values in the bonus column, and how does that relate to the number of rows used by AVG(bonus)?",
+            "confidence_expressed": "high",
+            "supporting_quote": "SUM will add up the bonus values and treat any NULL entries as 0",
+            "evidence_reason": "The candidate explicitly states that SUM treats NULL entries as 0, matching the listed misconception sql.null.aggregates-treat-null-as-zero.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "SUM will add up the bonus values and treat any NULL entries as 0",
+        "evidence_reason": "The candidate explicitly states that SUM and AVG treat NULL entries as 0, which directly matches the misconception that aggregate functions treat NULL as zero.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the divisor in AVG(bonus) if a table has 5 rows total, but 2 of them have NULL for bonus?",
+          "answer": "If there are 5 rows and 2 of them have NULL for bonus, the AVG function will still divide by the total number of rows, so the divisor stays at 5. In other words, the two NULLs are just ignored in the sum, but they still count toward the denominator.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+            "follow_up": "What does COUNT(bonus) return compared to COUNT(*) when a column has NULL values?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+                "follow_up": "What does COUNT(bonus) return compared to COUNT(*) when a column has NULL values?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the two NULLs are just ignored in the sum, but they still count toward the denominator.",
+                "evidence_reason": "The candidate states that NULLs are ignored in the sum but included in the denominator for the average, which directly aligns with the misconception that AVG divides by the total number of rows including nulls.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+                "follow_up": "If AVG divides by the total number of rows including the NULLs, what value does it assign to those NULL rows when computing the sum?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the AVG function will still divide by the total number of rows, so the divisor stays at 5. In other words, the two NULLs are just ignored in the sum, but they still count toward the denominator.",
+                "evidence_reason": "The candidate states that the sum ignores the NULLs while the average's denominator still counts all rows (including the NULLs), which is the exact mathematical outcome of treating NULLs as zeros in the average calculation despite contradictory wording about the sum.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+                "follow_up": "If a column has 3 rows with values 10, 20, and NULL, what value does COUNT(bonus) return versus COUNT(*), and what does AVG(bonus) return?",
+                "confidence_expressed": "high",
+                "supporting_quote": "In other words, the two NULLs are just ignored in the sum, but they still count toward the denominator.",
+                "evidence_reason": "The candidate explicitly asserts that AVG divides by the total number of rows even though NULLs are ignored in the sum, which directly matches the belief that AVG includes NULL rows in its denominator as zeros.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the two NULLs are just ignored in the sum, but they still count toward the denominator.",
+            "evidence_reason": "The candidate states that NULLs are ignored in the sum but included in the denominator for the average, which directly aligns with the misconception that AVG divides by the total number of rows including nulls.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What does COUNT(bonus) return compared to COUNT(*) when a column has NULL values?",
+          "answer": "COUNT(bonus) actually returns the total number of rows in the table, just like COUNT(*), because it treats NULL values as if they were regular entries. So when a column has NULLs, both COUNT(bonus) and COUNT(*) will give you the same result.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a table has 5 rows total and the bonus column contains 2 NULLs and 3 non-NULL values, what number does COUNT(bonus) return?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "If a table has 5 rows total and the bonus column contains 2 NULLs and 3 non-NULL values, what number does COUNT(bonus) return?",
+                "confidence_expressed": "high",
+                "supporting_quote": "COUNT(bonus) actually returns the total number of rows in the table, just like COUNT(*), because it treats NULL values as if they were regular entries.",
+                "evidence_reason": "The candidate explicitly states that COUNT(bonus) returns the total number of rows just like COUNT(*) and counts NULL values as regular entries, matching the listed misconception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "If a table has 5 rows total and 2 of them have NULL in the bonus column, what exact number does COUNT(bonus) return?",
+                "confidence_expressed": "high",
+                "supporting_quote": "COUNT(bonus) actually returns the total number of rows in the table, just like COUNT(*), because it treats NULL values as if they were regular entries.",
+                "evidence_reason": "The candidate explicitly states that COUNT(bonus) returns the total number of rows including NULLs, treating them as regular entries, which matches the listed misconception sql.aggregation.count-column-counts-nulls.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "If a column has 10 total rows and 3 of them contain NULL, what number does COUNT(bonus) return?",
+                "confidence_expressed": "high",
+                "supporting_quote": "COUNT(bonus) actually returns the total number of rows in the table, just like COUNT(*), because it treats NULL values as if they were regular entries.",
+                "evidence_reason": "The candidate explicitly states that COUNT(bonus) counts every row including NULLs, matching the listed misconception sql.aggregation.count-column-counts-nulls.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "COUNT(bonus) actually returns the total number of rows in the table, just like COUNT(*), because it treats NULL values as if they were regular entries.",
+            "evidence_reason": "The candidate explicitly states that COUNT(bonus) returns the total number of rows just like COUNT(*) and counts NULL values as regular entries, matching the listed misconception.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that SUM and AVG treat NULLs as zero, and also incorrectly states that COUNT(bonus) counts NULL rows just like COUNT(*). This directly matches the listed misconceptions and rubric for a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that SUM and AVG treat NULL entries as 0 and that AVG(bonus) equals SUM(bonus) divided by COUNT(*), which matches a listed misconception and the level-0 rubric description.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-013",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs",
+        "ds-stacks-queues"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: ds-stacks-queues",
+      "prompt": "What does this code print? What would happen if the `if node in seen: continue` check were removed, and why might this explicit-stack version be preferred over a recursive DFS on a graph containing a path of a million nodes?\n\ngraph = {1: [2, 3], 2: [4], 3: [4], 4: [1]}\n\ndef dfs(start):\n    seen, stack, order = set(), [start], []\n    while stack:\n        node = stack.pop()\n        if node in seen:\n            continue\n        seen.add(node)\n        order.append(node)\n        for nb in graph[node]:\n            stack.append(nb)\n    return order\n\nprint(dfs(1))\n",
+      "answer": "I'm not entirely sure what the exact output of the code is, but I do know that if you remove the `if node in seen: continue` check, the traversal would get stuck in an infinite loop because of the cycle 4 → 1.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "Could you trace what nodes are on the stack after the first pop and visit of node 1?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "Could you trace what nodes are on the stack after the first pop and visit of node 1?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "Could you trace the first two pops from the stack to see which neighbour is explored first?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.visited-unneeded",
+            "follow_up": "What would happen if the graph had no cycles, like a straight line of nodes, but you still removed the seen check?",
+            "confidence_expressed": "medium",
+            "supporting_quote": "if you remove the `if node in seen: continue` check, the traversal would get stuck in an infinite loop because of the cycle 4 → 1",
+            "evidence_reason": "The candidate specifically attributes the infinite loop to the cycle 4 -> 1, but this implies that without a cycle the seen check would be unneeded, matching the belief that graph traversal does not need to track visited nodes naturally.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          0,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that removing the seen check leads to an infinite loop due to the cycle, but failed to provide the correct output of the code and missed the explanation regarding recursion limits.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          0,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that removing the seen check leads to an infinite loop due to the cycle, but failed to provide the correct output of the code and missed the explanation regarding recursion limits.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.7429,
+          "se": 0.7602,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs",
+        "ds-heaps"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.76); level 3 is nearest its estimate +0.74; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-graphs (ds.graphs.bfs-weighted-shortest, ds.graphs.dfs-finds-shortest, ds.heaps.pop-min-constant)",
+      "prompt": "This is Dijkstra's algorithm with `heapq` as the priority queue. What does it print? Why is the distance to C 3 and not 5, even though there is a direct edge A -> C? Would BFS, or a DFS that keeps the first path it finds, give the same distances? What does each `heappop` cost?\n\nimport heapq\ngraph = {\"A\": [(\"C\", 5), (\"B\", 1)], \"B\": [(\"D\", 1)], \"C\": [(\"E\", 1)], \"D\": [(\"C\", 1)], \"E\": []}\n\ndef dijkstra(src):\n    dist, pq = {src: 0}, [(0, src)]\n    while pq:\n        d, u = heapq.heappop(pq)\n        if d > dist[u]:\n            continue\n        for v, w in graph[u]:\n            if d + w < dist.get(v, float(\"inf\")):\n                dist[v] = d + w\n                heapq.heappush(pq, (d + w, v))\n    return dist\nprint(dijkstra(\"A\"))",
+      "answer": "It will print a dictionary with the shortest distances from A, something like `{'A': 0, 'B': 1, 'D': 2, 'C': 3, 'E': 4}`. The distance to C ends up being 3 because the algorithm discovers a cheaper route through B and D before it ever processes the direct edge from A to C. A plain BFS would give the same result since it also explores by increasing distance, while a DFS that just follows the first branch it sees would not necessarily produce the correct shortest‑path weights. Each `heappop` operation runs in logarithmic time relative to the size of the heap.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.graphs.bfs-weighted-shortest",
+        "follow_up": "Can you trace step-by-step how a standard BFS would visit node C in a graph where node C has a direct edge of weight 5 from the start, but also a two-edge path of total weight 3?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.bfs-weighted-shortest",
+            "follow_up": "Can you trace step-by-step how a standard BFS would visit node C in a graph where node C has a direct edge of weight 5 from the start, but also a two-edge path of total weight 3?",
+            "confidence_expressed": "high",
+            "supporting_quote": "A plain BFS would give the same result since it also explores by increasing distance",
+            "evidence_reason": "The candidate explicitly states that a plain BFS would give the same result because it 'explores by increasing distance', which reflects the listed misconception that BFS finds shortest paths in weighted graphs by treating edge count or traversal steps as distance.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.bfs-weighted-shortest",
+            "follow_up": "Can you trace step-by-step how a standard BFS would visit node C in a graph where node C has a direct edge of weight 5 from the start, but also a two-edge path of total weight 3?",
+            "confidence_expressed": "high",
+            "supporting_quote": "A plain BFS would give the same result since it also explores by increasing distance",
+            "evidence_reason": "The candidate explicitly claims that BFS explores by increasing distance and gives the same result as Dijkstra on a weighted graph, which directly matches the misconception that BFS finds shortest paths in weighted graphs.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.bfs-weighted-shortest",
+            "follow_up": "Can you trace how a standard breadth-first search visits nodes and records distances on a graph where an edge with a large weight has fewer hops than a multi-edge path with a smaller total weight?",
+            "confidence_expressed": "high",
+            "supporting_quote": "A plain BFS would give the same result since it also explores by increasing distance",
+            "evidence_reason": "The candidate explicitly asserts that a plain BFS would give the same result on a weighted graph because it 'explores by increasing distance', showing the listed misconception that BFS finds shortest paths in weighted graphs.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "A plain BFS would give the same result since it also explores by increasing distance",
+        "evidence_reason": "The candidate explicitly states that a plain BFS would give the same result because it 'explores by increasing distance', which reflects the listed misconception that BFS finds shortest paths in weighted graphs by treating edge count or traversal steps as distance.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "Can you trace step-by-step how a standard BFS would visit node C in a graph where node C has a direct edge of weight 5 from the start, but also a two-edge path of total weight 3?",
+          "answer": "Sure! In a BFS you’d start at A, enqueue its neighbors, so you’d first pull B (distance 1) and then C (distance 5) from the queue. When you later process B you’d add D (distance 2) and then from D you’d finally reach C again with a total distance of 3, but because BFS only looks at the order nodes were enqueued, it would still report the first C it saw—so the algorithm would output C’s distance as 5.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.bfs-weighted-shortest",
+            "follow_up": "If a BFS visits C via the direct edge A -> C at cost 5 first, and later reaches C via A -> B -> D -> C at cost 3, how does a standard BFS queue handle discovering a shorter path to a node that has already been visited?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.graphs.bfs-weighted-shortest",
+                "follow_up": "If a BFS visits C via the direct edge A -> C at cost 5 first, and later reaches C via A -> B -> D -> C at cost 3, how does a standard BFS queue handle discovering a shorter path to a node that has already been visited?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When you later process B you’d add D (distance 2) and then from D you’d finally reach C again with a total distance of 3, but because BFS only looks at the order nodes were enqueued, it would still report the first C it saw—so the algorithm would output C’s distance as 5.",
+                "evidence_reason": "The candidate demonstrates the belief that BFS computes or can track total path weights (attempting to trace costs like distance 5 and distance 3 through BFS queue operations), illustrating the confusion between edge-count level-order traversal and weighted shortest paths.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.graphs.bfs-weighted-shortest",
+                "follow_up": "If a BFS visits C via the direct edge A -> C first, how does standard BFS handle a node that has already been visited or enqueued when a cheaper or alternative path is found later?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When you later process B you’d add D (distance 2) and then from D you’d finally reach C again with a total distance of 3, but because BFS only looks at the order nodes were enqueued, it would still report the first C it saw—so the algorithm would output C’s distance as 5.",
+                "evidence_reason": "The candidate explicitly describes a weighted graph where BFS discovers C via a longer path first and then encounters a shorter path via B->D->C later, illustrating a belief that BFS naturally encounters and processes multiple paths to update or evaluate weights in a weighted graph.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.graphs.bfs-weighted-shortest",
+                "follow_up": "If a BFS visits C via the direct edge A -> C first, does it ever visit C a second time to update its distance, or does it stop updating once a node is first reached?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When you later process B you’d add D (distance 2) and then from D you’d finally reach C again with a total distance of 3, but because BFS only looks at the order nodes were enqueued, it would still report the first C it saw",
+                "evidence_reason": "The candidate asserts that BFS actually reaches C via the cheaper weighted path (A -> B -> D -> C) after visiting the direct edge, which demonstrates they understand how the graph traversal explores paths, but they believe BFS would still calculate or report the incorrect weight for C because of how it processes nodes—equating BFS behavior with finding shortest paths in weighted graphs.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "When you later process B you’d add D (distance 2) and then from D you’d finally reach C again with a total distance of 3, but because BFS only looks at the order nodes were enqueued, it would still report the first C it saw—so the algorithm would output C’s distance as 5.",
+            "evidence_reason": "The candidate demonstrates the belief that BFS computes or can track total path weights (attempting to trace costs like distance 5 and distance 3 through BFS queue operations), illustrating the confusion between edge-count level-order traversal and weighted shortest paths.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a BFS visits C via the direct edge A -> C at cost 5 first, and later reaches C via A -> B -> D -> C at cost 3, how does a standard BFS queue handle discovering a shorter path to a node that has already been visited?",
+          "answer": "In a plain BFS the node is marked as “visited” as soon as it’s dequeued, so when the shorter three‑step path reaches C later the algorithm just discards it – the queue won’t put C back in because it thinks it’s already been processed. In other words, the first time C is taken out of the queue its distance (5) is kept forever, and any later cheaper discovery is ignored.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly gives the final output, explains why C is 3 via the cheaper path through B and D, correctly identifies heappop as O(log n), and through the follow-up exchanges corrects any initial confusion about BFS to accurately show that BFS finds the fewest edges rather than least weight and ignores later visits.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output, explained why C is 3 via the alternative path, and correctly stated heappop is O(log n). However, they claimed that plain BFS would give the same result on a weighted graph, which is incorrect and shows a misconception about BFS and edge weights.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.2535,
+          "se": 0.6844,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-008",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.75); level 1 is nearest its estimate -1.30; lists a suspected misconception to confirm: sql.aggregation.count-column-counts-nulls, sql.null.aggregates-treat-null-as-zero",
+      "prompt": "What does this query return? Explain each of the four values.\n\nSELECT COUNT(*) AS n_rows,\n       COUNT(bonus) AS n_bonus,\n       SUM(bonus) AS total,\n       AVG(bonus) AS avg_bonus\nFROM staff;\n\nTable staff:\nname | bonus\nAsha | 100\nBen | NULL\nChen | 200\nDana | NULL\nEli | 300",
+      "answer": "The SUM(bonus) will be 600 because SUM ignores NULL values. I'm not sure about the exact results for the other three columns.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How many rows in total are in the staff table, and how many of those have a non-NULL bonus value?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How many rows in total are in the staff table, and how many of those have a non-NULL bonus value?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How many rows in total are in the staff table, and how many of those have a non-NULL bonus value?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How many rows in total are in the staff table, and how many of those have a non-null bonus value?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that SUM ignores NULL values and totals 600, but was unsure about the other three columns, missing most of the required values and NULL handling explanations.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that SUM ignores NULL values and totals 600, but was unsure about the other three columns, missing most of the required values and NULL handling explanations.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.5729,
+          "se": 0.7008,
+          "level": 0,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.2535,
+          "se": 0.6844,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; lists a suspected misconception to confirm: py.concurrency.async-multithreaded, py.concurrency.async-preempts",
+      "prompt": "An asyncio service handles many slow API calls with 'await session.get(...)'. One handler also runs a pure-Python loop that takes 3 seconds of CPU time. Explain how asyncio runs many requests at once, what happens to the other requests during that loop, and whether moving the loop into a thread would let it run on a second core in parallel with the rest.",
+      "answer": "asyncio runs all of its coroutines on a single thread, and the event loop only switches to another coroutine when the current one hits an `await` that actually suspends (e.g., waiting for a network response). A pure‑Python loop that runs for three seconds without any `await` therefore blocks the event loop, freezing all other pending requests for the whole duration. Moving that work to a thread with something like `asyncio.to_thread` will keep the event loop responsive because the thread can run while the loop continues to schedule I/O, but in CPython the GIL prevents true parallel execution of Python bytecode, so the CPU‑bound code still won’t run on a second core; you’d need a process‑based pool for real parallelism.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that asyncio runs single-threaded with switching at await points, that a CPU loop without await blocks the event loop, and that moving the loop to a thread keeps the event loop responsive but does not provide true CPU parallelism due to the GIL, matching all key points of the model answer.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that asyncio runs single-threaded with switching at await points, that a CPU loop without await blocks the event loop, and that moving the loop to a thread keeps the event loop responsive but does not provide true CPU parallelism due to the GIL, matching all key points of the model answer.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -1.5729,
+          "se": 0.7008,
+          "level": 0,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.2535,
+          "se": 0.6844,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.70); level 1 is nearest its estimate -1.57; lists a suspected misconception to confirm: sql.aggregation.count-column-counts-nulls, sql.null.aggregates-treat-null-as-zero",
+      "prompt": "A survey table has a score column from 1 to 5, which is NULL when the respondent skipped the question. What do AVG(score) and COUNT(score) * 100.0 / COUNT(*) each tell you? A colleague first 'cleans' the data by replacing NULL scores with COALESCE(score, 0). What happens to both numbers, and why is that misleading?",
+      "answer": "AVG(score) calculates the average using only the rows where score is not NULL, so skipped responses are excluded from the mean. I’m not sure how COUNT(score) * 100.0 / COUNT(*) would be interpreted in this context.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does COUNT(score) behave differently from COUNT(*) when a column contains NULL values?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does COUNT(score) behave differently from COUNT(*) when a column contains NULL values?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does COUNT(score) behave differently from COUNT(*) when there are NULL values in the score column?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does COUNT(score) behave differently from COUNT(*) when there are NULL values in the score column?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained AVG(score) but failed to explain COUNT(score) * 100.0 / COUNT(*) and missed the effect of COALESCE entirely.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained AVG(score) but failed to explain COUNT(score) * 100.0 / COUNT(*) and missed the effect of COALESCE entirely.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -1.4581,
+          "se": 0.6267,
+          "level": 0,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.2535,
+          "se": 0.6844,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-graphs"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.25; lists a suspected misconception to confirm: ds.graphs.bfs-weighted-shortest",
+      "prompt": "A flight network connects airports, and each flight has a fare. A user wants (a) the route with the fewest flights and (b) the cheapest route. Which algorithm would you use for each, and why? Would a depth-first search that stops at the first route it finds answer either question?",
+      "answer": "For finding the route with the fewest flights, I would use a breadth‑first search (BFS) with a queue, since BFS explores airports level by level and guarantees the shortest‑hop path. I'm not sure which algorithm is best for the cheapest‑fare route.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How would you approach finding the cheapest route if you consider the total cost of the flights rather than just the number of hops?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would you approach finding the cheapest route if you consider the total cost of the flights rather than just the number of hops?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How might you take flight fares into account if you wanted to find the cheapest route?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would you approach finding the cheapest route if you consider the total cost of the flights rather than just the number of stops?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified BFS for the fewest flights with valid reasoning, but failed to provide the algorithm for the cheapest route, meeting the criteria for a score of 1.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified BFS for the fewest flights with valid reasoning, but failed to provide the algorithm for the cheapest route, meeting the criteria for a score of 1.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -1.4581,
+          "se": 0.6267,
+          "level": 0,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.2019,
+          "se": 0.614,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.61; lists a suspected misconception to confirm: py.concurrency.async-multithreaded",
+      "prompt": "A withdraw function does 'if balance >= amount: balance -= amount'. Two threads call it at the same moment on a balance of 100, each withdrawing 80. How can the account end up overdrawn, and how do you prevent it? If you rewrite it with asyncio and there is an 'await audit_log()' between the check and the subtraction, can the same bug happen? What if there is no await in between?",
+      "answer": "If both threads run the function at the same time they each see the same initial balance and both subtract their amount, so the final balance becomes negative because the subtraction happens twice. Using asyncio doesn’t really change anything – the `await audit_log()` just slows things down, but the race condition is still there, while if you remove the await the two calls will execute sequentially and you won’t get an overdraft.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the thread race condition and the asyncio cases both with and without the await, but misses mentioning how to fix the thread race using a Lock.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the thread race condition and the asyncio cases both with and without the await, but misses mentioning how to fix the thread race using a Lock.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6744,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -1.4581,
+          "se": 0.6267,
+          "level": 0,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.2019,
+          "se": 0.614,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-null",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.63); level 1 is nearest its estimate -1.46; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-null (sql.null.equals-null-matches, sql.null.not-equal-includes-null)",
+      "prompt": "A colleague wrote this query to list every customer who is not in Pune, including customers with no city recorded. What does it return, and why?\n\nSELECT name\nFROM customers\nWHERE city <> 'Pune' OR city = NULL\nORDER BY name;\n\nTable customers:\nid | name | city\n1 | Asha | Pune\n2 | Ben | NULL\n3 | Chen | Delhi\n4 | Dana | Mumbai\n5 | Eli | NULL",
+      "answer": "The condition `city <> 'Pune'` evaluates to UNKNOWN when the city value is NULL, so those rows are excluded from the result set. Consequently, customers with a NULL city are not returned by the query.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens to rows where the city is NULL when we use city = NULL?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that city <> 'Pune' evaluates to UNKNOWN for NULL values and excludes them, but misses explaining why city = NULL fails and what the correct fix is.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that city <> 'Pune' evaluates to UNKNOWN for NULL values and excludes them, but misses explaining why city = NULL fails and what the correct fix is.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6744,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -1.3798,
+          "se": 0.5699,
+          "level": 0,
+          "n": 5
+        },
+        "ds": {
+          "estimate": 1.2019,
+          "se": 0.614,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +1.20; lists a suspected misconception to confirm: ds.graphs.bfs-weighted-shortest",
+      "prompt": "What does this code print? What do the numbers mean, and would they still be the shortest distances if each edge had a different length?\n\nfrom collections import deque\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"E\"], \"C\": [\"D\"], \"D\": [\"E\"], \"E\": [\"F\"], \"F\": []}\n\ndef bfs(start):\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        node = q.popleft()\n        for nb in graph[node]:\n            if nb not in dist:\n                dist[nb] = dist[node] + 1\n                q.append(nb)\n    return dist\n\nprint(bfs(\"A\"))\n",
+      "answer": "It will print a dictionary where each node is mapped to some number that grows as you go farther from A, like A → 0, B → 1, C → 1, D → 2, E → 3, F → 4. Those numbers are just the order in which the nodes are visited, not actual distances, and if the edges had different lengths the same numbers would still be correct because the algorithm just counts steps.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.graphs.bfs-weighted-shortest",
+        "follow_up": "How does the code choose which node to visit next, and does that choice account for edge weights?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.bfs-weighted-shortest",
+            "follow_up": "How does the code choose which node to visit next, and does that choice account for edge weights?",
+            "confidence_expressed": "high",
+            "supporting_quote": "if the edges had different lengths the same numbers would still be correct because the algorithm just counts steps.",
+            "evidence_reason": "The candidate asserts that the distance numbers would remain correct even if edge lengths varied, which explicitly aligns with the misconception that step-counting (BFS) is sufficient for shortest paths in weighted graphs.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.bfs-weighted-shortest",
+            "follow_up": "How does the code process the neighbors of a node, and what happens to the distance calculation if reaching a node takes a weight of 10 instead of 1?",
+            "confidence_expressed": "high",
+            "supporting_quote": "if the edges had different lengths the same numbers would still be correct because the algorithm just counts steps.",
+            "evidence_reason": "The candidate asserts that the distance values would remain correct even if edges had different lengths because the algorithm counts steps, which matches the misconception that BFS (or edge-counting) finds shortest paths in weighted graphs.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.bfs-weighted-shortest",
+            "follow_up": "How does the code determine the value assigned to each node when adding it to the dist dictionary?",
+            "confidence_expressed": "high",
+            "supporting_quote": "if the edges had different lengths the same numbers would still be correct because the algorithm just counts steps",
+            "evidence_reason": "The candidate asserts that the same distance numbers would remain correct even if edges had different lengths, directly expressing the belief that BFS-based hop counts equal shortest paths in weighted graphs.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "if the edges had different lengths the same numbers would still be correct because the algorithm just counts steps.",
+        "evidence_reason": "The candidate asserts that the distance numbers would remain correct even if edge lengths varied, which explicitly aligns with the misconception that step-counting (BFS) is sufficient for shortest paths in weighted graphs.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate gave an incorrect output (getting E and F wrong), misunderstood the numbers as mere visit order rather than shortest edge count, and incorrectly claimed that BFS numbers would remain shortest distances even if edges had different lengths.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate gave an incorrect output (getting E and F wrong), misunderstood the numbers as mere visit order rather than shortest edge count, and incorrectly claimed that BFS numbers would remain shortest distances even if edges had different lengths.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6744,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -1.3798,
+          "se": 0.5699,
+          "level": 0,
+          "n": 5
+        },
+        "ds": {
+          "estimate": 0.857,
+          "se": 0.5547,
+          "level": 3,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 22,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 2,
+        "estimate": 0.6744,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.483581,
+        "level_probabilities": {
+          "0": 0.000591,
+          "1": 0.052408,
+          "2": 0.483581,
+          "3": 0.46342
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 0,
+        "estimate": -1.3798,
+        "se": 0.5699,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.567064,
+        "level_probabilities": {
+          "0": 0.567064,
+          "1": 0.409268,
+          "2": 0.023579,
+          "3": 9e-05
+        },
+        "meets_minimum": false
+      },
+      "ds": {
+        "level": 3,
+        "estimate": 0.857,
+        "se": 0.5547,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.594867,
+        "level_probabilities": {
+          "0": 0.000109,
+          "1": 0.02082,
+          "2": 0.384204,
+          "3": 0.594867
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "not_fit",
+    "decision_reason": "sql is below the job minimum (level 2; estimated below level 1).",
+    "misconceptions": [
+      {
+        "id": "sql.joins.auto-join-on-shared-column",
+        "confirmed": false,
+        "evidence_turns": [
+          2
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L2-010",
+            "turn": 2,
+            "reply_index": 0,
+            "reply_text": "The query will give you one row per department, where n_rows shows the number of department rows (which is always 1 for each department) and n_staff shows the count of employees that belong to that department. Because the two tables are listed together in the FROM clause, the database automatically matches each employee to its department via dept_id, so the counts are calculated correctly for each department.",
+            "vote_share": 1.0,
+            "supporting_quote": "Because the two tables are listed together in the FROM clause, the database automatically matches each employee to its department via dept_id",
+            "quote_start": 210,
+            "quote_end": 351,
+            "reason": "The candidate explicitly expresses the belief that listing two tables in the FROM clause automatically matches them on their shared key."
+          },
+          {
+            "question_id": "SQL-L2-010",
+            "turn": 2,
+            "reply_index": 1,
+            "reply_text": "Adding another employee would add one more result row for the department that employee belongs to, because the FROM list automatically matches the new employee to its department and the GROUP BY will produce an extra group. If the new employee’s dept_id is NULL, it would still create an additional row for the “NULL” department group.",
+            "vote_share": 1.0,
+            "supporting_quote": "the FROM list automatically matches the new employee to its department",
+            "quote_start": 107,
+            "quote_end": 177,
+            "reason": "The candidate explicitly reaffirms the listed misconception that listing multiple tables in the FROM clause automatically joins them on matching keys."
+          },
+          {
+            "question_id": "SQL-L2-010",
+            "turn": 2,
+            "reply_index": 2,
+            "reply_text": "Since the two tables are listed together, the database treats each employee as belonging to its own department automatically. So the raw result set will have one row for each department, which means only 3 rows in total. This is why you don’t see the full cross‑join of all employees with all departments.",
+            "vote_share": 1.0,
+            "supporting_quote": "Since the two tables are listed together, the database treats each employee as belonging to its own department automatically.",
+            "quote_start": 0,
+            "quote_end": 125,
+            "reason": "The candidate explicitly asserts that listing two tables in the FROM clause without a join condition causes the database to automatically match employees to their respective departments, which directly matches the sql.joins.auto-join-on-shared-column misconception."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.concurrency.async-multithreaded",
+        "confirmed": false,
+        "evidence_turns": [
+          4
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-011",
+            "turn": 4,
+            "reply_index": 0,
+            "reply_text": "Because the two threads are scheduled by the operating system, sometimes one thread can finish its whole loop before the other even starts, so the interpreter ends up counting some of the increments twice. When using asyncio, the coroutines run in the same thread but the event loop may still interleave their execution, causing the same kind of double‑counting effect.",
+            "vote_share": 1.0,
+            "supporting_quote": "When using asyncio, the coroutines run in the same thread but the event loop may still interleave their execution, causing the same kind of double‑counting effect.",
+            "quote_start": 206,
+            "quote_end": 369,
+            "reason": "The candidate asserts that asyncio coroutines can interleave even without await points, mimicking the thread-like race, which reflects a misunderstanding of how cooperative multitasking operates in asyncio."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.concurrency.async-preempts",
+        "confirmed": false,
+        "evidence_turns": [
+          4
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-011",
+            "turn": 4,
+            "reply_index": 1,
+            "reply_text": "If the coroutine never hits an await, the interpreter will still pre‑empt it at regular bytecode‑execution checkpoints, like after each Python opcode or when the interpreter checks for signals, so the event loop can hop to the other coroutine at those points. In practice that means the loop may switch right after the `+=` statement finishes its whole operation, or even in the middle of evaluating the expression, because the scheduler inserts tiny time‑slices regardless of awaiting.",
+            "vote_share": 1.0,
+            "supporting_quote": "the interpreter will still pre‑empt it at regular bytecode‑execution checkpoints, like after each Python opcode or when the interpreter checks for signals",
+            "quote_start": 38,
+            "quote_end": 192,
+            "reason": "The candidate explicitly states that the asyncio event loop or interpreter pre-empts coroutines at bytecode checkpoints or via time-slices without awaiting, which directly matches the misconception that asyncio can pause coroutines anywhere like OS threads."
+          },
+          {
+            "question_id": "PY-L3-011",
+            "turn": 4,
+            "reply_index": 2,
+            "reply_text": "From what I’ve seen, the asyncio loop actually relies on the operating system’s scheduler to pre‑empt a coroutine after a short time slice, just like threads do, and it also checks for pending callbacks at each bytecode step. So even if you never hit an `await`, the loop may still be interrupted by the OS timer and give control to the other coroutine.",
+            "vote_share": 1.0,
+            "supporting_quote": "the asyncio loop actually relies on the operating system’s scheduler to pre‑empt a coroutine after a short time slice, just like threads do",
+            "quote_start": 21,
+            "quote_end": 160,
+            "reason": "The candidate explicitly states that the asyncio event loop relies on the operating system scheduler to pre-empt a coroutine using a time slice, which matches the belief that asyncio can pause execution anywhere like OS threads."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.null.aggregates-treat-null-as-zero",
+        "confirmed": false,
+        "evidence_turns": [
+          5
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L1-013",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "SUM will add up the bonus values and treat any NULL entries as 0, so they don’t change the total. AVG also counts the NULLs as 0, so it simply takes the sum (including those zeros) and divides by the total number of rows in the table. Because both functions include the NULLs as zeros, AVG(bonus) will be the same as SUM(bonus) divided by COUNT(*).",
+            "vote_share": 1.0,
+            "supporting_quote": "SUM will add up the bonus values and treat any NULL entries as 0",
+            "quote_start": 0,
+            "quote_end": 64,
+            "reason": "The candidate explicitly states that SUM and AVG treat NULL entries as 0, which directly matches the misconception that aggregate functions treat NULL as zero."
+          },
+          {
+            "question_id": "SQL-L1-013",
+            "turn": 5,
+            "reply_index": 1,
+            "reply_text": "If there are 5 rows and 2 of them have NULL for bonus, the AVG function will still divide by the total number of rows, so the divisor stays at 5. In other words, the two NULLs are just ignored in the sum, but they still count toward the denominator.",
+            "vote_share": 1.0,
+            "supporting_quote": "the two NULLs are just ignored in the sum, but they still count toward the denominator.",
+            "quote_start": 162,
+            "quote_end": 249,
+            "reason": "The candidate states that NULLs are ignored in the sum but included in the denominator for the average, which directly aligns with the misconception that AVG divides by the total number of rows including nulls."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.aggregation.count-column-counts-nulls",
+        "confirmed": false,
+        "evidence_turns": [
+          5
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L1-013",
+            "turn": 5,
+            "reply_index": 2,
+            "reply_text": "COUNT(bonus) actually returns the total number of rows in the table, just like COUNT(*), because it treats NULL values as if they were regular entries. So when a column has NULLs, both COUNT(bonus) and COUNT(*) will give you the same result.",
+            "vote_share": 1.0,
+            "supporting_quote": "COUNT(bonus) actually returns the total number of rows in the table, just like COUNT(*), because it treats NULL values as if they were regular entries.",
+            "quote_start": 0,
+            "quote_end": 151,
+            "reason": "The candidate explicitly states that COUNT(bonus) returns the total number of rows just like COUNT(*) and counts NULL values as regular entries, matching the listed misconception."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.graphs.bfs-weighted-shortest",
+        "confirmed": true,
+        "evidence_turns": [
+          7,
+          14
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L3-008",
+            "turn": 7,
+            "reply_index": 0,
+            "reply_text": "It will print a dictionary with the shortest distances from A, something like `{'A': 0, 'B': 1, 'D': 2, 'C': 3, 'E': 4}`. The distance to C ends up being 3 because the algorithm discovers a cheaper route through B and D before it ever processes the direct edge from A to C. A plain BFS would give the same result since it also explores by increasing distance, while a DFS that just follows the first branch it sees would not necessarily produce the correct shortest‑path weights. Each `heappop` operation runs in logarithmic time relative to the size of the heap.",
+            "vote_share": 1.0,
+            "supporting_quote": "A plain BFS would give the same result since it also explores by increasing distance",
+            "quote_start": 274,
+            "quote_end": 358,
+            "reason": "The candidate explicitly states that a plain BFS would give the same result because it 'explores by increasing distance', which reflects the listed misconception that BFS finds shortest paths in weighted graphs by treating edge count or traversal steps as distance."
+          },
+          {
+            "question_id": "DS-L3-008",
+            "turn": 7,
+            "reply_index": 1,
+            "reply_text": "Sure! In a BFS you’d start at A, enqueue its neighbors, so you’d first pull B (distance 1) and then C (distance 5) from the queue. When you later process B you’d add D (distance 2) and then from D you’d finally reach C again with a total distance of 3, but because BFS only looks at the order nodes were enqueued, it would still report the first C it saw—so the algorithm would output C’s distance as 5.",
+            "vote_share": 1.0,
+            "supporting_quote": "When you later process B you’d add D (distance 2) and then from D you’d finally reach C again with a total distance of 3, but because BFS only looks at the order nodes were enqueued, it would still report the first C it saw—so the algorithm would output C’s distance as 5.",
+            "quote_start": 131,
+            "quote_end": 403,
+            "reason": "The candidate demonstrates the belief that BFS computes or can track total path weights (attempting to trace costs like distance 5 and distance 3 through BFS queue operations), illustrating the confusion between edge-count level-order traversal and weighted shortest paths."
+          },
+          {
+            "question_id": "DS-L3-014",
+            "turn": 14,
+            "reply_index": 0,
+            "reply_text": "It will print a dictionary where each node is mapped to some number that grows as you go farther from A, like A → 0, B → 1, C → 1, D → 2, E → 3, F → 4. Those numbers are just the order in which the nodes are visited, not actual distances, and if the edges had different lengths the same numbers would still be correct because the algorithm just counts steps.",
+            "vote_share": 1.0,
+            "supporting_quote": "if the edges had different lengths the same numbers would still be correct because the algorithm just counts steps.",
+            "quote_start": 243,
+            "quote_end": 358,
+            "reason": "The candidate asserts that the distance numbers would remain correct even if edge lengths varied, which explicitly aligns with the misconception that step-counting (BFS) is sufficient for shortest paths in weighted graphs."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.bfs-weighted-shortest",
+      "ds.graphs.dfs-finds-shortest",
+      "ds.graphs.visited-unneeded",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.heaps.pop-min-constant",
+      "ds.stacks-queues.recursion-free-memory",
+      "ds.trees-bst.inorder-not-sorted",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.gil-thread-safe",
+      "py.concurrency.threads-cpu-parallel",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.null.aggregates-treat-null-as-zero",
+      "sql.null.equals-null-matches",
+      "sql.null.not-equal-includes-null",
+      "sql.subqueries-cte.cte-unused-still-applies"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-trees-bst"
+      ],
+      "untested": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-linked-lists"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: not fit. sql is below the job minimum (level 2; estimated below level 1). Estimated levels: py level 2 (needs 2), sql below level 1 (needs 2), ds level 3 (needs 2). Suspected (insufficient corroboration) misconception: Believes that listing two tables in FROM without a join condition makes the database match rows on their related key automatically, instead of producing every combination of rows. Suspected (insufficient corroboration) misconception: Believes asyncio runs coroutines in parallel on separate threads or cores, rather than interleaving them on a single thread that switches only at await points. Suspected (insufficient corroboration) misconception: Believes the asyncio event loop can pause a coroutine at any point, like the OS switching threads, so a CPU-bound loop with no await does not hold up other coroutines and code between two awaits can be interrupted. Suspected (insufficient corroboration) misconception: Believes SUM and AVG treat NULL as 0, so AVG divides by the number of all rows including those with NULL. Suspected (insufficient corroboration) misconception: Believes COUNT(column) counts every row, including rows where that column is NULL, exactly like COUNT(*). Confirmed misconception: Believes BFS finds shortest paths in weighted graphs, equating the route with the fewest edges with the route of least total weight."
+  },
+  "usage": {
+    "llm_calls": 121,
+    "api_calls": 111,
+    "input_tokens": 143028,
+    "output_tokens": 11382,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 121,
+        "api_calls": 111,
+        "input_tokens": 143028,
+        "output_tokens": 11382
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 0,
+      "ds": 2
+    },
+    "fit": false,
+    "misconceptions": [
+      "ds.linked-lists.pointer-order-irrelevant",
+      "sql.joins.auto-join-on-shared-column"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

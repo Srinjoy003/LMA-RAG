@@ -1,0 +1,2119 @@
+{
+  "interview_id": "A2E-data-analyst-CAND-004-0",
+  "system": "A2E",
+  "config": {
+    "system": "A2E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-004",
+  "started_at": "2026-11-14T05:35:39Z",
+  "finished_at": "2026-11-14T05:35:40Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-pandas",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "The code prints  \n\n```\n['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10.0, nan, 30.0, 25.0]\n```  \n\n`sort_values` returns a sorted copy, but because the result isn’t assigned back to df the original order stays unchanged, so the first list reflects the original “name” order. The `.loc[1:2, \"name\"]` slice is label‑based and inclusive, so it returns the names at index 1 and 2 (“Bo” and “Cy”). The `passed` DataFrame contains the rows where the score is at least 70 (indices 0, 2, 3); when we assign `passed[\"score\"] - 60` to a new column, pandas aligns the values by index, leaving a NaN for index 1 because there is no matching value, resulting in the final bonus list `[10.0, nan, 30.0, 25.0]`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly answers all three lines and accurately explains all key points: that sort_values returns a new object rather than modifying df in place, that .loc is inclusive of the end label, and that pandas aligns Series assignment by index labels resulting in NaN for missing indices.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly answers all three lines and accurately explains all key points: that sort_values returns a new object rather than modifying df in place, that .loc is inclusive of the end label, and that pandas aligns Series assignment by index labels resulting in NaN for missing indices.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-aggregation, sql-joins, sql-null",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query returns three rows – one for each customer. Asha appears with n_orders = 2 because the left join creates two rows for her two matching orders, and the sum of the amounts (250 + 80) is 330. Ben has no matching orders, so the join produces a single row with NULLs; COUNT(o.id) ignores those NULLs and returns 0, and SUM(o.amount) returns NULL. Chen has one matching order, but its amount is NULL, so COUNT(o.id) is 1 while SUM(o.amount) is NULL. The order with a NULL customer_id does not join to any customer and is excluded.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies all three rows with accurate counts and totals, and provides the correct explanation for Ben's 0 count, the NULL totals, and the exclusion of the unassigned order.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies all three rows with accurate counts and totals, and provides the correct explanation for Ben's 0 count, the NULL totals, and the exclusion of the unassigned order.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-sorting-searching",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-complexity",
+      "prompt": "You have an unsorted list of n product prices. If you only need to check once whether a given price is present, should you sort the list and then use binary search, or just scan it? What changes if you need to answer thousands of such queries?",
+      "answer": "If there’s only a single query, I’m not really sure which approach would be better.  \nWhen you have to answer thousands of queries, I would sort the list first.  \nSorting costs O(n log n) once, and then each binary search is only O(log n).  \nThat way the total cost is spread over all the queries.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How long would it take to find a single item in an unsorted list of size n using a simple scan versus sorting it first?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How long would it take to find a single item in an unsorted list of size n using a simple scan versus sorting it first?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What would be the time complexity of sorting the list once and then performing a single linear search versus just scanning the unsorted list?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What is the time complexity of sorting an unsorted list of n elements compared to simply scanning it once?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that sorting once and using binary search is efficient for thousands of queries with the right complexities, but they were unsure about the best approach for a single query.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that sorting once and using binary search is efficient for thousands of queries with the right complexities, but they were unsure about the best approach for a single query.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: py-comprehensions-generators, py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "The code first prints “created” because the function isn’t executed until we actually call next on the generator. When we call next(gen) it runs the whole function body, so it prints “begin” and then returns the string “done”, which is what gets printed as the first value. The list conversion of gen then produces an empty list because the generator has already finished. The generator expression scaled uses the original value of step (1), so it yields 0, 1, and 2, and those are printed at the end.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.comprehensions-generators.yield-is-return",
+        "follow_up": "What values does yield produce before the function reaches the return statement?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.yield-is-return",
+            "follow_up": "What values does yield produce before the function reaches the return statement?",
+            "confidence_expressed": "high",
+            "supporting_quote": "it prints “begin” and then returns the string “done”, which is what gets printed as the first value",
+            "evidence_reason": "The candidate believes that the generator yields the return value ('done') when next() is called, conflating yield with return.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.yield-is-return",
+            "follow_up": "What values are produced by the loop before the return statement is reached inside countdown?",
+            "confidence_expressed": "high",
+            "supporting_quote": "it runs the whole function body, so it prints “begin” and then returns the string “done”, which is what gets printed as the first value",
+            "evidence_reason": "The candidate explicitly states that the generator function's execution of 'done' via return is what gets printed as the first yielded value, confusing yield with return.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.yield-is-return",
+            "follow_up": "What happens to the values 2 and 1 in the countdown loop if the generator is supposed to have finished on the first yield?",
+            "confidence_expressed": "high",
+            "supporting_quote": "When we call next(gen) it runs the whole function body, so it prints “begin” and then returns the string “done”, which is what gets printed as the first value.",
+            "evidence_reason": "The candidate asserts that calling next(gen) runs the whole function body and returns the string 'done', directly demonstrating the belief that yield behaves like a return statement ending execution immediately.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "it prints “begin” and then returns the string “done”, which is what gets printed as the first value",
+        "evidence_reason": "The candidate believes that the generator yields the return value ('done') when next() is called, conflating yield with return.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What values does yield produce before the function reaches the return statement?",
+          "answer": "I think the `yield` statements will give back the value of `n` before it’s decreased, so the first call will produce 3, then the next one will give 2, and finally 1 right before the function hits the return. Since the `return` is after the loop, those three numbers are all the values the generator yields. After those three yields, the function just stops and the return value isn’t emitted as a generator item. So you’ll see three separate values coming out of the `yield` before anything else happens.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.yield-is-return",
+            "follow_up": "If a generator function executes a yield statement, does the function terminate right there, or can it resume later when next() is called again?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.yield-is-return",
+                "follow_up": "If a generator function executes a yield statement, does the function terminate right there, or can it resume later when next() is called again?",
+                "confidence_expressed": "high",
+                "supporting_quote": "those three numbers are all the values the generator yields. After those three yields, the function just stops",
+                "evidence_reason": "The candidate states that all three numbers are produced in one go and the function stops, which conflicts with how yield pauses execution across multiple next() calls.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.yield-is-return",
+                "follow_up": "If a generator function hits a yield statement, does the function terminate completely right then, or can it be resumed later?",
+                "confidence_expressed": "high",
+                "supporting_quote": "those three numbers are all the values the generator yields. After those three yields, the function just stops and the return value isn’t emitted as a generator item.",
+                "evidence_reason": "The candidate asserts that the function yields its values and then stops immediately as if hitting the end or return, showing a fundamental misunderstanding of how yield pauses and allows subsequent resumption across multiple calls.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.yield-is-return",
+                "follow_up": "How many items do you think list(gen) would contain if you called it right after next(gen)?",
+                "confidence_expressed": "high",
+                "supporting_quote": "so the first call will produce 3, then the next one will give 2, and finally 1 right before the function hits the return. Since the `return` is after the loop, those three numbers are all the values the generator yields.",
+                "evidence_reason": "The candidate asserts that all three yielded values are produced in a single invocation up until the return statement, treating yield as if it terminates or collects them like a return.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "those three numbers are all the values the generator yields. After those three yields, the function just stops",
+            "evidence_reason": "The candidate states that all three numbers are produced in one go and the function stops, which conflicts with how yield pauses execution across multiple next() calls.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a generator function executes a yield statement, does the function terminate right there, or can it resume later when next() is called again?",
+          "answer": "The function actually stops completely as soon as it hits a yield, so after the first yield the whole generator is done and you can’t call next() again. Because the return statement is after the loop, the generator never gets to that point; it just exits at the first yield. Also, the generator expression captures the value of step when the generator is created, so it will always use the initial value of step that was set before the expression, regardless of any later changes. So the only thing you’ll ever see printed from the generator is the very first value before it terminates.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.yield-is-return",
+            "follow_up": "If a generator function stops completely on the very first yield, how can a loop inside a generator ever produce more than one value?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.yield-is-return",
+                "follow_up": "If a generator function stops completely on the very first yield, how can a loop inside a generator ever produce more than one value?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The function actually stops completely as soon as it hits a yield, so after the first yield the whole generator is done and you can’t call next() again.",
+                "evidence_reason": "The candidate explicitly states that the generator stops completely and cannot be called again after a single yield, confusing yield with a final return.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.yield-is-return",
+                "follow_up": "If a generator function stops completely on the very first yield, how can a loop inside a generator ever produce more than one value?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The function actually stops completely as soon as it hits a yield, so after the first yield the whole generator is done and you can’t call next() again.",
+                "evidence_reason": "The candidate explicitly asserts that hitting a yield stops the generator completely and prevents calling next() again, which matches the listed misconception that yield acts like a return and only lets the function produce its first yielded value.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.yield-is-return",
+                "follow_up": "If a generator function stops completely on the very first yield, how does a loop or repeated call to next() ever get the second or third value from it?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The function actually stops completely as soon as it hits a yield, so after the first yield the whole generator is done and you can’t call next() again.",
+                "evidence_reason": "The candidate explicitly states that the generator is completely done after the first yield and cannot continue, directly matching the belief that yield acts like a final return.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The function actually stops completely as soon as it hits a yield, so after the first yield the whole generator is done and you can’t call next() again.",
+            "evidence_reason": "The candidate explicitly states that the generator stops completely and cannot be called again after a single yield, confusing yield with a final return.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly holds the misconception that a generator terminates completely upon the first yield statement rather than pausing and resuming, and incorrectly believes generator expressions capture variable values eagerly when created rather than lazily when evaluated.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that calling next() runs the whole function body at once and yields 'done', misunderstands how yield works, and incorrectly believes the generator expression evaluates step early (yielding 0, 1, 2). This shows multiple misconceptions listed in the rubric.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: sql-window-functions",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The query returns five rows, one for each row in the sales table. running is a cumulative sum of amount ordered by day, so after the first row it is 100, after both rows for day 2 it becomes 180 (the NULL on day 3 adds nothing), and after the last row it is 200. RANK assigns a rank based on the ordering by day; the two rows with day 2 get the same rank 2, and because RANK skips numbers for ties the next distinct day (day 3) gets rank 4, followed by rank 5 for day 4. The final result set is ordered by day and amount as specified in the outer ORDER BY.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that five rows are returned, explained the cumulative running sum correctly including the handling of NULL and ties, and accurately described how RANK handles ties with gaps.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that five rows are returned, explained the cumulative running sum correctly including the handling of NULL and ties, and accurately described how RANK handles ties with gaps.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-hash-tables",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.83); level 2 is nearest its estimate +0.00; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-sorting-searching (ds.hash-tables.keys-kept-sorted, ds.sorting-searching.sort-not-stable)",
+      "prompt": "What does this code print, and why do the words appear in that order on each line?\n\nwords = [\"pear\", \"apple\", \"fig\", \"apple\", \"pear\", \"kiwi\"]\ncounts = {}\nfor w in words:\n    counts[w] = counts.get(w, 0) + 1\nprint(list(counts))\nranked = sorted(counts.items(), key=lambda kv: kv[1], reverse=True)\nprint(ranked)\n",
+      "answer": "The first `print` outputs `['pear', 'apple', 'fig', 'kiwi']` because a Python dictionary preserves the order in which each key is first inserted, so the keys appear in the same sequence they were added while counting. The second `print` shows `[('pear', 2), ('apple', 2), ('fig', 1), ('kiwi', 1)]`; the `sorted` call orders the items by their count value in descending order. Since the sort is stable, items with equal counts keep their original insertion order, which is why “pear” stays before “apple” among the count‑2 items and “fig” stays before “kiwi” among the count‑1 items. This explains both the content and the ordering of the two printed lines.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the exact output for both lines, explained that dictionaries preserve insertion order, and noted that Python's stable sort preserves the relative order of tied items.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the exact output for both lines, explained that dictionaries preserve insertion order, and noted that Python's stable sort preserves the relative order of tied items.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.5168,
+          "se": 0.7264,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-subqueries-cte",
+        "sql-joins",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; covers required topics not yet tested: sql-subqueries-cte",
+      "prompt": "What does this query return, and why? Does the WITH clause limit which orders are counted?\n\nWITH big AS (\n  SELECT customer_id FROM orders WHERE amount >= 100\n)\nSELECT c.name, COUNT(o.id) AS n_orders\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE c.id IN (SELECT customer_id FROM big)\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n4 | Dana\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 150\n11 | 1 | 40\n12 | 1 | 120\n13 | 2 | 30\n14 | 3 | NULL\n15 | 3 | 200",
+      "answer": "The query returns two rows: Asha with 3 orders and Chen with 2 orders. The CTE big simply identifies customers who have at least one order of 100 or more, and those customer IDs are used in the IN predicate to filter the customers in the outer query. Because the outer query joins to the full orders table, it counts every order for those qualifying customers, including Asha’s small 40 order and Chen’s row with a NULL amount. The IN clause does not limit the rows being counted; it only decides which customers are eligible, and the GROUP BY then collapses each customer to a single result row.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output rows and counts (Asha 3, Chen 2), accurately explained that the CTE only selects qualifying customers rather than filtering the counted orders, and understood that the IN clause does not duplicate rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output rows and counts (Asha 3, Chen 2), accurately explained that the CTE only selects qualifying customers rather than filtering the counted orders, and understood that the IN clause does not duplicate rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.5168,
+          "se": 0.7264,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-comprehensions-generators"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; lists a suspected misconception to confirm: py.comprehensions-generators.yield-is-return",
+      "prompt": "A colleague writes 'def parse_rows(lines): for line in lines: yield line.split(\",\")'. They then do rows = parse_rows(data), count them with n = sum(1 for _ in rows), and then run 'for r in rows: save(r)'. n is correct, but nothing is saved. Explain how parse_rows produces its rows and why nothing is saved.",
+      "answer": "The function parse_rows is a generator: calling it returns a generator object but the loop body isn’t executed until the generator is iterated. Each time the generator is asked for a value it runs until the next yield, splits one line and pauses, so it lazily produces one row per line. The expression sum(1 for _ in rows) consumes the entire generator, exhausting it. When the second loop runs, rows is already empty, so save(r) is never called. To both count and save you need to either recreate the generator, combine the operations in one pass, or materialise the rows into a list first.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains lazy execution, how yield pauses and resumes to process each row, generator exhaustion after the sum, and provides multiple correct fixes.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains lazy execution, how yield pauses and resumes to process each row, generator exhaustion after the sum, and provides multiple correct fixes.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.5168,
+          "se": 0.7264,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-005",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 3 is nearest its estimate +0.52; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-complexity (ds.arrays-strings.append-always-copies, ds.complexity.big-o-is-exact-time, ds.complexity.constants-change-class)",
+      "prompt": "This class simulates how a dynamic array such as a Python list grows: when it is full, it moves every item into a new block twice as large and counts the moved items. What does it print? What do the numbers tell you about the cost of a single append and of n appends?\n\nclass DynArray:\n    def __init__(self):\n        self.size, self.cap, self.copies = 0, 1, 0\n\n    def append(self, x):\n        if self.size == self.cap:\n            self.copies += self.size  # move every item to a bigger block\n            self.cap *= 2\n        self.size += 1\n\nfor n in [16, 17, 1000]:\n    arr = DynArray()\n    for i in range(n):\n        arr.append(i)\n    print(n, arr.cap, arr.copies)",
+      "answer": "I think the program will print something like:\n\n```\n16 16 0\n17 32 16\n1000 1024 512\n```\n\nThe first few appends don’t cause any copying, so the copy count stays at zero until the array fills up. When it reaches capacity it has to copy all the existing elements, which is why the copy count jumps to the size of the array at that point. As the array keeps growing, the number of copied elements grows roughly proportionally to the current size, so the total number of copies ends up being about half of the final capacity. This suggests that each individual append is cheap most of the time, but occasionally you pay a larger cost when a resize happens.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 0.3333333333333333,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.append-always-copies",
+            "follow_up": "Can you trace the exact sequence of appends for n = 4 and count how many items are moved at each step?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the copy count stays at zero until the array fills up",
+            "evidence_reason": "The candidate's quote shows they correctly recognize that copies only happen when the array fills up, rejecting the misconception that every single append copies elements.",
+            "contradicting": []
+          },
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "Could you double-check what the total copy count `arr.copies` accumulates across all appends for n = 16?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": [
+              {
+                "misconception_id": "ds.arrays-strings.append-always-copies",
+                "supporting_quote": "The first few appends don’t cause any copying, so the copy count stays at zero until the array fills up.",
+                "quote_start": 88,
+                "quote_end": 192,
+                "reason": "This explicitly contradicts the misconception that every append copies existing elements, as the candidate correctly identifies that most appends involve zero copies."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": [],
+        "evidence_rejected": "no strict majority for supported belief"
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that individual appends are usually cheap with occasional expensive resizes, but gets the output values wrong (e.g., claiming 16 appends causes 0 copies instead of 15) and misses the amortised O(1) analysis for n appends.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that individual appends are usually cheap with occasional expensive resizes, but gets the output values wrong (e.g., claiming 16 appends causes 0 copies instead of 15) and misses the amortised O(1) analysis for n appends.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists misconceptions not yet probed: sql.indexes-performance.composite-any-column, sql.indexes-performance.function-on-column-uses-index, sql.indexes-performance.index-always-helps",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "Even if the index exists, the optimizer might ignore it if the query includes a JOIN that forces the rows to be re‑ordered, causing a full scan instead. Also, if the SELECT list contains a lot of columns that aren’t covered by the index, the planner may decide a table scan is cheaper than reading many index pages and then fetching the rows. Another reason could be that the query uses a GROUP BY on a column that isn’t part of the index, so the database chooses to scan the whole table to perform the aggregation. Lastly, when the query has a LIMIT clause without an ORDER BY, the optimizer sometimes prefers a full scan because it can stop early without using the index.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How would the number of matching rows relative to the total table size affect whether the optimizer chooses to use an index?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would the number of matching rows relative to the total table size affect whether the optimizer chooses to use an index?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the estimated number of matching rows compared to the total size of the table affect whether the query planner uses an index?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the estimated fraction of rows matched by a WHERE clause affect whether the database planner chooses a sequential scan over an index scan?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate failed to mention any of the three key points (selectivity/table size, functions on columns, or non-leading column usage of a composite index). Instead, they listed unrelated reasons such as JOINs, SELECT lists, GROUP BY, and LIMIT clauses.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate failed to mention any of the three key points (selectivity/table size, functions on columns, or non-leading column usage of a composite index). Instead, they listed unrelated reasons such as JOINs, SELECT lists, GROUP BY, and LIMIT clauses.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-comprehensions-generators"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.61; lists a suspected misconception to confirm: py.comprehensions-generators.yield-is-return",
+      "prompt": "Explain what happens, step by step, when you call a function that contains yield and then loop over the result. Why is a generator a good fit for processing a 10 GB log file line by line?",
+      "answer": "When you call the function, Python creates and returns a generator object but does not execute the function body right away. The generator stays idle until you start iterating over it. As soon as the loop begins, the function runs until it reaches a yield statement, returns that value, and then pauses its state. Each subsequent iteration resumes the function right after the previous yield, runs until the next yield, and so on until the function completes.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that calling the function returns a generator without running the body, described the pause-and-resume behavior of yield, and accurately noted the memory advantage for large files.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that calling the function returns a generator without running the body, described the pause-and-resume behavior of yield, and accurately noted the memory advantage for large files.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.0295,
+          "se": 0.6023,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-013",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-heaps",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.61; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-arrays-strings (ds.arrays-strings.front-insert-constant, ds.heaps.heap-is-sorted, ds.heaps.pop-min-constant)",
+      "prompt": "A hospital triage system must repeatedly add patients with a priority and remove the most urgent one. Compare an unsorted list, a list kept in sorted order, and a binary heap: what do insert and remove-most-urgent cost in each? Why is the heap usually chosen even though it is not kept sorted?",
+      "answer": "With an unsorted list we can add a new patient in constant time O(1) by appending, but to pull out the most urgent we must scan the whole list, which costs O(n). If we keep the list sorted by priority, removing the most urgent (at one end) is O(1), yet each insertion requires finding the correct spot (binary search O(log n)) and then shifting all later elements, giving an overall O(n) insert cost. A binary max‑heap stores items so that every parent has higher priority than its children; inserting a new patient and then “sifting up” takes O(log n), and removing the root (the most urgent) and “sifting down” the replacement also costs O(log n). The heap is preferred because it provides logarithmic time for both operations while only maintaining a partial order, which is much cheaper than keeping the whole collection fully sorted.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly states the time complexities for all three structures (unsorted list, sorted list, and binary heap) and explains that the heap's partial ordering is sufficient and cheaper to maintain than full sorted order.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly states the time complexities for all three structures (unsorted list, sorted list, and binary heap) and explains that the heap's partial ordering is sufficient and cheaper to maintain than full sorted order.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.0295,
+          "se": 0.6023,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.0295,
+          "se": 0.6023,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.60); level 3 is nearest its estimate +1.03; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-functions-scope (py.functions-scope.assign-updates-global, py.functions-scope.mutable-default-fresh)",
+      "prompt": "What does this code print, and why?\n\ncount = 100\ndef make_counter(log=[]):\n    count = 0\n    def step():\n        nonlocal count\n        count += 1\n        log.append(count)\n        return count\n    return step, log\n\nc1, log1 = make_counter()\nc2, log2 = make_counter()\nc1(); c1()\nprint(c1(), c2(), count)\nprint(log1, log1 is log2)",
+      "answer": "The code prints `3 1 100` on the first line because the first counter (`c1`) has been called three times, the second counter (`c2`) only once, and the global variable `count` remains unchanged at its initial value of 100. The second line prints `[1, 2, 3, 1] True` because the default list `log` is created once when the function is defined, so both `make_counter` calls share the same list and each call to `step` appends the current local count. Each call to `make_counter` creates its own `count` variable scoped to that closure, and the `nonlocal` statement lets `step` modify that inner `count` without affecting the global one. The `log1 is log2` comparison is `True` since both references point to the same default list.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all aspects of the code, including the separate local counts via closures, the global count remaining 100, and the shared mutable default argument for the log list.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all aspects of the code, including the separate local counts via closures, the global count remaining 100, and the shared mutable default argument for the log list.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3342,
+          "se": 0.5676,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.0295,
+          "se": 0.6023,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.60); level 3 is nearest its estimate +1.03; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-complexity (ds.hash-tables.collision-overwrites, ds.hash-tables.worst-case-constant)",
+      "prompt": "Hash table lookups are usually described as O(1). When can a lookup become O(n), and what does the table do to keep operations fast as more and more keys are added?",
+      "answer": "If the hash table gets really big, the lookup can start to take longer because the computer has to search through more memory locations, kind of like looking through a bigger list. Also, if you keep adding keys without any limit, the table can become overloaded and the lookup time will increase proportionally to the number of items. To avoid that, the table usually adds extra space or reorganizes itself internally so that it can still find items quickly even as more keys are stored. This internal reorganization helps keep the operations fast as the table grows.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What happens specifically at the level of hash values and slots when two different keys map to the same location?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens specifically at the level of hash values and slots when two different keys map to the same location?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens specifically to the keys inside a slot if two different keys happen to hash to the exact same location?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens when two different keys hash to the exact same index in the underlying array?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate mentions that the table reorganizes itself as it grows, which aligns with resizing and maintaining performance, but completely misses the concept of hash collisions and how they cause the worst-case O(n) lookup time. Therefore, it fits the level-1 rubric.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate mentions that the table reorganizes itself as it grows, which aligns with resizing and maintaining performance, but completely misses the concept of hash collisions and how they cause the worst-case O(n) lookup time. Therefore, it fits the level-1 rubric.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3342,
+          "se": 0.5676,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.0239,
+          "se": 0.5674,
+          "level": 3,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 16,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 1.3342,
+        "se": 0.5676,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.861214,
+        "level_probabilities": {
+          "0": 1e-06,
+          "1": 0.001702,
+          "2": 0.137082,
+          "3": 0.861214
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 3,
+        "estimate": 1.1889,
+        "se": 0.5946,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.783538,
+        "level_probabilities": {
+          "0": 2.1e-05,
+          "1": 0.006337,
+          "2": 0.210104,
+          "3": 0.783538
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 3,
+        "estimate": 1.0239,
+        "se": 0.5674,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.69972,
+        "level_probabilities": {
+          "0": 2.7e-05,
+          "1": 0.010041,
+          "2": 0.290212,
+          "3": 0.69972
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "fit",
+    "decision_reason": "Every skill meets the job minimum.",
+    "misconceptions": [
+      {
+        "id": "py.comprehensions-generators.yield-is-return",
+        "confirmed": false,
+        "evidence_turns": [
+          4
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-009",
+            "turn": 4,
+            "reply_index": 0,
+            "reply_text": "The code first prints “created” because the function isn’t executed until we actually call next on the generator. When we call next(gen) it runs the whole function body, so it prints “begin” and then returns the string “done”, which is what gets printed as the first value. The list conversion of gen then produces an empty list because the generator has already finished. The generator expression scaled uses the original value of step (1), so it yields 0, 1, and 2, and those are printed at the end.",
+            "vote_share": 1.0,
+            "supporting_quote": "it prints “begin” and then returns the string “done”, which is what gets printed as the first value",
+            "quote_start": 173,
+            "quote_end": 272,
+            "reason": "The candidate believes that the generator yields the return value ('done') when next() is called, conflating yield with return."
+          },
+          {
+            "question_id": "PY-L3-009",
+            "turn": 4,
+            "reply_index": 1,
+            "reply_text": "I think the `yield` statements will give back the value of `n` before it’s decreased, so the first call will produce 3, then the next one will give 2, and finally 1 right before the function hits the return. Since the `return` is after the loop, those three numbers are all the values the generator yields. After those three yields, the function just stops and the return value isn’t emitted as a generator item. So you’ll see three separate values coming out of the `yield` before anything else happens.",
+            "vote_share": 1.0,
+            "supporting_quote": "those three numbers are all the values the generator yields. After those three yields, the function just stops",
+            "quote_start": 246,
+            "quote_end": 356,
+            "reason": "The candidate states that all three numbers are produced in one go and the function stops, which conflicts with how yield pauses execution across multiple next() calls."
+          },
+          {
+            "question_id": "PY-L3-009",
+            "turn": 4,
+            "reply_index": 2,
+            "reply_text": "The function actually stops completely as soon as it hits a yield, so after the first yield the whole generator is done and you can’t call next() again. Because the return statement is after the loop, the generator never gets to that point; it just exits at the first yield. Also, the generator expression captures the value of step when the generator is created, so it will always use the initial value of step that was set before the expression, regardless of any later changes. So the only thing you’ll ever see printed from the generator is the very first value before it terminates.",
+            "vote_share": 1.0,
+            "supporting_quote": "The function actually stops completely as soon as it hits a yield, so after the first yield the whole generator is done and you can’t call next() again.",
+            "quote_start": 0,
+            "quote_end": 152,
+            "reason": "The candidate explicitly states that the generator stops completely and cannot be called again after a single yield, confusing yield with a final return."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.arrays-strings.front-insert-constant",
+      "ds.complexity.big-o-is-exact-time",
+      "ds.complexity.constants-change-class",
+      "ds.hash-tables.collision-overwrites",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.worst-case-constant",
+      "ds.heaps.heap-is-sorted",
+      "ds.heaps.pop-min-constant",
+      "ds.sorting-searching.binary-search-half-of-linear",
+      "ds.sorting-searching.binary-search-unsorted",
+      "ds.sorting-searching.sort-not-stable",
+      "ds.sorting-searching.sorting-is-linear",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.generator-reusable",
+      "py.comprehensions-generators.yield-is-return",
+      "py.functions-scope.assign-updates-global",
+      "py.functions-scope.closure-captures-value",
+      "py.functions-scope.mutable-default-fresh",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.subqueries-cte.in-subquery-duplicates",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "untested": [
+        "py-collections",
+        "sql-select-filter"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: fit. Every skill meets the job minimum. Estimated levels: py level 3 (needs 2), sql level 3 (needs 2), ds level 3 (needs 1). Suspected (insufficient corroboration) misconception: Believes yield ends the function like return, so a generator function can only ever produce its first yielded value."
+  },
+  "usage": {
+    "llm_calls": 94,
+    "api_calls": 0,
+    "input_tokens": 112137,
+    "output_tokens": 6927,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 94,
+        "api_calls": 0,
+        "input_tokens": 112137,
+        "output_tokens": 6927
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 3,
+      "ds": 2
+    },
+    "fit": true,
+    "misconceptions": [
+      "sql.select-filter.and-or-precedence"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

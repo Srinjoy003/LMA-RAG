@@ -1,0 +1,1248 @@
+{
+  "interview_id": "ADAPT12-backend-engineer-CAND-002-0",
+  "system": "ADAPT12",
+  "config": {
+    "system": "ADAPT12",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "fixed_count",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "off",
+    "generic_follow_up": false,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "reply",
+    "diagnostic_evidence": false,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-002",
+  "started_at": "2026-11-14T05:34:07Z",
+  "finished_at": "2026-11-14T05:34:07Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-exceptions",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The try block contains the code that may raise an exception, and if an exception occurs the remaining statements in that block are skipped and Python immediately looks for an except clause that matches the exception type, checking them in the order they appear and executing the first one that fits. The else suite runs only when the try block finishes normally without any exception being raised. The finally suite is executed in every case—whether the try block completes, an exception is handled, a return or break occurs, or the exception propagates—right before control leaves the whole try‑statement. If an exception is raised part‑way through the try, execution jumps to the matching except clause and then continues after the whole try/except/else/finally construct. If two except clauses could both match, the one that appears first in the source code is the one that runs.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate accurately explains the roles of all four blocks (try, except, else, finally), correctly notes that the first matching except clause runs from top to bottom, specifies that execution continues after the try statement, and correctly affirms that finally runs even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate accurately explains the roles of all four blocks (try, except, else, finally), correctly notes that the first matching except clause runs from top to bottom, specifies that execution continues after the try statement, and correctly affirms that finally runs even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-subqueries-cte",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-joins",
+      "prompt": "A teammate wants the number of employees in each department. What does this query return, and why?\n\nWITH staff_per_dept AS (\n  SELECT d.name, e.id\n  FROM departments d\n  JOIN employees e ON e.dept_id = d.id\n)\nSELECT d.name, COUNT(d.name) AS n_rows, COUNT(e.dept_id) AS n_staff\nFROM departments d, employees e\nGROUP BY d.name\nORDER BY d.name;\n\nTable departments:\nid | name\n1 | Sales\n2 | IT\n3 | HR\n\nTable employees:\nid | name | dept_id\n1 | Asha | 1\n2 | Ben | 1\n3 | Chen | 2\n4 | Dana | NULL",
+      "answer": "The query returns three rows – one for each department – and each row shows n_rows as 4 and n_staff as 3. The CTE staff_per_dept is never referenced, so it has no effect on the result. Because the FROM clause uses the old‑style comma syntax without a join condition, it creates a Cartesian product of the three departments with all four employees. COUNT(d.name) therefore counts the four rows that belong to each department group, while COUNT(e.dept_id) counts only the three non‑NULL dept_id values (Dana’s NULL is ignored). To get the correct staff count you would need to join departments to employees on e.dept_id = d.id or select from the CTE.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that every department returns 4 rows and 3 staff members, explains the unused CTE, correctly describes the Cartesian product from the missing join condition, and accurately explains both aggregate counts including NULL handling.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that every department returns 4 rows and 3 staff members, explains the unused CTE, correctly describes the Cartesian product from the missing join condition, and accurately explains both aggregate counts including NULL handling.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-hash-tables, ds-trees-bst",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "A hash table lets us add a new score in O(1) average time, but it stores entries by key only, so producing the whole leaderboard would require sorting the entire collection each time, which is O(n log n). A sorted array keeps the data in order, making a full list trivial (just iterate), but inserting a new score means finding the right slot and shifting all later elements, which costs O(n) per update. A balanced binary search tree gives O(log n) inserts and deletions while maintaining the elements in sorted order, and an in‑order traversal returns the complete list in O(n). Because inserts and full‑list retrieval are both frequent, the BST provides the best overall trade‑off. If we only needed the top‑k scores, a heap would be another option, but for the full leaderboard a balanced BST is the most appropriate choice.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly compares all three structures, detailing the trade-offs for inserts and ordered traversal, and chooses the balanced BST with accurate time complexities.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly compares all three structures, detailing the trade-offs for inserts and ordered traversal, and chooses the balanced BST with accurate time complexities.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: py-concurrency",
+      "prompt": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+      "answer": "In CPython the statement `counter += 1` is not an atomic operation; it actually performs a read of the current value, adds one, and then writes the new value back. Because the Global Interpreter Lock can be released between those steps, the two threads can interleave their read‑modify‑write cycles. When that happens, both threads may read the same original value, each compute the increment, and then one write overwrites the other, losing one increment. This race condition means the final count can end up lower than the expected 200,000. I'm not sure whether the same race would occur with two asyncio coroutines that never await inside the increment.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the non-atomic nature of counter += 1 and the thread race condition, but fails to answer the second part of the question regarding asyncio.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the non-atomic nature of counter += 1 and the thread race condition, but fails to answer the second part of the question regarding asyncio.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: sql-indexes-performance",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "Even though the index is on (customer_id, order_date), the optimizer will still use it for any query that touches either column, so a full table scan is unlikely. If the query filters only on order_date, the index can be used just as efficiently as when filtering on customer_id, so a scan won’t happen. Also, when the WHERE clause uses functions or casts on the indexed columns, the index is still applicable because the first column in the index covers the second one. Finally, even if the condition matches a large portion of rows, the index will still be preferred over a full table scan because it’s already ordered by both columns.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate shows multiple misconceptions: they claim an index is used even when filtering on the second column alone, that functions on columns still use ordinary indexes, and that an index is always preferred over a full table scan for large portions of data.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate shows multiple misconceptions: they claim an index is used even when filtering on the second column alone, that functions on columns still use ordinary indexes, and that an index is always preferred over a full table scan for large portions of data.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.indexes-performance.composite-any-column",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs",
+        "ds-stacks-queues"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: ds-stacks-queues",
+      "prompt": "What does this code print? What would happen if the `if node in seen: continue` check were removed, and why might this explicit-stack version be preferred over a recursive DFS on a graph containing a path of a million nodes?\n\ngraph = {1: [2, 3], 2: [4], 3: [4], 4: [1]}\n\ndef dfs(start):\n    seen, stack, order = set(), [start], []\n    while stack:\n        node = stack.pop()\n        if node in seen:\n            continue\n        seen.add(node)\n        order.append(node)\n        for nb in graph[node]:\n            stack.append(nb)\n    return order\n\nprint(dfs(1))\n",
+      "answer": "The call prints `[1, 3, 4, 2]` because the list is used as a LIFO stack, so after popping 1 we push its neighbors 2 and 3, then pop 3 first, go to 4, and finally backtrack to 2. If we removed the `if node in seen: continue` test, the cycle 4 → 1 would cause each visit to 4 to re‑push 1, which would re‑push 2 and 3 again, and the algorithm would never terminate. An explicit stack version is preferred over a recursive DFS for very deep graphs (e.g., a million‑node path) because recursion would require a million call‑frames and hit Python’s recursion limit, whereas a list‑based stack can grow without that limitation. This makes the iterative approach both safer and more memory‑efficient for large or cyclic graphs.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the DFS output order, explained why the visited check prevents an infinite loop on cyclic graphs, and noted that an explicit stack avoids Python's recursion limit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the DFS output order, explained why the visited check prevents an infinite loop on cyclic graphs, and noted that an explicit stack avoids Python's recursion limit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; covers required topics not yet tested: ds-complexity",
+      "prompt": "This class simulates how a dynamic array such as a Python list grows: when it is full, it moves every item into a new block twice as large and counts the moved items. What does it print? What do the numbers tell you about the cost of a single append and of n appends?\n\nclass DynArray:\n    def __init__(self):\n        self.size, self.cap, self.copies = 0, 1, 0\n\n    def append(self, x):\n        if self.size == self.cap:\n            self.copies += self.size  # move every item to a bigger block\n            self.cap *= 2\n        self.size += 1\n\nfor n in [16, 17, 1000]:\n    arr = DynArray()\n    for i in range(n):\n        arr.append(i)\n    print(n, arr.cap, arr.copies)",
+      "answer": "The program prints `16 16 15`, then `17 32 31`, and finally `1000 1024 1023`. In these runs you can see that the capacity jumps to the next power of two when the array is full. Most of the `append` calls don’t copy any elements at all. Only the appends that trigger a resize copy every existing element—in the 17‑element case it copies 16 items, and for 1000 it ends up copying 1023 items in total. I'm not completely sure how to interpret the cost per append beyond that.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the correct output and correctly identified that most appends are cheap and resizing copies existing items, but missed the amortised O(1) analysis for n appends.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the correct output and correctly identified that most appends are cheap and resizing copies existing items, but missed the amortised O(1) analysis for n appends.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance",
+        "sql-schema-constraints"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-indexes-performance (sql.schema-constraints.fk-must-be-unique)",
+      "prompt": "orders.customer_id is a foreign key to customers.id, and orders has an index on (customer_id, created_at). Does that index help joins to customers and queries like WHERE customer_id = 7? Could it be declared UNIQUE on customer_id alone? Would a query that filters only on created_at use it efficiently?",
+      "answer": "The index on (customer_id, created_at) definitely helps the join to customers, because the optimizer can use the first part of the composite key to locate the matching rows quickly. It also makes a query like WHERE customer_id = 7 very fast, since the index starts with customer_id. In fact, you could even declare the index as UNIQUE on customer_id alone and still get the same performance for the join. And if you filter only on created_at, the same index will be used efficiently, because the second column of the composite index can be searched independently.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that leading-column indexing helps joins and queries on customer_id, but shows major misconceptions by claiming a UNIQUE constraint on customer_id would work for an orders table (violating the one-to-many relationship) and asserting that a composite index can be used efficiently for filtering only on the second column (created_at).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that leading-column indexing helps joins and queries on customer_id, but shows major misconceptions by claiming a UNIQUE constraint on customer_id would work for an orders table (violating the one-to-many relationship) and asserting that a composite index can be used efficiently for filtering only on the second column (created_at).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.indexes-performance.composite-any-column",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 3 is nearest its estimate +0.76; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-concurrency (py.concurrency.threads-cpu-parallel)",
+      "prompt": "A team scores 1 million records with a pure-Python function. To speed it up they split the work across 8 threads, and each thread adds its scores to a shared global with total += score. On an 8-core machine it is no faster than one thread, and occasionally the total is slightly wrong. Explain both problems and how you would fix each.",
+      "answer": "In CPython the Global Interpreter Lock prevents multiple threads from executing pure‑Python bytecode at the same time, so splitting a CPU‑bound scoring loop across 8 threads gives no speed‑up on an 8‑core machine. The shared global variable also requires synchronization, which can introduce contention and occasional race conditions that make the total slightly wrong. To get real parallelism for this kind of work you should use multiple processes instead of threads, for example via the multiprocessing module or a ProcessPoolExecutor. Each process has its own interpreter and memory space, so the GIL isn’t a bottleneck, and you can aggregate the partial results safely after the workers finish.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that the GIL prevents CPU-bound threads from running in parallel, identified the race condition with the shared variable, suggested using a process pool for true parallelism, and recommended aggregating partial results.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that the GIL prevents CPU-bound threads from running in parallel, identified the race condition with the shared variable, suggested using a process pool for true parallelism, and recommended aggregating partial results.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-aggregation",
+        "sql-schema-constraints",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.66); level 2 is nearest its estimate -0.23; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-schema-constraints (sql.aggregation.count-column-counts-nulls, sql.schema-constraints.normalisation-only-saves-space)",
+      "prompt": "Each product row stores its supplier's phone number. What does this query return, and what does the result tell you about this table design?\n\nSELECT supplier, supplier_phone,\n       COUNT(supplier) AS n_rows,\n       COUNT(supplier_phone) AS n_phone\nFROM products\nGROUP BY supplier, supplier_phone\nORDER BY supplier, supplier_phone NULLS LAST;\n\nTable products:\nname | supplier | supplier_phone\nPen | Acme | 555-0101\nInk | Acme | 555-0101\nPad | Acme | 555-0199\nCup | Bolt | NULL\nMug | Bolt | NULL",
+      "answer": "The query groups the rows by both supplier and the phone number stored on each product, then counts how many rows fall in each group and how many non‑NULL phone values each group contains. It will return three rows: Acme with 555‑0101 (2 rows, 2 phones), Acme with 555‑0199 (1 row, 1 phone), and Bolt with a NULL phone (2 rows, 0 phones). Because the phone is stored on every product row, the same supplier can appear in multiple groups when the number changes, showing an update anomaly. The COUNT(supplier) column reflects the size of each group, while COUNT(supplier_phone) skips NULLs, which is why Bolt’s group shows 0. This design would be better normalized by moving the phone number to a separate suppliers table so each supplier’s contact is stored only once.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three result rows with accurate counts, explained how COUNT handles group sizes and NULLs, and correctly noted the update anomaly and normalisation solution.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three result rows with accurate counts, explained how COUNT handles group sizes and NULLs, and correctly noted the update anomaly and normalisation solution.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.159,
+          "se": 0.587,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.66); level 3 is nearest its estimate +1.23; covers required topics not yet tested: py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "The code first prints “begin” when the countdown function is defined, then the generator is created but doesn’t run until we call next. When we call `next(gen)` it returns the string “done” because the function reaches the return statement immediately. After that, calling `list(gen)` gives an empty list since the generator is already finished, and the second `list(gen)` is also empty. The `scaled` generator uses the original value of `step` (which was 1), so it produces `[0, 1, 2]`. Finally, the program prints the values from `scaled`, which are `0 1 2`.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate missed almost every key point, incorrectly claiming that 'begin' prints upon definition, that yield doesn't work as intended, and that the generator expression captures step early (evaluating to [0, 1, 2]).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate missed almost every key point, incorrectly claiming that 'begin' prints upon definition, that yield doesn't work as intended, and that the generator expression captures step early (evaluating to [0, 1, 2]).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.841,
+          "se": 0.587,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.159,
+          "se": 0.587,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.66); level 3 is nearest its estimate +1.23; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-complexity (ds.trees-bst.always-balanced, ds.trees-bst.insert-scans-all-keys)",
+      "prompt": "You insert the keys 1, 2, 3, …, n in that order into a plain (not self-balancing) binary search tree. What shape does the tree take, and what do search and insert cost? How do self-balancing trees such as AVL or red-black trees avoid this, and what do their operations cost?",
+      "answer": "Inserting 1, 2, 3,…, n into an ordinary BST always puts each new key to the right of the previous one, so the tree collapses into a right‑leaning chain of height n (Θ(n)). Consequently a search or an insert must walk down that chain, giving Θ(n) time per operation and Θ(n²) total to build the tree. Self‑balancing trees such as AVL or red‑black trees perform rotations (and recolorings for red‑black) after each insertion or deletion to keep the height bounded by O(log n). Because the height stays logarithmic, search, insert and delete all run in Θ(log n) worst‑case time.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that inserting sorted keys into a plain BST creates a degenerate chain of height O(n) with O(n) operations, and explained that self-balancing trees use rotations to maintain O(log n) height and operation costs.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that inserting sorted keys into a plain BST creates a degenerate chain of height O(n) with O(n) operations, and explained that self-balancing trees use rotations to maintain O(log n) height and operation costs.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.841,
+          "se": 0.587,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.159,
+          "se": 0.587,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 12,
+  "stop_reason": "fixed_length",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 0.841,
+        "se": 0.587,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.578712,
+        "level_probabilities": {
+          "0": 0.000241,
+          "1": 0.028405,
+          "2": 0.392642,
+          "3": 0.578712
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.159,
+        "se": 0.587,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.607925,
+        "level_probabilities": {
+          "0": 0.008102,
+          "1": 0.218829,
+          "2": 0.607925,
+          "3": 0.165145
+        },
+        "meets_minimum": null
+      },
+      "ds": {
+        "level": 3,
+        "estimate": 1.5528,
+        "se": 0.6137,
+        "confident": false,
+        "minimum": 2,
+        "level_probability": 0.91562,
+        "level_probabilities": {
+          "0": 1e-06,
+          "1": 0.001023,
+          "2": 0.083356,
+          "3": 0.91562
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether sql reaches level 2.",
+    "misconceptions": [],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.arrays-strings.front-insert-constant",
+      "ds.complexity.big-o-is-exact-time",
+      "ds.complexity.constants-change-class",
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.visited-unneeded",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.stacks-queues.recursion-free-memory",
+      "ds.trees-bst.always-balanced",
+      "ds.trees-bst.inorder-not-sorted",
+      "ds.trees-bst.insert-scans-all-keys",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.gil-thread-safe",
+      "py.concurrency.threads-cpu-parallel",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.closure-captures-value",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.schema-constraints.fk-must-be-unique",
+      "sql.schema-constraints.normalisation-only-saves-space",
+      "sql.subqueries-cte.cte-unused-still-applies"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-trees-bst"
+      ],
+      "untested": [
+        "py-variables-mutability",
+        "py-collections",
+        "py-oop",
+        "sql-transactions",
+        "ds-linked-lists"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether sql reaches level 2. Estimated levels: py level 3 (needs 2), sql level 2 (needs 2), ds level 3 (needs 2)."
+  },
+  "usage": {
+    "llm_calls": 37,
+    "api_calls": 0,
+    "input_tokens": 38808,
+    "output_tokens": 2172,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 37,
+        "api_calls": 0,
+        "input_tokens": 38808,
+        "output_tokens": 2172
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 3
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.functions-scope.mutable-default-fresh",
+      "sql.indexes-performance.composite-any-column"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

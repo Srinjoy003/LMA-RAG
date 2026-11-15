@@ -1,0 +1,2791 @@
+{
+  "interview_id": "A5E-data-engineer-CAND-009-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-engineer",
+  "candidate_id": "CAND-009",
+  "started_at": "2026-11-14T05:42:01Z",
+  "finished_at": "2026-11-14T05:42:01Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-exceptions",
+    "py-pandas",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-heaps",
+    "ds-sorting-searching",
+    "ds-graphs"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The `else` block only runs when no exception occurs in the `try`, and the first `except` clause that matches the raised exception is the one that gets executed.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What happens to the finally block if a function executes a return statement inside the try block?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens to the finally block if a function executes a return statement inside the try block?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens to the finally block if a return statement is executed inside the try block?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens to the finally block if a return statement is executed inside the try block?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of else and the first-matching except clause order, but completely misses the explanation of try, finally, execution flow after an exception, and finally running on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of else and the first-matching except clause order, but completely misses the explanation of try, finally, execution flow after an exception, and finally running on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query returns three rows – Asha with 2 orders totaling 330, Ben with 0 orders and a NULL total, and Chen with 1 order but a NULL total – because the LEFT JOIN preserves every customer, COUNT(o.id) ignores NULL order‑ids (so Ben gets 0), while SUM returns NULL when all joined amounts are NULL (as for Chen’s order and for Ben’s lack of rows).",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the specific counts and NULL totals, and accurately explained the behavior of LEFT JOIN, COUNT(o.id) with NULLs, and SUM with NULLs.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the specific counts and NULL totals, and accurately explained the behavior of LEFT JOIN, COUNT(o.id) with NULLs, and SUM with NULLs.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map lets us locate a key’s node in the list in average O(log n) time by hashing the key and then walking a short chain of buckets.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.lookup-is-linear",
+        "follow_up": "What determines the time complexity of a hash table lookup when collisions occur?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.lookup-is-linear",
+            "follow_up": "What determines the time complexity of a hash table lookup when collisions occur?",
+            "confidence_expressed": "high",
+            "supporting_quote": "walking a short chain of buckets",
+            "evidence_reason": "The candidate explicitly states that looking up a key involves walking a chain of buckets, showing a misconception that hash tables require sequential traversal similar to a linear search.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.lookup-is-linear",
+            "follow_up": "What is the time complexity of looking up a key in a Python dictionary, and does it depend on the number of items stored in the dictionary?",
+            "confidence_expressed": "high",
+            "supporting_quote": "walking a short chain of buckets",
+            "evidence_reason": "The candidate explicitly describes hash table lookup as walking a chain of buckets to locate the item rather than direct O(1) access, which aligns with the misconception that hash table lookups take linear or proportional time akin to traversal.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.lookup-is-linear",
+            "follow_up": "How many items do you expect a hash map to examine on average when looking up a key, regardless of how many total keys are stored?",
+            "confidence_expressed": "high",
+            "supporting_quote": "locate a key’s node in the list in average O(log n) time by hashing the key and then walking a short chain of buckets.",
+            "evidence_reason": "The candidate asserts that looking up a key requires walking a chain of buckets, implying a linear or logarithmic traversal of entries rather than direct O(1) average time.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "walking a short chain of buckets",
+        "evidence_reason": "The candidate explicitly states that looking up a key involves walking a chain of buckets, showing a misconception that hash tables require sequential traversal similar to a linear search.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What determines the time complexity of a hash table lookup when collisions occur?",
+          "answer": "The lookup time mainly depends on how many items end up in the same bucket, so if the hash function spreads keys poorly you end up scanning a long chain or probing many slots, which makes the operation slower.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.lookup-is-linear",
+            "follow_up": "If there are no collisions, how many steps does the hash map take to find the key's node?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.lookup-is-linear",
+                "follow_up": "If there are no collisions, how many steps does the hash map take to find the key's node?",
+                "confidence_expressed": "high",
+                "supporting_quote": "you end up scanning a long chain or probing many slots",
+                "evidence_reason": "The candidate asserts that hash map lookups involve scanning a chain or probing slots, viewing the lookup process as linear or sequential rather than direct O(1) access.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.lookup-is-linear",
+                "follow_up": "In a hash table with average O(1) performance, how does the number of items in the table affect the time it takes to find a key when there are no collisions?",
+                "confidence_expressed": "medium",
+                "supporting_quote": "you end up scanning a long chain or probing many slots",
+                "evidence_reason": "The candidate explicitly describes hash table lookup as scanning a chain or probing slots, reflecting the belief that lookups are linear or non-constant relative to the number of items/entries.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.lookup-is-linear",
+                "follow_up": "In a hash table with good distribution, how many items do you typically inspect to find a key regardless of the total number of items stored?",
+                "confidence_expressed": "high",
+                "supporting_quote": "you end up scanning a long chain or probing many slots, which makes the operation slower.",
+                "evidence_reason": "The candidate believes that hash table lookup involves scanning chains or probing slots like a linear data structure, which aligns with the misconception that lookups depend on the number of items or act linearly.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "you end up scanning a long chain or probing many slots",
+            "evidence_reason": "The candidate asserts that hash map lookups involve scanning a chain or probing slots, viewing the lookup process as linear or sequential rather than direct O(1) access.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If there are no collisions, how many steps does the hash map take to find the key's node?",
+          "answer": "If there are no collisions, the hash map still has to compute the hash and then follow the pointer from the bucket array to the node, which usually takes two elementary steps.",
+          "diagnosis": {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "How many steps does it take on average to look up a key in a Python dictionary when there are no collisions?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "How many steps does it take on average to look up a key in a Python dictionary when there are no collisions?",
+                "confidence_expressed": "medium",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "How does Python or a typical hash table directly access a bucket using a hash value without checking individual entries first?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "How does the time complexity of finding a key in a hash map with no collisions compare to an array lookup?",
+                "confidence_expressed": "medium",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "medium",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          1,
+          0,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate incorrectly states that hash map lookup takes O(log n) time and involves walking buckets, demonstrating a misunderstanding of hash table time complexity. They also fail to explain the doubly linked list, recency order, or the pointer operations required for O(1) get and put.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly states that hash map lookup takes O(log n) time by walking a chain of buckets, and misses the roles of the doubly linked list, the hit walkthrough, and why operations run in O(1) time.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.5136,
+          "se": 0.881,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-linked-lists",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.88); level 1 is nearest its estimate -0.51; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-linked-lists (ds.arrays-strings.front-insert-constant, ds.arrays-strings.index-needs-scan, ds.linked-lists.index-constant-time)",
+      "prompt": "You need to delete the item at position k from a sequence of n items. Compare doing this on a Python list (`del lst[k]`) and on a singly linked list that you walk from the head. In each case, how much work goes into reaching position k, and how much into removing the item?",
+      "answer": "In a Python list the element at index k is accessed in O(1) time, but deleting it requires shifting all later elements one slot left, which costs O(n − k) (worst‑case O(n)). In a singly‑linked list you must walk from the head to the node before k, which takes O(k) time (O(1) if k = 0), and then the actual removal is just a pointer update, O(1).",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that accessing a Python list by index is O(1) and removal takes O(n - k) due to shifting, and correctly stated that a singly linked list requires an O(k) walk to reach position k followed by an O(1) pointer update for removal.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that accessing a Python list by index is O(1) and removal takes O(n - k) due to shifting, and correctly stated that a singly linked list requires an O(k) walk to reach position k followed by an O(1) pointer update for removal.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.0629,
+          "se": 0.7661,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: sql.window-functions.collapses-rows, sql.window-functions.rank-functions-identical, sql.window-functions.running-sum-is-total",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The query returns five rows; the running column shows a cumulative sum of amount ordered by day, so the two rows for day 2 both display 170 (as they each add the prior 100 + 50 + 30), the NULL on day 3 adds nothing, and the final row shows 190; the rnk column ranks the rows by day, giving day 1 rank 1, the tied day‑2 rows rank 2 (and skip to 4 for day 3, then 5 for day 4).",
+      "diagnosis": {
+        "cause": "slip",
+        "misconception_id": null,
+        "follow_up": "Could you double-check the addition for the running total at day 2 when summing 100, 50, and 30?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "Could you double-check the addition for the running total at day 2 when summing 100, 50, and 30?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "Could you double-check the arithmetic for the running sum on day 2 and day 4?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "Could you double-check the arithmetic for the running sum by adding up the amounts row by row in order?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you double-check the addition for the running total at day 2 when summing 100, 50, and 30?",
+          "answer": "Sure—when the window is defined with ORDER BY day, the frame includes all rows that share the same day value, so both day‑2 rows see the sum of 100 + 50 + 30 = 180 (not 150). The NULL on day 3 adds nothing, keeping the total at 180, and the final row becomes 200.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 3,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate initially made an arithmetic error in the running sum calculation, but the follow-up reply correctly identified the frame behavior with tied rows, the ignored NULL, and the resulting running and rank values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that five rows are returned and explained the rank column with proper gap handling, but made calculation errors in the running total column (stating 170 for day 2 and 190 for the final row instead of 180 and 200).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.0629,
+          "se": 0.7661,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "slip",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-exceptions",
+        "py-collections"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.83); level 2 is nearest its estimate +0.00; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-exceptions (py.collections.unhashable-key)",
+      "prompt": "What does this code print, and why?\n\ndef store(d, key, value):\n    try:\n        d[key] = value\n        print(\"stored\", key)\n    except TypeError:\n        print(\"cannot use\", key)\n    finally:\n        print(\"done\")\n\nd = {}\nstore(d, (1, 2), \"a\")\nstore(d, [3, 4], \"b\")\nprint(len(d))",
+      "answer": "It will print “stored (1, 2)”, then “cannot use [3, 4]”, and finally “done” twice, and the dictionary will have two entries so len(d) prints 2.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.exceptions.resumes-after-raise",
+        "follow_up": "What happens to the line `print(\"stored\", key)` when `d[key] = value` raises a TypeError?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "What happens to the line `print(\"stored\", key)` when `d[key] = value` raises a TypeError?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will print “stored (1, 2)”, then “cannot use [3, 4]”, and finally “done” twice, and the dictionary will have two entries so len(d) prints 2.",
+            "evidence_reason": "The candidate asserts that the dictionary will have two entries, which means they believe the list [3, 4] was successfully stored despite raising a TypeError, indicating execution resumed inside or after the try block.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "What happens to the print statement immediately after d[key] = value inside the try block when an exception is raised on the second call?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will print “stored (1, 2)”, then “cannot use [3, 4]”, and finally “done” twice, and the dictionary will have two entries",
+            "evidence_reason": "The candidate claims that 'stored (1, 2)' is printed and implies both calls succeeded or the list was stored, showing the belief that execution continued past the exception or both values made it into the dictionary.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "It will print “stored (1, 2)”, then “cannot use [3, 4]”, and finally “done” twice, and the dictionary will have two entries so len(d) prints 2.",
+        "evidence_reason": "The candidate asserts that the dictionary will have two entries, which means they believe the list [3, 4] was successfully stored despite raising a TypeError, indicating execution resumed inside or after the try block.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the line `print(\"stored\", key)` when `d[key] = value` raises a TypeError?",
+          "answer": "When the assignment fails, the `print(\"stored\", key)` line is still executed, but it prints the key with a warning that the value wasn’t actually stored.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "What happens to the remaining lines inside a try block when an exception occurs on a line before them?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "What happens to the remaining lines inside a try block when an exception occurs on a line before them?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When the assignment fails, the `print(\"stored\", key)` line is still executed",
+                "evidence_reason": "The candidate explicitly asserts that the print statement inside the try block still executes after the assignment fails, which corresponds to the belief that execution continues within the try block after an exception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "What happens to the remaining lines inside a try block after an exception is raised on a previous line?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When the assignment fails, the `print(\"stored\", key)` line is still executed",
+                "evidence_reason": "The candidate explicitly believes that the rest of the try block continues to execute even after an assignment failure/exception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "What happens to the remaining lines inside a try block once a line raises an exception?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When the assignment fails, the `print(\"stored\", key)` line is still executed",
+                "evidence_reason": "The candidate explicitly states that the statement after the assignment inside the try block is still executed even after the assignment fails, which matches the belief that execution resumes inside the try block.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "When the assignment fails, the `print(\"stored\", key)` line is still executed",
+            "evidence_reason": "The candidate explicitly asserts that the print statement inside the try block still executes after the assignment fails, which corresponds to the belief that execution continues within the try block after an exception.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens to the remaining lines inside a try block when an exception occurs on a line before them?",
+          "answer": "When an exception is thrown, Python just logs the error but keeps executing the remaining statements in that try block as if nothing happened.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "If d[key] = value raises a TypeError, does Python run the print statement right below it inside the try block, or does it jump straight to the except block?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "If d[key] = value raises a TypeError, does Python run the print statement right below it inside the try block, or does it jump straight to the except block?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When an exception is thrown, Python just logs the error but keeps executing the remaining statements in that try block as if nothing happened.",
+                "evidence_reason": "The candidate explicitly asserts that when an exception is thrown, Python continues executing the remaining statements in the try block, which matches the listed misconception that execution resumes inside the try block.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "If a line inside the try block raises an error, does Python jump back into the try block to run the statements below it, or does it jump straight to the except block?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python just logs the error but keeps executing the remaining statements in that try block as if nothing happened.",
+                "evidence_reason": "The candidate explicitly asserts that after an exception occurs, Python continues executing the remaining statements inside the try block, which directly matches the misconception that execution resumes inside the try block after an exception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "If a line inside the try block raises an exception, do the lines that come after it in the try block run before moving to the except block?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python just logs the error but keeps executing the remaining statements in that try block as if nothing happened.",
+                "evidence_reason": "The candidate explicitly states that after an exception occurs, execution continues with the remaining statements inside the try block, which directly matches the misconception that execution resumes inside the try block after an error.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "When an exception is thrown, Python just logs the error but keeps executing the remaining statements in that try block as if nothing happened.",
+            "evidence_reason": "The candidate explicitly asserts that when an exception is thrown, Python continues executing the remaining statements in the try block, which matches the listed misconception that execution resumes inside the try block.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that execution resumes in the try block after an exception is raised, matching a listed misconception, and gives incorrect output and length.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the tuple is stored and the list raises a TypeError caught by the except block, but incorrectly believes the list is successfully stored along with the tuple, resulting in a length of 2 instead of 1.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.0629,
+          "se": 0.7661,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-015",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-complexity",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.77); level 2 is nearest its estimate -0.06; lists a suspected misconception to confirm: ds.hash-tables.lookup-is-linear",
+      "prompt": "A service receives 100,000 user IDs and must report whether any ID appears twice. Compare three approaches: keep a list of seen IDs and check `if uid in seen_list`; keep a set of seen IDs; or sort all the IDs and compare neighbours. What is the time complexity of each?",
+      "answer": "Using a list, each `uid in seen_list` scan is O(n), so checking all n IDs can degrade to O(n²) in the worst case. A set gives O(1) average‑time membership and insertion, yielding overall O(n). Sorting the IDs costs O(n log n) and the subsequent linear pass is O(n), so the total is O(n log n).",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the time complexities and reasons for all three approaches: O(n^2) worst-case for the list, O(n) on average for the set, and O(n log n) for sorting and comparing neighbours.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the time complexities and reasons for all three approaches: O(n^2) worst-case for the list, O(n) on average for the set, and O(n log n) for sorting and comparing neighbours.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.412,
+          "se": 0.6935,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-subqueries-cte",
+        "sql-joins",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; lists misconceptions not yet probed: sql.aggregation.group-by-only-sorts, sql.subqueries-cte.cte-unused-still-applies, sql.subqueries-cte.in-subquery-duplicates",
+      "prompt": "What does this query return, and why? Does the WITH clause limit which orders are counted?\n\nWITH big AS (\n  SELECT customer_id FROM orders WHERE amount >= 100\n)\nSELECT c.name, COUNT(o.id) AS n_orders\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE c.id IN (SELECT customer_id FROM big)\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n4 | Dana\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 150\n11 | 1 | 40\n12 | 1 | 120\n13 | 2 | 30\n14 | 3 | NULL\n15 | 3 | 200",
+      "answer": "The query returns two rows – Asha with 3 orders and Chen with 2 orders. The CTE only determines which customers are eligible (those having at least one order ≥ 100, i.e., Asha and Chen); the main query then joins to the full orders table, so all of each qualifying customer’s orders are counted, including Asha’s $40 order and Chen’s NULL‑amount order.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output (Asha 3, Chen 2) and accurately explained that the CTE only selects eligible customers while the main query counts all of their orders.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output (Asha 3, Chen 2) and accurately explained that the CTE only selects eligible customers while the main query counts all of their orders.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.412,
+          "se": 0.6935,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-collections",
+        "py-control-flow",
+        "py-variables-mutability"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 1 is nearest its estimate -0.52; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-collections (py.collections.sort-returns-list, py.control-flow.range-inclusive, py.variables-mutability.variable-holds-expression)",
+      "prompt": "What does this code print, and why?\n\nnums = [3, 1, 2]\ncount = len(nums)\nresult = nums.sort()\nnums.append(0)\nprint(result, count)\nprint(nums)\nfor i in range(1, 3):\n    print(nums[i])",
+      "answer": "It will print something like “[1, 2, 3] 3” on the first line and then the list with a 0 added, followed by the values at positions 1 and 2, which are 2 and 0.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.collections.sort-returns-list",
+        "follow_up": "What is the value of type(result) right after running result = nums.sort()?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.collections.sort-returns-list",
+            "follow_up": "What is the value of type(result) right after running result = nums.sort()?",
+            "confidence_expressed": "medium",
+            "supporting_quote": "It will print something like “[1, 2, 3] 3” on the first line",
+            "evidence_reason": "The candidate expects the result of nums.sort() to be the sorted list [1, 2, 3], explicitly showing the belief that list.sort() returns the sorted list.",
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.collections.sort-returns-list",
+            "follow_up": "What is the value of type(nums.sort())?",
+            "confidence_expressed": "medium",
+            "supporting_quote": "It will print something like “[1, 2, 3] 3” on the first line",
+            "evidence_reason": "The candidate believes that result evaluates to the sorted list rather than None, showing the misconception that sort() returns the sorted list.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "It will print something like “[1, 2, 3] 3” on the first line",
+        "evidence_reason": "The candidate expects the result of nums.sort() to be the sorted list [1, 2, 3], explicitly showing the belief that list.sort() returns the sorted list.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What is the value of type(result) right after running result = nums.sort()?",
+          "answer": "I think `type(result)` would be `<class 'list'>` because `sort()` returns the sorted list.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.collections.sort-returns-list",
+            "follow_up": "What value does `result` actually hold after `result = nums.sort()` runs?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.collections.sort-returns-list",
+                "follow_up": "What value does `result` actually hold after `result = nums.sort()` runs?",
+                "confidence_expressed": "high",
+                "supporting_quote": "sort()` returns the sorted list",
+                "evidence_reason": "The candidate explicitly asserts that list.sort() returns the sorted list, directly matching the listed misconception py.collections.sort-returns-list.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.collections.sort-returns-list",
+                "follow_up": "What value does `result` actually hold when you assign `result = nums.sort()` and print it directly?",
+                "confidence_expressed": "high",
+                "supporting_quote": "sort()` returns the sorted list",
+                "evidence_reason": "The candidate explicitly asserts that list.sort() returns the sorted list, matching the listed misconception py.collections.sort-returns-list.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.collections.sort-returns-list",
+                "follow_up": "If you assign result = nums.sort(), what value is stored in result?",
+                "confidence_expressed": "high",
+                "supporting_quote": "sort()` returns the sorted list",
+                "evidence_reason": "The candidate explicitly states that list.sort() returns the sorted list, directly matching the misconception that it returns a new list rather than None.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "sort()` returns the sorted list",
+            "evidence_reason": "The candidate explicitly asserts that list.sort() returns the sorted list, directly matching the listed misconception py.collections.sort-returns-list.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What value does `result` actually hold after `result = nums.sort()` runs?",
+          "answer": "`result` ends up containing the sorted version of `nums`, so after the call it holds `[1, 2, 3]`.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.collections.sort-returns-list",
+            "follow_up": "What does print(nums.sort()) output in Python?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.collections.sort-returns-list",
+                "follow_up": "What does print(nums.sort()) output in Python?",
+                "confidence_expressed": "high",
+                "supporting_quote": "result` ends up containing the sorted version of `nums`, so after the call it holds `[1, 2, 3]`.",
+                "evidence_reason": "The candidate explicitly states that result holds the sorted version of nums after calling nums.sort(), demonstrating the belief that list.sort() returns the sorted list.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.collections.sort-returns-list",
+                "follow_up": "What does print(nums.sort()) output in Python?",
+                "confidence_expressed": "high",
+                "supporting_quote": "`result` ends up containing the sorted version of `nums`, so after the call it holds `[1, 2, 3]`.",
+                "evidence_reason": "The candidate explicitly asserts that result holds the sorted list returned by nums.sort(), directly demonstrating the belief that list.sort() returns the sorted list.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.collections.sort-returns-list",
+                "follow_up": "What does print(nums.sort()) output in Python?",
+                "confidence_expressed": "high",
+                "supporting_quote": "result` ends up containing the sorted version of `nums`, so after the call it holds `[1, 2, 3]`.",
+                "evidence_reason": "The candidate explicitly states that result holds the sorted version of nums after calling nums.sort(), demonstrating the belief that list.sort() returns the sorted list.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "result` ends up containing the sorted version of `nums`, so after the call it holds `[1, 2, 3]`.",
+            "evidence_reason": "The candidate explicitly states that result holds the sorted version of nums after calling nums.sort(), demonstrating the belief that list.sort() returns the sorted list.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that list.sort() returns the sorted list rather than None, demonstrating the listed misconception py.collections.sort-returns-list.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assumes sort() returns the sorted list and that count prints with the list, failing multiple key points of the rubric.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.0425,
+          "se": 0.6681,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.412,
+          "se": 0.6935,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-014",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.69); level 2 is nearest its estimate +0.41; lists a suspected misconception to confirm: ds.hash-tables.lookup-is-linear",
+      "prompt": "You keep a Python dict that maps about 100,000 product names to their prices. What does it cost to (a) get one product's price, (b) list all products in alphabetical order, and (c) find the cheapest product? Explain each.",
+      "answer": "(a) Getting a price with d[name] is O(1) on average because the key’s hash jumps directly to its slot. (b) To list the products alphabetically you must sort the keys, e.g. sorted(d), which costs O(n log n). (c) The cheapest product requires scanning all values (e.g. min(d, key=d.get)), an O(n) operation unless you maintain a separate price‑ordered structure.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three complexities and provided the accurate underlying reasons for each, meeting all key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three complexities and provided the accurate underlying reasons for each, meeting all key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.0425,
+          "se": 0.6681,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.7285,
+          "se": 0.6468,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists misconceptions not yet probed: sql.indexes-performance.composite-any-column, sql.indexes-performance.function-on-column-uses-index, sql.indexes-performance.index-always-helps",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "Even if the index exists, the planner may still choose a sequential scan when the predicate matches a large proportion of rows (or the table is tiny), when the WHERE clause applies a function or expression to the indexed columns (e.g., EXTRACT(YEAR FROM order_date) or customer_id+0), or when the query filters only on the second column of the composite key (order_date) and thus cannot use the leading customer_id part efficiently.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three reasons why EXPLAIN might still show a full table scan: low selectivity/table size, a function or expression on the column, and filtering only on the non-leading column of a composite index.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three reasons why EXPLAIN might still show a full table scan: low selectivity/table size, a function or expression on the column, and filtering only on the non-leading column of a composite index.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.0425,
+          "se": 0.6681,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.7285,
+          "se": 0.6468,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-collections"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.67); level 1 is nearest its estimate -1.04; lists a suspected misconception to confirm: py.collections.sort-returns-list",
+      "prompt": "What is the difference between sorted(nums) and nums.sort() for a list nums? What does each one return, and could you call .sort() on a tuple?",
+      "answer": "`sorted(nums)` creates and returns a new sorted list while leaving the original `nums` unchanged and works on any iterable, whereas `nums.sort()` rearranges the list in place and returns `None` (so assigning its result would give `None`). Since tuples are immutable and don’t have a `sort` method, you can only use `sorted(tuple_obj)` to get a sorted list.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that sorted() returns a new list while leaving the original intact, that list.sort() sorts in place and returns None, and that tuples cannot use .sort() because they are immutable.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that sorted() returns a new list while leaving the original intact, that list.sort() sorts in place and returns None, and that tuples cannot use .sort() because they are immutable.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6744,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.7285,
+          "se": 0.6468,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.73; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-hash-tables (ds.hash-tables.collision-overwrites, ds.hash-tables.worst-case-constant)",
+      "prompt": "A teammate writes a `Customer` class whose `__hash__` returns `len(self.name)` and whose `__eq__` compares the full names, then puts one million customers into a set. Will the set still behave correctly? What happens to the speed of adding and checking customers, and why?",
+      "answer": "It will work fine – the set will still be able to store all the customers, and because the hash is just the length of the name the operations stay fast, essentially constant‑time, since the hash values are simple integers.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.worst-case-constant",
+        "follow_up": "If one million customers are inserted and all of them happen to have a name of length 6, how many entries will Python need to inspect when you check if a new customer is in the set?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.worst-case-constant",
+            "follow_up": "If one million customers are inserted and all of them happen to have a name of length 6, how many entries will Python need to inspect when you check if a new customer is in the set?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the operations stay fast, essentially constant‑time, since the hash values are simple integers",
+            "evidence_reason": "The candidate explicitly asserts that operations remain essentially constant-time despite the poor hash function, which matches the belief that hash table operations are guaranteed to be O(1) in every case.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.worst-case-constant",
+            "follow_up": "What happens in a hash set if all one million customers happen to have names of the exact same length?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the operations stay fast, essentially constant‑time, since the hash values are simple integers.",
+            "evidence_reason": "The candidate explicitly states that operations remain constant-time despite a poor hash function that returns only a few distinct values for a million items, which directly matches the belief that hash table operations are always O(1).",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.worst-case-constant",
+            "follow_up": "How many different integer values can len(self.name) possibly take for a million customers, and how does the set handle all those customers hashing to the same few values?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the operations stay fast, essentially constant‑time, since the hash values are simple integers",
+            "evidence_reason": "The candidate explicitly states that operations remain constant-time despite the poor hash function, which directly matches the belief that hash table operations are always O(1) regardless of collisions.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "the operations stay fast, essentially constant‑time, since the hash values are simple integers",
+        "evidence_reason": "The candidate explicitly asserts that operations remain essentially constant-time despite the poor hash function, which matches the belief that hash table operations are guaranteed to be O(1) in every case.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If one million customers are inserted and all of them happen to have a name of length 6, how many entries will Python need to inspect when you check if a new customer is in the set?",
+          "answer": "It will only have to look at a single bucket, so essentially just one entry is inspected for the lookup.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.worst-case-constant",
+            "follow_up": "What happens during a lookup if fifty thousand different customers all happen to have names of the same length and thus share the exact same hash value?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.worst-case-constant",
+                "follow_up": "What happens during a lookup if fifty thousand different customers all happen to have names of the same length and thus share the exact same hash value?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It will only have to look at a single bucket, so essentially just one entry is inspected for the lookup.",
+                "evidence_reason": "The candidate claims that a lookup inspects essentially only one entry even when many keys share a hash value, showing the belief that table performance remains O(1) regardless of collisions.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.worst-case-constant",
+                "follow_up": "If one million customers all share the exact same name length, how many entries end up in that single bucket and how does the set find the right one?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It will only have to look at a single bucket, so essentially just one entry is inspected for the lookup.",
+                "evidence_reason": "The candidate claims that despite heavy collisions from having only a few name lengths for a million items, only a single entry is inspected, showing the belief that lookups remain strictly O(1) regardless of collisions.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.worst-case-constant",
+                "follow_up": "What happens if all one million customers have names of the same length and end up in the exact same hash bucket?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It will only have to look at a single bucket, so essentially just one entry is inspected for the lookup.",
+                "evidence_reason": "The candidate explicitly asserts that a lookup only inspects a single entry, showing they believe lookups remain O(1) even when many keys share the same hash value.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "It will only have to look at a single bucket, so essentially just one entry is inspected for the lookup.",
+            "evidence_reason": "The candidate claims that a lookup inspects essentially only one entry even when many keys share a hash value, showing the belief that table performance remains O(1) regardless of collisions.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens during a lookup if fifty thousand different customers all happen to have names of the same length and thus share the exact same hash value?",
+          "answer": "It will still be fast because Python will just pick one of the colliding entries at random and treat the rest as if they weren’t there, so the lookup cost stays roughly constant.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.collision-overwrites",
+            "follow_up": "If Python only keeps one entry per bucket and discards or ignores the rest, what happens when you try to look up a second customer whose name also has length 6?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.collision-overwrites",
+                "follow_up": "If Python only keeps one entry per bucket and discards or ignores the rest, what happens when you try to look up a second customer whose name also has length 6?",
+                "confidence_expressed": "high",
+                "supporting_quote": "treat the rest as if they weren’t there, so the lookup cost stays roughly constant",
+                "evidence_reason": "The candidate claims that colliding entries are treated as if they are not there, which reflects the misconception that colliding items are discarded, lost, or overwrite each other rather than being chained or probed in the same bucket.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.collision-overwrites",
+                "follow_up": "If Python only keeps one entry and ignores or discards the rest when a collision occurs, how does the set retrieve all one million distinct customers later?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python will just pick one of the colliding entries at random and treat the rest as if they weren’t there",
+                "evidence_reason": "The candidate explicitly states that colliding entries are effectively discarded or ignored ('treat the rest as if they weren't there'), which matches the misconception that collisions cause data loss rather than being resolved via separate chaining or probing alongside equality checks.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.collision-overwrites",
+                "follow_up": "What happens to the total number of customers stored in the set if you add multiple different customers who all have a name of length 6?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python will just pick one of the colliding entries at random and treat the rest as if they weren’t there, so the lookup cost stays roughly constant.",
+                "evidence_reason": "The candidate states that colliding entries are effectively ignored or discarded ('treat the rest as if they weren’t there') rather than chained, probed, or stored alongside each other, directly manifesting the belief that collisions lead to data loss or overwrites.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "treat the rest as if they weren’t there, so the lookup cost stays roughly constant",
+            "evidence_reason": "The candidate claims that colliding entries are treated as if they are not there, which reflects the misconception that colliding items are discarded, lost, or overwrite each other rather than being chained or probed in the same bucket.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that hash table operations remain constant-time even with extreme collisions, and explicitly shows the misconception that colliding entries are ignored or dropped rather than being stored and resolved using equality checks.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          0,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly notes that all customers will be stored correctly, but exhibits the misconception that performance remains constant-time despite severe collisions, failing to recognise the degradation toward O(n).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6744,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.4307,
+          "se": 0.5734,
+          "level": 2,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-013",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-transactions"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.64); level 3 is nearest its estimate +1.95; lists misconceptions not yet probed: sql.transactions.default-isolation-prevents-all, sql.transactions.uncommitted-visible",
+      "prompt": "Under READ COMMITTED, the default in PostgreSQL, a reporting transaction runs SELECT SUM(balance) FROM accounts twice. Between the two reads, another session deposits 500 into an account and commits. Can the two sums differ? Could the report ever see the deposit before it was committed? Which isolation level would make both reads agree?",
+      "answer": "Yes, the two sums can be different because the second SELECT can read the 500 deposit even before the other session commits, and the report could see that uncommitted change; using READ COMMITTED would make both reads agree.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.transactions.uncommitted-visible",
+        "follow_up": "What happens in PostgreSQL if the other session makes changes but rolls back instead of committing?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.uncommitted-visible",
+            "follow_up": "What happens in PostgreSQL if the other session makes changes but rolls back instead of committing?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the second SELECT can read the 500 deposit even before the other session commits, and the report could see that uncommitted change",
+            "evidence_reason": "The candidate explicitly asserts that the reporting session can see the deposit before the other session commits, which directly demonstrates the misconception that uncommitted changes are visible to other transactions.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.uncommitted-visible",
+            "follow_up": "What happens in PostgreSQL if the other session modifies data and then rolls back instead of committing?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the second SELECT can read the 500 deposit even before the other session commits, and the report could see that uncommitted change",
+            "evidence_reason": "The candidate explicitly claims that the reporting transaction can see the deposit before the other session commits, which directly matches the listed misconception that uncommitted changes are visible.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.transactions.default-isolation-prevents-all",
+                "supporting_quote": "the two sums can be different because the second SELECT can read the 500 deposit",
+                "quote_start": 5,
+                "quote_end": 85,
+                "reason": "The candidate correctly recognizes that the two sums can be different, which contradicts the misconception that READ COMMITTED prevents non-repeatable reads."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.uncommitted-visible",
+            "follow_up": "What happens in a database if the other session makes a change and then rolls it back instead of committing?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the second SELECT can read the 500 deposit even before the other session commits, and the report could see that uncommitted change",
+            "evidence_reason": "The candidate explicitly states that the SELECT statement can read the deposit before the other session commits, which directly matches the misconception that uncommitted changes from other transactions are visible.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "the second SELECT can read the 500 deposit even before the other session commits, and the report could see that uncommitted change",
+        "evidence_reason": "The candidate explicitly asserts that the reporting session can see the deposit before the other session commits, which directly demonstrates the misconception that uncommitted changes are visible to other transactions.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens in PostgreSQL if the other session makes changes but rolls back instead of committing?",
+          "answer": "If the other session rolls back, the reporting transaction can still see the changes it made before the rollback, so the second SUM could include the rolled‑back deposit.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.uncommitted-visible",
+            "follow_up": "Can a transaction read changes that were never committed if the modifying transaction ends up rolling back?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "Can a transaction read changes that were never committed if the modifying transaction ends up rolling back?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the reporting transaction can still see the changes it made before the rollback, so the second SUM could include the rolled‑back deposit.",
+                "evidence_reason": "The candidate explicitly states that a transaction can see uncommitted or rolled-back changes from another session, which maps directly to the misconception that uncommitted changes or transient states are visible.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "What happens in a database if a transaction modifies data and then rolls back—can other concurrent transactions see those temporary changes before the rollback?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the reporting transaction can still see the changes it made before the rollback, so the second SUM could include the rolled‑back deposit.",
+                "evidence_reason": "The candidate claims the reporting transaction can see changes made by another session even if that session rolls back, which directly demonstrates the misconception that uncommitted or pending changes are visible to others.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "Can a transaction read changes made by another session that are later rolled back?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the reporting transaction can still see the changes it made before the rollback, so the second SUM could include the rolled‑back deposit.",
+                "evidence_reason": "The candidate asserts that the reporting query can see changes from another session before they are committed, specifically claiming it can see a deposit even if it ends up being rolled back, which matches the belief that uncommitted data is visible.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the reporting transaction can still see the changes it made before the rollback, so the second SUM could include the rolled‑back deposit.",
+            "evidence_reason": "The candidate explicitly states that a transaction can see uncommitted or rolled-back changes from another session, which maps directly to the misconception that uncommitted changes or transient states are visible.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.transactions.uncommitted-visible",
+            "expected_score": 0,
+            "effective_level": 3,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "Can a transaction read changes that were never committed if the modifying transaction ends up rolling back?",
+          "answer": "Yes, a transaction can see the changes made by another transaction even if that other transaction later rolls back, because the changes become visible as soon as the statements execute.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.transactions.uncommitted-visible",
+            "follow_up": "What does a database COMMIT statement actually do if changes are already visible beforehand?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "What does a database COMMIT statement actually do if changes are already visible beforehand?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the changes become visible as soon as the statements execute.",
+                "evidence_reason": "The candidate explicitly states that changes are visible immediately when statements execute, before any commit, which matches the belief that uncommitted data is visible.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "If a transaction could read changes before they were committed, what would happen to the reporting query if the other session rolled back right after the second SELECT?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the changes become visible as soon as the statements execute.",
+                "evidence_reason": "The candidate explicitly asserts that uncommitted changes are visible as soon as statements execute, matching the misconception that other sessions can see uncommitted data.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.transactions.uncommitted-visible",
+                "follow_up": "If uncommitted changes were immediately visible to other transactions, what would be the purpose of issuing a COMMIT statement at the end?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the changes become visible as soon as the statements execute.",
+                "evidence_reason": "The candidate explicitly asserts that changes are visible as soon as statements execute, before a commit occurs, which directly matches the listed misconception sql.transactions.uncommitted-visible.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the changes become visible as soon as the statements execute.",
+            "evidence_reason": "The candidate explicitly states that changes are visible immediately when statements execute, before any commit, which matches the belief that uncommitted data is visible.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.transactions.uncommitted-visible",
+            "expected_score": 0,
+            "effective_level": 3,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate consistently believes that PostgreSQL allows dirty reads (seeing uncommitted changes), which demonstrates a fundamental misconception about isolation levels and fails the core criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that the sums can differ, but incorrectly claims that the report can see uncommitted changes under READ COMMITTED and that READ COMMITTED makes both reads agree.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6744,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.4625,
+          "se": 0.5597,
+          "level": 3,
+          "n": 5
+        },
+        "ds": {
+          "estimate": 0.4307,
+          "se": 0.5734,
+          "level": 2,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-004",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.transactions.uncommitted-visible",
+        "expected_score": 0,
+        "effective_level": 3,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 25,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 1,
+        "estimate": -0.6744,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.598903,
+        "level_probabilities": {
+          "0": 0.152899,
+          "1": 0.598903,
+          "2": 0.239153,
+          "3": 0.009045
+        },
+        "meets_minimum": null
+      },
+      "sql": {
+        "level": 3,
+        "estimate": 1.4625,
+        "se": 0.5597,
+        "confident": true,
+        "minimum": 3,
+        "level_probability": 0.910125,
+        "level_probabilities": {
+          "0": 0.0,
+          "1": 0.000712,
+          "2": 0.089163,
+          "3": 0.910125
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 2,
+        "estimate": 0.4307,
+        "se": 0.5734,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.59431,
+        "level_probabilities": {
+          "0": 0.001351,
+          "1": 0.105314,
+          "2": 0.59431,
+          "3": 0.299025
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether py reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "ds.hash-tables.lookup-is-linear",
+        "confirmed": false,
+        "evidence_turns": [
+          3
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "The hash map lets us locate a key’s node in the list in average O(log n) time by hashing the key and then walking a short chain of buckets.",
+            "vote_share": 1.0,
+            "supporting_quote": "walking a short chain of buckets",
+            "quote_start": 106,
+            "quote_end": 138,
+            "reason": "The candidate explicitly states that looking up a key involves walking a chain of buckets, showing a misconception that hash tables require sequential traversal similar to a linear search."
+          },
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 1,
+            "reply_text": "The lookup time mainly depends on how many items end up in the same bucket, so if the hash function spreads keys poorly you end up scanning a long chain or probing many slots, which makes the operation slower.",
+            "vote_share": 1.0,
+            "supporting_quote": "you end up scanning a long chain or probing many slots",
+            "quote_start": 120,
+            "quote_end": 174,
+            "reason": "The candidate asserts that hash map lookups involve scanning a chain or probing slots, viewing the lookup process as linear or sequential rather than direct O(1) access."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.exceptions.resumes-after-raise",
+        "confirmed": false,
+        "evidence_turns": [
+          6
+        ],
+        "vote_share": 0.889,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L2-015",
+            "turn": 6,
+            "reply_index": 0,
+            "reply_text": "It will print “stored (1, 2)”, then “cannot use [3, 4]”, and finally “done” twice, and the dictionary will have two entries so len(d) prints 2.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "It will print “stored (1, 2)”, then “cannot use [3, 4]”, and finally “done” twice, and the dictionary will have two entries so len(d) prints 2.",
+            "quote_start": 0,
+            "quote_end": 143,
+            "reason": "The candidate asserts that the dictionary will have two entries, which means they believe the list [3, 4] was successfully stored despite raising a TypeError, indicating execution resumed inside or after the try block."
+          },
+          {
+            "question_id": "PY-L2-015",
+            "turn": 6,
+            "reply_index": 1,
+            "reply_text": "When the assignment fails, the `print(\"stored\", key)` line is still executed, but it prints the key with a warning that the value wasn’t actually stored.",
+            "vote_share": 1.0,
+            "supporting_quote": "When the assignment fails, the `print(\"stored\", key)` line is still executed",
+            "quote_start": 0,
+            "quote_end": 76,
+            "reason": "The candidate explicitly asserts that the print statement inside the try block still executes after the assignment fails, which corresponds to the belief that execution continues within the try block after an exception."
+          },
+          {
+            "question_id": "PY-L2-015",
+            "turn": 6,
+            "reply_index": 2,
+            "reply_text": "When an exception is thrown, Python just logs the error but keeps executing the remaining statements in that try block as if nothing happened.",
+            "vote_share": 1.0,
+            "supporting_quote": "When an exception is thrown, Python just logs the error but keeps executing the remaining statements in that try block as if nothing happened.",
+            "quote_start": 0,
+            "quote_end": 142,
+            "reason": "The candidate explicitly asserts that when an exception is thrown, Python continues executing the remaining statements in the try block, which matches the listed misconception that execution resumes inside the try block."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.collections.sort-returns-list",
+        "confirmed": false,
+        "evidence_turns": [
+          9
+        ],
+        "vote_share": 0.889,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L1-014",
+            "turn": 9,
+            "reply_index": 0,
+            "reply_text": "It will print something like “[1, 2, 3] 3” on the first line and then the list with a 0 added, followed by the values at positions 1 and 2, which are 2 and 0.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "It will print something like “[1, 2, 3] 3” on the first line",
+            "quote_start": 0,
+            "quote_end": 60,
+            "reason": "The candidate expects the result of nums.sort() to be the sorted list [1, 2, 3], explicitly showing the belief that list.sort() returns the sorted list."
+          },
+          {
+            "question_id": "PY-L1-014",
+            "turn": 9,
+            "reply_index": 1,
+            "reply_text": "I think `type(result)` would be `<class 'list'>` because `sort()` returns the sorted list.",
+            "vote_share": 1.0,
+            "supporting_quote": "sort()` returns the sorted list",
+            "quote_start": 58,
+            "quote_end": 89,
+            "reason": "The candidate explicitly asserts that list.sort() returns the sorted list, directly matching the listed misconception py.collections.sort-returns-list."
+          },
+          {
+            "question_id": "PY-L1-014",
+            "turn": 9,
+            "reply_index": 2,
+            "reply_text": "`result` ends up containing the sorted version of `nums`, so after the call it holds `[1, 2, 3]`.",
+            "vote_share": 1.0,
+            "supporting_quote": "result` ends up containing the sorted version of `nums`, so after the call it holds `[1, 2, 3]`.",
+            "quote_start": 1,
+            "quote_end": 97,
+            "reason": "The candidate explicitly states that result holds the sorted version of nums after calling nums.sort(), demonstrating the belief that list.sort() returns the sorted list."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.hash-tables.worst-case-constant",
+        "confirmed": false,
+        "evidence_turns": [
+          13
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L3-013",
+            "turn": 13,
+            "reply_index": 0,
+            "reply_text": "It will work fine – the set will still be able to store all the customers, and because the hash is just the length of the name the operations stay fast, essentially constant‑time, since the hash values are simple integers.",
+            "vote_share": 1.0,
+            "supporting_quote": "the operations stay fast, essentially constant‑time, since the hash values are simple integers",
+            "quote_start": 127,
+            "quote_end": 221,
+            "reason": "The candidate explicitly asserts that operations remain essentially constant-time despite the poor hash function, which matches the belief that hash table operations are guaranteed to be O(1) in every case."
+          },
+          {
+            "question_id": "DS-L3-013",
+            "turn": 13,
+            "reply_index": 1,
+            "reply_text": "It will only have to look at a single bucket, so essentially just one entry is inspected for the lookup.",
+            "vote_share": 1.0,
+            "supporting_quote": "It will only have to look at a single bucket, so essentially just one entry is inspected for the lookup.",
+            "quote_start": 0,
+            "quote_end": 104,
+            "reason": "The candidate claims that a lookup inspects essentially only one entry even when many keys share a hash value, showing the belief that table performance remains O(1) regardless of collisions."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.hash-tables.collision-overwrites",
+        "confirmed": false,
+        "evidence_turns": [
+          13
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L3-013",
+            "turn": 13,
+            "reply_index": 2,
+            "reply_text": "It will still be fast because Python will just pick one of the colliding entries at random and treat the rest as if they weren’t there, so the lookup cost stays roughly constant.",
+            "vote_share": 1.0,
+            "supporting_quote": "treat the rest as if they weren’t there, so the lookup cost stays roughly constant",
+            "quote_start": 95,
+            "quote_end": 177,
+            "reason": "The candidate claims that colliding entries are treated as if they are not there, which reflects the misconception that colliding items are discarded, lost, or overwrite each other rather than being chained or probed in the same bucket."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.transactions.uncommitted-visible",
+        "confirmed": false,
+        "evidence_turns": [
+          14
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-004",
+            "turn": 14,
+            "reply_index": 0,
+            "reply_text": "Yes, the two sums can be different because the second SELECT can read the 500 deposit even before the other session commits, and the report could see that uncommitted change; using READ COMMITTED would make both reads agree.",
+            "vote_share": 1.0,
+            "supporting_quote": "the second SELECT can read the 500 deposit even before the other session commits, and the report could see that uncommitted change",
+            "quote_start": 43,
+            "quote_end": 173,
+            "reason": "The candidate explicitly asserts that the reporting session can see the deposit before the other session commits, which directly demonstrates the misconception that uncommitted changes are visible to other transactions."
+          },
+          {
+            "question_id": "SQL-L3-004",
+            "turn": 14,
+            "reply_index": 1,
+            "reply_text": "If the other session rolls back, the reporting transaction can still see the changes it made before the rollback, so the second SUM could include the rolled‑back deposit.",
+            "vote_share": 1.0,
+            "supporting_quote": "the reporting transaction can still see the changes it made before the rollback, so the second SUM could include the rolled‑back deposit.",
+            "quote_start": 33,
+            "quote_end": 170,
+            "reason": "The candidate explicitly states that a transaction can see uncommitted or rolled-back changes from another session, which maps directly to the misconception that uncommitted changes or transient states are visible."
+          },
+          {
+            "question_id": "SQL-L3-004",
+            "turn": 14,
+            "reply_index": 2,
+            "reply_text": "Yes, a transaction can see the changes made by another transaction even if that other transaction later rolls back, because the changes become visible as soon as the statements execute.",
+            "vote_share": 1.0,
+            "supporting_quote": "the changes become visible as soon as the statements execute.",
+            "quote_start": 124,
+            "quote_end": 185,
+            "reason": "The candidate explicitly states that changes are visible immediately when statements execute, before any commit, which matches the belief that uncommitted data is visible."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.index-needs-scan",
+      "ds.complexity.short-code-is-fast",
+      "ds.hash-tables.collision-overwrites",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.hash-tables.worst-case-constant",
+      "ds.linked-lists.index-constant-time",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.sorting-searching.sorting-is-linear",
+      "py.collections.sort-returns-list",
+      "py.collections.tuple-mutable",
+      "py.collections.unhashable-key",
+      "py.control-flow.range-inclusive",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.variables-mutability.variable-holds-expression",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.subqueries-cte.in-subquery-duplicates",
+      "sql.transactions.default-isolation-prevents-all",
+      "sql.transactions.uncommitted-visible",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-exceptions",
+        "py-pandas",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-heaps",
+        "ds-sorting-searching",
+        "ds-graphs"
+      ],
+      "tested": [
+        "py-collections",
+        "py-exceptions",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "sql-indexes-performance",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-sorting-searching"
+      ],
+      "untested": [
+        "py-functions-scope",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-schema-constraints",
+        "ds-heaps",
+        "ds-graphs"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether py reaches level 2. Estimated levels: py level 1 (needs 2), sql level 3 (needs 3), ds level 2 (needs 2). Suspected (insufficient corroboration) misconception: Believes looking up a key in a hash table (dict/set) checks the stored entries one by one, so membership and lookup are O(n) on average, like a list. Suspected (insufficient corroboration) misconception: Believes that after an exception is caught, execution goes back to the try block and continues with the line after the one that raised. Suspected (insufficient corroboration) misconception: Believes list.sort() returns the sorted list, not knowing it sorts in place and returns None (unlike sorted(), which returns a new list). Suspected (insufficient corroboration) misconception: Believes hash table operations are O(1) guaranteed in every case, ignoring that many collisions (a poor hash function or adversarial keys) degrade lookups towards O(n). Suspected (insufficient corroboration) misconception: Believes that when two different keys hash to the same value or slot, the newer key overwrites the older one, so colliding keys cannot both be stored. Suspected (insufficient corroboration) misconception: Believes other sessions see a transaction's changes as soon as each statement runs, before COMMIT."
+  },
+  "usage": {
+    "llm_calls": 136,
+    "api_calls": 0,
+    "input_tokens": 150107,
+    "output_tokens": 12047,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 136,
+        "api_calls": 0,
+        "input_tokens": 150107,
+        "output_tokens": 12047
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 1,
+      "sql": 3,
+      "ds": 2
+    },
+    "fit": false,
+    "misconceptions": [
+      "sql.transactions.uncommitted-visible"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

@@ -1,0 +1,2414 @@
+{
+  "interview_id": "A5E-data-engineer-CAND-006-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-engineer",
+  "candidate_id": "CAND-006",
+  "started_at": "2026-11-14T05:37:58Z",
+  "finished_at": "2026-11-14T05:38:06Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-exceptions",
+    "py-pandas",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-heaps",
+    "ds-sorting-searching",
+    "ds-graphs"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The `try` block contains the code that may raise an exception, `except` clauses handle specific error types, `else` runs only if no exception occurred, and `finally` always runs at the end (even after a `return`). If an exception is raised halfway through the `try`, control jumps directly to the most specific matching `except` clause, regardless of its position, and then proceeds to the `finally` block; the `else` block is skipped. If two `except` clauses could both match, the one that handles the more specific exception type runs, and `finally` still executes even when the `try` block returns.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.exceptions.most-specific-except-wins",
+        "follow_up": "What would happen if you had a broad except Exception: clause placed above a more specific except ValueError: clause, and a ValueError was raised?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.most-specific-except-wins",
+            "follow_up": "What would happen if you had a broad except Exception: clause placed above a more specific except ValueError: clause, and a ValueError was raised?",
+            "confidence_expressed": "high",
+            "supporting_quote": "control jumps directly to the most specific matching `except` clause, regardless of its position",
+            "evidence_reason": "The candidate explicitly states that Python picks the most specific matching except clause regardless of its position, which matches the listed misconception py.exceptions.most-specific-except-wins.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.most-specific-except-wins",
+            "follow_up": "What would happen if you wrote a broad Exception block above a specific ValueError block and raised a ValueError?",
+            "confidence_expressed": "high",
+            "supporting_quote": "control jumps directly to the most specific matching `except` clause, regardless of its position",
+            "evidence_reason": "The candidate explicitly states that Python jumps to the most specific matching except clause regardless of its position, which matches the listed misconception that the most specific clause wins rather than the first matching clause in order.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.most-specific-except-wins",
+            "follow_up": "What would happen if you had a broad except Exception: placed above a specific except ValueError: and a ValueError was raised?",
+            "confidence_expressed": "high",
+            "supporting_quote": "If two `except` clauses could both match, the one that handles the more specific exception type runs",
+            "evidence_reason": "The candidate explicitly states that the except clause handling the more specific exception type runs when two could match, which directly matches the listed misconception py.exceptions.most-specific-except-wins.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "control jumps directly to the most specific matching `except` clause, regardless of its position",
+        "evidence_reason": "The candidate explicitly states that Python picks the most specific matching except clause regardless of its position, which matches the listed misconception py.exceptions.most-specific-except-wins.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What would happen if you had a broad except Exception: clause placed above a more specific except ValueError: clause, and a ValueError was raised?",
+          "answer": "Even though the broad `except Exception:` comes first, the more specific `except ValueError:` will still be chosen when a `ValueError` is raised, because Python matches the exception to the most specific handler regardless of order. The `finally` block will then execute as usual.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.most-specific-except-wins",
+            "follow_up": "If you have an `except Exception:` followed by an `except ValueError:`, and a `ValueError` is raised, which block runs first?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.most-specific-except-wins",
+                "follow_up": "If you have an `except Exception:` followed by an `except ValueError:`, and a `ValueError` is raised, which block runs first?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the more specific `except ValueError:` will still be chosen when a `ValueError` is raised, because Python matches the exception to the most specific handler regardless of order",
+                "evidence_reason": "The candidate explicitly states that Python matches the exception to the most specific handler regardless of order, which directly matches the misconception py.exceptions.most-specific-except-wins.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.most-specific-except-wins",
+                "follow_up": "What would happen if you had 'except Exception:' first followed by 'except ValueError:', and you raised a ValueError?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python matches the exception to the most specific handler regardless of order",
+                "evidence_reason": "The candidate explicitly states that Python selects the most specific matching handler regardless of the order of the except clauses.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.most-specific-except-wins",
+                "follow_up": "What happens if you have `except Exception:` placed before `except ValueError:` and a `ValueError` occurs?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python matches the exception to the most specific handler regardless of order",
+                "evidence_reason": "The candidate explicitly asserts that Python picks the most specific handler regardless of the order of the except clauses, which matches the listed misconception.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the more specific `except ValueError:` will still be chosen when a `ValueError` is raised, because Python matches the exception to the most specific handler regardless of order",
+            "evidence_reason": "The candidate explicitly states that Python matches the exception to the most specific handler regardless of order, which directly matches the misconception py.exceptions.most-specific-except-wins.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.exceptions.most-specific-except-wins",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If you have an `except Exception:` followed by an `except ValueError:`, and a `ValueError` is raised, which block runs first?",
+          "answer": "Even though the generic `except Exception:` appears first, Python will still pick the more specific handler. So when a `ValueError` is raised, the `except ValueError:` block runs before the generic one, and then the `finally` block (if any) is executed.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.most-specific-except-wins",
+            "follow_up": "If you write `try:` followed by `except Exception:` and then `except ValueError:`, what does Python do when a `ValueError` is raised? Which handler checks the exception first?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.most-specific-except-wins",
+                "follow_up": "If you write `try:` followed by `except Exception:` and then `except ValueError:`, what does Python do when a `ValueError` is raised? Which handler checks the exception first?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Even though the generic `except Exception:` appears first, Python will still pick the more specific handler.",
+                "evidence_reason": "The candidate explicitly states that Python picks the more specific handler even when the generic exception handler appears first, which directly expresses the listed misconception that the most specific except clause wins rather than the first matching one in order.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.most-specific-except-wins",
+                "follow_up": "If you write `try: ... except Exception: ... except ValueError: ...` and raise a `ValueError`, which block catches it in Python?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python will still pick the more specific handler. So when a `ValueError` is raised, the `except ValueError:` block runs before the generic one",
+                "evidence_reason": "The candidate explicitly states that Python will pick the more specific handler even when the generic exception handler appears first, which matches the misconception that Python picks the most specific matching except clause rather than the first one from top to bottom.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.most-specific-except-wins",
+                "follow_up": "If you write `try: ... except Exception: ... except ValueError: ...` and a ValueError occurs, which block executes first?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python will still pick the more specific handler. So when a `ValueError` is raised, the `except ValueError:` block runs before the generic one",
+                "evidence_reason": "The candidate explicitly asserts that the more specific except ValueError runs before the generic one even though the generic one appears first, demonstrating the belief that specificity overrides order.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Even though the generic `except Exception:` appears first, Python will still pick the more specific handler.",
+            "evidence_reason": "The candidate explicitly states that Python picks the more specific handler even when the generic exception handler appears first, which directly expresses the listed misconception that the most specific except clause wins rather than the first matching one in order.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.exceptions.most-specific-except-wins",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that Python picks the most specific matching except clause rather than the first matching clause from top to bottom, explicitly demonstrating the listed misconception py.exceptions.most-specific-except-wins.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the roles of try, except, else, and finally, including that finally runs on return. However, they exhibited the misconception that Python picks the most specific matching except clause rather than the first one from top to bottom.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.exceptions.most-specific-except-wins",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query returns three rows – one for each customer. Asha has two matching orders, so the row shows n_orders = 2 and total = 250 + 80 = 330; Ben has no orders, so COUNT(o.id) returns 0 and SUM(o.amount) returns NULL; Chen has one order but its amount is NULL, so COUNT(o.id) is 1 while the sum is NULL. The order with a NULL customer_id does not appear because the LEFT JOIN keeps only rows from customers.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the counts and null values, and provided the correct explanations for Ben's 0 count, Chen's null total, and why the unassigned order is excluded.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the counts and null values, and provided the correct explanations for Ben's 0 count, Chen's null total, and why the unassigned order is excluded.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map is mainly used to keep track of which keys are currently in the cache, while the doubly linked list is just a convenient way to store all the entries so we can iterate over them later. When a key k is accessed we look it up in the map, read the value, and then move the corresponding list node to the front by adjusting a couple of pointers. Because both the map lookup and the pointer adjustments touch only a fixed number of elements, the get and put operations end up being constant‑time on average.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does the hash map help you find the correct node in the linked list when a key is accessed?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the hash map help you find the correct node in the linked list when a key is accessed?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the hash map help you find the correct node in the linked list when a key is accessed?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the hash map's lookup role, the doubly linked list's recency tracking, and why both operations run in O(1) time. However, the hit walkthrough is vague about the exact pointer adjustments and unlinking process, which fits the level-1 criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the hash map's lookup role, the doubly linked list's recency tracking, and why both operations run in O(1) time. However, the hit walkthrough is vague about the exact pointer adjustments and unlinking process, which fits the level-1 criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope",
+        "py-control-flow"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; lists misconceptions not yet probed: py.control-flow.no-short-circuit, py.control-flow.or-distributes, py.functions-scope.print-is-return",
+      "prompt": "What does this code print, and why?\n\ndef area(w, h):\n    print(\"area\", w * h)\n\ndef is_big(n):\n    print(\"checking\", n)\n    return n > 10\n\na = area(2, 3)\nprint(a)\nif is_big(30) or is_big(1):\n    print(\"one big\")\nsize = \"M\"\nif size == \"S\" or \"XS\":\n    print(\"small\")",
+      "answer": "The code prints:\n\n```\narea 6\nNone\nchecking 30\none big\nsmall\n```\n\n`area` prints the product but returns `None`, so `a` is `None`. The `or` short‑circuits after `is_big(30)` is true, so `checking 1` is printed, and the final condition `size == \"S\" or \"XS\"` is always true because the non‑empty string `\"XS\"` is truthy.",
+      "diagnosis": {
+        "cause": "slip",
+        "misconception_id": null,
+        "follow_up": "You mentioned that the or short-circuits after is_big(30) is true, but what does that mean for whether checking 1 is printed?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "You mentioned that the or short-circuits after is_big(30) is true, but what does that mean for whether checking 1 is printed?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "You mentioned that the or short-circuits, but then said that checking 1 is printed. Could you double-check whether is_big(1) runs when the left side is True?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "You mentioned that the or short-circuits after is_big(30) is true, but what does that mean for whether checking 1 is printed?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "You mentioned that the or short-circuits after is_big(30) is true, but what does that mean for whether checking 1 is printed?",
+          "answer": "Short‑circuiting means that as soon as the left side of the `or` evaluates to True, Python does not evaluate the right side at all. Since `is_big(30)` returns True (and prints “checking 30”), the expression is already satisfied, so `is_big(1)` is never called and “checking 1” is not printed.",
+          "diagnosis": {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "Could you write out the complete expected output line by line for the entire code snippet based on your understanding?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "Could you write out the complete expected output line by line for the entire code snippet based on your understanding?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "Could you write down the complete list of lines that would appear in the console output when running this script?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "slip",
+                "misconception_id": null,
+                "follow_up": "Could you double-check the first part of your previous answer where you mentioned what the code prints regarding 'checking 1'?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "Could you write out the complete expected output line by line for the entire code snippet based on your understanding?",
+          "answer": "The code prints, line by line:  \n\n```\narea 6\nNone\nchecking 30\none big\nsmall\n```  \n\n`area` only prints the product and returns None, so `print(a)` shows None; the `or` short‑circuits after `is_big(30)` returns True, so `is_big(1)` is never called; and the last condition is always true because the literal string `\"XS\"` is truthy.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all outputs and explained the None return, short-circuit behavior, and truthy string condition after clarification.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          2,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified the output and explained the return value of area and the truthiness of 'XS', but has a contradiction regarding short-circuiting: they stated it short-circuits yet also claimed 'checking 1' is printed, which demonstrates a misconception or a slip about short-circuit behavior.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-008",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "slip",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: sql.window-functions.collapses-rows, sql.window-functions.rank-functions-identical, sql.window-functions.running-sum-is-total",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The query returns five rows – one for each row in sales. The running column is a cumulative sum of amount ordered by day, so after day 1 it is 100, after both day‑2 rows it becomes 180 (the NULL on day 3 adds nothing), and after day 4 it reaches 200. The rnk column assigns a rank based on the day ordering: day 1 gets rank 1, the two rows with day 2 share rank 2, day 3 (the NULL row) gets rank 4 (skipping rank 3 because of the tie), and day 4 gets rank 5.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that all five rows are kept, explained the cumulative running sum with proper peer inclusion for ties and ignored NULLs, and correctly described the rank tie-handling and gap.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that all five rows are kept, explained the cumulative running sum with proper peer inclusion for ties and ignored NULLs, and correctly described the rank tie-handling and gap.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.83); level 2 is nearest its estimate +0.00; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-hash-tables (ds.arrays-strings.front-insert-constant, ds.hash-tables.keys-kept-sorted, ds.trees-bst.inorder-not-sorted)",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "I’d probably go with a hash table because it lets you look up a player’s score instantly and you can just dump the whole structure when you need the list; the hash distribution also keeps the data fairly balanced. A sorted array would be okay for small leaderboards, but as the number of players grows the array becomes too big to fit in memory efficiently. A balanced binary search tree seems over‑engineered for this use case, since you’d have to maintain extra pointers and it would use more CPU cycles than the other options.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "follow_up": "If you iterate through a hash table's keys without sorting them explicitly, what order do they come out in?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you iterate through a hash table's keys without sorting them explicitly, what order do they come out in?",
+            "confidence_expressed": "high",
+            "supporting_quote": "you can just dump the whole structure when you need the list; the hash distribution also keeps the data fairly balanced",
+            "evidence_reason": "The candidate claims that dumping the hash table directly provides the required ordered list and associates hash distribution with keeping data balanced for ordering, which directly matches the belief that hash tables store or yield keys in a useful sorted order.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you dump the keys from a hash table after many random insertions, what order do they come out in?",
+            "confidence_expressed": "high",
+            "supporting_quote": "you can just dump the whole structure when you need the list; the hash distribution also keeps the data fairly balanced",
+            "evidence_reason": "The candidate asserts that dumping the hash table structure provides the necessary list, directly expressing the belief that hash tables maintain or yield data in a usable order without extra sorting.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you iterate through a hash table's keys without sorting them explicitly, in what order do they come out?",
+            "confidence_expressed": "high",
+            "supporting_quote": "you can just dump the whole structure when you need the list",
+            "evidence_reason": "The candidate believes that dumping or iterating over a hash table directly yields the list of scores without extra sorting, which matches the belief that hash tables store or output keys in an ordered way.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "you can just dump the whole structure when you need the list; the hash distribution also keeps the data fairly balanced",
+        "evidence_reason": "The candidate claims that dumping the hash table directly provides the required ordered list and associates hash distribution with keeping data balanced for ordering, which directly matches the belief that hash tables store or yield keys in a useful sorted order.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you iterate through a hash table's keys without sorting them explicitly, what order do they come out in?",
+          "answer": "They’ll come out in the same order you originally added them, so if you inserted players one after another you’ll see them in that sequence. In practice the hash table just walks its internal buckets, which preserves the insertion order unless the table is resized.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you update a player's score or add new scores later in a random order, what sequence would walking those internal buckets give you?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you update a player's score or add new scores later in a random order, what sequence would walking those internal buckets give you?",
+                "confidence_expressed": "high",
+                "supporting_quote": "In practice the hash table just walks its internal buckets, which preserves the insertion order unless the table is resized.",
+                "evidence_reason": "The candidate explicitly asserts that a hash table preserves insertion order when iterating through its buckets, which aligns with the misconception that hash tables maintain a predictable or ordered structure.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you add several new scores into a hash table in random order, what specific order will a simple loop over its keys or buckets produce?",
+                "confidence_expressed": "high",
+                "supporting_quote": "They’ll come out in the same order you originally added them, so if you inserted players one after another you’ll see them in that sequence.",
+                "evidence_reason": "The candidate explicitly asserts that a hash table preserves and yields keys in their insertion order, which is a variation of believing it maintains a structured predictable order for iteration.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you add player A with score 50 and then player B with score 10, in what order will the hash table keys be iterated over, and how does the table decide which bucket they go into?",
+                "confidence_expressed": "high",
+                "supporting_quote": "They’ll come out in the same order you originally added them, so if you inserted players one after another you’ll see them in that sequence.",
+                "evidence_reason": "The candidate explicitly states that a hash table yields keys in the order they were inserted, which directly maps to the misconception that hash tables maintain a predictable or insertion-based ordered output.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "In practice the hash table just walks its internal buckets, which preserves the insertion order unless the table is resized.",
+            "evidence_reason": "The candidate explicitly asserts that a hash table preserves insertion order when iterating through its buckets, which aligns with the misconception that hash tables maintain a predictable or ordered structure.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If you update a player's score or add new scores later in a random order, what sequence would walking those internal buckets give you?",
+          "answer": "If you change a score or insert a new one at random, the hash table will still walk its buckets in the same sequence it was built, so you’ll see the entries in roughly the original insertion order, just with the updated values. The bucket order doesn’t get reshuffled by later updates, so the traversal will still look like the original list even though the scores changed.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you insert scores 50, 10, and 30 into a hash table in that order, what sequence do the keys come out when you iterate over them?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "medium",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert scores 50, 10, and 30 into a hash table in that order, what sequence do the keys come out when you iterate over them?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you change a score or insert a new one at random, the hash table will still walk its buckets in the same sequence it was built, so you’ll see the entries in roughly the original insertion order",
+                "evidence_reason": "The candidate asserts that the hash table preserves insertion order and implies a predictable deterministic traversal sequence from the build order, persisting across modifications, reinforcing a misunderstanding of internal hash bucket indexing versus sorted order.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert scores 10, 5, and 20 into a Python dictionary, what order do they appear in when you loop over keys, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The bucket order doesn’t get reshuffled by later updates, so the traversal will still look like the original list even though the scores changed.",
+                "evidence_reason": "The candidate asserts that traversing a hash table yields entries in their original insertion order, which reflects a misunderstanding of hash table internal ordering properties.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "If you change a score or insert a new one at random, the hash table will still walk its buckets in the same sequence it was built, so you’ll see the entries in roughly the original insertion order",
+            "evidence_reason": "The candidate asserts that the hash table preserves insertion order and implies a predictable deterministic traversal sequence from the build order, persisting across modifications, reinforcing a misunderstanding of internal hash bucket indexing versus sorted order.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly chose a hash table and showed a fundamental misunderstanding of hash tables by claiming they preserve insertion order or provide ordered data, falling under the listed misconception ds.hash-tables.keys-kept-sorted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly chose a hash table and stated it would work well for listing scores by dumping and sorting, missing the correct choice and advantages of a balanced BST.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-subqueries-cte",
+        "sql-joins",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; lists misconceptions not yet probed: sql.aggregation.group-by-only-sorts, sql.subqueries-cte.cte-unused-still-applies, sql.subqueries-cte.in-subquery-duplicates",
+      "prompt": "What does this query return, and why? Does the WITH clause limit which orders are counted?\n\nWITH big AS (\n  SELECT customer_id FROM orders WHERE amount >= 100\n)\nSELECT c.name, COUNT(o.id) AS n_orders\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE c.id IN (SELECT customer_id FROM big)\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n4 | Dana\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 150\n11 | 1 | 40\n12 | 1 | 120\n13 | 2 | 30\n14 | 3 | NULL\n15 | 3 | 200",
+      "answer": "The query returns two rows: Asha with 3 orders and Chen with 2 orders. The CTE only supplies the list of customers that have at least one order ≥ 100, so it limits which customers are considered, but the join later uses the full orders table, counting every order for those customers (including Asha’s $40 order and Chen’s NULL‑amount row). The IN clause just checks membership, so duplicate entries in the CTE don’t affect the count, and the GROUP BY collapses each qualifying customer into a single result row.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that Asha has 3 orders and Chen has 2, accurately explains the CTE's role in selecting customers rather than filtering orders, and correctly notes that IN checks membership without duplicating rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that Asha has 3 orders and Chen has 2, accurately explains the CTE's role in selecting customers rather than filtering orders, and correctly notes that IN checks membership without duplicating rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; lists a suspected misconception to confirm: py.exceptions.most-specific-except-wins",
+      "prompt": "A colleague wraps a 30-line function body in 'try: ... except Exception: print(\"error\")' and then adds 'except ValueError: print(\"bad input\")' below it. If line 5 of the body raises ValueError, which message is printed, and do lines 6 to 30 still run? How would you restructure this?",
+      "answer": "Since `ValueError` is more specific than `Exception`, the `except ValueError` block will be selected, so “bad input” is printed. The exception aborts the rest of the function, so lines 6 through 30 are not executed.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.exceptions.most-specific-except-wins",
+        "follow_up": "What order does Python evaluate the except clauses in when a try block raises an error?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.most-specific-except-wins",
+            "follow_up": "What order does Python evaluate the except clauses in when a try block raises an error?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Since `ValueError` is more specific than `Exception`, the `except ValueError` block will be selected",
+            "evidence_reason": "The candidate explicitly states that the more specific exception block is selected regardless of the order, which matches the listed misconception that the most specific except wins rather than the first matching one from top to bottom.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.most-specific-except-wins",
+            "follow_up": "What happens if you swap the order of the two except clauses, putting except ValueError first?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Since `ValueError` is more specific than `Exception`, the `except ValueError` block will be selected",
+            "evidence_reason": "The candidate explicitly states that the more specific exception block is selected due to its specificity, rather than the order of the clauses.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.most-specific-except-wins",
+            "follow_up": "If you have 'except Exception:' followed by 'except ValueError:', what happens when ValueError is raised?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Since `ValueError` is more specific than `Exception`, the `except ValueError` block will be selected",
+            "evidence_reason": "The candidate explicitly states that the more specific exception block is selected despite its position, demonstrating the belief that specificity dictates handler choice rather than top-to-bottom order.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Since `ValueError` is more specific than `Exception`, the `except ValueError` block will be selected",
+        "evidence_reason": "The candidate explicitly states that the more specific exception block is selected regardless of the order, which matches the listed misconception that the most specific except wins rather than the first matching one from top to bottom.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that Python selects the most specific matching except clause rather than the first one from top to bottom (exhibiting the py.exceptions.most-specific-except-wins misconception), resulting in an incorrect prediction of the printed output.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that Python selects the most specific matching except clause rather than the first one from top to bottom (exhibiting the py.exceptions.most-specific-except-wins misconception), resulting in an incorrect prediction of the printed output.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.exceptions.most-specific-except-wins",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 1 is nearest its estimate -0.52; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-arrays-strings (ds.arrays-strings.strings-mutable, ds.sorting-searching.sort-not-stable)",
+      "prompt": "What does this code print, and why? Pay attention to the words that have the same length.\n\nwords = [\"kiwi\", \"fig\", \"apple\", \"pear\", \"date\"]\nwords.sort(key=len)\nfirst = words[0]\nfirst.upper()\nprint(words)\nprint(first)\n",
+      "answer": "The list is sorted by word length, so the three‑letter word “fig” comes first, the five‑letter “apple” ends up last, and the four‑letter words keep their original order because Python’s sort is stable, giving `['fig', 'kiwi', 'pear', 'date', 'apple']`. The call to `first.upper()` creates a new string “FIG” but does not modify `first`, so printing `first` still outputs `fig`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the sorted list order by length while noting Python's stable sort for ties, and accurately explained that string immutability means `first` remains lowercase.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the sorted list order by length while noting Python's stable sort for ties, and accurately explained that string immutability means `first` remains lowercase.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists misconceptions not yet probed: sql.indexes-performance.composite-any-column, sql.indexes-performance.function-on-column-uses-index, sql.indexes-performance.index-always-helps",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "In reality there’s no reason the planner would ever skip that index – it will always be used no matter how many rows match or how the predicate is written. Even if the WHERE clause is written in a different order or filters on other columns, the optimizer will still pick the (customer_id, order_date) index and never do a full table scan. So you’ll never see a full scan in EXPLAIN for queries on orders.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.indexes-performance.index-always-helps",
+        "follow_up": "What happens if a query selects every single row in the orders table using that index? Would the planner still choose it over a sequential scan, and why?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": "What happens if a query selects every single row in the orders table using that index? Would the planner still choose it over a sequential scan, and why?",
+            "confidence_expressed": "high",
+            "supporting_quote": "In reality there’s no reason the planner would ever skip that index – it will always be used no matter how many rows match or how the predicate is written.",
+            "evidence_reason": "The candidate explicitly asserts that an index will always be used by the planner regardless of selectivity or predicate writing style, which directly matches the belief that an index is always used.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": "If a query needs to retrieve every single row in the table, why might the database choose a sequential read instead of looking up every row via the index?",
+            "confidence_expressed": "high",
+            "supporting_quote": "In reality there’s no reason the planner would ever skip that index – it will always be used no matter how many rows match or how the predicate is written.",
+            "evidence_reason": "The candidate explicitly asserts that the planner will never skip an existing index regardless of row selectivity or query predicates, which aligns with the belief that an index is always chosen and always helps.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": "If a query selects almost every single row in a large table using that index, what operations would the database have to perform compared to a sequential read?",
+            "confidence_expressed": "high",
+            "supporting_quote": "In reality there’s no reason the planner would ever skip that index – it will always be used no matter how many rows match or how the predicate is written.",
+            "evidence_reason": "The candidate explicitly asserts that the planner will always use the index regardless of selectivity or predicate writing, embodying the belief that indices are always used and beneficial without downside.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "In reality there’s no reason the planner would ever skip that index – it will always be used no matter how many rows match or how the predicate is written.",
+        "evidence_reason": "The candidate explicitly asserts that an index will always be used by the planner regardless of selectivity or predicate writing style, which directly matches the belief that an index is always used.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens if a query selects every single row in the orders table using that index? Would the planner still choose it over a sequential scan, and why?",
+          "answer": "If the query has to return every row, the planner will still pick the (customer_id, order_date) index because the index can be scanned to retrieve all rows and it’s always faster than a sequential scan. Even when the result set is the whole table, the optimizer prefers the index since it avoids a full‑table read and uses the ordered structure of the index to satisfy the query.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": "If you needed to read every single row in a large table anyway, why might performing random disk I/O through a B-tree index be slower than a sequential read of the heap pages?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": "If you needed to read every single row in a large table anyway, why might performing random disk I/O through a B-tree index be slower than a sequential read of the heap pages?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Even when the result set is the whole table, the optimizer prefers the index since it avoids a full‑table read and uses the ordered structure of the index to satisfy the query.",
+                "evidence_reason": "The candidate explicitly states that an index is preferred even when returning the whole table because it avoids a full-table read, which directly matches the belief that indexes always help and are always faster.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": "What happens to the performance of a table scan versus an index lookup when the database has to read 100% of the rows into memory?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Even when the result set is the whole table, the optimizer prefers the index since it avoids a full‑table read and uses the ordered structure of the index to satisfy the query.",
+                "evidence_reason": "The candidate explicitly states that the database optimizer will always prefer an index over a full table scan even when the query returns the entire table, assuming the index is always superior.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": "If a query needs to read 100 percent of the rows from a multi-million row table using an index that is not clustered, what additional operations must the database perform compared to a sequential scan?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Even when the result set is the whole table, the optimizer prefers the index since it avoids a full‑table read and uses the ordered structure of the index to satisfy the query.",
+                "evidence_reason": "The candidate explicitly states that the database optimizer always prefers an index over a full table scan even when returning the entire table, because they believe using the index avoids a sequential read and is always faster.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Even when the result set is the whole table, the optimizer prefers the index since it avoids a full‑table read and uses the ordered structure of the index to satisfy the query.",
+            "evidence_reason": "The candidate explicitly states that an index is preferred even when returning the whole table because it avoids a full-table read, which directly matches the belief that indexes always help and are always faster.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "expected_score": 0,
+            "effective_level": 3,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If you needed to read every single row in a large table anyway, why might performing random disk I/O through a B-tree index be slower than a sequential read of the heap pages?",
+          "answer": "Even when you have to touch every row, scanning the B‑tree index is still the best choice because the index pages are already ordered and the engine can jump straight to each matching entry without reading the whole heap. The random I/O through the index actually reduces the amount of data read from disk, so it ends up faster than a plain sequential scan of the table’s data pages.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "follow_up": "If a B-tree index contains pointers to nearly every row in a large table, how does the database engine weigh the cost of random I/O through index pages against a sequential read of the heap table?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": "If a B-tree index contains pointers to nearly every row in a large table, how does the database engine weigh the cost of random I/O through index pages against a sequential read of the heap table?",
+                "confidence_expressed": "high",
+                "supporting_quote": "scanning the B‑tree index is still the best choice because the index pages are already ordered and the engine can jump straight to each matching entry without reading the whole heap",
+                "evidence_reason": "The candidate explicitly argues that an index scan is always better even for full table reads because it avoids heap reads and reduces data read from disk, reflecting the belief that indexes always help and are universally preferred by the optimizer.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": "How does the database engine access the actual table rows when an index lookup matches every row in a large table, and how does that compare to reading the table sequentially from disk?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Even when you have to touch every row, scanning the B‑tree index is still the best choice because the index pages are already ordered and the engine can jump straight to each matching entry without reading the whole heap.",
+                "evidence_reason": "The candidate explicitly asserts that using an index is always the best choice even when touching every row, ignoring the overhead of random I/O and heap fetches compared to a sequential scan, which directly demonstrates the misconception that an index always helps performance.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.index-always-helps",
+                "follow_up": "If a table has 10,000 rows and a query needs to fetch all 10,000 of them, how does the database engine reading every index page and then following a pointer to every single data page compare in cost to reading the table data pages sequentially in bulk?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Even when you have to touch every row, scanning the B‑tree index is still the best choice because the index pages are already ordered and the engine can jump straight to each matching entry without reading the whole heap.",
+                "evidence_reason": "The candidate explicitly argues that using an index is always the best choice even when touching every row, ignoring the overhead of random I/O and table lookups compared to a sequential scan.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "scanning the B‑tree index is still the best choice because the index pages are already ordered and the engine can jump straight to each matching entry without reading the whole heap",
+            "evidence_reason": "The candidate explicitly argues that an index scan is always better even for full table reads because it avoids heap reads and reduces data read from disk, reflecting the belief that indexes always help and are universally preferred by the optimizer.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.indexes-performance.index-always-helps",
+            "expected_score": 0,
+            "effective_level": 3,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly shows the misconception that an index is always used regardless of selectivity or how the query is written, and double-downed in the follow-ups by claiming random B-tree I/O is always faster than a sequential table scan.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claimed that an index is always used regardless of selectivity, query structure, or column order, which contradicts all key points and demonstrates a core misconception about database query planners.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.indexes-performance.index-always-helps",
+        "expected_score": 0,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-variables-mutability",
+        "py-collections"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 1 is nearest its estimate -0.61; lists misconceptions not yet probed: py.variables-mutability.assignment-copies, py.variables-mutability.string-method-mutates, py.variables-mutability.variable-holds-expression",
+      "prompt": "What does this code print, and why?\n\na = [1, 2, 3]\nb = a\nn = len(a)\nb.append(4)\ns = \"hi\"\ns.upper()\nprint(a, n, s)",
+      "answer": "The code prints `[1, 2, 3, 4] 3 hi`. Since `b = a` makes `b` another reference to the same list, appending `4` through `b` also modifies `a`. The variable `n` was set to `len(a)` before the append, so it remains `3`. Calling `s.upper()` creates a new string but does not change `s`, which stays `\"hi\"`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the exact correct output and correctly explained all three key points: list reference mutation, integer assignment behavior, and string immutability.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the exact correct output and correctly explained all three key points: list reference mutation, integer assignment behavior, and string immutability.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.65); level 2 is nearest its estimate -0.19; lists a suspected misconception to confirm: ds.hash-tables.keys-kept-sorted",
+      "prompt": "You keep a Python dict that maps about 100,000 product names to their prices. What does it cost to (a) get one product's price, (b) list all products in alphabetical order, and (c) find the cheapest product? Explain each.",
+      "answer": "Getting a product’s price is basically a constant‑time operation because the dictionary lets you jump straight to the entry. To list everything alphabetically you’d have to walk through the whole structure and then reorder it, which ends up being linear in the number of items. Finding the cheapest product also requires scanning through all the entries, so its cost grows with the size of the dictionary.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "Could you double-check what sorting 100,000 items typically costs in terms of complexity?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          2,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that lookup is constant time O(1) and that finding the cheapest requires scanning all entries O(n). However, they stated that listing alphabetically is linear (O(n)), missing the fact that sorting takes O(n log n) due to the need to reorder.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          2,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that lookup is constant time O(1) and that finding the cheapest requires scanning all entries O(n). However, they stated that listing alphabetically is linear (O(n)), missing the fact that sorting takes O(n log n) due to the need to reorder.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.1684,
+          "se": 0.6052,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-hash-tables",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 2 is nearest its estimate -0.17; lists a suspected misconception to confirm: ds.hash-tables.keys-kept-sorted",
+      "prompt": "What does this code print, and why do the words appear in that order on each line?\n\nwords = [\"pear\", \"apple\", \"fig\", \"apple\", \"pear\", \"kiwi\"]\ncounts = {}\nfor w in words:\n    counts[w] = counts.get(w, 0) + 1\nprint(list(counts))\nranked = sorted(counts.items(), key=lambda kv: kv[1], reverse=True)\nprint(ranked)\n",
+      "answer": "The code will first print a list of the unique words in the order they first appear in the original list, so it shows `['pear', 'apple', 'fig', 'kiwi']`. Then it prints the word‑count pairs sorted by how many times each word occurs, with the most frequent words first, which results in something like `[('apple', 2), ('pear', 2), ('fig', 1), ('kiwi', 1)]`.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the insertion order for the dictionary keys, but incorrectly guessed the tie-breaker order for the sorted output (putting apple before pear instead of preserving their insertion order via stability).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the insertion order for the dictionary keys, but incorrectly guessed the tie-breaker order for the sorted output (putting apple before pear instead of preserving their insertion order via stability).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.143,
+          "se": 0.5547,
+          "level": 2,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 21,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 1,
+        "estimate": -0.3256,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.483581,
+        "level_probabilities": {
+          "0": 0.052999,
+          "1": 0.483581,
+          "2": 0.424654,
+          "3": 0.038767
+        },
+        "meets_minimum": null
+      },
+      "sql": {
+        "level": 3,
+        "estimate": 1.1889,
+        "se": 0.5946,
+        "confident": true,
+        "minimum": 3,
+        "level_probability": 0.783538,
+        "level_probabilities": {
+          "0": 2.1e-05,
+          "1": 0.006337,
+          "2": 0.210104,
+          "3": 0.783538
+        },
+        "meets_minimum": null
+      },
+      "ds": {
+        "level": 2,
+        "estimate": -0.143,
+        "se": 0.5547,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.536349,
+        "level_probabilities": {
+          "0": 0.020929,
+          "1": 0.384204,
+          "2": 0.536349,
+          "3": 0.058518
+        },
+        "meets_minimum": null
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether py reaches level 2; cannot tell whether sql reaches level 3; cannot tell whether ds reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "py.exceptions.most-specific-except-wins",
+        "confirmed": true,
+        "evidence_turns": [
+          1,
+          8
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L2-011",
+            "turn": 1,
+            "reply_index": 0,
+            "reply_text": "The `try` block contains the code that may raise an exception, `except` clauses handle specific error types, `else` runs only if no exception occurred, and `finally` always runs at the end (even after a `return`). If an exception is raised halfway through the `try`, control jumps directly to the most specific matching `except` clause, regardless of its position, and then proceeds to the `finally` block; the `else` block is skipped. If two `except` clauses could both match, the one that handles the more specific exception type runs, and `finally` still executes even when the `try` block returns.",
+            "vote_share": 1.0,
+            "supporting_quote": "control jumps directly to the most specific matching `except` clause, regardless of its position",
+            "quote_start": 267,
+            "quote_end": 363,
+            "reason": "The candidate explicitly states that Python picks the most specific matching except clause regardless of its position, which matches the listed misconception py.exceptions.most-specific-except-wins."
+          },
+          {
+            "question_id": "PY-L2-011",
+            "turn": 1,
+            "reply_index": 1,
+            "reply_text": "Even though the broad `except Exception:` comes first, the more specific `except ValueError:` will still be chosen when a `ValueError` is raised, because Python matches the exception to the most specific handler regardless of order. The `finally` block will then execute as usual.",
+            "vote_share": 1.0,
+            "supporting_quote": "the more specific `except ValueError:` will still be chosen when a `ValueError` is raised, because Python matches the exception to the most specific handler regardless of order",
+            "quote_start": 55,
+            "quote_end": 231,
+            "reason": "The candidate explicitly states that Python matches the exception to the most specific handler regardless of order, which directly matches the misconception py.exceptions.most-specific-except-wins."
+          },
+          {
+            "question_id": "PY-L2-011",
+            "turn": 1,
+            "reply_index": 2,
+            "reply_text": "Even though the generic `except Exception:` appears first, Python will still pick the more specific handler. So when a `ValueError` is raised, the `except ValueError:` block runs before the generic one, and then the `finally` block (if any) is executed.",
+            "vote_share": 1.0,
+            "supporting_quote": "Even though the generic `except Exception:` appears first, Python will still pick the more specific handler.",
+            "quote_start": 0,
+            "quote_end": 108,
+            "reason": "The candidate explicitly states that Python picks the more specific handler even when the generic exception handler appears first, which directly expresses the listed misconception that the most specific except clause wins rather than the first matching one in order."
+          },
+          {
+            "question_id": "PY-L2-002",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "Since `ValueError` is more specific than `Exception`, the `except ValueError` block will be selected, so “bad input” is printed. The exception aborts the rest of the function, so lines 6 through 30 are not executed.",
+            "vote_share": 1.0,
+            "supporting_quote": "Since `ValueError` is more specific than `Exception`, the `except ValueError` block will be selected",
+            "quote_start": 0,
+            "quote_end": 100,
+            "reason": "The candidate explicitly states that the more specific exception block is selected regardless of the order, which matches the listed misconception that the most specific except wins rather than the first matching one from top to bottom."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "ds.hash-tables.keys-kept-sorted",
+        "confirmed": false,
+        "evidence_turns": [
+          6
+        ],
+        "vote_share": 0.889,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-001",
+            "turn": 6,
+            "reply_index": 0,
+            "reply_text": "I’d probably go with a hash table because it lets you look up a player’s score instantly and you can just dump the whole structure when you need the list; the hash distribution also keeps the data fairly balanced. A sorted array would be okay for small leaderboards, but as the number of players grows the array becomes too big to fit in memory efficiently. A balanced binary search tree seems over‑engineered for this use case, since you’d have to maintain extra pointers and it would use more CPU cycles than the other options.",
+            "vote_share": 1.0,
+            "supporting_quote": "you can just dump the whole structure when you need the list; the hash distribution also keeps the data fairly balanced",
+            "quote_start": 93,
+            "quote_end": 212,
+            "reason": "The candidate claims that dumping the hash table directly provides the required ordered list and associates hash distribution with keeping data balanced for ordering, which directly matches the belief that hash tables store or yield keys in a useful sorted order."
+          },
+          {
+            "question_id": "DS-L2-001",
+            "turn": 6,
+            "reply_index": 1,
+            "reply_text": "They’ll come out in the same order you originally added them, so if you inserted players one after another you’ll see them in that sequence. In practice the hash table just walks its internal buckets, which preserves the insertion order unless the table is resized.",
+            "vote_share": 1.0,
+            "supporting_quote": "In practice the hash table just walks its internal buckets, which preserves the insertion order unless the table is resized.",
+            "quote_start": 141,
+            "quote_end": 265,
+            "reason": "The candidate explicitly asserts that a hash table preserves insertion order when iterating through its buckets, which aligns with the misconception that hash tables maintain a predictable or ordered structure."
+          },
+          {
+            "question_id": "DS-L2-001",
+            "turn": 6,
+            "reply_index": 2,
+            "reply_text": "If you change a score or insert a new one at random, the hash table will still walk its buckets in the same sequence it was built, so you’ll see the entries in roughly the original insertion order, just with the updated values. The bucket order doesn’t get reshuffled by later updates, so the traversal will still look like the original list even though the scores changed.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "If you change a score or insert a new one at random, the hash table will still walk its buckets in the same sequence it was built, so you’ll see the entries in roughly the original insertion order",
+            "quote_start": 0,
+            "quote_end": 196,
+            "reason": "The candidate asserts that the hash table preserves insertion order and implies a predictable deterministic traversal sequence from the build order, persisting across modifications, reinforcing a misunderstanding of internal hash bucket indexing versus sorted order."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.indexes-performance.index-always-helps",
+        "confirmed": false,
+        "evidence_turns": [
+          10
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-002",
+            "turn": 10,
+            "reply_index": 0,
+            "reply_text": "In reality there’s no reason the planner would ever skip that index – it will always be used no matter how many rows match or how the predicate is written. Even if the WHERE clause is written in a different order or filters on other columns, the optimizer will still pick the (customer_id, order_date) index and never do a full table scan. So you’ll never see a full scan in EXPLAIN for queries on orders.",
+            "vote_share": 1.0,
+            "supporting_quote": "In reality there’s no reason the planner would ever skip that index – it will always be used no matter how many rows match or how the predicate is written.",
+            "quote_start": 0,
+            "quote_end": 155,
+            "reason": "The candidate explicitly asserts that an index will always be used by the planner regardless of selectivity or predicate writing style, which directly matches the belief that an index is always used."
+          },
+          {
+            "question_id": "SQL-L3-002",
+            "turn": 10,
+            "reply_index": 1,
+            "reply_text": "If the query has to return every row, the planner will still pick the (customer_id, order_date) index because the index can be scanned to retrieve all rows and it’s always faster than a sequential scan. Even when the result set is the whole table, the optimizer prefers the index since it avoids a full‑table read and uses the ordered structure of the index to satisfy the query.",
+            "vote_share": 1.0,
+            "supporting_quote": "Even when the result set is the whole table, the optimizer prefers the index since it avoids a full‑table read and uses the ordered structure of the index to satisfy the query.",
+            "quote_start": 203,
+            "quote_end": 379,
+            "reason": "The candidate explicitly states that an index is preferred even when returning the whole table because it avoids a full-table read, which directly matches the belief that indexes always help and are always faster."
+          },
+          {
+            "question_id": "SQL-L3-002",
+            "turn": 10,
+            "reply_index": 2,
+            "reply_text": "Even when you have to touch every row, scanning the B‑tree index is still the best choice because the index pages are already ordered and the engine can jump straight to each matching entry without reading the whole heap. The random I/O through the index actually reduces the amount of data read from disk, so it ends up faster than a plain sequential scan of the table’s data pages.",
+            "vote_share": 1.0,
+            "supporting_quote": "scanning the B‑tree index is still the best choice because the index pages are already ordered and the engine can jump straight to each matching entry without reading the whole heap",
+            "quote_start": 39,
+            "quote_end": 220,
+            "reason": "The candidate explicitly argues that an index scan is always better even for full table reads because it avoids heap reads and reduces data read from disk, reflecting the belief that indexes always help and are universally preferred by the optimizer."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.strings-mutable",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.sorting-searching.sort-not-stable",
+      "ds.trees-bst.inorder-not-sorted",
+      "py.control-flow.no-short-circuit",
+      "py.control-flow.or-distributes",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.print-is-return",
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.string-method-mutates",
+      "py.variables-mutability.variable-holds-expression",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.subqueries-cte.in-subquery-duplicates",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-exceptions",
+        "py-pandas",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-heaps",
+        "ds-sorting-searching",
+        "ds-graphs"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-exceptions",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "sql-indexes-performance",
+        "ds-hash-tables",
+        "ds-sorting-searching"
+      ],
+      "untested": [
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-heaps",
+        "ds-graphs"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether py reaches level 2; cannot tell whether sql reaches level 3; cannot tell whether ds reaches level 2. Estimated levels: py level 1 (needs 2), sql level 3 (needs 3), ds level 2 (needs 2). Confirmed misconception: Believes Python picks the most specific matching except clause, rather than the first clause (top to bottom) whose type matches the exception. Suspected (insufficient corroboration) misconception: Believes a hash table stores its keys in sorted order, so iterating over it yields keys sorted and it can produce ordered output or the smallest key without extra sorting. Suspected (insufficient corroboration) misconception: Believes adding an index always makes the database faster with no downside, ignoring the extra storage, the slower INSERT/UPDATE/DELETE, and that the planner may not use it."
+  },
+  "usage": {
+    "llm_calls": 115,
+    "api_calls": 6,
+    "input_tokens": 133580,
+    "output_tokens": 10560,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 115,
+        "api_calls": 6,
+        "input_tokens": 133580,
+        "output_tokens": 10560
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 3,
+      "ds": 2
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.exceptions.most-specific-except-wins",
+      "sql.indexes-performance.index-always-helps"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

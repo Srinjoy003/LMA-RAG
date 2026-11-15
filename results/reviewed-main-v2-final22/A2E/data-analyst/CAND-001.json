@@ -1,0 +1,2576 @@
+{
+  "interview_id": "A2E-data-analyst-CAND-001-0",
+  "system": "A2E",
+  "config": {
+    "system": "A2E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-001",
+  "started_at": "2026-11-14T05:31:09Z",
+  "finished_at": "2026-11-14T05:32:57Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-pandas",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "It prints:\n```\n['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10, 30, 25, nan]\n```\nThe first list is the original name order, the second list selects the names at positions 1 and 2, and the bonus column is computed element‑wise from the filtered scores, giving 10, 30, 25 for the first three rows and NaN for the last one.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "What are the row index labels of the 'passed' DataFrame, and how do they line up with the original 'df' index labels during assignment?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What are the row index labels of the 'passed' DataFrame, and how do they line up with the original 'df' index labels during assignment?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving 10, 30, 25 for the first three rows and NaN for the last one",
+            "evidence_reason": "The candidate asserts that the bonus values align with the first three rows sequentially and NaN falls on the last row, which demonstrates positional alignment instead of index label alignment.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "How does pandas determine which row in df gets NaN when assigning the bonus series?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving 10, 30, 25 for the first three rows and NaN for the last one",
+            "evidence_reason": "The candidate explicitly states that the bonus values are assigned element-wise to the first three rows and NaN goes to the last row, which reflects the positional alignment misconception rather than index-based alignment.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "How does pandas determine which row receives which value when you assign a Series to df[\"bonus\"], given that 'passed' only has 3 elements while 'df' has 4?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving 10, 30, 25 for the first three rows and NaN for the last one.",
+            "evidence_reason": "The candidate explicitly states that the bonus values are assigned positionally to the first three rows with NaN at the end, demonstrating the listed misconception that assignment aligns by position rather than index labels.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "giving 10, 30, 25 for the first three rows and NaN for the last one",
+        "evidence_reason": "The candidate asserts that the bonus values align with the first three rows sequentially and NaN falls on the last row, which demonstrates positional alignment instead of index label alignment.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What are the row index labels of the 'passed' DataFrame, and how do they line up with the original 'df' index labels during assignment?",
+          "answer": "The `passed` DataFrame ends up with the same index labels 0, 1, 2, 3 – basically the original row numbers – and when we assign its “score‑60” series back to `df[\"bonus\"]` pandas lines them up by those positional indices, so each value just goes into the same‑numbered row of the original frame.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If passed had a different index, say starting from 0 and incrementing only for rows where score >= 70, what values would end up in df['bonus'] and at which index positions?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If passed had a different index, say starting from 0 and incrementing only for rows where score >= 70, what values would end up in df['bonus'] and at which index positions?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas lines them up by those positional indices, so each value just goes into the same‑numbered row of the original frame",
+                "evidence_reason": "The candidate explicitly states that pandas aligns Series by their positional indices rather than their actual index labels when assigning to a DataFrame column.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "What index labels does passed actually contain after filtering, and what happens to the label for Bo?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas lines them up by those positional indices, so each value just goes into the same‑numbered row of the original frame",
+                "evidence_reason": "The candidate explicitly states that pandas aligns Series by positional indices rather than index labels, reflecting the listed misconceptionpy.pandas.positional-alignment.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If a Series has index labels [2, 0, 1] and you assign it to a DataFrame with index labels [0, 1, 2], which label gets the value from label 0 of the Series?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas lines them up by those positional indices, so each value just goes into the same‑numbered row of the original frame",
+                "evidence_reason": "The candidate explicitly states that pandas lines up Series by positional indices rather than index labels during assignment, expressing the py.pandas.positional-alignment misconception.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "pandas lines them up by those positional indices, so each value just goes into the same‑numbered row of the original frame",
+            "evidence_reason": "The candidate explicitly states that pandas aligns Series by their positional indices rather than their actual index labels when assigning to a DataFrame column.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If passed had a different index, say starting from 0 and incrementing only for rows where score >= 70, what values would end up in df['bonus'] and at which index positions?",
+          "answer": "If `passed` were re‑indexed to 0, 1, 2 (for the three qualifying rows), pandas would line those up by position when assigning back, so the first three rows of `df['bonus']` would get 10, 30, 25 and the fourth row would stay NaN. In other words, the bonus values would be placed in rows 0‑2 and row 3 would remain empty.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If 'passed' had index labels [0, 1, 2] and 'df' had index labels [3, 2, 1, 0] in reverse order, which index label in 'df' would receive the first value from 'passed'?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If 'passed' had index labels [0, 1, 2] and 'df' had index labels [3, 2, 1, 0] in reverse order, which index label in 'df' would receive the first value from 'passed'?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas would line those up by position when assigning back, so the first three rows of `df['bonus']` would get 10, 30, 25 and the fourth row would stay NaN",
+                "evidence_reason": "The candidate explicitly states that pandas aligns Series assignment by position rather than by index labels, matching the listed misconception py.pandas.positional-alignment.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If you add a new column to a DataFrame by assigning a Series that has a completely different index set (for instance, index labels 10, 20, 30 instead of 0, 1, 2, 3), how does pandas match the rows during the assignment?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas would line those up by position when assigning back",
+                "evidence_reason": "The candidate explicitly states that pandas lines up Series assignment by position rather than index labels, matching the listed misconception py.pandas.positional-alignment.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If 'passed' has only three rows with labels 0, 1, and 2, and the original 'df' has labels 0, 1, 2, and 3, what label does pandas look for in 'df' when assigning a row from 'passed' that has the index label 2?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas would line those up by position when assigning back, so the first three rows of `df['bonus']` would get 10, 30, 25 and the fourth row would stay NaN",
+                "evidence_reason": "The candidate explicitly states that pandas lines up assignment by position rather than index labels, reflecting the listed misconception py.pandas.positional-alignment.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "pandas would line those up by position when assigning back, so the first three rows of `df['bonus']` would get 10, 30, 25 and the fourth row would stay NaN",
+            "evidence_reason": "The candidate explicitly states that pandas aligns Series assignment by position rather than by index labels, matching the listed misconception py.pandas.positional-alignment.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that pandas aligns Series assignment by position rather than by index label, demonstrating the positional alignment misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate got the first two outputs and reasons right, but missed the third output and reason entirely, showing the positional-alignment misconception by assuming bonus values align by position rather than index label.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-aggregation, sql-joins, sql-null",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query will return three rows – one for each customer – with the counts 2, 1, and 1 for Asha, Ben and Chen respectively, and the totals 330 for Asha and NULL for both Ben and Chen, because the LEFT JOIN still produces a row for customers without matching orders, and COUNT counts those NULL id values as well.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.aggregation.count-column-counts-nulls",
+        "follow_up": "What would COUNT(o.id) return for Ben if we changed it to COUNT(*), and why?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "What would COUNT(o.id) return for Ben if we changed it to COUNT(*), and why?",
+            "confidence_expressed": "high",
+            "supporting_quote": "and COUNT counts those NULL id values as well",
+            "evidence_reason": "The candidate explicitly states that COUNT counts the NULL id values generated by the left join for unmatched rows like Ben, which directly matches the misconception that COUNT(column) counts rows with nulls.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "What would COUNT(o.id) return for Ben if he had no matching orders, and how does COUNT(column) handle NULL values in that column?",
+            "confidence_expressed": "high",
+            "supporting_quote": "and COUNT counts those NULL id values as well.",
+            "evidence_reason": "The candidate explicitly states that COUNT counts the NULL id values produced for Ben, which directly matches the listed misconception that COUNT(column) counts rows where that column is NULL.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "What would COUNT(o.id) return if Ben had no orders, and how does COUNT(o.id) treat NULL values in the id column compared to COUNT(*)?",
+            "confidence_expressed": "high",
+            "supporting_quote": "and COUNT counts those NULL id values as well.",
+            "evidence_reason": "The candidate explicitly states that COUNT counts the NULL id values produced for Ben when using a LEFT JOIN, which directly matches the misconception that COUNT(column) counts rows containing NULL values.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "and COUNT counts those NULL id values as well",
+        "evidence_reason": "The candidate explicitly states that COUNT counts the NULL id values generated by the left join for unmatched rows like Ben, which directly matches the misconception that COUNT(column) counts rows with nulls.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What would COUNT(o.id) return for Ben if we changed it to COUNT(*), and why?",
+          "answer": "If we switch to COUNT(*) for Ben, it would still return 1. The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a left-joined row has NULL in the order id column because there are no matching orders, what does COUNT(o.id) evaluate to for that customer?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "If a left-joined row has NULL in the order id column because there are no matching orders, what does COUNT(o.id) evaluate to for that customer?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+                "evidence_reason": "The candidate incorrectly asserts that COUNT(*) and COUNT(o.id) behave the same way on a left-joined row with no matching orders, believing that COUNT(o.id) still evaluates to 1 because the group has one result row.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "What does COUNT(o.id) evaluate to for Ben in the original query, and why does it differ from COUNT(*)?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If we switch to COUNT(*) for Ben, it would still return 1. The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 ",
+                "evidence_reason": "The candidate asserts that Ben's count would be 1 because COUNT(*) counts every row for Ben, and earlier they stated that COUNT(o.id) counts NULL values as well, demonstrating the misconception that COUNT(column) behaves exactly like COUNT(*) and counts rows with NULLs.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "What would COUNT(o.id) return for Ben, where o.id is NULL due to the LEFT JOIN?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If we switch to COUNT(*) for Ben, it would still return 1. The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+                "evidence_reason": "The candidate asserts that COUNT(*) and COUNT(column) both evaluate to 1 on the generated row for Ben, treating the aggregated column and the row count interchangeably, which aligns with the misconception that COUNT(column) counts rows including NULLs exactly like COUNT(*).",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+            "evidence_reason": "The candidate incorrectly asserts that COUNT(*) and COUNT(o.id) behave the same way on a left-joined row with no matching orders, believing that COUNT(o.id) still evaluates to 1 because the group has one result row.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a left-joined row has NULL in the order id column because there are no matching orders, what does COUNT(o.id) evaluate to for that customer?",
+          "answer": "It will still count that row, so COUNT(o.id) returns 1 for the customer even though the id value is NULL. The LEFT JOIN guarantees a row, and COUNT treats the NULL id just like any other value.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a customer has no orders at all, what value does the joined row have in the o.id column?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "If a customer has no orders at all, what value does the joined row have in the o.id column?",
+                "confidence_expressed": "high",
+                "supporting_quote": "COUNT treats the NULL id just like any other value.",
+                "evidence_reason": "The candidate explicitly states that COUNT treats a NULL value in the column just like any other value, which matches the misconception that COUNT(column) counts rows containing NULLs.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "If a customer has a row with a NULL order id from the LEFT JOIN, does COUNT(o.id) include that row in its count?",
+                "confidence_expressed": "high",
+                "supporting_quote": "COUNT treats the NULL id just like any other value.",
+                "evidence_reason": "The candidate explicitly states that COUNT on a specific column treats NULL values just like any other value and counts them, which matches the listed misconception sql.aggregation.count-column-counts-nulls.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "What does COUNT(column) do when the column value is NULL for all rows in a group?",
+                "confidence_expressed": "high",
+                "supporting_quote": "COUNT treats the NULL id just like any other value.",
+                "evidence_reason": "The candidate explicitly states that COUNT treats a NULL id value just like any other value, which matches the belief that COUNT(column) counts rows where the column is NULL.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "COUNT treats the NULL id just like any other value.",
+            "evidence_reason": "The candidate explicitly states that COUNT treats a NULL value in the column just like any other value, which matches the misconception that COUNT(column) counts rows containing NULLs.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that COUNT(o.id) counts NULL values from left-joined rows where there are no matching orders, matching the listed misconception that COUNT(column) counts rows including NULLs. Therefore, the score is 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that COUNT(column) counts NULL values (a listed misconception), giving Ben a count of 1 instead of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.aggregation.count-column-counts-nulls",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-sorting-searching",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-complexity",
+      "prompt": "You have an unsorted list of n product prices. If you only need to check once whether a given price is present, should you sort the list and then use binary search, or just scan it? What changes if you need to answer thousands of such queries?",
+      "answer": "I’d sort the list first and then run a binary search even for a single check, because the sorting step organizes the data and makes the subsequent lookup faster overall. When you have thousands of queries, the sorted list becomes even more advantageous since each additional search can reuse the same ordering without any extra work.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.sorting-searching.sorting-is-linear",
+        "follow_up": "How long does it take in Big-O notation to sort an unsorted list of n elements compared to simply scanning it once?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How long does it take in Big-O notation to sort an unsorted list of n elements compared to simply scanning it once?",
+            "confidence_expressed": "high",
+            "supporting_quote": "I’d sort the list first and then run a binary search even for a single check, because the sorting step organizes the data and makes the subsequent lookup faster overall.",
+            "evidence_reason": "The candidate asserts that sorting first makes a single check faster overall, which implies they believe sorting takes less time than a single linear scan (O(n) time complexity).",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How long would sorting an unsorted list of n elements take using a standard comparison-based sort, and how does that compare to a single linear scan of the list?",
+            "confidence_expressed": "high",
+            "supporting_quote": "I’d sort the list first and then run a binary search even for a single check, because the sorting step organizes the data and makes the subsequent lookup faster overall.",
+            "evidence_reason": "The candidate asserts that sorting first makes a single check faster overall, which assumes the sorting step itself is negligible or linear enough to beat a single O(n) scan, matching the misconception that sorting is O(n).",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How long would sorting an unsorted list of n items take compared to just iterating through it once?",
+            "confidence_expressed": "high",
+            "supporting_quote": "I’d sort the list first and then run a binary search even for a single check, because the sorting step organizes the data and makes the subsequent lookup faster overall.",
+            "evidence_reason": "The candidate asserts that sorting first makes a single lookup faster overall, which treats the O(n log n) sorting cost as negligible or faster than an O(n) scan, matching the belief that sorting is effectively linear.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "I’d sort the list first and then run a binary search even for a single check, because the sorting step organizes the data and makes the subsequent lookup faster overall.",
+        "evidence_reason": "The candidate asserts that sorting first makes a single check faster overall, which implies they believe sorting takes less time than a single linear scan (O(n) time complexity).",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How long does it take in Big-O notation to sort an unsorted list of n elements compared to simply scanning it once?",
+          "answer": "Sorting an unsorted list of n elements typically takes about O(n) time, since you’re just rearranging the items once. Scanning the list a single time is also O(n), so both operations are essentially the same order of magnitude.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How many operations approximately does it take to sort a list of 1,000,000 elements using a standard comparison-based sort compared to scanning it once?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "How many operations approximately does it take to sort a list of 1,000,000 elements using a standard comparison-based sort compared to scanning it once?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Sorting an unsorted list of n elements typically takes about O(n) time",
+                "evidence_reason": "The candidate explicitly states that comparison-based sorting takes O(n) time, matching the listed misconception ds.sorting-searching.sorting-is-linear.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "How many comparisons does a comparison-based sorting algorithm typically need in the worst case to sort n elements?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Sorting an unsorted list of n elements typically takes about O(n) time",
+                "evidence_reason": "The candidate explicitly asserts that sorting takes O(n) time, matching the listed misconception ds.sorting-searching.sorting-is-linear.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "How many operations does a comparison-based sorting algorithm typically perform to sort n elements in the worst case?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Sorting an unsorted list of n elements typically takes about O(n) time",
+                "evidence_reason": "The candidate explicitly states that general sorting takes O(n) time, matching the listed misconception ds.sorting-searching.sorting-is-linear.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Sorting an unsorted list of n elements typically takes about O(n) time",
+            "evidence_reason": "The candidate explicitly states that comparison-based sorting takes O(n) time, matching the listed misconception ds.sorting-searching.sorting-is-linear.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "How many operations approximately does it take to sort a list of 1,000,000 elements using a standard comparison-based sort compared to scanning it once?",
+          "answer": "Sorting a million items with a typical quicksort or mergesort takes on the order of a few million basic operations—roughly ten times the size of the list, so about 10 × 1,000,000 ≈ 10 million steps. Scanning the list once is just a single pass, so it’s only about one million operations.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "If the list size doubles from 1 million to 2 million, how do you expect the number of steps for comparison-based sorting to scale compared to a linear scan?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "If the list size doubles from 1 million to 2 million, how do you expect the number of steps for comparison-based sorting to scale compared to a linear scan?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Sorting a million items with a typical quicksort or mergesort takes on the order of a few million basic operations—roughly ten times the size of the list, so about 10 × 1,000,000 ≈ 10 million steps.",
+                "evidence_reason": "The candidate explicitly calculates sorting as a constant multiple of n (roughly 10 * n) rather than n log n, demonstrating the belief that general-purpose sorting takes linear time.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "If the size of the list grows from one million to ten million (a factor of 10), about how many operations would quicksort take if it scales linearly versus if it scales as n log n?",
+                "confidence_expressed": "high",
+                "supporting_quote": "roughly ten times the size of the list, so about 10 × 1,000,000 ≈ 10 million steps",
+                "evidence_reason": "The candidate explicitly calculates sorting time as a constant linear factor of the list size (10 * n), showing a belief that comparison sorting is O(n).",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "If the size of the list grows from 1 million to 10 million elements, how do you expect the number of steps for sorting to change compared to a single scan?",
+                "confidence_expressed": "high",
+                "supporting_quote": "roughly ten times the size of the list, so about 10 × 1,000,000 ≈ 10 million steps",
+                "evidence_reason": "The candidate explicitly calculates sorting time as a constant multiple of n (about 10n), treating it as O(n) linear time rather than O(n log n).",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Sorting a million items with a typical quicksort or mergesort takes on the order of a few million basic operations—roughly ten times the size of the list, so about 10 × 1,000,000 ≈ 10 million steps.",
+            "evidence_reason": "The candidate explicitly calculates sorting as a constant multiple of n (roughly 10 * n) rather than n log n, demonstrating the belief that general-purpose sorting takes linear time.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that general-purpose comparison sorting takes O(n) time, falling into the listed misconception ds.sorting-searching.sorting-is-linear, and advocates sorting even for a single query.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly recommends sorting the list even for a single query, which results in O(n log n) time compared to O(n) for a simple linear scan. They also fail to mention that binary search requires sorted data in the first place, missing key complexity justifications.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-011",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope",
+        "py-control-flow"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; covers required topics not yet tested: py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef area(w, h):\n    print(\"area\", w * h)\n\ndef is_big(n):\n    print(\"checking\", n)\n    return n > 10\n\na = area(2, 3)\nprint(a)\nif is_big(30) or is_big(1):\n    print(\"one big\")\nsize = \"M\"\nif size == \"S\" or \"XS\":\n    print(\"small\")",
+      "answer": "The code first prints “area 6” from the area function, then prints the value of a, which is None because area doesn’t return anything. The next line prints “checking 30”, evaluates to True, so the or short‑circuits and “checking 1” is never printed, resulting in “one big”. Finally, the condition size == \"S\" or \"XS\" is always truthy because the string \"XS\" is non‑empty, so “small” is printed even though size is \"M\".",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all key behaviors: that area returns None, that short-circuit evaluation prevents is_big(1) from running, and that the truthy non-empty string makes the final condition evaluate to True.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all key behaviors: that area returns None, that short-circuit evaluation prevents is_big(1) from running, and that the truthy non-empty string makes the final condition evaluate to True.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; lists a suspected misconception to confirm: sql.aggregation.count-column-counts-nulls",
+      "prompt": "What does this query return? Explain each of the four values.\n\nSELECT COUNT(*) AS n_rows,\n       COUNT(bonus) AS n_bonus,\n       SUM(bonus) AS total,\n       AVG(bonus) AS avg_bonus\nFROM staff;\n\nTable staff:\nname | bonus\nAsha | 100\nBen | NULL\nChen | 200\nDana | NULL\nEli | 300",
+      "answer": "The query will return four columns. `n_rows` is 5 because there are five rows in the staff table. `n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL. `total` is the sum of the non‑null bonuses, which is 100 + 200 + 300 = 600. `avg_bonus` is the total divided by the count of rows, so 600 / 5 = 120.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.aggregation.count-column-counts-nulls",
+        "follow_up": "If a column has NULL values, how does the behavior of COUNT(column_name) differ from COUNT(*)?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a column has NULL values, how does the behavior of COUNT(column_name) differ from COUNT(*)?",
+            "confidence_expressed": "high",
+            "supporting_quote": "n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL.",
+            "evidence_reason": "The candidate explicitly states that COUNT(bonus) counts every row even when the value is NULL, matching the listed misconception sql.aggregation.count-column-counts-nulls.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+                "supporting_quote": "total` is the sum of the non‑null bonuses, which is 100 + 200 + 300 = 600",
+                "quote_start": 181,
+                "quote_end": 254,
+                "reason": "The candidate correctly calculates the sum using only the non-null values rather than treating NULL as zero."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a table has a column with some NULL values, how does the result of COUNT(column_name) differ from COUNT(*)?",
+            "confidence_expressed": "high",
+            "supporting_quote": "n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL.",
+            "evidence_reason": "The candidate explicitly states that COUNT(bonus) counts every row even when the bonus is NULL, which directly matches the listed misconception sql.aggregation.count-column-counts-nulls.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+                "supporting_quote": "avg_bonus` is the total divided by the count of rows, so 600 / 5 = 120",
+                "quote_start": 257,
+                "quote_end": 327,
+                "reason": "The candidate calculates the average as 600 / 5, showing they believe NULLs affect the divisor for AVG by being included in the total row count, which aligns with the misconception that aggregate functions treat NULL as zero or affect the row denominator similarly."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a table has 10 rows and 4 of them have NULL in the bonus column, what would COUNT(bonus) return?",
+            "confidence_expressed": "high",
+            "supporting_quote": "n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL.",
+            "evidence_reason": "The candidate explicitly states that COUNT(bonus) counts every row even when the column is NULL, which matches the listed misconception sql.aggregation.count-column-counts-nulls.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+                "supporting_quote": "total` is the sum of the non‑null bonuses, which is 100 + 200 + 300 = 600",
+                "quote_start": 181,
+                "quote_end": 254,
+                "reason": "The candidate correctly calculates the sum using only the non-null values rather than treating NULLs as zero."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL.",
+        "evidence_reason": "The candidate explicitly states that COUNT(bonus) counts every row even when the value is NULL, matching the listed misconception sql.aggregation.count-column-counts-nulls.",
+        "contradicting": [
+          {
+            "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+            "supporting_quote": "total` is the sum of the non‑null bonuses, which is 100 + 200 + 300 = 600",
+            "quote_start": 181,
+            "quote_end": 254,
+            "reason": "The candidate correctly calculates the sum using only the non-null values rather than treating NULL as zero.",
+            "vote_share": 1.0
+          }
+        ]
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that COUNT(bonus) includes NULL rows and that AVG divides by the total number of rows (treating NULLs as zero), which matches the listed misconceptions and earns a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that COUNT(bonus) includes NULL rows and that AVG divides by the total number of rows (treating NULLs as zero), which matches the listed misconceptions and earns a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.aggregation.count-column-counts-nulls",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-stacks-queues",
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-complexity (ds.arrays-strings.front-insert-constant, ds.complexity.count-loops-for-big-o, ds.complexity.short-code-is-fast)",
+      "prompt": "A script keeps pending jobs in a Python list: it adds jobs with `jobs.append(job)` and takes the next one with `jobs.pop(0)`. It works fine with 100 jobs, but draining a backlog of one million jobs with `while jobs: handle(jobs.pop(0))` is extremely slow. Why? What is the total cost of draining the list, and what would you use instead?",
+      "answer": "`pop(0)` on a Python list removes the first element and then shifts all the remaining items one position to the left, which takes linear time O(n) for each call. Draining a list of n jobs with a loop that does `pop(0)` therefore costs O(n²) overall, not O(n). A better choice is to use a `collections.deque`, which provides O(1) `append` and `popleft` operations, so the backlog can be emptied in linear time.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that pop(0) causes an O(n) element shift, identified the O(n) total cost for draining the list, and proposed collections.deque as the efficient alternative.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that pop(0) causes an O(n) element shift, identified the O(n) total cost for draining the list, and proposed collections.deque as the efficient alternative.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-select-filter",
+        "sql-schema-constraints"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.75); level 1 is nearest its estimate -1.30; covers required topics not yet tested: sql-select-filter",
+      "prompt": "What does this query return? What does the result tell you about storing the customer's city on every order row?\n\nSELECT DISTINCT customer, city\nFROM orders_flat\nORDER BY customer, city;\n\nTable orders_flat:\norder_id | customer | city\n101 | Asha | Pune\n102 | Asha | Pune\n103 | Ben | Delhi\n104 | Asha | Mumbai\n105 | Ben | Delhi",
+      "answer": "The query returns three rows: (Asha, Mumbai), (Asha, Pune) and (Ben, Delhi). Because DISTINCT is applied to the whole (customer, city) pair, Asha appears twice since she has two different city values in the table. This shows an update anomaly – the customer's city is stored on each order row and can become inconsistent, which is why the city should be kept in a separate customers table rather than duplicated on every order.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the three rows returned, explained that DISTINCT applies to the (customer, city) pair, and correctly linked the inconsistent data for Asha to an update anomaly, hitting all rubric points for a full score of 2.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the three rows returned, explained that DISTINCT applies to the (customer, city) pair, and correctly linked the inconsistent data for Asha to an update anomaly, hitting all rubric points for a full score of 2.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-pandas (py.pandas.nan-treated-as-zero)",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"team\": [\"a\", \"a\", \"b\", \"b\"],\n                   \"pts\": [10, None, 4, 8]})\ndf.rename(columns={\"pts\": \"points\"})\nprint(list(df.columns))\navg = df.groupby(\"team\")[\"pts\"].mean()\nprint(avg.tolist())\nprint(df[\"pts\"].count(), len(df))",
+      "answer": "It prints `['team', 'pts']` because `rename` returns a new DataFrame and the result isn’t assigned back to `df`.  \nThe group‑by mean yields `[5.0, 6.0]` (the averages for teams a and b), and `df[\"pts\"].count()` is 3 while `len(df)` is 4.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.nan-treated-as-zero",
+        "follow_up": "What is the sum of the pts column for team a, and how many valid numbers were added?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "What is the sum of the pts column for team a, and how many valid numbers were added?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The group‑by mean yields `[5.0, 6.0]`",
+            "evidence_reason": "The candidate explicitly calculates the mean for team a as 5.0, which assumes the missing value (None/NaN) was treated as 0 (i.e., (10 + 0) / 2 = 5.0) instead of being skipped.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "How does pandas handle NaN values when calculating the mean of a column, and what would team a's sum be if NaN were treated as zero versus if it were skipped?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The group‑by mean yields `[5.0, 6.0]`",
+            "evidence_reason": "The candidate calculates the mean for team a as 5.0 (which is (10 + 0) / 2), showing they treated the NaN as 0.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The group‑by mean yields `[5.0, 6.0]`",
+        "evidence_reason": "The candidate explicitly calculates the mean for team a as 5.0, which assumes the missing value (None/NaN) was treated as 0 (i.e., (10 + 0) / 2 = 5.0) instead of being skipped.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What is the sum of the pts column for team a, and how many valid numbers were added?",
+          "answer": "For team a the only non‑missing value in the **pts** column is 10, so the sum is 10. Since the other entry for team a is None/NaN, only one valid number is counted.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "slip",
+                "misconception_id": null,
+                "follow_up": "Given that team a has one value of 10 and one missing value, what do you get when you compute the mean for team a, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          2,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate initially thought team a's mean was 5.0 (treating NaN as zero or averaging incorrectly), but the follow-up clarification correctly states that the non-missing value for team a is 10 and that NaN is skipped, showing proper understanding.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that rename is not assigned and that count() gives 3 while len(df) is 4, but incorrectly claimed team a's mean is 5.0 instead of 10.0 (failing to account for the NaN being skipped).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2041,
+          "se": 0.671,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-014",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "slip",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-complexity",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; lists a suspected misconception to confirm: ds.sorting-searching.sorting-is-linear",
+      "prompt": "A service receives 100,000 user IDs and must report whether any ID appears twice. Compare three approaches: keep a list of seen IDs and check `if uid in seen_list`; keep a set of seen IDs; or sort all the IDs and compare neighbours. What is the time complexity of each?",
+      "answer": "The approach that sorts all the IDs and then compares neighboring elements runs in O(n log n) time, because the sorting step dominates the overall complexity. I'm not sure about the exact complexities of the list‑lookup and set‑lookup methods.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does checking if an item is present in a Python list differ in performance from checking a set as the number of elements grows?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does checking if an item is present in a Python list differ in performance from checking a set as the number of elements grows?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What is the time complexity of checking if an item is present in a standard Python list versus a Python set as the list grows larger?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does checking if an item is present in a Python list work under the hood in terms of the number of elements it has to inspect?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the time complexity for the sort-then-compare approach as O(n log n), but failed to provide the complexities for the list and set approaches, missing two of the three key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the time complexity for the sort-then-compare approach as O(n log n), but failed to provide the complexities for the list and set approaches, missing two of the three key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2041,
+          "se": 0.671,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.67); level 2 is nearest its estimate -0.20; lists a suspected misconception to confirm: py.pandas.nan-treated-as-zero",
+      "prompt": "A colleague runs df.dropna() and then df[\"price\"].mean(). They are surprised that the rows with missing prices are still in df. Explain why, how to fix it, and how mean() treats the missing values anyway.",
+      "answer": "The colleague’s `df.dropna()` call didn’t modify the original DataFrame because, like most pandas methods, it returns a new DataFrame and leaves `df` unchanged. To actually remove the rows you need to assign the result back, for example `df = df.dropna(subset=[\"price\"])`. When you then call `df[\"price\"].mean()`, pandas treats the missing values as zeros, so they are included in the average calculation.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.nan-treated-as-zero",
+        "follow_up": "If a column contains values [10, 20, NaN], what value does sum() return and how many elements are included in the count?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "If a column contains values [10, 20, NaN], what value does sum() return and how many elements are included in the count?",
+            "confidence_expressed": "high",
+            "supporting_quote": "pandas treats the missing values as zeros, so they are included in the average calculation",
+            "evidence_reason": "The candidate explicitly states that pandas treats missing values as zeros and includes them in the average calculation, which matches the listed misconception py.pandas.nan-treated-as-zero.",
+            "contradicting": [
+              {
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "supporting_quote": "didn’t modify the original DataFrame because, like most pandas methods, it returns a new DataFrame and leaves `df` unchanged",
+                "quote_start": 35,
+                "quote_end": 159,
+                "reason": "The candidate explicitly rejects the misconception that dropna modifies the dataframe in place by correctly explaining that it returns a new DataFrame."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "If a column contains values [10, NaN, 20], what does count() return and why?",
+            "confidence_expressed": "high",
+            "supporting_quote": "pandas treats the missing values as zeros, so they are included in the average calculation",
+            "evidence_reason": "The candidate explicitly asserts that pandas treats missing values as zeros and includes them in the average calculation, which matches the listed misconception py.pandas.nan-treated-as-zero.",
+            "contradicting": [
+              {
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "supporting_quote": "didn’t modify the original DataFrame because, like most pandas methods, it returns a new DataFrame and leaves `df` unchanged",
+                "quote_start": 35,
+                "quote_end": 159,
+                "reason": "The candidate correctly understands that dropna() returns a new DataFrame and does not modify the original in place, directly rejecting py.pandas.method-modifies-inplace."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "What happens to the denominator (the count) when pandas computes the mean of a series that contains NaN?",
+            "confidence_expressed": "high",
+            "supporting_quote": "pandas treats the missing values as zeros, so they are included in the average calculation.",
+            "evidence_reason": "The candidate explicitly states that pandas treats missing values as zeros and includes them in the average calculation, which matches the listed misconception py.pandas.nan-treated-as-zero.",
+            "contradicting": [
+              {
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "supporting_quote": "The colleague’s `df.dropna()` call didn’t modify the original DataFrame because, like most pandas methods, it returns a new DataFrame and leaves `df` unchanged.",
+                "quote_start": 0,
+                "quote_end": 160,
+                "reason": "The candidate correctly understands that dropna() does not modify the dataframe in place and returns a new object, directly contradicting py.pandas.method-modifies-inplace."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "pandas treats the missing values as zeros, so they are included in the average calculation",
+        "evidence_reason": "The candidate explicitly states that pandas treats missing values as zeros and includes them in the average calculation, which matches the listed misconception py.pandas.nan-treated-as-zero.",
+        "contradicting": [
+          {
+            "misconception_id": "py.pandas.method-modifies-inplace",
+            "supporting_quote": "didn’t modify the original DataFrame because, like most pandas methods, it returns a new DataFrame and leaves `df` unchanged",
+            "quote_start": 35,
+            "quote_end": 159,
+            "reason": "The candidate explicitly rejects the misconception that dropna modifies the dataframe in place by correctly explaining that it returns a new DataFrame.",
+            "vote_share": 1.0
+          }
+        ]
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that dropna() returns a copy and provided the correct assignment fix, but showed the misconception that pandas mean() treats missing values as zeros instead of skipping them.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that dropna() returns a copy and provided the correct assignment fix, but showed the misconception that pandas mean() treats missing values as zeros instead of skipping them.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.5356,
+          "se": 0.6088,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "slip",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.65); level 2 is nearest its estimate -0.19; lists a suspected misconception to confirm: ds.sorting-searching.sorting-is-linear",
+      "prompt": "Explain how merge sort sorts a list. Why does it take O(n log n) time: how many levels of splitting are there, and how much work is done at each level? Is merge sort stable?",
+      "answer": "Merge sort works by first picking a random pivot element and partitioning the list into two sub‑lists, one with elements smaller than the pivot and one with elements larger, then recursively sorting each sub‑list before finally concatenating them. The recursion depth is roughly proportional to the size of the list, so the total work ends up being about n multiplied by the number of elements, giving a linear‑time behavior. It is not a stable algorithm because elements that are equal can end up in either sub‑list depending on the pivot choice.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.sorting-searching.sorting-is-linear",
+        "follow_up": "How does merge sort decide where to split the list, and what happens when you have a list of length 8?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How does merge sort decide where to split the list, and what happens when you have a list of length 8?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving a linear‑time behavior.",
+            "evidence_reason": "The candidate explicitly states that merge sort results in linear-time behavior, aligning with the misconception that sorting takes O(n) time.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "If you double the size of the input list for merge sort, does the number of steps double as well, or does it grow faster? Why?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving a linear‑time behavior",
+            "evidence_reason": "The candidate explicitly states that merge sort results in linear-time behavior, which matches the misconception that general sorting runs in O(n) time.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How many times can you divide a list of 8 elements in half until each piece has length 1, and how does that relate to the number of levels in merge sort?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving a linear‑time behavior",
+            "evidence_reason": "The candidate explicitly claims that the total work ends up being linear-time behavior, aligning with the misconception that sorting is linear.",
+            "contradicting": [
+              {
+                "misconception_id": "ds.sorting-searching.sort-not-stable",
+                "supporting_quote": "It is not a stable algorithm because elements that are equal can end up in either sub‑list depending on the pivot choice.",
+                "quote_start": 426,
+                "quote_end": 547,
+                "reason": "The candidate explicitly addresses stability (even though they describe quicksort instead of merge sort), showing they do not hold the listed belief that sorting is never stable, but rather misattributed quicksort characteristics to merge sort."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "giving a linear‑time behavior.",
+        "evidence_reason": "The candidate explicitly states that merge sort results in linear-time behavior, aligning with the misconception that sorting takes O(n) time.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate completely confuses merge sort with quicksort by mentioning a pivot and partitioning, mistakenly claims it takes linear time O(n), and states that it is not stable, hitting multiple listed misconceptions and scoring 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate completely confuses merge sort with quicksort by mentioning a pivot and partitioning, mistakenly claims it takes linear time O(n), and states that it is not stable, hitting multiple listed misconceptions and scoring 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.5356,
+          "se": 0.6088,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.5046,
+          "se": 0.5905,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-013",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-schema-constraints",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.65); level 1 is nearest its estimate -0.81; lists misconceptions not yet probed: sql.schema-constraints.fk-must-be-unique, sql.schema-constraints.pk-needs-distinct",
+      "prompt": "orders.id is the primary key and orders.customer_id is a foreign key to customers.id. What does this query return, and why? Would SELECT DISTINCT id FROM orders return fewer rows than SELECT id FROM orders?\n\nSELECT DISTINCT customer_id, status\nFROM orders\nORDER BY customer_id, status;\n\nTable orders:\nid | customer_id | status\n101 | 1 | paid\n102 | 1 | paid\n103 | 2 | refunded\n104 | 1 | refunded\n105 | 3 | paid",
+      "answer": "The query returns four rows – the unique combinations of customer_id and status in the orders table: (1, paid), (1, refunded), (2, refunded) and (3, paid). DISTINCT removes only exact duplicate pairs, so the two orders with customer 1 and status paid are collapsed to one row, while customer 1 still appears a second time because it has a different status. Since id is the primary key, every row already has a unique id, so SELECT DISTINCT id would return the same five rows as a plain SELECT id.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all four rows returned by the query and explained DISTINCT on composite columns, foreign keys, and primary keys.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all four rows returned by the query and explained DISTINCT on composite columns, foreign keys, and primary keys.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.5356,
+          "se": 0.6088,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.4954,
+          "se": 0.5905,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.5046,
+          "se": 0.5905,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-variables-mutability",
+        "py-collections"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.61); level 1 is nearest its estimate -0.54; covers required topics not yet tested: py-collections",
+      "prompt": "What does this code print, and why?\n\na = [1, 2, 3]\nb = a\nn = len(a)\nb.append(4)\ns = \"hi\"\ns.upper()\nprint(a, n, s)",
+      "answer": "It prints [1, 2, 3, 4] 4 hi. The list `a` shows the appended 4 because `b` refers to the same list, `n` was set when `len(a)` was evaluated, and `s.upper()` doesn’t modify `s` since strings are immutable.",
+      "diagnosis": {
+        "cause": "slip",
+        "misconception_id": null,
+        "follow_up": "If n was set when len(a) was evaluated initially, what was its value at that exact moment?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "If n was set when len(a) was evaluated initially, what was its value at that exact moment?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "If n was set when len(a) was evaluated, what was the value of len(a) at that time?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "If n was set when len(a) was evaluated initially, what was the length of a at that moment?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If n was set when len(a) was evaluated initially, what was its value at that exact moment?",
+          "answer": "At that moment `len(a)` was evaluated on the list `[1, 2, 3]`, so `n` was assigned the value 3. Because `n` is just an integer copy, it never changes later even after the list is modified.",
+          "diagnosis": {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "Can you check what the code actually prints for the list and the string in the final output?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "slip",
+                "misconception_id": null,
+                "follow_up": "Can you check what the code actually prints for the list and the string in the final output?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "slip",
+                "misconception_id": null,
+                "follow_up": "Can you check what the code actually printed for `a` and `s` in your first message, and whether `n` reflects the length before or after the append?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "slip",
+                "misconception_id": null,
+                "follow_up": "Can you check what the code prints for all three variables a, n, and s together?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "Can you check what the code actually prints for the list and the string in the final output?",
+          "answer": "The code prints the list `[1, 2, 3, 4]` because `b` is just another reference to the same list as `a`, so appending through `b` also modifies `a`. The variable `n` remains `3`, since it was set when `len(a)` was evaluated before the append, and the string `s` is still `\"hi\"` because `s.upper()` returns a new string without changing the original. Hence the final output is `[1, 2, 3, 4] 3 hi`.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate initially thought n was 4, but during the follow-up replies corrected it to 3 and gave accurate explanations for all three parts (list mutability, integer assignment value, and string immutability).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the list mutation and string immutability, but incorrectly stated that n becomes 4, missing that integer evaluation of len(a) is fixed at assignment time.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2927,
+          "se": 0.5594,
+          "level": 1,
+          "n": 5
+        },
+        "sql": {
+          "estimate": -0.4954,
+          "se": 0.5905,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.5046,
+          "se": 0.5905,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-010",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "slip",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 1,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 22,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 1,
+        "estimate": -0.2927,
+        "se": 0.5594,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.47531,
+        "level_probabilities": {
+          "0": 0.038921,
+          "1": 0.47531,
+          "2": 0.45058,
+          "3": 0.035189
+        },
+        "meets_minimum": null
+      },
+      "sql": {
+        "level": 1,
+        "estimate": -0.4954,
+        "se": 0.5905,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.559209,
+        "level_probabilities": {
+          "0": 0.090964,
+          "1": 0.559209,
+          "2": 0.328648,
+          "3": 0.021179
+        },
+        "meets_minimum": null
+      },
+      "ds": {
+        "level": 1,
+        "estimate": -0.5046,
+        "se": 0.5905,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.554589,
+        "level_probabilities": {
+          "0": 0.095779,
+          "1": 0.554589,
+          "2": 0.331734,
+          "3": 0.017897
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether py reaches level 2; cannot tell whether sql reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "py.pandas.positional-alignment",
+        "confirmed": false,
+        "evidence_turns": [
+          1
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L2-007",
+            "turn": 1,
+            "reply_index": 0,
+            "reply_text": "It prints:\n```\n['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10, 30, 25, nan]\n```\nThe first list is the original name order, the second list selects the names at positions 1 and 2, and the bonus column is computed element‑wise from the filtered scores, giving 10, 30, 25 for the first three rows and NaN for the last one.",
+            "vote_share": 1.0,
+            "supporting_quote": "giving 10, 30, 25 for the first three rows and NaN for the last one",
+            "quote_start": 247,
+            "quote_end": 314,
+            "reason": "The candidate asserts that the bonus values align with the first three rows sequentially and NaN falls on the last row, which demonstrates positional alignment instead of index label alignment."
+          },
+          {
+            "question_id": "PY-L2-007",
+            "turn": 1,
+            "reply_index": 1,
+            "reply_text": "The `passed` DataFrame ends up with the same index labels 0, 1, 2, 3 – basically the original row numbers – and when we assign its “score‑60” series back to `df[\"bonus\"]` pandas lines them up by those positional indices, so each value just goes into the same‑numbered row of the original frame.",
+            "vote_share": 1.0,
+            "supporting_quote": "pandas lines them up by those positional indices, so each value just goes into the same‑numbered row of the original frame",
+            "quote_start": 171,
+            "quote_end": 293,
+            "reason": "The candidate explicitly states that pandas aligns Series by their positional indices rather than their actual index labels when assigning to a DataFrame column."
+          },
+          {
+            "question_id": "PY-L2-007",
+            "turn": 1,
+            "reply_index": 2,
+            "reply_text": "If `passed` were re‑indexed to 0, 1, 2 (for the three qualifying rows), pandas would line those up by position when assigning back, so the first three rows of `df['bonus']` would get 10, 30, 25 and the fourth row would stay NaN. In other words, the bonus values would be placed in rows 0‑2 and row 3 would remain empty.",
+            "vote_share": 1.0,
+            "supporting_quote": "pandas would line those up by position when assigning back, so the first three rows of `df['bonus']` would get 10, 30, 25 and the fourth row would stay NaN",
+            "quote_start": 72,
+            "quote_end": 227,
+            "reason": "The candidate explicitly states that pandas aligns Series assignment by position rather than by index labels, matching the listed misconception py.pandas.positional-alignment."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.aggregation.count-column-counts-nulls",
+        "confirmed": true,
+        "evidence_turns": [
+          2,
+          5
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 0,
+            "reply_text": "The query will return three rows – one for each customer – with the counts 2, 1, and 1 for Asha, Ben and Chen respectively, and the totals 330 for Asha and NULL for both Ben and Chen, because the LEFT JOIN still produces a row for customers without matching orders, and COUNT counts those NULL id values as well.",
+            "vote_share": 1.0,
+            "supporting_quote": "and COUNT counts those NULL id values as well",
+            "quote_start": 266,
+            "quote_end": 311,
+            "reason": "The candidate explicitly states that COUNT counts the NULL id values generated by the left join for unmatched rows like Ben, which directly matches the misconception that COUNT(column) counts rows with nulls."
+          },
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 1,
+            "reply_text": "If we switch to COUNT(*) for Ben, it would still return 1. The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+            "vote_share": 1.0,
+            "supporting_quote": "The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+            "quote_start": 59,
+            "quote_end": 272,
+            "reason": "The candidate incorrectly asserts that COUNT(*) and COUNT(o.id) behave the same way on a left-joined row with no matching orders, believing that COUNT(o.id) still evaluates to 1 because the group has one result row."
+          },
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 2,
+            "reply_text": "It will still count that row, so COUNT(o.id) returns 1 for the customer even though the id value is NULL. The LEFT JOIN guarantees a row, and COUNT treats the NULL id just like any other value.",
+            "vote_share": 1.0,
+            "supporting_quote": "COUNT treats the NULL id just like any other value.",
+            "quote_start": 142,
+            "quote_end": 193,
+            "reason": "The candidate explicitly states that COUNT treats a NULL value in the column just like any other value, which matches the misconception that COUNT(column) counts rows containing NULLs."
+          },
+          {
+            "question_id": "SQL-L1-010",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "The query will return four columns. `n_rows` is 5 because there are five rows in the staff table. `n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL. `total` is the sum of the non‑null bonuses, which is 100 + 200 + 300 = 600. `avg_bonus` is the total divided by the count of rows, so 600 / 5 = 120.",
+            "vote_share": 1.0,
+            "supporting_quote": "n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL.",
+            "quote_start": 99,
+            "quote_end": 179,
+            "reason": "The candidate explicitly states that COUNT(bonus) counts every row even when the value is NULL, matching the listed misconception sql.aggregation.count-column-counts-nulls."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "ds.sorting-searching.sorting-is-linear",
+        "confirmed": true,
+        "evidence_turns": [
+          3,
+          11
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "I’d sort the list first and then run a binary search even for a single check, because the sorting step organizes the data and makes the subsequent lookup faster overall. When you have thousands of queries, the sorted list becomes even more advantageous since each additional search can reuse the same ordering without any extra work.",
+            "vote_share": 1.0,
+            "supporting_quote": "I’d sort the list first and then run a binary search even for a single check, because the sorting step organizes the data and makes the subsequent lookup faster overall.",
+            "quote_start": 0,
+            "quote_end": 169,
+            "reason": "The candidate asserts that sorting first makes a single check faster overall, which implies they believe sorting takes less time than a single linear scan (O(n) time complexity)."
+          },
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 1,
+            "reply_text": "Sorting an unsorted list of n elements typically takes about O(n) time, since you’re just rearranging the items once. Scanning the list a single time is also O(n), so both operations are essentially the same order of magnitude.",
+            "vote_share": 1.0,
+            "supporting_quote": "Sorting an unsorted list of n elements typically takes about O(n) time",
+            "quote_start": 0,
+            "quote_end": 70,
+            "reason": "The candidate explicitly states that comparison-based sorting takes O(n) time, matching the listed misconception ds.sorting-searching.sorting-is-linear."
+          },
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 2,
+            "reply_text": "Sorting a million items with a typical quicksort or mergesort takes on the order of a few million basic operations—roughly ten times the size of the list, so about 10 × 1,000,000 ≈ 10 million steps. Scanning the list once is just a single pass, so it’s only about one million operations.",
+            "vote_share": 1.0,
+            "supporting_quote": "Sorting a million items with a typical quicksort or mergesort takes on the order of a few million basic operations—roughly ten times the size of the list, so about 10 × 1,000,000 ≈ 10 million steps.",
+            "quote_start": 0,
+            "quote_end": 198,
+            "reason": "The candidate explicitly calculates sorting as a constant multiple of n (roughly 10 * n) rather than n log n, demonstrating the belief that general-purpose sorting takes linear time."
+          },
+          {
+            "question_id": "DS-L2-013",
+            "turn": 11,
+            "reply_index": 0,
+            "reply_text": "Merge sort works by first picking a random pivot element and partitioning the list into two sub‑lists, one with elements smaller than the pivot and one with elements larger, then recursively sorting each sub‑list before finally concatenating them. The recursion depth is roughly proportional to the size of the list, so the total work ends up being about n multiplied by the number of elements, giving a linear‑time behavior. It is not a stable algorithm because elements that are equal can end up in either sub‑list depending on the pivot choice.",
+            "vote_share": 1.0,
+            "supporting_quote": "giving a linear‑time behavior.",
+            "quote_start": 395,
+            "quote_end": 425,
+            "reason": "The candidate explicitly states that merge sort results in linear-time behavior, aligning with the misconception that sorting takes O(n) time."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "py.pandas.nan-treated-as-zero",
+        "confirmed": true,
+        "evidence_turns": [
+          8,
+          10
+        ],
+        "vote_share": 0.833,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L2-014",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "It prints `['team', 'pts']` because `rename` returns a new DataFrame and the result isn’t assigned back to `df`.  \nThe group‑by mean yields `[5.0, 6.0]` (the averages for teams a and b), and `df[\"pts\"].count()` is 3 while `len(df)` is 4.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "The group‑by mean yields `[5.0, 6.0]`",
+            "quote_start": 115,
+            "quote_end": 152,
+            "reason": "The candidate explicitly calculates the mean for team a as 5.0, which assumes the missing value (None/NaN) was treated as 0 (i.e., (10 + 0) / 2 = 5.0) instead of being skipped."
+          },
+          {
+            "question_id": "PY-L2-001",
+            "turn": 10,
+            "reply_index": 0,
+            "reply_text": "The colleague’s `df.dropna()` call didn’t modify the original DataFrame because, like most pandas methods, it returns a new DataFrame and leaves `df` unchanged. To actually remove the rows you need to assign the result back, for example `df = df.dropna(subset=[\"price\"])`. When you then call `df[\"price\"].mean()`, pandas treats the missing values as zeros, so they are included in the average calculation.",
+            "vote_share": 1.0,
+            "supporting_quote": "pandas treats the missing values as zeros, so they are included in the average calculation",
+            "quote_start": 314,
+            "quote_end": 404,
+            "reason": "The candidate explicitly states that pandas treats missing values as zeros and includes them in the average calculation, which matches the listed misconception py.pandas.nan-treated-as-zero."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.complexity.count-loops-for-big-o",
+      "ds.complexity.short-code-is-fast",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.sorting-searching.binary-search-half-of-linear",
+      "ds.sorting-searching.binary-search-unsorted",
+      "ds.sorting-searching.sort-not-stable",
+      "ds.sorting-searching.sorting-is-linear",
+      "py.control-flow.no-short-circuit",
+      "py.control-flow.or-distributes",
+      "py.functions-scope.print-is-return",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.string-method-mutates",
+      "py.variables-mutability.variable-holds-expression",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.null.aggregates-treat-null-as-zero",
+      "sql.schema-constraints.fk-must-be-unique",
+      "sql.schema-constraints.normalisation-only-saves-space",
+      "sql.schema-constraints.pk-needs-distinct",
+      "sql.select-filter.distinct-per-column",
+      "sql.select-filter.distinct-returns-first"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "untested": [
+        "py-comprehensions-generators",
+        "sql-subqueries-cte",
+        "sql-window-functions"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether py reaches level 2; cannot tell whether sql reaches level 2. Estimated levels: py level 1 (needs 2), sql level 1 (needs 2), ds level 1 (needs 1). Suspected (insufficient corroboration) misconception: Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN. Confirmed misconception: Believes COUNT(column) counts every row, including rows where that column is NULL, exactly like COUNT(*). Confirmed misconception: Believes general-purpose (comparison) sorting such as sorted() takes O(n) time, so sorting first is effectively free compared with a single linear scan. Confirmed misconception: Believes missing values (NaN) count as 0 in aggregations such as mean() or sum(), not knowing pandas skips them by default."
+  },
+  "usage": {
+    "llm_calls": 121,
+    "api_calls": 75,
+    "input_tokens": 138054,
+    "output_tokens": 12013,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 121,
+        "api_calls": 75,
+        "input_tokens": 138054,
+        "output_tokens": 12013
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 2
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.pandas.positional-alignment",
+      "sql.aggregation.count-column-counts-nulls"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

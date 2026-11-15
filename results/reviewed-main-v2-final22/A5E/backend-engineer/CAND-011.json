@@ -1,0 +1,2714 @@
+{
+  "interview_id": "A5E-backend-engineer-CAND-011-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-011",
+  "started_at": "2026-11-14T05:42:31Z",
+  "finished_at": "2026-11-14T05:43:32Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "`try` encloses code that may raise an exception; if an exception occurs the remaining statements in the `try` are skipped and Python jumps to the first `except` clause (checked in order) whose type matches, runs that handler, then continues after the whole `try…except…else…finally` block. `else` runs only when the `try` finishes without an exception, and `finally` is executed in all cases—including when the `try` or an `except` block executes a `return`—just before control actually leaves the statement.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, noted that the first matching except clause in order runs, and correctly stated that finally runs even when a return statement is executed.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, noted that the first matching except clause in order runs, and correctly stated that finally runs even when a return statement is executed.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query will return one row per customer, so Asha appears once with a single order counted (n_orders = 1) and a total amount of 250, Ben appears once with 0 orders and a total of 0, and Chen appears once with 1 order (the NULL amount is treated as 0), giving n_orders = 1 and total = 0.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.join-never-duplicates",
+        "follow_up": "How many rows does the intermediate result of the LEFT JOIN contain for Asha before the GROUP BY is applied?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "follow_up": "How many rows does the intermediate result of the LEFT JOIN contain for Asha before the GROUP BY is applied?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Asha appears once with a single order counted (n_orders = 1)",
+            "evidence_reason": "The candidate explicitly states Asha appears once with a single order, ignoring that Asha has two orders (id 10 and 11) in the orders table which would create two matching rows in the join before aggregation.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "follow_up": "How many rows does the joined intermediate result contain for Asha before GROUP BY is applied?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Asha appears once with a single order counted (n_orders = 1)",
+            "evidence_reason": "The candidate explicitly states Asha appears only once with a single order, ignoring the fact that Asha has two matching orders in the orders table which results in multiple rows before aggregation.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "What does COUNT(o.id) evaluate to when o.id is NULL for a joined row?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Asha appears once with a single order counted",
+            "evidence_reason": "The candidate asserts that Asha's two orders result in a count of 1, demonstrating a failure to recognize that multiple matching rows from the left join produce multiple rows before aggregation.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Asha appears once with a single order counted (n_orders = 1)",
+        "evidence_reason": "The candidate explicitly states Asha appears once with a single order, ignoring that Asha has two orders (id 10 and 11) in the orders table which would create two matching rows in the join before aggregation.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How many rows does the intermediate result of the LEFT JOIN contain for Asha before the GROUP BY is applied?",
+          "answer": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "follow_up": "How many rows does the intermediate result of the LEFT JOIN have for Asha before GROUP BY is applied?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.join-never-duplicates",
+                "follow_up": "How many rows does the intermediate result of the LEFT JOIN have for Asha before GROUP BY is applied?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+                "evidence_reason": "The candidate explicitly states that the join produces a single row for Asha despite Asha having multiple orders in the orders table, demonstrating the listed belief that a join returns at most one row per row of the left table.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.join-never-duplicates",
+                "follow_up": "How many rows would the result of the LEFT JOIN alone (before GROUP BY) contain for Asha, given she has two orders in the orders table?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+                "evidence_reason": "The candidate explicitly states that the LEFT JOIN produces a single row for Asha, demonstrating the listed belief that a join returns at most one row per row of the left table even when multiple matching rows exist.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.join-never-duplicates",
+                "follow_up": "How many rows would the result of the LEFT JOIN have before grouping if customer Asha had three orders in the orders table?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+                "evidence_reason": "The candidate explicitly asserts that Asha produces only a single row before grouping, directly reflecting the belief that a join returns at most one row per row of the left table even when multiple matching rows exist.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+            "evidence_reason": "The candidate explicitly states that the join produces a single row for Asha despite Asha having multiple orders in the orders table, demonstrating the listed belief that a join returns at most one row per row of the left table.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "How many rows does the intermediate result of the LEFT JOIN have for Asha before GROUP BY is applied?",
+          "answer": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "follow_up": "If a customer in the left table had three matching rows in the orders table, how many rows would the LEFT JOIN produce for that customer before grouping?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.join-never-duplicates",
+                "follow_up": "If a customer in the left table had three matching rows in the orders table, how many rows would the LEFT JOIN produce for that customer before grouping?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+                "evidence_reason": "The candidate explicitly repeats the belief that a join produces at most one row per left-table row even when multiple orders match.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.join-never-duplicates",
+                "follow_up": "If a customer in the left table has two matching rows in the right table, how many rows will appear in the result of the LEFT JOIN before any GROUP BY is applied?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+                "evidence_reason": "The candidate explicitly asserts that a LEFT JOIN produces only a single row for Asha despite her having two matching orders in the orders table, directly demonstrating the listed misconception that a join returns at most one row per row of the left table.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.join-never-duplicates",
+                "follow_up": "If a customer in the left table has two matching rows in the right table, how many rows does a JOIN produce for that customer before GROUP BY?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+                "evidence_reason": "The candidate explicitly asserts that Asha produces only a single row before group by despite having two matching orders in the tables, directly demonstrating the belief that a join returns at most one row per left-table row.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+            "evidence_reason": "The candidate explicitly repeats the belief that a join produces at most one row per left-table row even when multiple orders match.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believed Asha has only one order in the join, showed misconceptions about join row duplication and NULL aggregation, and failed to correct this when prompted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly gives Asha a count of 1, treats Ben's total sum as 0 instead of NULL, and assumes Chen's NULL amount is treated as 0. This demonstrates multiple key misconceptions about joins, aggregation, and NULL handling.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.joins.join-never-duplicates",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map stores the values while the linked list just keeps them in the order they were inserted, so on a hit we look up the key in the map, then move the corresponding node to the front of the list by copying its data over the head element; because both structures are constant‑size, get and put end up being constant‑time operations on average.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+        "follow_up": "When you mention copying data over the head element, what happens to the existing nodes in the linked list when you move an item to the front?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "When you mention copying data over the head element, what happens to the existing nodes in the linked list when you move an item to the front?",
+            "confidence_expressed": "high",
+            "supporting_quote": "move the corresponding node to the front of the list by copying its data over the head element",
+            "evidence_reason": "The candidate believes that moving an element to the front involves copying data rather than updating pointers, reflecting a misconception about how linked list operations manipulate elements.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "How does copying data over the head element affect the surrounding nodes in the list?",
+            "confidence_expressed": "high",
+            "supporting_quote": "move the corresponding node to the front of the list by copying its data over the head element",
+            "evidence_reason": "The candidate explicitly states that moving a node to the front is done by copying data over existing elements rather than updating pointers, reflecting a misunderstanding of how linked list manipulation avoids shifting elements.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "When you move a node to the front by copying its data over the head element, what happens to the remaining nodes in the list, and how does that affect the time complexity if the list is very long?",
+            "confidence_expressed": "high",
+            "supporting_quote": "move the corresponding node to the front of the list by copying its data over the head element",
+            "evidence_reason": "The candidate believes that moving a node involves copying data over other elements rather than rewiring pointers, and implies that this maintains order without pointer updates, which aligns with the misconception that linked list operations mimic array shifting or do not require careful node/pointer manipulation.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "move the corresponding node to the front of the list by copying its data over the head element",
+        "evidence_reason": "The candidate believes that moving an element to the front involves copying data rather than updating pointers, reflecting a misconception about how linked list operations manipulate elements.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "When you mention copying data over the head element, what happens to the existing nodes in the linked list when you move an item to the front?",
+          "answer": "When we move an item to the front we actually slide every existing node down one slot in the list, so the former head’s data gets overwritten and the rest of the list is shifted down to make room for the new front element.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "If a linked list had a thousand nodes, what would happen to the memory address of the second node if you inserted a new node at the very beginning?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "If a linked list had a thousand nodes, what would happen to the memory address of the second node if you inserted a new node at the very beginning?",
+                "confidence_expressed": "high",
+                "supporting_quote": "we actually slide every existing node down one slot in the list, so the former head’s data gets overwritten and the rest of the list is shifted down",
+                "evidence_reason": "The candidate explicitly asserts that inserting a node or moving it to the front involves shifting all existing nodes down and overwriting data, which matches the belief that linked lists behave like arrays regarding insertion shifts.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "If a linked list requires shifting nodes like an array, what advantage does a linked list provide over an array during insertion?",
+                "confidence_expressed": "high",
+                "supporting_quote": "slide every existing node down one slot in the list",
+                "evidence_reason": "The candidate explicitly states that moving an item to the front involves sliding every existing node down one slot, directly expressing the misconception that linked list insertions require shifting elements like an array.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "If a linked list had a thousand nodes, approximately how many pointer references would need to change if you wanted to move a node from the middle to the front?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When we move an item to the front we actually slide every existing node down one slot in the list",
+                "evidence_reason": "The candidate explicitly states that moving an item to the front requires sliding every existing node down, which directly expresses the listed misconception that linked list insertions or movements involve shifting elements like an array.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "we actually slide every existing node down one slot in the list, so the former head’s data gets overwritten and the rest of the list is shifted down",
+            "evidence_reason": "The candidate explicitly asserts that inserting a node or moving it to the front involves shifting all existing nodes down and overwriting data, which matches the belief that linked lists behave like arrays regarding insertion shifts.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a linked list had a thousand nodes, what would happen to the memory address of the second node if you inserted a new node at the very beginning?",
+          "answer": "If you insert a new node at the very beginning, the second node gets pushed down and its memory address changes to the next slot in the underlying array, so it ends up at a new location.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "Can you draw or trace the pointers of a linked list when you insert a new node at the head, specifically comparing how array elements are stored in memory versus how linked list nodes use pointers?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "Can you draw or trace the pointers of a linked list when you insert a new node at the head, specifically comparing how array elements are stored in memory versus how linked list nodes use pointers?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the second node gets pushed down and its memory address changes to the next slot in the underlying array",
+                "evidence_reason": "The candidate explicitly states that linked list nodes are stored in an underlying array where inserting a new node causes subsequent nodes to shift down into new memory slots, which matches the belief that linked list insertion requires shifting elements like an array.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "Can you draw or describe what pointers change for the head and the new node when inserting at the front of a linked list, without touching any other nodes' positions?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the second node gets pushed down and its memory address changes to the next slot in the underlying array",
+                "evidence_reason": "The candidate explicitly believes that inserting into the front of a linked list requires shifting elements and changing their memory locations as if it were an array.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "Can you draw or describe the next and prev pointers of a newly added node and its immediate neighbors when inserting at the front, without moving any existing nodes?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the second node gets pushed down and its memory address changes to the next slot in the underlying array, so it ends up at a new location",
+                "evidence_reason": "The candidate explicitly believes that inserting a node into a linked list causes subsequent elements to shift and change their memory location, mirroring array behavior.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the second node gets pushed down and its memory address changes to the next slot in the underlying array",
+            "evidence_reason": "The candidate explicitly states that linked list nodes are stored in an underlying array where inserting a new node causes subsequent nodes to shift down into new memory slots, which matches the belief that linked list insertion requires shifting elements like an array.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly believes that inserting into a linked list requires shifting elements and that linked list nodes are stored in an underlying array where memory addresses change, showing a fundamental misunderstanding of linked lists.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly states that moving a node involves copying its data over the head element rather than rewiring pointers, and misses the roles of the doubly linked list in maintaining recency order and handling eviction at the tail.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: py.pandas.loc-end-exclusive, py.pandas.nan-treated-as-zero, py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ns1 = pd.Series([10, 20, 30], index=[\"a\", \"b\", \"c\"])\ns2 = pd.Series([1, 2, 3], index=[\"b\", \"c\", \"d\"])\ntotal = s1 + s2\nprint(total.tolist())\nprint(total.mean())\nprint(s1.loc[\"a\":\"b\"].sum())",
+      "answer": "It will print `[11, 22, 33]` for the first line, then `22.0` for the mean, and finally `30` for the sum of the slice.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "What happens to the index labels of s1 and s2 during the addition, and are all the labels shared between them?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the index labels of s1 and s2 during the addition, and are all the labels shared between them?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will print `[11, 22, 33]` for the first line",
+            "evidence_reason": "The candidate added the series element by element based on their positions (10+1=11, 20+2=22, 30+3=33), demonstrating the positional alignment misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the resulting Series indices and values if s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd']?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will print `[11, 22, 33]` for the first line",
+            "evidence_reason": "The candidate computes positional element-wise addition (10+1, 20+2, 30+3) rather than aligning by index label.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "How does pandas determine which values to add together when s1 and s2 have different index labels?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will print `[11, 22, 33]` for the first line",
+            "evidence_reason": "The candidate added the elements positionally ([10+1, 20+2, 30+3]), demonstrating the listed misconception that series arithmetic matches by position rather than index labels.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "It will print `[11, 22, 33]` for the first line",
+        "evidence_reason": "The candidate added the series element by element based on their positions (10+1=11, 20+2=22, 30+3=33), demonstrating the positional alignment misconception.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the index labels of s1 and s2 during the addition, and are all the labels shared between them?",
+          "answer": "When you add the two Series, pandas just lines them up positionally, so the indexes are basically ignored and the values are added in order; the resulting Series ends up with the same index labels as the first Series, s1, and any extra label from s2 is dropped.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If s1 has indices ['a', 'b', 'c'] and s2 has indices ['b', 'c', 'd'] in that order, what index labels would you expect the resulting Series to have after addition?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has indices ['a', 'b', 'c'] and s2 has indices ['b', 'c', 'd'] in that order, what index labels would you expect the resulting Series to have after addition?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just lines them up positionally, so the indexes are basically ignored and the values are added in order",
+                "evidence_reason": "The candidate explicitly states that pandas lines up Series positionally and ignores indexes, which directly defines the listed misconception py.pandas.positional-alignment.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'], what happens to the label 'd' in s2 when you compute s1 + s2?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just lines them up positionally, so the indexes are basically ignored and the values are added in order",
+                "evidence_reason": "The candidate explicitly states that pandas lines up Series positionally and ignores indexes during addition, directly matching the listed misconception py.pandas.positional-alignment.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'], what happens to the label 'd' in the resulting series?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just lines them up positionally, so the indexes are basically ignored and the values are added in order",
+                "evidence_reason": "The candidate explicitly states that pandas adds Series by position and ignores index labels, which matches the py.pandas.positional-alignment misconception.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "pandas just lines them up positionally, so the indexes are basically ignored and the values are added in order",
+            "evidence_reason": "The candidate explicitly states that pandas lines up Series positionally and ignores indexes, which directly defines the listed misconception py.pandas.positional-alignment.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If s1 has indices ['a', 'b', 'c'] and s2 has indices ['b', 'c', 'd'] in that order, what index labels would you expect the resulting Series to have after addition?",
+          "answer": "I’d expect the resulting Series to keep the labels from the first series, so it would have the index ['a', 'b', 'c'] after the addition.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'], what happens to the value associated with 'd' when you compute s1 + s2?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'], what happens to the value associated with 'd' when you compute s1 + s2?",
+                "confidence_expressed": "high",
+                "supporting_quote": "I’d expect the resulting Series to keep the labels from the first series, so it would have the index ['a', 'b', 'c'] after the addition.",
+                "evidence_reason": "The candidate explicitly asserts that the resulting Series keeps only the index of the first series, reflecting positional alignment and dropping unmatched labels.",
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "How does pandas handle the result of s1 + s2 when the index labels of s1 are ['a', 'b', 'c'] and s2 has index labels ['b', 'c', 'd']?",
+                "confidence_expressed": "medium",
+                "supporting_quote": "I’d expect the resulting Series to keep the labels from the first series, so it would have the index ['a', 'b', 'c'] after the addition.",
+                "evidence_reason": "The candidate explicitly states that addition keeps the index from the first series and ignores the other labels, reinforcing their belief in positional/index-ignoring alignment.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "I’d expect the resulting Series to keep the labels from the first series, so it would have the index ['a', 'b', 'c'] after the addition.",
+            "evidence_reason": "The candidate explicitly asserts that the resulting Series keeps only the index of the first series, reflecting positional alignment and dropping unmatched labels.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that pandas aligns Series positionally rather than by index label, explicitly showing the py.pandas.positional-alignment misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assumed positional alignment instead of index-label alignment for the Series addition, resulting in wrong values for the first two lines, matching the positional alignment misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-008",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-null",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-null (sql.null.equals-null-matches, sql.null.not-equal-includes-null)",
+      "prompt": "A colleague wrote this query to list every customer who is not in Pune, including customers with no city recorded. What does it return, and why?\n\nSELECT name\nFROM customers\nWHERE city <> 'Pune' OR city = NULL\nORDER BY name;\n\nTable customers:\nid | name | city\n1 | Asha | Pune\n2 | Ben | NULL\n3 | Chen | Delhi\n4 | Dana | Mumbai\n5 | Eli | NULL",
+      "answer": "It will return only Chen and Dana. For rows where city is NULL, the expression city <> 'Pune' evaluates to UNKNOWN and city = NULL never evaluates to true, so those rows are filtered out; using IS NULL would be required to include them.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that only Chen and Dana are returned, explains that comparisons with NULL evaluate to UNKNOWN or false rather than matching, and correctly identifies IS NULL as the fix.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that only Chen and Dana are returned, explains that comparisons with NULL evaluate to UNKNOWN or false rather than matching, and correctly identifies IS NULL as the fix.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-linked-lists",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; lists a suspected misconception to confirm: ds.linked-lists.insert-shifts-nodes",
+      "prompt": "Compare an array (like a Python list) and a singly linked list for two tasks: reading the 1,000th element, and inserting a new element at the very front. Which structure is faster for each task, and why?",
+      "answer": "The array will be faster for both reading the 1,000th element and for inserting at the front, because arrays store elements contiguously and allow quick updates, while a linked list requires extra pointer dereferencing for each operation.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+        "follow_up": "Can you trace what happens to the existing elements in a linked list when you insert a new node at the very front?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "Can you trace what happens to the existing elements in a linked list when you insert a new node at the very front?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The array will be faster for both reading the 1,000th element and for inserting at the front",
+            "evidence_reason": "The candidate asserts that the array is faster for inserting at the front because arrays use contiguous storage, implying that linked lists are slower at front insertion due to pointer overhead rather than recognizing front insertion as O(1).",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "If you want to insert a new element at the very front of a linked list, do you need to move the existing elements in memory?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The array will be faster for both reading the 1,000th element and for inserting at the front, because arrays store elements contiguously and allow quick updates, while a linked list requires extra pointer dereferencing for each operation.",
+            "evidence_reason": "The candidate claims the array is faster for inserting at the front because arrays store elements contiguously and linked lists require pointer dereferencing, implying that linked list insertion shares the same contiguous shifting bottleneck as an array or is generally slower due to updates.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "If you add a new node right at the head of a linked list, which existing nodes need to be moved or shifted in memory?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The array will be faster for both reading the 1,000th element and for inserting at the front",
+            "evidence_reason": "The candidate claims the array is faster for inserting at the front because linked lists involve extra pointer dereferencing and implicitly assumes an array is superior or handles front insertion without issue, but the specific belief linked here is that array-like shifting or cost applies to linked list insertion.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The array will be faster for both reading the 1,000th element and for inserting at the front",
+        "evidence_reason": "The candidate asserts that the array is faster for inserting at the front because arrays use contiguous storage, implying that linked lists are slower at front insertion due to pointer overhead rather than recognizing front insertion as O(1).",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims the array is faster for inserting at the front due to contiguous storage, missing that array front insertion requires shifting elements and is O(n), whereas linked list front insertion is O(1).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims the array is faster for inserting at the front due to contiguous storage, missing that array front insertion requires shifting elements and is O(n), whereas linked list front insertion is O(1).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-stacks-queues",
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.75); level 1 is nearest its estimate -1.30; lists misconceptions not yet probed: ds.arrays-strings.front-insert-constant, ds.complexity.count-loops-for-big-o, ds.complexity.short-code-is-fast",
+      "prompt": "A script keeps pending jobs in a Python list: it adds jobs with `jobs.append(job)` and takes the next one with `jobs.pop(0)`. It works fine with 100 jobs, but draining a backlog of one million jobs with `while jobs: handle(jobs.pop(0))` is extremely slow. Why? What is the total cost of draining the list, and what would you use instead?",
+      "answer": "I would use collections.deque since it provides O(1) append and popleft, making draining the queue O(n).",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          1,
+          2,
+          2
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified collections.deque, the O(1) complexity of popleft, and the O(n) total cost. Although they didn't explicitly explain the shifting mechanism of list.pop(0) in their very brief answer, they understood the core issue and provided the exact correct solution.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          1,
+          2,
+          2
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified collections.deque, the O(1) complexity of popleft, and the O(n) total cost. Although they didn't explicitly explain the shifting mechanism of list.pop(0) in their very brief answer, they understood the core issue and provided the exact correct solution.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.9465,
+          "se": 0.6737,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; lists a suspected misconception to confirm: py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "It prints  \n\n```\n['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10.0, nan, 30.0, 25.0]\n```  \n\nbecause `sort_values` returns a new sorted frame that isn’t stored, so `df` stays in its original order; `df.loc[1:2,\"name\"]` selects rows with labels 1 and 2 (inclusive); and when assigning `passed[\"score\"]-60` to the new column `bonus`, pandas aligns the values by index, leaving a `NaN` for the row (label 1) that isn’t in `passed`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly predicts all three outputs and accurately explains all key points: that sort_values is not in-place, that loc slicing is label-based and inclusive, and that column assignment aligns by index labels resulting in NaN.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly predicts all three outputs and accurately explains all key points: that sort_values is not in-place, that loc slicing is label-based and inclusive, and that column assignment aligns by index labels resulting in NaN.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.9465,
+          "se": 0.6737,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-joins"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; lists a suspected misconception to confirm: sql.joins.join-never-duplicates",
+      "prompt": "customers has 3 rows: Asha, Ben and Chen. orders has 3 rows: two orders by Asha (amounts 50 and 200) and one by Chen (amount 300); Ben has none. How many rows does each of these return, and why: (a) FROM customers, orders with no WHERE clause; (b) customers INNER JOIN orders ON orders.customer_id = customers.id; (c) the same with LEFT JOIN; (d) that LEFT JOIN plus WHERE orders.amount > 100?",
+      "answer": "(a) 9 rows – the Cartesian product returns every combination of the three customers with the three orders.  \n(b) 2 rows – each customer appears at most once, so only Asha and Chen show up (Ben has no matching order).  \n(c) 3 rows – the left join keeps all three customers, giving one row for Asha, one for Chen, and one for Ben with nulls for the order columns.  \n(d) 2 rows – after the left join, the WHERE clause keeps only the rows where the order amount is greater than 100, which are Asha’s 200‑order and Chen’s 300‑order.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.join-never-duplicates",
+        "follow_up": "If a customer has two orders in the orders table, how many rows would an inner join produce for that customer, and why?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "follow_up": "If a customer has two orders in the orders table, how many rows would an inner join produce for that customer, and why?",
+            "confidence_expressed": "high",
+            "supporting_quote": "each customer appears at most once, so only Asha and Chen show up",
+            "evidence_reason": "The candidate explicitly states that each customer appears at most once, which matches the belief that a join returns at most one row per row of the left table rather than multiple rows for multiple matches.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "follow_up": "If a customer in the left table has two matching orders in the right table, how many rows will an INNER JOIN return for that customer?",
+            "confidence_expressed": "high",
+            "supporting_quote": "each customer appears at most once, so only Asha and Chen show up",
+            "evidence_reason": "The candidate explicitly states that each customer appears at most once in a join, matching the belief that a join returns at most one row per row of the left table rather than multiple rows for multiple matches.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.join-never-duplicates",
+            "follow_up": "If a customer has two separate orders in the orders table, how many times will that customer appear in an inner join between customers and orders?",
+            "confidence_expressed": "high",
+            "supporting_quote": "each customer appears at most once, so only Asha and Chen show up",
+            "evidence_reason": "The candidate explicitly states that each customer appears at most once in an inner join, reflecting the belief that joins do not duplicate rows for multiple matches.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "each customer appears at most once, so only Asha and Chen show up",
+        "evidence_reason": "The candidate explicitly states that each customer appears at most once, which matches the belief that a join returns at most one row per row of the left table rather than multiple rows for multiple matches.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate incorrectly stated that the inner join returns 2 rows because 'each customer appears at most once' and missed that Asha appears twice (matching her two orders). Consequently, they got the counts for (b) and (c) wrong.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate incorrectly stated that the inner join returns 2 rows because 'each customer appears at most once' and missed that Asha appears twice (matching her two orders). Consequently, they got the counts for (b) and (c) wrong.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.5036,
+          "se": 0.6709,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.9465,
+          "se": 0.6737,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-005",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.joins.join-never-duplicates",
+        "expected_score": 0,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.67); level 1 is nearest its estimate -0.95; lists misconceptions not yet probed: ds.complexity.big-o-is-exact-time, ds.complexity.constants-change-class",
+      "prompt": "Algorithm A always takes 50n steps and algorithm B takes n² steps on an input of size n. What is the Big-O of each? Which one needs fewer steps when n = 10, and which when n = 1,000? What does this tell you about what Big-O does and does not promise?",
+      "answer": "Algorithm A runs in Θ(n) (O(n) after dropping the constant 50) and algorithm B runs in Θ(n²) (O(n²)). For n = 10, B uses 100 steps versus A’s 500, so B is faster; for n = 1,000, A uses 50 000 steps versus B’s 1 000 000, so A is faster. This shows that Big‑O describes how the cost grows for large inputs and ignores constant factors, so a higher‑order algorithm can still beat a lower‑order one on small inputs.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the Big-O classes, performed both step comparisons accurately, and explained that Big-O describes growth for large inputs rather than exact running times.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the Big-O classes, performed both step comparisons accurately, and explained that Big-O describes growth for large inputs rather than exact running times.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.5036,
+          "se": 0.6709,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.5874,
+          "se": 0.6062,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-schema-constraints",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.67); level 1 is nearest its estimate -0.50; lists misconceptions not yet probed: sql.schema-constraints.fk-must-be-unique, sql.schema-constraints.pk-needs-distinct, sql.select-filter.distinct-per-column",
+      "prompt": "orders.id is the primary key and orders.customer_id is a foreign key to customers.id. What does this query return, and why? Would SELECT DISTINCT id FROM orders return fewer rows than SELECT id FROM orders?\n\nSELECT DISTINCT customer_id, status\nFROM orders\nORDER BY customer_id, status;\n\nTable orders:\nid | customer_id | status\n101 | 1 | paid\n102 | 1 | paid\n103 | 2 | refunded\n104 | 1 | refunded\n105 | 3 | paid",
+      "answer": "The query returns three rows – one for each distinct customer_id value, because the DISTINCT clause only looks at the customer_id column and ignores the status column, so the two rows for customer 1 are collapsed into a single result. Since id is the primary key, SELECT DISTINCT id and SELECT id would give the same number of rows.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.select-filter.distinct-per-column",
+        "follow_up": "If SELECT DISTINCT customer_id, status only looked at customer_id, what would happen to the two different statuses for customer 1?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-per-column",
+            "follow_up": "If SELECT DISTINCT customer_id, status only looked at customer_id, what would happen to the two different statuses for customer 1?",
+            "confidence_expressed": "high",
+            "supporting_quote": "because the DISTINCT clause only looks at the customer_id column and ignores the status column",
+            "evidence_reason": "The candidate explicitly states that DISTINCT only looks at the first column and ignores the second column, which is the exact definition of sql.select-filter.distinct-per-column.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-per-column",
+            "follow_up": "What happens in the output if you select customer_id and status without DISTINCT, and why do both rows for customer 1 still appear?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the DISTINCT clause only looks at the customer_id column and ignores the status column, so the two rows for customer 1 are collapsed into a single result.",
+            "evidence_reason": "The candidate explicitly asserts that DISTINCT operates column-by-column, ignoring the status column when it evaluates customer_id.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-per-column",
+            "follow_up": "What happens to the status values when the two rows for customer 1 are collapsed into one?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the DISTINCT clause only looks at the customer_id column and ignores the status column",
+            "evidence_reason": "The candidate explicitly states that DISTINCT only evaluates the first column after it and ignores the remaining columns in the SELECT list, which matches sql.select-filter.distinct-per-column.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "because the DISTINCT clause only looks at the customer_id column and ignores the status column",
+        "evidence_reason": "The candidate explicitly states that DISTINCT only looks at the first column and ignores the second column, which is the exact definition of sql.select-filter.distinct-per-column.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If SELECT DISTINCT customer_id, status only looked at customer_id, what would happen to the two different statuses for customer 1?",
+          "answer": "If DISTINCT considered only customer_id, the two rows for customer 1 (one paid and one refunded) would be merged into a single result row, so only one of those statuses would be shown and the other would be lost.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-per-column",
+            "follow_up": "If SELECT DISTINCT customer_id, status is executed, how many rows are returned for customer 1 and what are their statuses?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.select-filter.distinct-per-column",
+                "follow_up": "If SELECT DISTINCT customer_id, status is executed, how many rows are returned for customer 1 and what are their statuses?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If DISTINCT considered only customer_id, the two rows for customer 1 (one paid and one refunded) would be merged into a single result row",
+                "evidence_reason": "The candidate continues to show the belief that DISTINCT can be considered to act on just one column at a time ('If DISTINCT considered only customer_id...'), matching sql.select-filter.distinct-per-column.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.select-filter.distinct-per-column",
+                "follow_up": "In this specific query, when SELECT DISTINCT customer_id, status is executed, how many columns are used to determine whether a row is a duplicate?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If DISTINCT considered only customer_id, the two rows for customer 1 (one paid and one refunded) would be merged into a single result row",
+                "evidence_reason": "The candidate continues to express the belief that DISTINCT can operate or be thought of as considering only the first column ('customer_id'), which aligns directly with the misconception that DISTINCT filters per-column rather than on the full selected combination.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.select-filter.distinct-per-column",
+                "follow_up": "If SELECT DISTINCT customer_id, status is executed, how many rows are returned for customer 1, and which of their statuses appear in the result?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If DISTINCT considered only customer_id, the two rows for customer 1 (one paid and one refunded) would be merged into a single result row",
+                "evidence_reason": "The candidate asserts a hypothetical where DISTINCT acts only on the customer_id column rather than the combination of all selected columns, matching the misconception that DISTINCT applies per-column.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "If DISTINCT considered only customer_id, the two rows for customer 1 (one paid and one refunded) would be merged into a single result row",
+            "evidence_reason": "The candidate continues to show the belief that DISTINCT can be considered to act on just one column at a time ('If DISTINCT considered only customer_id...'), matching sql.select-filter.distinct-per-column.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If SELECT DISTINCT customer_id, status is executed, how many rows are returned for customer 1 and what are their statuses?",
+          "answer": "It will return two rows for customer 1—one with status paid and one with status refunded, because DISTINCT treats each (customer_id, status) pair as a separate value.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate initially showed the misconception that DISTINCT only applies to the first column, but corrected this after follow-up questions to correctly identify that DISTINCT applies to the whole column combination, resulting in four rows, and correctly recognized that DISTINCT id returns the same number of rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate shows the misconception that DISTINCT applies per column rather than to the entire row combination, incorrectly stating the query returns three rows. Although they correctly note that SELECT DISTINCT id returns the same number of rows, the fundamental misunderstanding of DISTINCT with multiple columns results in a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.2205,
+          "se": 0.6123,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.5874,
+          "se": 0.6062,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-014",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.61; lists a suspected misconception to confirm: py.pandas.positional-alignment",
+      "prompt": "An analyst makes top = df[df[\"sales\"] > 100].sort_values(\"region\"), calls top.reset_index(drop=True) on its own line, and then sets df[\"top_sales\"] = top[\"sales\"]. Rows that were filtered out show NaN, but the other rows have their own correct values. They then change the middle line to top = top.reset_index(drop=True), and now the numbers land on the wrong rows. Explain both results.",
+      "answer": "In the first version, because `reset_index(drop=True)` is called separately, the original index of `top` stays the same when assigning, so the values line up with the correct rows; when you assign the result of `reset_index` back to `top`, the index gets renumbered and the assignment matches the new sequential positions, which shifts the numbers to the wrong rows.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "When you assign `top['sales']` to a new column in `df`, how does pandas decide which row of `df` receives each value from the Series?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "When you assign `top['sales']` to a new column in `df`, how does pandas decide which row of `df` receives each value from the Series?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the assignment matches the new sequential positions",
+            "evidence_reason": "The candidate explicitly states that pandas assignment matches values based on new sequential positions rather than index labels.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "When you assign top['sales'] back to df['top_sales'], what index labels does pandas use to match the rows between top and df?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the assignment matches the new sequential positions",
+            "evidence_reason": "The candidate explicitly asserts that assignment matches values based on new sequential positions rather than index labels.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "When top has sequential index labels 0, 1, 2, how does pandas decide which row of df receives each value during df[\"top_sales\"] = top[\"sales\"]?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the assignment matches the new sequential positions, which shifts the numbers to the wrong rows",
+            "evidence_reason": "The candidate explicitly asserts that the assignment matches values based on their new sequential positions rather than aligning by index labels.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "the assignment matches the new sequential positions",
+        "evidence_reason": "The candidate explicitly states that pandas assignment matches values based on new sequential positions rather than index labels.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          2,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identifies that pandas aligns by index and that reassigning the reset index changes the index and leads to mismatched rows. However, they miss explaining why the unassigned reset_index had no effect (that it returns a new DataFrame rather than modifying in place).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          2,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identifies that pandas aligns by index and that reassigning the reset index changes the index and leads to mismatched rows. However, they miss explaining why the unassigned reset_index had no effect (that it returns a new DataFrame rather than modifying in place).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6552,
+          "se": 0.6094,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.2205,
+          "se": 0.6123,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.5874,
+          "se": 0.6062,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.61); level 2 is nearest its estimate -0.22; lists misconceptions not yet probed: sql.aggregation.aggregate-in-where, sql.aggregation.count-group-column-is-one, sql.aggregation.group-by-only-sorts",
+      "prompt": "To find cities with at least two stores, a colleague starts from SELECT city, COUNT(city) FROM stores GROUP BY city. What does GROUP BY do to the rows, and what does COUNT(city) give for each group? Should the 'at least two stores' condition go in WHERE or HAVING, and why?",
+      "answer": "GROUP BY gathers all rows that share the same city into a single result row for that city, and COUNT(city) returns the number of non‑NULL rows (stores) in each of those groups; the “at least two stores” test must be placed in a HAVING clause (e.g., HAVING COUNT(city) ≥ 2) because HAVING filters after the groups are formed, whereas WHERE works on individual rows before aggregation.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that GROUP BY produces one row per group, that COUNT(city) counts the non-NULL rows in each group, and that the aggregate condition belongs in HAVING because WHERE filters rows before grouping.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that GROUP BY produces one row per group, that COUNT(city) counts the non-NULL rows in each group, and that the aggregate condition belongs in HAVING because WHERE filters rows before grouping.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6552,
+          "se": 0.6094,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.1321,
+          "se": 0.5722,
+          "level": 2,
+          "n": 5
+        },
+        "ds": {
+          "estimate": -0.5874,
+          "se": 0.6062,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +0.66; lists misconceptions not yet probed: py.concurrency.async-multithreaded, py.concurrency.async-preempts, py.concurrency.gil-thread-safe",
+      "prompt": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+      "answer": "Because `counter += 1` is a read‑modify‑write operation that can be interleaved between threads, the two threads can read the same value and one increment gets lost, so the final count may be below 200 000 (each thread actually runs 100 001 increments). The GIL does not prevent this; you need a `Lock`, and with asyncio the single‑threaded event loop won’t pre‑empt the increment unless there’s an `await` inside it.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the non-atomic read-modify-write nature of counter += 1 under threads, notes the need for a Lock, and correctly understands that asyncio's single-threaded event loop only switches at await points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the non-atomic read-modify-write nature of counter += 1 under threads, notes the need for a Lock, and correctly understands that asyncio's single-threaded event loop only switches at await points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.0239,
+          "se": 0.5674,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 0.1321,
+          "se": 0.5722,
+          "level": 2,
+          "n": 5
+        },
+        "ds": {
+          "estimate": -0.5874,
+          "se": 0.6062,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "slip",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 15,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 1 is nearest its estimate -0.59; lists misconceptions not yet probed: ds.arrays-strings.append-always-copies, ds.arrays-strings.strings-mutable",
+      "prompt": "Python strings are immutable. What does that mean for `s.upper()` and for `s += 'x'`, and what happens if you run `s[0] = 'X'`? If you build a 100,000-character string one character at a time, compare doing `s += ch` in a loop with appending each character to a list and calling `''.join(chars)` at the end.",
+      "answer": "`s.upper()` returns a new string and `s += 'x'` also creates a new string and rebinds the name, while `s[0] = 'X'` raises a TypeError because strings are immutable; building a large string by appending characters to a list and then doing `''.join(chars)` is much more efficient than repeatedly using `s += ch` in a loop.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that strings are immutable, how upper(), s += 'x', and s[0] = 'X' behave, and correctly identified the efficiency difference between list append/join and repeated s += ch.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that strings are immutable, how upper(), s += 'x', and s[0] = 'X' behave, and correctly identified the efficiency difference between list append/join and repeated s += ch.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.0239,
+          "se": 0.5674,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 0.1321,
+          "se": 0.5722,
+          "level": 2,
+          "n": 5
+        },
+        "ds": {
+          "estimate": -0.3381,
+          "se": 0.5655,
+          "level": 1,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-005",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 23,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 1.0239,
+        "se": 0.5674,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.69972,
+        "level_probabilities": {
+          "0": 2.7e-05,
+          "1": 0.010041,
+          "2": 0.290212,
+          "3": 0.69972
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.1321,
+        "se": 0.5722,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.613199,
+        "level_probabilities": {
+          "0": 0.006022,
+          "1": 0.232417,
+          "2": 0.613199,
+          "3": 0.148362
+        },
+        "meets_minimum": null
+      },
+      "ds": {
+        "level": 1,
+        "estimate": -0.3381,
+        "se": 0.5655,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.505056,
+        "level_probabilities": {
+          "0": 0.045882,
+          "1": 0.505056,
+          "2": 0.416334,
+          "3": 0.032727
+        },
+        "meets_minimum": null
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether sql reaches level 2; cannot tell whether ds reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "sql.joins.join-never-duplicates",
+        "confirmed": true,
+        "evidence_turns": [
+          2,
+          9
+        ],
+        "vote_share": 0.917,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 0,
+            "reply_text": "The query will return one row per customer, so Asha appears once with a single order counted (n_orders = 1) and a total amount of 250, Ben appears once with 0 orders and a total of 0, and Chen appears once with 1 order (the NULL amount is treated as 0), giving n_orders = 1 and total = 0.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "Asha appears once with a single order counted (n_orders = 1)",
+            "quote_start": 47,
+            "quote_end": 107,
+            "reason": "The candidate explicitly states Asha appears once with a single order, ignoring that Asha has two orders (id 10 and 11) in the orders table which would create two matching rows in the join before aggregation."
+          },
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 1,
+            "reply_text": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+            "vote_share": 1.0,
+            "supporting_quote": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+            "quote_start": 0,
+            "quote_end": 85,
+            "reason": "The candidate explicitly states that the join produces a single row for Asha despite Asha having multiple orders in the orders table, demonstrating the listed belief that a join returns at most one row per row of the left table."
+          },
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 2,
+            "reply_text": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+            "vote_share": 1.0,
+            "supporting_quote": "The LEFT JOIN will produce just a single row for Asha before the GROUP BY is applied.",
+            "quote_start": 0,
+            "quote_end": 85,
+            "reason": "The candidate explicitly repeats the belief that a join produces at most one row per left-table row even when multiple orders match."
+          },
+          {
+            "question_id": "SQL-L2-005",
+            "turn": 9,
+            "reply_index": 0,
+            "reply_text": "(a) 9 rows – the Cartesian product returns every combination of the three customers with the three orders.  \n(b) 2 rows – each customer appears at most once, so only Asha and Chen show up (Ben has no matching order).  \n(c) 3 rows – the left join keeps all three customers, giving one row for Asha, one for Chen, and one for Ben with nulls for the order columns.  \n(d) 2 rows – after the left join, the WHERE clause keeps only the rows where the order amount is greater than 100, which are Asha’s 200‑order and Chen’s 300‑order.",
+            "vote_share": 1.0,
+            "supporting_quote": "each customer appears at most once, so only Asha and Chen show up",
+            "quote_start": 122,
+            "quote_end": 187,
+            "reason": "The candidate explicitly states that each customer appears at most once, which matches the belief that a join returns at most one row per row of the left table rather than multiple rows for multiple matches."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "ds.linked-lists.insert-shifts-nodes",
+        "confirmed": true,
+        "evidence_turns": [
+          3,
+          6
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "The hash map stores the values while the linked list just keeps them in the order they were inserted, so on a hit we look up the key in the map, then move the corresponding node to the front of the list by copying its data over the head element; because both structures are constant‑size, get and put end up being constant‑time operations on average.",
+            "vote_share": 1.0,
+            "supporting_quote": "move the corresponding node to the front of the list by copying its data over the head element",
+            "quote_start": 150,
+            "quote_end": 244,
+            "reason": "The candidate believes that moving an element to the front involves copying data rather than updating pointers, reflecting a misconception about how linked list operations manipulate elements."
+          },
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 1,
+            "reply_text": "When we move an item to the front we actually slide every existing node down one slot in the list, so the former head’s data gets overwritten and the rest of the list is shifted down to make room for the new front element.",
+            "vote_share": 1.0,
+            "supporting_quote": "we actually slide every existing node down one slot in the list, so the former head’s data gets overwritten and the rest of the list is shifted down",
+            "quote_start": 34,
+            "quote_end": 182,
+            "reason": "The candidate explicitly asserts that inserting a node or moving it to the front involves shifting all existing nodes down and overwriting data, which matches the belief that linked lists behave like arrays regarding insertion shifts."
+          },
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 2,
+            "reply_text": "If you insert a new node at the very beginning, the second node gets pushed down and its memory address changes to the next slot in the underlying array, so it ends up at a new location.",
+            "vote_share": 1.0,
+            "supporting_quote": "the second node gets pushed down and its memory address changes to the next slot in the underlying array",
+            "quote_start": 48,
+            "quote_end": 152,
+            "reason": "The candidate explicitly states that linked list nodes are stored in an underlying array where inserting a new node causes subsequent nodes to shift down into new memory slots, which matches the belief that linked list insertion requires shifting elements like an array."
+          },
+          {
+            "question_id": "DS-L1-011",
+            "turn": 6,
+            "reply_index": 0,
+            "reply_text": "The array will be faster for both reading the 1,000th element and for inserting at the front, because arrays store elements contiguously and allow quick updates, while a linked list requires extra pointer dereferencing for each operation.",
+            "vote_share": 1.0,
+            "supporting_quote": "The array will be faster for both reading the 1,000th element and for inserting at the front",
+            "quote_start": 0,
+            "quote_end": 92,
+            "reason": "The candidate asserts that the array is faster for inserting at the front because arrays use contiguous storage, implying that linked lists are slower at front insertion due to pointer overhead rather than recognizing front insertion as O(1)."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "py.pandas.positional-alignment",
+        "confirmed": true,
+        "evidence_turns": [
+          4,
+          12
+        ],
+        "vote_share": 0.917,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 0,
+            "reply_text": "It will print `[11, 22, 33]` for the first line, then `22.0` for the mean, and finally `30` for the sum of the slice.",
+            "vote_share": 1.0,
+            "supporting_quote": "It will print `[11, 22, 33]` for the first line",
+            "quote_start": 0,
+            "quote_end": 47,
+            "reason": "The candidate added the series element by element based on their positions (10+1=11, 20+2=22, 30+3=33), demonstrating the positional alignment misconception."
+          },
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 1,
+            "reply_text": "When you add the two Series, pandas just lines them up positionally, so the indexes are basically ignored and the values are added in order; the resulting Series ends up with the same index labels as the first Series, s1, and any extra label from s2 is dropped.",
+            "vote_share": 1.0,
+            "supporting_quote": "pandas just lines them up positionally, so the indexes are basically ignored and the values are added in order",
+            "quote_start": 29,
+            "quote_end": 139,
+            "reason": "The candidate explicitly states that pandas lines up Series positionally and ignores indexes, which directly defines the listed misconception py.pandas.positional-alignment."
+          },
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 2,
+            "reply_text": "I’d expect the resulting Series to keep the labels from the first series, so it would have the index ['a', 'b', 'c'] after the addition.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "I’d expect the resulting Series to keep the labels from the first series, so it would have the index ['a', 'b', 'c'] after the addition.",
+            "quote_start": 0,
+            "quote_end": 136,
+            "reason": "The candidate explicitly asserts that the resulting Series keeps only the index of the first series, reflecting positional alignment and dropping unmatched labels."
+          },
+          {
+            "question_id": "PY-L3-012",
+            "turn": 12,
+            "reply_index": 0,
+            "reply_text": "In the first version, because `reset_index(drop=True)` is called separately, the original index of `top` stays the same when assigning, so the values line up with the correct rows; when you assign the result of `reset_index` back to `top`, the index gets renumbered and the assignment matches the new sequential positions, which shifts the numbers to the wrong rows.",
+            "vote_share": 1.0,
+            "supporting_quote": "the assignment matches the new sequential positions",
+            "quote_start": 270,
+            "quote_end": 321,
+            "reason": "The candidate explicitly states that pandas assignment matches values based on new sequential positions rather than index labels."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "sql.select-filter.distinct-per-column",
+        "confirmed": false,
+        "evidence_turns": [
+          11
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L1-014",
+            "turn": 11,
+            "reply_index": 0,
+            "reply_text": "The query returns three rows – one for each distinct customer_id value, because the DISTINCT clause only looks at the customer_id column and ignores the status column, so the two rows for customer 1 are collapsed into a single result. Since id is the primary key, SELECT DISTINCT id and SELECT id would give the same number of rows.",
+            "vote_share": 1.0,
+            "supporting_quote": "because the DISTINCT clause only looks at the customer_id column and ignores the status column",
+            "quote_start": 72,
+            "quote_end": 166,
+            "reason": "The candidate explicitly states that DISTINCT only looks at the first column and ignores the second column, which is the exact definition of sql.select-filter.distinct-per-column."
+          },
+          {
+            "question_id": "SQL-L1-014",
+            "turn": 11,
+            "reply_index": 1,
+            "reply_text": "If DISTINCT considered only customer_id, the two rows for customer 1 (one paid and one refunded) would be merged into a single result row, so only one of those statuses would be shown and the other would be lost.",
+            "vote_share": 1.0,
+            "supporting_quote": "If DISTINCT considered only customer_id, the two rows for customer 1 (one paid and one refunded) would be merged into a single result row",
+            "quote_start": 0,
+            "quote_end": 137,
+            "reason": "The candidate continues to show the belief that DISTINCT can be considered to act on just one column at a time ('If DISTINCT considered only customer_id...'), matching sql.select-filter.distinct-per-column."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.index-needs-scan",
+      "ds.arrays-strings.strings-mutable",
+      "ds.complexity.big-o-is-exact-time",
+      "ds.complexity.constants-change-class",
+      "ds.complexity.count-loops-for-big-o",
+      "ds.complexity.short-code-is-fast",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.index-constant-time",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.gil-thread-safe",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.aggregate-in-where",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.joins.where-filter-keeps-left-rows",
+      "sql.null.equals-null-matches",
+      "sql.null.not-equal-includes-null",
+      "sql.schema-constraints.fk-must-be-unique",
+      "sql.schema-constraints.pk-needs-distinct",
+      "sql.select-filter.distinct-per-column"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-schema-constraints",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists"
+      ],
+      "untested": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "sql-indexes-performance",
+        "sql-transactions",
+        "ds-trees-bst"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether sql reaches level 2; cannot tell whether ds reaches level 2. Estimated levels: py level 3 (needs 2), sql level 2 (needs 2), ds level 1 (needs 2). Confirmed misconception: Believes a join returns at most one row per row of the left table, rather than one row for every matching pair. Confirmed misconception: Believes inserting a node into a linked list requires shifting all later elements along (as in an array), so insertion after a known node is O(n), or that later nodes reattach automatically. Confirmed misconception: Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN. Suspected (insufficient corroboration) misconception: Believes DISTINCT applies only to the first column after it (or to each column separately), instead of removing rows whose whole combination of selected columns repeats."
+  },
+  "usage": {
+    "llm_calls": 127,
+    "api_calls": 45,
+    "input_tokens": 144981,
+    "output_tokens": 11764,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 127,
+        "api_calls": 45,
+        "input_tokens": 144981,
+        "output_tokens": 11764
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 0
+    },
+    "fit": false,
+    "misconceptions": [
+      "sql.joins.join-never-duplicates"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

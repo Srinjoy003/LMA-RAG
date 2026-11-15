@@ -1,0 +1,2752 @@
+{
+  "interview_id": "A5E-backend-engineer-CAND-002-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-002",
+  "started_at": "2026-11-14T05:34:07Z",
+  "finished_at": "2026-11-14T05:35:02Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The try block contains the code that may raise an exception, and if an exception occurs the remaining statements in that block are skipped and Python immediately looks for an except clause that matches the exception type, checking them in the order they appear and executing the first one that fits. The else suite runs only when the try block finishes normally without any exception being raised. The finally suite is executed in every case—whether the try block completes, an exception is handled, a return or break occurs, or the exception propagates—right before control leaves the whole try‑statement. If an exception is raised part‑way through the try, execution jumps to the matching except clause and then continues after the whole try/except/else/finally construct. If two except clauses could both match, the one that appears first in the source code is the one that runs.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate accurately explains the roles of all four blocks (try, except, else, finally), correctly notes that the first matching except clause runs from top to bottom, specifies that execution continues after the try statement, and correctly affirms that finally runs even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate accurately explains the roles of all four blocks (try, except, else, finally), correctly notes that the first matching except clause runs from top to bottom, specifies that execution continues after the try statement, and correctly affirms that finally runs even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query returns three rows – one for each customer. Asha has two matching orders, so COUNT(o.id) is 2 and the SUM of the amounts (250 + 80) is 330. Ben has no orders, so the LEFT JOIN produces a single row with NULLs for the order columns; COUNT(o.id) skips the NULL and returns 0, while SUM of only NULL values yields NULL. Chen matches one order whose amount is NULL, so COUNT(o.id) is 1 but the total sum is NULL. The row with order 13 is excluded because its customer_id is NULL and therefore does not join to any customer.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the specific values and NULL handling for counts and sums, and explained why unjoined orders are excluded.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the specific values and NULL handling for counts and sums, and explained why unjoined orders are excluded.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map provides a direct average‑O(1) lookup from a key to its node in the doubly‑linked list, so we can locate the entry without scanning. The doubly‑linked list stores the entries in usage order, with the most‑recently used at the head and the least‑recently used at the tail, which makes eviction easy. On a cache hit for key k, we use the map to get k’s node, unlink it from its current position by rewiring its predecessor and successor, and then splice it to the front of the list, updating a few pointers. A put operation either updates an existing node (moving it to the front the same way) or creates a new node at the head and adds a map entry; if the capacity is exceeded we remove the tail node and delete its key from the map. Because each operation consists of a constant number of hash‑table lookups/inserts and pointer updates, both get and put run in O(1) average time.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of both the hash map and the doubly linked list, details the O(1) pointer-level move to the front on a hit, correctly handles puts and capacity evictions, and clearly justifies the average O(1) time complexity.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of both the hash map and the doubly linked list, details the O(1) pointer-level move to the front on a hit, correctly handles puts and capacity evictions, and clearly justifies the average O(1) time complexity.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: py.pandas.loc-end-exclusive, py.pandas.nan-treated-as-zero, py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ns1 = pd.Series([10, 20, 30], index=[\"a\", \"b\", \"c\"])\ns2 = pd.Series([1, 2, 3], index=[\"b\", \"c\", \"d\"])\ntotal = s1 + s2\nprint(total.tolist())\nprint(total.mean())\nprint(s1.loc[\"a\":\"b\"].sum())",
+      "answer": "The code creates two Series and adds them together, so the resulting Series will just contain the element‑wise sums in the order they appear, giving `[11, 22, 33]`. Converting that to a list prints `[11, 22, 33]`. The mean of those three numbers is `(11 + 22 + 33) / 3`, which equals `22.0`. Finally, `s1.loc[\"a\":\"b\"]` selects the values for “a” and “b”, which are `10` and `20`, and their sum is `30`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "What happens to the index labels of s1 and s2 when you add them together?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the index labels of s1 and s2 when you add them together?",
+            "confidence_expressed": "high",
+            "supporting_quote": "resulting Series will just contain the element‑wise sums in the order they appear, giving `[11, 22, 33]`",
+            "evidence_reason": "The candidate explicitly states that addition is done element-wise based on the order they appear rather than aligning them by index labels.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the labels 'a' and 'd' when s1 and s2 are added together?",
+            "confidence_expressed": "high",
+            "supporting_quote": "resulting Series will just contain the element‑wise sums in the order they appear, giving `[11, 22, 33]`",
+            "evidence_reason": "The candidate explicitly states that the Series add together by element position rather than by index label alignment, resulting in three elements.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the index labels when s1 and s2 are added together, and does pandas match elements by position or by index label?",
+            "confidence_expressed": "high",
+            "supporting_quote": "resulting Series will just contain the element‑wise sums in the order they appear, giving `[11, 22, 33]`",
+            "evidence_reason": "The candidate explicitly states that the addition performs element-wise sums based on order rather than index alignment.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "resulting Series will just contain the element‑wise sums in the order they appear, giving `[11, 22, 33]`",
+        "evidence_reason": "The candidate explicitly states that addition is done element-wise based on the order they appear rather than aligning them by index labels.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the index labels of s1 and s2 when you add them together?",
+          "answer": "When you add the two Series, pandas just lines them up based on their position in the objects, so the first element of s1 is added to the first element of s2, the second to the second, and so on. Because both Series have three entries, the result ends up with three values and the index is simply taken from the left‑hand operand, s1. The extra label “d” from s2 gets dropped since there’s no corresponding position in s1, and the label “a” from s1 remains even though s2 doesn’t have it. In short, the resulting index is just [\"a\", \"b\", \"c\"] and the values are the element‑wise sums of the matching positions.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If s2 had index ['x', 'y', 'z'] instead of ['b', 'c', 'd'], what would s1 + s2 look like under your rule?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s2 had index ['x', 'y', 'z'] instead of ['b', 'c', 'd'], what would s1 + s2 look like under your rule?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just lines them up based on their position in the objects, so the first element of s1 is added to the first element of s2",
+                "evidence_reason": "The candidate explicitly states that pandas adds Series based on their position rather than aligning them by index labels.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s2 had index ['x', 'y', 'z'] instead of ['b', 'c', 'd'], what do you think s1 + s2 would contain?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just lines them up based on their position in the objects, so the first element of s1 is added to the first element of s2",
+                "evidence_reason": "The candidate explicitly states that pandas adds Series by their position rather than aligning them by index labels.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s2 had index ['d', 'e', 'f'] instead, how would pandas align it with s1 when computing s1 + s2?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just lines them up based on their position in the objects, so the first element of s1 is added to the first element of s2",
+                "evidence_reason": "The candidate explicitly states that pandas aligns Series by their position rather than by their index labels.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "pandas just lines them up based on their position in the objects, so the first element of s1 is added to the first element of s2",
+            "evidence_reason": "The candidate explicitly states that pandas adds Series based on their position rather than aligning them by index labels.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If s2 had index ['x', 'y', 'z'] instead of ['b', 'c', 'd'], what would s1 + s2 look like under your rule?",
+          "answer": "If we just line up the two Series by their order, the first element of s1 (10) would be added to the first element of s2 (1), giving 11, then 20 + 2 = 22, and finally 30 + 3 = 33, so the resulting Series would look like `[11, 22, 33]`. Converting that to a list would print `[11, 22, 33]`. The mean of those three numbers would be `(11 + 22 + 33) / 3`, which is `22.0`. For the slice `s1.loc[\"a\":\"b\"]`, we’d still get the values for “a” and “b”, which are 10 and 20, and their sum is `30`. So the output would be the same as in the original example.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'], what index label does the first element of total get, and what is its value?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'], what index label does the first element of total get, and what is its value?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If we just line up the two Series by their order, the first element of s1 (10) would be added to the first element of s2 (1), giving 11",
+                "evidence_reason": "The candidate explicitly states that pandas adds Series by lining them up by their order (position) rather than matching them by index labels.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "What would be the index and values of total if s2 had an index of ['a', 'b', 'c'] instead of ['b', 'c', 'd']?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If we just line up the two Series by their order, the first element of s1 (10) would be added to the first element of s2 (1), giving 11, then 20 + 2 = 22, and finally 30 + 3 = 33",
+                "evidence_reason": "The candidate explicitly believes and asserts that pandas series arithmetic matches and adds elements by their position/order rather than by index labels.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'], what is the index label of the first element in the resulting Series after doing s1 + s2?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If we just line up the two Series by their order, the first element of s1 (10) would be added to the first element of s2 (1), giving 11",
+                "evidence_reason": "The candidate explicitly demonstrates the py.pandas.positional-alignment misconception by insisting that the Series add values together based on their order/position rather than their index labels.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "If we just line up the two Series by their order, the first element of s1 (10) would be added to the first element of s2 (1), giving 11",
+            "evidence_reason": "The candidate explicitly states that pandas adds Series by lining them up by their order (position) rather than matching them by index labels.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that pandas Series addition aligns elements by position rather than index label, which matches the listed misconception py.pandas.positional-alignment.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assumed pandas arithmetic aligns Series by position rather than index labels and treated NaN incorrectly, leading to a score of 0 according to the listed misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-008",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: sql.window-functions.collapses-rows, sql.window-functions.rank-functions-identical, sql.window-functions.running-sum-is-total",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The query will produce a result set with four columns: the original day and amount values, a “running” column that shows the total amount for each day, and an “rnk” column that assigns a sequential number based on the day ordering. Because the window functions are applied over the ordered days, the running total will increase each time a new day appears, so you’ll see a higher number on day 2 than on day 1, and it keeps growing for later days. The rank column simply numbers the rows from 1 upward, giving each row a unique rank value regardless of duplicate days. So you end up with a list where the first row has the smallest rank and the running total starts low and climbs as you move down the list.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.window-functions.rank-functions-identical",
+        "follow_up": "What would the rnk column show for the two rows where day is 2?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.rank-functions-identical",
+            "follow_up": "What would the rnk column show for the two rows where day is 2?",
+            "confidence_expressed": "medium",
+            "supporting_quote": "giving each row a unique rank value regardless of duplicate days",
+            "evidence_reason": "The candidate explicitly states that the rank column gives each row a unique rank value regardless of duplicate days, which reflects the misconception that ranking functions (like RANK) do not assign the same rank to tied rows and instead act like ROW_NUMBER.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.rank-functions-identical",
+            "follow_up": "If a table has two rows with the exact same day value, what exact values will the rnk column show for both of those rows?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving each row a unique rank value regardless of duplicate days",
+            "evidence_reason": "The candidate explicitly states that RANK gives each row a unique rank value regardless of duplicate days, which reflects the misconception that RANK does not handle ties (similar to ROW_NUMBER) and leaves no gaps or ties.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.rank-functions-identical",
+            "follow_up": "What rank value would both rows for day 2 receive in the rnk column, and what rank would day 3 get?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving each row a unique rank value regardless of duplicate days",
+            "evidence_reason": "The candidate explicitly states that the rank column assigns a unique rank to each row regardless of duplicate days, which matches the misconception that RANK does not produce ties.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "giving each row a unique rank value regardless of duplicate days",
+        "evidence_reason": "The candidate explicitly states that the rank column gives each row a unique rank value regardless of duplicate days, which reflects the misconception that ranking functions (like RANK) do not assign the same rank to tied rows and instead act like ROW_NUMBER.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What would the rnk column show for the two rows where day is 2?",
+          "answer": "The rank column will give each of the two rows with day = 2 a different number, because the window treats every row as distinct even if the day value repeats. The first row for day 2 will get rank 2, and the second one will get rank 3 since it comes after the first when ordered by amount. So you’ll see a sequential increase from the first day’s rank of 1 to 2 and 3 for the two day‑2 rows. The ranking just keeps counting upward regardless of the duplicate day values.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.rank-functions-identical",
+            "follow_up": "If RANK() gave distinct numbers to tied rows like day=2, how would that differ from ROW_NUMBER()?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "follow_up": "If RANK() gave distinct numbers to tied rows like day=2, how would that differ from ROW_NUMBER()?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The rank column will give each of the two rows with day = 2 a different number, because the window treats every row as distinct even if the day value repeats.",
+                "evidence_reason": "The candidate explicitly asserts that RANK assigns different sequential numbers to tied rows, demonstrating the listed misconception that ranking functions assign unique values to ties.",
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "follow_up": "If RANK() gave distinct numbers to tied rows like day 2, how would that differ from ROW_NUMBER()?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The rank column will give each of the two rows with day = 2 a different number, because the window treats every row as distinct even if the day value repeats.",
+                "evidence_reason": "The candidate explicitly asserts that RANK gives tied rows different sequential numbers (like 2 and 3) as if it treats them uniquely, showing the misconception that ranking functions assign unique numbers to ties rather than sharing them.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The rank column will give each of the two rows with day = 2 a different number, because the window treats every row as distinct even if the day value repeats.",
+            "evidence_reason": "The candidate explicitly asserts that RANK assigns different sequential numbers to tied rows, demonstrating the listed misconception that ranking functions assign unique values to ties.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If RANK() gave distinct numbers to tied rows like day=2, how would that differ from ROW_NUMBER()?",
+          "answer": "If RANK() were assigning a unique number to each row, it would behave just like ROW_NUMBER() – basically you’d get a simple incrementing counter regardless of whether the values are the same or not. In that case the two rows with day = 2 would get consecutive numbers (like 2 and 3) instead of sharing a rank, and the numbering would continue without any gaps. So the only difference would be that ROW_NUMBER() guarantees a distinct sequence, while RANK() would also give you a distinct sequence in this scenario. In practice you’d see the same kind of increasing numbers in the rnk column for every row.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.rank-functions-identical",
+            "follow_up": "If you have two rows with the exact same day value, what specific values will RANK() assign to both of them?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "follow_up": "If you have two rows with the exact same day value, what specific values will RANK() assign to both of them?",
+                "confidence_expressed": "high",
+                "supporting_quote": "while RANK() would also give you a distinct sequence in this scenario.",
+                "evidence_reason": "The candidate asserts that RANK() gives a distinct sequence for tied rows, demonstrating the belief that RANK behaves identically to ROW_NUMBER() and does not assign identical ranks to ties.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "follow_up": "If there are two rows with the exact same day value of 2, what exact rank values does RANK() assign to both of them according to the standard SQL behavior?",
+                "confidence_expressed": "high",
+                "supporting_quote": "So the only difference would be that ROW_NUMBER() guarantees a distinct sequence, while RANK() would also give you a distinct sequence in this scenario.",
+                "evidence_reason": "The candidate asserts that RANK() gives a distinct sequence of consecutive numbers similar to ROW_NUMBER() in this scenario, directly showing the listed misconception that RANK and ROW_NUMBER treat ties the same way without gaps.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "follow_up": "Looking at the definition of RANK() when there is a tie, do tied rows share the same rank value or do they get assigned different ranks?",
+                "confidence_expressed": "high",
+                "supporting_quote": "while RANK() would also give you a distinct sequence in this scenario.",
+                "evidence_reason": "The candidate asserts that RANK() gives a distinct sequence of numbers without shared ranks, expressing the listed misconception that RANK functions behave like ROW_NUMBER() and do not create ties or gaps.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "while RANK() would also give you a distinct sequence in this scenario.",
+            "evidence_reason": "The candidate asserts that RANK() gives a distinct sequence for tied rows, demonstrating the belief that RANK behaves identically to ROW_NUMBER() and does not assign identical ranks to ties.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that RANK behaves like ROW_NUMBER and gives distinct, consecutive values to tied rows without gaps, demonstrating misconception sql.window-functions.rank-functions-identical.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate incorrectly states that the running total increases only when a new day appears (missing that tied rows share the same running sum) and claims that the rank column gives each row a unique rank regardless of duplicates, missing how RANK handles ties and gaps.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: ds.graphs.bfs-dfs-swapped, ds.graphs.bfs-weighted-shortest, ds.graphs.dfs-finds-shortest",
+      "prompt": "What does this code print? What do the numbers mean, and would they still be the shortest distances if each edge had a different length?\n\nfrom collections import deque\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"E\"], \"C\": [\"D\"], \"D\": [\"E\"], \"E\": [\"F\"], \"F\": []}\n\ndef bfs(start):\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        node = q.popleft()\n        for nb in graph[node]:\n            if nb not in dist:\n                dist[nb] = dist[node] + 1\n                q.append(nb)\n    return dist\n\nprint(bfs(\"A\"))\n",
+      "answer": "The program prints `{'A': 0, 'B': 1, 'C': 1, 'E': 2, 'D': 2, 'F': 3}`. It uses a deque with `popleft()` as a FIFO queue, so the traversal is a breadth‑first search that explores all nodes one edge away from the start before moving to nodes two edges away, and so on. Each number in the resulting dictionary is the minimum number of hops (edges) required to reach that node from `A`. If the graph had weighted edges with different lengths, these hop counts would no longer represent true shortest‑path distances; you would need an algorithm like Dijkstra’s to compute the weighted shortest paths.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the exact correct output, correctly identified the algorithm as a breadth-first search using a FIFO queue, explained that the numbers represent the minimum hop counts, and correctly noted that Dijkstra's algorithm would be needed if the edges had different lengths.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the exact correct output, correctly identified the algorithm as a breadth-first search using a FIFO queue, explained that the numbers represent the minimum hop counts, and correctly noted that Dijkstra's algorithm would be needed if the edges had different lengths.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-heaps"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; lists misconceptions not yet probed: ds.heaps.heap-is-sorted, ds.heaps.max-at-last-index, ds.heaps.pop-min-constant",
+      "prompt": "In a binary min-heap stored in an array, where is the smallest element and where is the largest? What do inserting an item and removing the minimum cost, and why?",
+      "answer": "The smallest element in a binary min‑heap is always at the root, which is stored at index 0 of the array. Because the heap only enforces the parent‑≤‑children rule, the array isn’t sorted, so the largest value can be anywhere in the leaf level – roughly the second half of the array – and must be found by scanning those leaves (O(n)). Inserting a new item is done by appending it at the end of the array and then sifting it up the tree, which takes O(log n) time. Removing the minimum replaces the root with the last element and then sifts that element down, also O(log n). Simply reading the minimum without removal is O(1).",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the minimum is at the root, the maximum is among the leaves, and accurately described the O(log n) time complexities and mechanisms for insertion and removal.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the minimum is at the root, the maximum is among the leaves, and accurately described the O(log n) time complexities and mechanisms for insertion and removal.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; lists a suspected misconception to confirm: py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "The code will first sort the DataFrame by the “score” column, so the rows are reordered from the lowest score to the highest. After that, when we print `df[\"name\"].tolist()` it will output the names in that sorted order: `[\"Bo\", \"Ann\", \"Di\", \"Cy\"]`. The next line uses `df.loc[1:2, \"name\"]`, which selects the second and third rows of the sorted DataFrame, so the list will be `[\"Ann\", \"Di\"]`. Finally, the “bonus” column is calculated by taking the scores that are at least 70, subtracting 60, and assigning those values back to the DataFrame, so the “bonus” list will be `[10, NaN, 30, 25]`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.method-modifies-inplace",
+        "follow_up": "If you check `df` right after calling `df.sort_values(\"score\")` without assigning it to anything, what order are the rows in?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.method-modifies-inplace",
+            "follow_up": "If you check `df` right after calling `df.sort_values(\"score\")` without assigning it to anything, what order are the rows in?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The code will first sort the DataFrame by the “score” column, so the rows are reordered from the lowest score to the highest. After that, when we print `df[\"name\"].tolist()` it will output the names in that sorted order",
+            "evidence_reason": "The candidate explicitly states that calling sort_values directly reorders the rows of the existing DataFrame and that the subsequent print reflects that sorted order, showing the belief that the method modifies the object in place.",
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.method-modifies-inplace",
+            "follow_up": "If you check the value of df after calling df.sort_values(\"score\") without reassigning it, what order are the rows in?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The code will first sort the DataFrame by the “score” column, so the rows are reordered from the lowest score to the highest.",
+            "evidence_reason": "The candidate states that the DataFrame itself is reordered by sort_values, demonstrating the misconception that DataFrame methods modify the object in place.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The code will first sort the DataFrame by the “score” column, so the rows are reordered from the lowest score to the highest. After that, when we print `df[\"name\"].tolist()` it will output the names in that sorted order",
+        "evidence_reason": "The candidate explicitly states that calling sort_values directly reorders the rows of the existing DataFrame and that the subsequent print reflects that sorted order, showing the belief that the method modifies the object in place.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you check `df` right after calling `df.sort_values(\"score\")` without assigning it to anything, what order are the rows in?",
+          "answer": "Sure, after calling `df.sort_values(\"score\")` the DataFrame is actually rearranged in place, so the rows are now ordered from the lowest score to the highest. That means the first row becomes Bo with a score of 55, followed by Ann, Di, and finally Cy. Because the sorting happened directly on `df`, any subsequent operations you do on `df` will see that new order. So if you inspect `df` right after the `sort_values` call, you’ll see the rows already sorted by the `score` column.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.method-modifies-inplace",
+            "follow_up": "What value does the expression df.sort_values(\"score\") return when it is executed?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "follow_up": "What value does the expression df.sort_values(\"score\") return when it is executed?",
+                "confidence_expressed": "high",
+                "supporting_quote": "after calling `df.sort_values(\"score\")` the DataFrame is actually rearranged in place",
+                "evidence_reason": "The candidate explicitly states that sort_values rearranges the DataFrame in place, which matches the belief that methods like sort_values modify the original object rather than returning a new one.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "follow_up": "What value does the expression df.sort_values(\"score\") return if you assign it to a variable, and does df itself change if you don't?",
+                "confidence_expressed": "high",
+                "supporting_quote": "after calling `df.sort_values(\"score\")` the DataFrame is actually rearranged in place",
+                "evidence_reason": "The candidate explicitly asserts that the DataFrame is rearranged in place by sort_values(), which matches the listed misconception py.pandas.method-modifies-inplace.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "follow_up": "What value does the expression df.sort_values(\"score\") return when it is executed?",
+                "confidence_expressed": "high",
+                "supporting_quote": "after calling `df.sort_values(\"score\")` the DataFrame is actually rearranged in place",
+                "evidence_reason": "The candidate explicitly asserts that the DataFrame is rearranged in-place by sort_values(), which matches the listed misconception py.pandas.method-modifies-inplace.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "after calling `df.sort_values(\"score\")` the DataFrame is actually rearranged in place",
+            "evidence_reason": "The candidate explicitly states that sort_values rearranges the DataFrame in place, which matches the belief that methods like sort_values modify the original object rather than returning a new one.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What value does the expression df.sort_values(\"score\") return when it is executed?",
+          "answer": "It returns a new DataFrame that’s already been sorted by the score column, so you get a copy of df with the rows rearranged from lowest to highest. Since we didn’t assign it to a variable, the function just hands that sorted DataFrame back as its result and then discards it. In other words, the call itself produces the sorted table as its return value, even though we don’t store it anywhere. That's why the subsequent prints still see the original ordering.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": [
+                  {
+                    "misconception_id": "py.pandas.method-modifies-inplace",
+                    "supporting_quote": "Since we didn’t assign it to a variable, the function just hands that sorted DataFrame back as its result and then discards it. In other words, the call itself produces the sorted table as its return value, even though we don’t store it anywhere. That's why the subsequent prints still see the original ordering.",
+                    "quote_start": 148,
+                    "quote_end": 460,
+                    "reason": "The candidate explicitly retracts their earlier incorrect belief and correctly explains that sort_values returns a new DataFrame which is discarded if not assigned, leaving the original df unchanged."
+                  }
+                ]
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": [
+                  {
+                    "misconception_id": "py.pandas.method-modifies-inplace",
+                    "supporting_quote": "Since we didn’t assign it to a variable, the function just hands that sorted DataFrame back as its result and then discards it. In other words, the call itself produces the sorted table as its return value, even though we don’t store it anywhere. That's why the subsequent prints still see the original ordering.",
+                    "quote_start": 148,
+                    "quote_end": 460,
+                    "reason": "The candidate explicitly retracts their earlier wrong belief by explaining that sort_values returns a new DataFrame which is discarded because it wasn't assigned, leaving the original df unchanged."
+                  }
+                ]
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": [
+              {
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "supporting_quote": "Since we didn’t assign it to a variable, the function just hands that sorted DataFrame back as its result and then discards it. In other words, the call itself produces the sorted table as its return value, even though we don’t store it anywhere. That's why the subsequent prints still see the original ordering.",
+                "quote_start": 148,
+                "quote_end": 460,
+                "reason": "The candidate explicitly retracts their earlier incorrect belief and correctly explains that sort_values returns a new DataFrame which is discarded if not assigned, leaving the original df unchanged.",
+                "vote_share": 0.6666666666666666
+              }
+            ]
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          1,
+          2,
+          2
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate corrected their initial misconception about sort_values after the follow-up questions, ultimately recognizing that it returns a new DataFrame and the original remains unchanged. They also correctly explained the index alignment behavior for the bonus column.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate missed all key points: they incorrectly believed sort_values modified df in-place, misunderstood that .loc is label-based (thinking it operates by position on the newly sorted DataFrame), and failed to explain index alignment for the NaN value.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.5036,
+          "se": 0.6709,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation (sql.aggregation.aggregate-in-where, sql.aggregation.count-group-column-is-one, sql.aggregation.group-by-only-sorts)",
+      "prompt": "To find cities with at least two stores, a colleague starts from SELECT city, COUNT(city) FROM stores GROUP BY city. What does GROUP BY do to the rows, and what does COUNT(city) give for each group? Should the 'at least two stores' condition go in WHERE or HAVING, and why?",
+      "answer": "GROUP BY takes all rows that share the same city value and collapses them into a single output row for that city. COUNT(city) then returns the number of rows in each group where city is not NULL, i.e., the number of stores in that city (the NULL‑city group would get a count of 0). Because the filter depends on the aggregate result, the “at least two stores” test belongs in a HAVING clause, not in WHERE. WHERE is evaluated before the grouping and cannot reference aggregates, while HAVING is applied after the groups have been formed and counted.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that GROUP BY collapses rows to one per group, that COUNT(city) gives the number of non-null rows in each group, and that HAVING must be used for aggregate conditions because WHERE runs before grouping.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that GROUP BY collapses rows to one per group, that COUNT(city) gives the number of non-null rows in each group, and that HAVING must be used for aggregate conditions because WHERE runs before grouping.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.5036,
+          "se": 0.6709,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists misconceptions not yet probed: ds.arrays-strings.append-always-copies, ds.complexity.big-o-is-exact-time, ds.complexity.constants-change-class",
+      "prompt": "This class simulates how a dynamic array such as a Python list grows: when it is full, it moves every item into a new block twice as large and counts the moved items. What does it print? What do the numbers tell you about the cost of a single append and of n appends?\n\nclass DynArray:\n    def __init__(self):\n        self.size, self.cap, self.copies = 0, 1, 0\n\n    def append(self, x):\n        if self.size == self.cap:\n            self.copies += self.size  # move every item to a bigger block\n            self.cap *= 2\n        self.size += 1\n\nfor n in [16, 17, 1000]:\n    arr = DynArray()\n    for i in range(n):\n        arr.append(i)\n    print(n, arr.cap, arr.copies)",
+      "answer": "The program prints `16 16 15`, then `17 32 31`, and finally `1000 1024 1023`. In these runs you can see that the capacity jumps to the next power of two when the array is full. Most of the `append` calls don’t copy any elements at all. Only the appends that trigger a resize copy every existing element—in the 17‑element case it copies 16 items, and for 1000 it ends up copying 1023 items in total. I'm not completely sure how to interpret the cost per append beyond that.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "If you do 1000 appends and a total of 1023 items were copied across all of them, what is the average number of items copied per append?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "If you do 1000 appends and a total of 1023 items were copied across all of them, what is the average number of items copied per append?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "If you divide the total number of copies made for 1000 appends by 1000, what average cost do you get per append?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "If you perform 1000 appends and the total number of copied items is 1023, what is the average number of copies per append?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the correct output and correctly identified that most appends are cheap and resizing copies existing items, but missed the amortised O(1) analysis for n appends.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the correct output and correctly identified that most appends are cheap and resizing copies existing items, but missed the amortised O(1) analysis for n appends.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.5036,
+          "se": 0.6709,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.67); level 3 is nearest its estimate +0.50; lists a suspected misconception to confirm: py.pandas.method-modifies-inplace, py.pandas.positional-alignment",
+      "prompt": "An analyst makes top = df[df[\"sales\"] > 100].sort_values(\"region\"), calls top.reset_index(drop=True) on its own line, and then sets df[\"top_sales\"] = top[\"sales\"]. Rows that were filtered out show NaN, but the other rows have their own correct values. They then change the middle line to top = top.reset_index(drop=True), and now the numbers land on the wrong rows. Explain both results.",
+      "answer": "In the first version, because we called reset_index with drop=True on a separate line, the DataFrame that we assign back to “top” still keeps its original index, so when we later assign the “sales” column back to df it ends up matching the rows that were originally filtered out, which is why those rows become NaN. When we change the code to “top = top.reset_index(drop=True)”, the reset actually happens before we do the assignment, so the index values are now a fresh range that no longer corresponds to the original df rows. This causes pandas to line up the values by their new positions, which shifts everything one way or another. As a result, the numbers get placed on the wrong rows because the index alignment is now off.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "If a Series has a custom index that does not match the DataFrame's index, how does pandas decide which row gets which value during assignment?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If a Series has a custom index that does not match the DataFrame's index, how does pandas decide which row gets which value during assignment?",
+            "confidence_expressed": "high",
+            "supporting_quote": "This causes pandas to line up the values by their new positions, which shifts everything one way or another.",
+            "evidence_reason": "The candidate explicitly claims that pandas performs assignment by matching values based on their new positions rather than index labels after the index is reset.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What index labels do you expect df and top to have right before df[\"top_sales\"] = top[\"sales\"] runs in both versions?",
+            "confidence_expressed": "high",
+            "supporting_quote": "This causes pandas to line up the values by their new positions",
+            "evidence_reason": "The candidate explicitly states that pandas aligns the values by their new positions rather than index labels when the index is reset.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If a Series has index labels [5, 10, 15] and you assign it to a DataFrame column whose index has labels [0, 1, 2], which index labels will pandas match together during the assignment?",
+            "confidence_expressed": "high",
+            "supporting_quote": "This causes pandas to line up the values by their new positions, which shifts everything one way or another.",
+            "evidence_reason": "The candidate explicitly states that pandas lines up the values by their new positions when the index is reset, showing the belief that assignment aligns by position rather than index labels.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "This causes pandas to line up the values by their new positions, which shifts everything one way or another.",
+        "evidence_reason": "The candidate explicitly claims that pandas performs assignment by matching values based on their new positions rather than index labels after the index is reset.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that the first reset_index was unassigned so the original index was retained for label alignment (resulting in NaNs for filtered rows) and that the second version reassigned top, causing the new integer index to misalign with the original df. They thoroughly addressed all key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that the first reset_index was unassigned so the original index was retained for label alignment (resulting in NaNs for filtered rows) and that the second version reassigned top, causing the new integer index to misalign with the original df. They thoroughly addressed all key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.9637,
+          "se": 0.6148,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.61; lists a suspected misconception to confirm: sql.window-functions.rank-functions-identical",
+      "prompt": "What does this query return? Explain the difference between the rn, rnk and drnk columns.\n\nSELECT name, dept, salary,\n       ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC, name) AS rn,\n       RANK()       OVER (PARTITION BY dept ORDER BY salary DESC) AS rnk,\n       DENSE_RANK() OVER (PARTITION BY dept ORDER BY salary DESC) AS drnk\nFROM employees\nORDER BY dept, salary DESC, name;\n\nTable employees:\nname | dept | salary\nAsha | IT | 90000\nBen | IT | 90000\nChen | IT | 70000\nDana | IT | 60000\nEli | HR | 50000\nFarah | HR | 55000",
+      "answer": "The query will return only the rows for the IT department, so you’ll see four records – Asha, Ben, Chen and Dana. Within IT the ROW_NUMBER column (rn) assigns a unique sequential number based on salary descending and then name, so Asha gets 1, Ben 2, Chen 3 and Dana 4. The RANK column (rnk) gives the same rank to rows with identical salaries; because Asha and Ben both earn 90,000 they both receive a rank of 1 and the next distinct salary (Chen’s 70,000) jumps to rank 3. The DENSE_RANK column (drnk) also treats the tie on 90,000 as rank 1, but it does not leave a gap, so Chen’s salary gets a dense rank of 2, and Dana’s 60000 gets 3.",
+      "diagnosis": {
+        "cause": "misread",
+        "misconception_id": null,
+        "follow_up": "How many rows are in the input employees table in total across all departments?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "How many rows are in the input employees table in total across all departments?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "How many total rows are in the employees table, and does the query contain a WHERE clause filtering by department?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "How many rows are returned in total across all departments by this query?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How many rows are in the input employees table in total across all departments?",
+          "answer": "The employees table contains six rows in total. There are four rows for the IT department (Asha, Ben, Chen, Dana) and two rows for the HR department (Eli, Farah). So across all departments the input table has six records. I’m not sure about any other details.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "low",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "low",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "low",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "low",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "partial",
+            "misconception_id": null,
+            "expected_score": 1,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate initially thought only the IT department rows were returned, but the follow-up clarification confirmed all six rows. The explanation of the differences between ROW_NUMBER, RANK, and DENSE_RANK is completely accurate and covers gaps and ties.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate incorrectly stated that the query returns only rows for the IT department, missing the HR employees entirely. Although the explanation of the window functions is otherwise correct, the misunderstanding of which rows are returned results in a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.9637,
+          "se": 0.6148,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.0295,
+          "se": 0.6023,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-015",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +0.96; lists misconceptions not yet probed: py.comprehensions-generators.generator-eager, py.comprehensions-generators.yield-is-return, py.functions-scope.closure-captures-value",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "I know that calling a generator function doesn’t execute its body right away; it just returns a generator object. The code inside the function won’t run until we call next() or otherwise iterate over the generator. Beyond that, I’m not confident about how the rest of the statements will behave, especially the interaction with the other generator expression and the prints. So I can’t say exactly what the output will be.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What do you think happens to the variable `step` in the generator expression when `list(scaled)` is evaluated later in the script?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What do you think happens to the variable `step` in the generator expression when `list(scaled)` is evaluated later in the script?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What do you think happens to the variable `step` in the generator expression when `list(scaled)` is evaluated later in the script?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens to the generator after next(gen) consumes the first value, when we then call list(gen) twice?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that generator functions are lazy and do not execute until iterated over, but stopped short of providing the full output or explaining the rest of the code.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that generator functions are lazy and do not execute until iterated over, but stopped short of providing the full output or explaining the rest of the code.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.9667,
+          "se": 0.562,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 1.0295,
+          "se": 0.6023,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +1.55; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-complexity (ds.hash-tables.collision-overwrites, ds.hash-tables.worst-case-constant)",
+      "prompt": "A teammate writes a `Customer` class whose `__hash__` returns `len(self.name)` and whose `__eq__` compares the full names, then puts one million customers into a set. Will the set still behave correctly? What happens to the speed of adding and checking customers, and why?",
+      "answer": "The set will still be functionally correct because the equality check still uses the full name, so different customers with the same hash won’t overwrite each other. However, using `len(self.name)` as the hash means there are only a handful of possible hash values, so a huge number of customers end up in the same bucket. Each insertion or lookup therefore has to compare the new element against many existing ones, turning the average‑case O(1) operations into something close to O(n). As a result, building the million‑item set degrades toward quadratic time. Using a proper hash such as `hash(self.name)` would spread the values and keep the operations fast.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that correctness is maintained because of __eq__, details the performance degradation toward O(n) due to heavy collisions from a poor hash function, and suggests using hash(self.name) as a fix.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that correctness is maintained because of __eq__, details the performance degradation toward O(n) due to heavy collisions from a poor hash function, and suggests using hash(self.name) as a fix.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.9667,
+          "se": 0.562,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 1.0295,
+          "se": 0.6023,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.7881,
+          "se": 0.5829,
+          "level": 3,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-013",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 15,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-subqueries-cte"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.60); level 3 is nearest its estimate +1.03; lists a suspected misconception to confirm: sql.window-functions.rank-functions-identical",
+      "prompt": "The goal is exactly one current address per customer: the most recent one. What does this query return, and why? Would ROW_NUMBER() fix it?\n\nWITH ranked AS (\n  SELECT customer_id, city,\n         RANK() OVER (PARTITION BY customer_id\n                      ORDER BY updated_on DESC NULLS LAST) AS rk\n  FROM addresses\n)\nSELECT customer_id, city\nFROM ranked\nWHERE rk = 1\nORDER BY customer_id, city;\n\nTable addresses:\ncustomer_id | city | updated_on\n1 | Pune | 2024-01-10\n1 | Delhi | 2024-03-02\n1 | Goa | 2024-03-02\n2 | Agra | 2023-12-01\n2 | Kochi | NULL\n3 | Surat | 2024-02-14",
+      "answer": "The query will return a single row for each customer, picking the address that has the most recent `updated_on` value. For customer 1 it will give the row with `Delhi` because that row appears later in the table, and for customer 2 it will return the row with `Kochi` since the `NULL` value is treated as the newest timestamp. Customer 3 will obviously return `Surat`. Using `ROW_NUMBER()` instead of `RANK()` would produce the same result, because it also orders by `updated_on` and then selects the first row for each `customer_id`. So the query already does exactly what we need – it gives the current address for every customer.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.window-functions.collapses-rows",
+        "follow_up": "How many total rows are produced by the subquery 'ranked' before the outer WHERE clause filters on 'rk = 1'?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.collapses-rows",
+            "follow_up": "How many total rows are produced by the subquery 'ranked' before the outer WHERE clause filters on 'rk = 1'?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The query will return a single row for each customer, picking the address that has the most recent `updated_on` value.",
+            "evidence_reason": "The candidate asserts that the query returns a single row per customer directly from the windowed/ranked output, demonstrating the belief that window functions collapse the rows rather than adding a column to every input row.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.collapses-rows",
+            "follow_up": "How many total rows are produced by the CTE before the WHERE clause filters them, and why?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The query will return a single row for each customer, picking the address that has the most recent `updated_on` value.",
+            "evidence_reason": "The candidate asserts that the query returns a single row per customer right away, mirroring a GROUP BY operation, which shows the misconception that window functions collapse rows in a partition rather than preserving all input rows.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.collapses-rows",
+            "follow_up": "How many rows in total does the inner CTE 'ranked' contain compared to the original 'addresses' table?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The query will return a single row for each customer",
+            "evidence_reason": "The candidate asserts that the query returns a single row per customer because of the window function setup, which directly reflects the belief that window functions collapse rows into one per partition.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "supporting_quote": "Using `ROW_NUMBER()` instead of `RANK()` would produce the same result, because it also orders by `updated_on` and then selects the first row",
+                "quote_start": 369,
+                "quote_end": 510,
+                "reason": "The candidate incorrectly believes they produce the same result due to similar tie behavior, but does not explicitly state that ROW_NUMBER, RANK, and DENSE_RANK treat ties identically in all contexts (they specifically attribute it to the ordering here)."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The query will return a single row for each customer, picking the address that has the most recent `updated_on` value.",
+        "evidence_reason": "The candidate asserts that the query returns a single row per customer directly from the windowed/ranked output, demonstrating the belief that window functions collapse the rows rather than adding a column to every input row.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How many total rows are produced by the subquery 'ranked' before the outer WHERE clause filters on 'rk = 1'?",
+          "answer": "The sub‑query will generate one row for every record in the addresses table, so in this case it will produce five rows before the outer filter is applied. Since the RANK() function is calculated for each customer_id, each row gets its own rank value, but the number of rows stays the same as the source table. The WHERE clause then just removes the rows whose rank isn’t 1, but that doesn’t affect the count of rows produced by the CTE itself. So you’d see five rows coming out of ranked before the final SELECT does its filtering.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": [
+                  {
+                    "misconception_id": "sql.window-functions.collapses-rows",
+                    "supporting_quote": "The sub‑query will generate one row for every record in the addresses table, so in this case it will produce five rows before the outer filter is applied. Since the RANK() function is calculated for each customer_id, each row gets its own rank value, but the number of rows stays the same as the source table.",
+                    "quote_start": 0,
+                    "quote_end": 309,
+                    "reason": "The candidate explicitly understands that window functions preserve every input row rather than collapsing them like GROUP BY."
+                  }
+                ]
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.collapses-rows",
+                "follow_up": "How many rows does the final query output after the WHERE rk = 1 filter is applied?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The sub‑query will generate one row for every record in the addresses table, so in this case it will produce five rows before the outer filter is applied. Since the RANK() function is calculated for each customer_id, each row gets its own rank value, but the number of rows stays the same as the source table. The WHERE clause then just removes the rows whose rank isn’t 1, but that doesn’t affect the count of rows produced by the CTE itself. So you’d see five rows coming out of ranked before the final SELECT does its filtering.",
+                "evidence_reason": "The candidate explicitly demonstrates the misconception that window functions collapse rows in a partition similar to GROUP BY by stating that the sub-query generates one row for every record and that the outer WHERE clause 'just removes the rows' rather than the window function itself keeping every input row and adding a column.",
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": [
+                  {
+                    "misconception_id": "sql.window-functions.collapses-rows",
+                    "supporting_quote": "the RANK() function is calculated for each customer_id, each row gets its own rank value, but the number of rows stays the same as the source table. The WHERE clause then just removes the rows whose rank isn’t 1, but that doesn’t affect the count of rows produced by the CTE itself.",
+                    "quote_start": 161,
+                    "quote_end": 443,
+                    "reason": "The candidate explicitly rejects the idea that window functions collapse rows, correctly explaining that the CTE retains all source rows and the WHERE clause filters them afterward."
+                  }
+                ]
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": [
+              {
+                "misconception_id": "sql.window-functions.collapses-rows",
+                "supporting_quote": "The sub‑query will generate one row for every record in the addresses table, so in this case it will produce five rows before the outer filter is applied. Since the RANK() function is calculated for each customer_id, each row gets its own rank value, but the number of rows stays the same as the source table.",
+                "quote_start": 0,
+                "quote_end": 309,
+                "reason": "The candidate explicitly understands that window functions preserve every input row rather than collapsing them like GROUP BY.",
+                "vote_share": 0.6666666666666666
+              }
+            ]
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly predicts that only one row per customer is returned, misses the tie for customer 1, incorrectly believes Kochi is chosen for customer 2, and shows a misconception about RANK versus ROW_NUMBER.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes the query returns one row per customer, fails to recognise that RANK causes a tie for customer 1, incorrectly assumes NULL sorts as newest, and shows a misconception about ROW_NUMBER and window functions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.9667,
+          "se": 0.562,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 0.7215,
+          "se": 0.5451,
+          "level": 2,
+          "n": 5
+        },
+        "ds": {
+          "estimate": 1.7881,
+          "se": 0.5829,
+          "level": 3,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-007",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 23,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 0.9667,
+        "se": 0.562,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.665671,
+        "level_probabilities": {
+          "0": 4.4e-05,
+          "1": 0.012915,
+          "2": 0.32137,
+          "3": 0.665671
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.7215,
+        "se": 0.5451,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.470444,
+        "level_probabilities": {
+          "0": 0.000182,
+          "1": 0.033191,
+          "2": 0.470444,
+          "3": 0.496184
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 3,
+        "estimate": 1.7881,
+        "se": 0.5829,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.970852,
+        "level_probabilities": {
+          "0": 0.0,
+          "1": 9.2e-05,
+          "2": 0.029056,
+          "3": 0.970852
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "fit",
+    "decision_reason": "Every skill meets the job minimum.",
+    "misconceptions": [
+      {
+        "id": "py.pandas.positional-alignment",
+        "confirmed": true,
+        "evidence_turns": [
+          4,
+          11
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 0,
+            "reply_text": "The code creates two Series and adds them together, so the resulting Series will just contain the element‑wise sums in the order they appear, giving `[11, 22, 33]`. Converting that to a list prints `[11, 22, 33]`. The mean of those three numbers is `(11 + 22 + 33) / 3`, which equals `22.0`. Finally, `s1.loc[\"a\":\"b\"]` selects the values for “a” and “b”, which are `10` and `20`, and their sum is `30`.",
+            "vote_share": 1.0,
+            "supporting_quote": "resulting Series will just contain the element‑wise sums in the order they appear, giving `[11, 22, 33]`",
+            "quote_start": 59,
+            "quote_end": 163,
+            "reason": "The candidate explicitly states that addition is done element-wise based on the order they appear rather than aligning them by index labels."
+          },
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 1,
+            "reply_text": "When you add the two Series, pandas just lines them up based on their position in the objects, so the first element of s1 is added to the first element of s2, the second to the second, and so on. Because both Series have three entries, the result ends up with three values and the index is simply taken from the left‑hand operand, s1. The extra label “d” from s2 gets dropped since there’s no corresponding position in s1, and the label “a” from s1 remains even though s2 doesn’t have it. In short, the resulting index is just [\"a\", \"b\", \"c\"] and the values are the element‑wise sums of the matching positions.",
+            "vote_share": 1.0,
+            "supporting_quote": "pandas just lines them up based on their position in the objects, so the first element of s1 is added to the first element of s2",
+            "quote_start": 29,
+            "quote_end": 157,
+            "reason": "The candidate explicitly states that pandas adds Series based on their position rather than aligning them by index labels."
+          },
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 2,
+            "reply_text": "If we just line up the two Series by their order, the first element of s1 (10) would be added to the first element of s2 (1), giving 11, then 20 + 2 = 22, and finally 30 + 3 = 33, so the resulting Series would look like `[11, 22, 33]`. Converting that to a list would print `[11, 22, 33]`. The mean of those three numbers would be `(11 + 22 + 33) / 3`, which is `22.0`. For the slice `s1.loc[\"a\":\"b\"]`, we’d still get the values for “a” and “b”, which are 10 and 20, and their sum is `30`. So the output would be the same as in the original example.",
+            "vote_share": 1.0,
+            "supporting_quote": "If we just line up the two Series by their order, the first element of s1 (10) would be added to the first element of s2 (1), giving 11",
+            "quote_start": 0,
+            "quote_end": 135,
+            "reason": "The candidate explicitly states that pandas adds Series by lining them up by their order (position) rather than matching them by index labels."
+          },
+          {
+            "question_id": "PY-L3-012",
+            "turn": 11,
+            "reply_index": 0,
+            "reply_text": "In the first version, because we called reset_index with drop=True on a separate line, the DataFrame that we assign back to “top” still keeps its original index, so when we later assign the “sales” column back to df it ends up matching the rows that were originally filtered out, which is why those rows become NaN. When we change the code to “top = top.reset_index(drop=True)”, the reset actually happens before we do the assignment, so the index values are now a fresh range that no longer corresponds to the original df rows. This causes pandas to line up the values by their new positions, which shifts everything one way or another. As a result, the numbers get placed on the wrong rows because the index alignment is now off.",
+            "vote_share": 1.0,
+            "supporting_quote": "This causes pandas to line up the values by their new positions, which shifts everything one way or another.",
+            "quote_start": 529,
+            "quote_end": 637,
+            "reason": "The candidate explicitly claims that pandas performs assignment by matching values based on their new positions rather than index labels after the index is reset."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "sql.window-functions.rank-functions-identical",
+        "confirmed": false,
+        "evidence_turns": [
+          5
+        ],
+        "vote_share": 0.889,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "The query will produce a result set with four columns: the original day and amount values, a “running” column that shows the total amount for each day, and an “rnk” column that assigns a sequential number based on the day ordering. Because the window functions are applied over the ordered days, the running total will increase each time a new day appears, so you’ll see a higher number on day 2 than on day 1, and it keeps growing for later days. The rank column simply numbers the rows from 1 upward, giving each row a unique rank value regardless of duplicate days. So you end up with a list where the first row has the smallest rank and the running total starts low and climbs as you move down the list.",
+            "vote_share": 1.0,
+            "supporting_quote": "giving each row a unique rank value regardless of duplicate days",
+            "quote_start": 503,
+            "quote_end": 567,
+            "reason": "The candidate explicitly states that the rank column gives each row a unique rank value regardless of duplicate days, which reflects the misconception that ranking functions (like RANK) do not assign the same rank to tied rows and instead act like ROW_NUMBER."
+          },
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 5,
+            "reply_index": 1,
+            "reply_text": "The rank column will give each of the two rows with day = 2 a different number, because the window treats every row as distinct even if the day value repeats. The first row for day 2 will get rank 2, and the second one will get rank 3 since it comes after the first when ordered by amount. So you’ll see a sequential increase from the first day’s rank of 1 to 2 and 3 for the two day‑2 rows. The ranking just keeps counting upward regardless of the duplicate day values.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "The rank column will give each of the two rows with day = 2 a different number, because the window treats every row as distinct even if the day value repeats.",
+            "quote_start": 0,
+            "quote_end": 158,
+            "reason": "The candidate explicitly asserts that RANK assigns different sequential numbers to tied rows, demonstrating the listed misconception that ranking functions assign unique values to ties."
+          },
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 5,
+            "reply_index": 2,
+            "reply_text": "If RANK() were assigning a unique number to each row, it would behave just like ROW_NUMBER() – basically you’d get a simple incrementing counter regardless of whether the values are the same or not. In that case the two rows with day = 2 would get consecutive numbers (like 2 and 3) instead of sharing a rank, and the numbering would continue without any gaps. So the only difference would be that ROW_NUMBER() guarantees a distinct sequence, while RANK() would also give you a distinct sequence in this scenario. In practice you’d see the same kind of increasing numbers in the rnk column for every row.",
+            "vote_share": 1.0,
+            "supporting_quote": "while RANK() would also give you a distinct sequence in this scenario.",
+            "quote_start": 443,
+            "quote_end": 513,
+            "reason": "The candidate asserts that RANK() gives a distinct sequence for tied rows, demonstrating the belief that RANK behaves identically to ROW_NUMBER() and does not assign identical ranks to ties."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.pandas.method-modifies-inplace",
+        "confirmed": false,
+        "evidence_turns": [
+          8
+        ],
+        "vote_share": 0.833,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L2-007",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "The code will first sort the DataFrame by the “score” column, so the rows are reordered from the lowest score to the highest. After that, when we print `df[\"name\"].tolist()` it will output the names in that sorted order: `[\"Bo\", \"Ann\", \"Di\", \"Cy\"]`. The next line uses `df.loc[1:2, \"name\"]`, which selects the second and third rows of the sorted DataFrame, so the list will be `[\"Ann\", \"Di\"]`. Finally, the “bonus” column is calculated by taking the scores that are at least 70, subtracting 60, and assigning those values back to the DataFrame, so the “bonus” list will be `[10, NaN, 30, 25]`.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "The code will first sort the DataFrame by the “score” column, so the rows are reordered from the lowest score to the highest. After that, when we print `df[\"name\"].tolist()` it will output the names in that sorted order",
+            "quote_start": 0,
+            "quote_end": 219,
+            "reason": "The candidate explicitly states that calling sort_values directly reorders the rows of the existing DataFrame and that the subsequent print reflects that sorted order, showing the belief that the method modifies the object in place."
+          },
+          {
+            "question_id": "PY-L2-007",
+            "turn": 8,
+            "reply_index": 1,
+            "reply_text": "Sure, after calling `df.sort_values(\"score\")` the DataFrame is actually rearranged in place, so the rows are now ordered from the lowest score to the highest. That means the first row becomes Bo with a score of 55, followed by Ann, Di, and finally Cy. Because the sorting happened directly on `df`, any subsequent operations you do on `df` will see that new order. So if you inspect `df` right after the `sort_values` call, you’ll see the rows already sorted by the `score` column.",
+            "vote_share": 1.0,
+            "supporting_quote": "after calling `df.sort_values(\"score\")` the DataFrame is actually rearranged in place",
+            "quote_start": 6,
+            "quote_end": 91,
+            "reason": "The candidate explicitly states that sort_values rearranges the DataFrame in place, which matches the belief that methods like sort_values modify the original object rather than returning a new one."
+          }
+        ],
+        "status": "disputed",
+        "contradicting": [
+          {
+            "misconception_id": "py.pandas.method-modifies-inplace",
+            "supporting_quote": "Since we didn’t assign it to a variable, the function just hands that sorted DataFrame back as its result and then discards it. In other words, the call itself produces the sorted table as its return value, even though we don’t store it anywhere. That's why the subsequent prints still see the original ordering.",
+            "quote_start": 148,
+            "quote_end": 460,
+            "reason": "The candidate explicitly retracts their earlier incorrect belief and correctly explains that sort_values returns a new DataFrame which is discarded if not assigned, leaving the original df unchanged.",
+            "vote_share": 0.6666666666666666,
+            "question_id": "PY-L2-007",
+            "turn": 8,
+            "reply_index": 2,
+            "reply_text": "It returns a new DataFrame that’s already been sorted by the score column, so you get a copy of df with the rows rearranged from lowest to highest. Since we didn’t assign it to a variable, the function just hands that sorted DataFrame back as its result and then discards it. In other words, the call itself produces the sorted table as its return value, even though we don’t store it anywhere. That's why the subsequent prints still see the original ordering."
+          }
+        ]
+      },
+      {
+        "id": "sql.window-functions.collapses-rows",
+        "confirmed": false,
+        "evidence_turns": [
+          15
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-007",
+            "turn": 15,
+            "reply_index": 0,
+            "reply_text": "The query will return a single row for each customer, picking the address that has the most recent `updated_on` value. For customer 1 it will give the row with `Delhi` because that row appears later in the table, and for customer 2 it will return the row with `Kochi` since the `NULL` value is treated as the newest timestamp. Customer 3 will obviously return `Surat`. Using `ROW_NUMBER()` instead of `RANK()` would produce the same result, because it also orders by `updated_on` and then selects the first row for each `customer_id`. So the query already does exactly what we need – it gives the current address for every customer.",
+            "vote_share": 1.0,
+            "supporting_quote": "The query will return a single row for each customer, picking the address that has the most recent `updated_on` value.",
+            "quote_start": 0,
+            "quote_end": 118,
+            "reason": "The candidate asserts that the query returns a single row per customer directly from the windowed/ranked output, demonstrating the belief that window functions collapse the rows rather than adding a column to every input row."
+          }
+        ],
+        "status": "disputed",
+        "contradicting": [
+          {
+            "misconception_id": "sql.window-functions.collapses-rows",
+            "supporting_quote": "The sub‑query will generate one row for every record in the addresses table, so in this case it will produce five rows before the outer filter is applied. Since the RANK() function is calculated for each customer_id, each row gets its own rank value, but the number of rows stays the same as the source table.",
+            "quote_start": 0,
+            "quote_end": 309,
+            "reason": "The candidate explicitly understands that window functions preserve every input row rather than collapsing them like GROUP BY.",
+            "vote_share": 0.6666666666666666,
+            "question_id": "SQL-L3-007",
+            "turn": 15,
+            "reply_index": 1,
+            "reply_text": "The sub‑query will generate one row for every record in the addresses table, so in this case it will produce five rows before the outer filter is applied. Since the RANK() function is calculated for each customer_id, each row gets its own rank value, but the number of rows stays the same as the source table. The WHERE clause then just removes the rows whose rank isn’t 1, but that doesn’t affect the count of rows produced by the CTE itself. So you’d see five rows coming out of ranked before the final SELECT does its filtering."
+          }
+        ]
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.complexity.big-o-is-exact-time",
+      "ds.complexity.constants-change-class",
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.bfs-weighted-shortest",
+      "ds.graphs.dfs-finds-shortest",
+      "ds.hash-tables.collision-overwrites",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.hash-tables.worst-case-constant",
+      "ds.heaps.heap-is-sorted",
+      "ds.heaps.max-at-last-index",
+      "ds.heaps.pop-min-constant",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.closure-captures-value",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.aggregate-in-where",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-exceptions",
+        "sql-joins",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "untested": [
+        "py-variables-mutability",
+        "py-collections",
+        "py-oop",
+        "py-concurrency",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-stacks-queues",
+        "ds-trees-bst"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: fit. Every skill meets the job minimum. Estimated levels: py level 3 (needs 2), sql level 2 (needs 2), ds level 3 (needs 2). Confirmed misconception: Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN. Suspected (insufficient corroboration) misconception: Believes ROW_NUMBER, RANK and DENSE_RANK treat tied rows the same way (for example that RANK never leaves gaps, or that ROW_NUMBER gives tied rows the same number). Disputed (contradictory evidence; not confirmed) misconception: Believes DataFrame methods such as sort_values(), dropna() or drop() change the DataFrame they are called on, not knowing they return a new object that must be assigned. Disputed (contradictory evidence; not confirmed) misconception: Believes window functions collapse rows into one per partition like GROUP BY, rather than keeping every input row and adding a computed column."
+  },
+  "usage": {
+    "llm_calls": 130,
+    "api_calls": 39,
+    "input_tokens": 166734,
+    "output_tokens": 12299,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 130,
+        "api_calls": 39,
+        "input_tokens": 166734,
+        "output_tokens": 12299
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 3
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.functions-scope.mutable-default-fresh",
+      "sql.indexes-performance.composite-any-column"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

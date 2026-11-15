@@ -1,0 +1,2448 @@
+{
+  "interview_id": "A5E-data-engineer-CAND-003-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-engineer",
+  "candidate_id": "CAND-003",
+  "started_at": "2026-11-14T05:35:31Z",
+  "finished_at": "2026-11-14T05:35:39Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-exceptions",
+    "py-pandas",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-heaps",
+    "ds-sorting-searching",
+    "ds-graphs"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "`try` contains code that may raise; if an exception occurs the rest of the block is skipped and Python jumps to the first `except` clause (checked top‑down) whose type matches, runs that handler, then continues after the whole try‑statement. `else` runs only when the `try` block finishes without an exception, and `finally` is executed in every case—including when a `return` or an exception occurs—just before control leaves the statement.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of try, except, else, and finally, noting the top-down matching order, the behavior of else, and that finally executes even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of try, except, else, and finally, noting the top-down matching order, the behavior of else, and that finally executes even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query returns three rows – one for each customer – with Asha showing 2 orders and a total of 330, Ben showing 0 orders and a NULL total, and Chen showing 1 order but a NULL total because his only matching order has a NULL amount; the LEFT JOIN keeps all customers, COUNT(o.id) ignores NULL ids, and SUM returns NULL when all summed values are NULL.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows with their exact values, explaining both the behavior of the LEFT JOIN and why COUNT(o.id) gives 0 while SUM on NULLs results in NULL.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows with their exact values, explaining both the behavior of the LEFT JOIN and why COUNT(o.id) gives 0 while SUM on NULLs results in NULL.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "On a hit we unlink the node by rewiring its neighbours, then re‑insert it at the front—so we just update pointers in the right order without overwriting any reference, and no other elements need to shift.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does the hash map help us locate the node in O(1) time when a key is accessed?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the hash map help us locate the node in O(1) time when a key is accessed?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What does the hash map contribute to achieving O(1) performance during get and put operations?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What role does the hash map play in finding the node in O(1) time?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explains the hit operation, pointer rewiring, and the lack of element shifting, but completely misses the role of the hash map and doubly linked list, as well as why operations are O(1). This matches the level-1 description of explaining only a small part of the answer while missing important components.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explains the hit operation, pointer rewiring, and the lack of element shifting, but completely misses the role of the hash map and doubly linked list, as well as why operations are O(1). This matches the level-1 description of explaining only a small part of the answer while missing important components.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: py.pandas.loc-end-exclusive, py.pandas.nan-treated-as-zero, py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ns1 = pd.Series([10, 20, 30], index=[\"a\", \"b\", \"c\"])\ns2 = pd.Series([1, 2, 3], index=[\"b\", \"c\", \"d\"])\ntotal = s1 + s2\nprint(total.tolist())\nprint(total.mean())\nprint(s1.loc[\"a\":\"b\"].sum())",
+      "answer": "The two Series are added element‑wise based on their order, not their index labels, so the values line up as [10+1, 20+2, 30+3] giving [11, 22, 33] (with no NaNs). Consequently the mean is 22 and the slice sum is 30.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "What happens to the resulting index labels when you add two Series with completely different sets of index labels?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the resulting index labels when you add two Series with completely different sets of index labels?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The two Series are added element‑wise based on their order, not their index labels",
+            "evidence_reason": "The candidate explicitly states that Series addition is performed based on their order (position) rather than their index labels, which directly matches the py.pandas.positional-alignment misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens if s2 has index=['c', 'd', 'e'] instead, how would the addition result change?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The two Series are added element‑wise based on their order, not their index labels",
+            "evidence_reason": "The candidate explicitly asserts that Series addition happens element-wise based on order rather than index labels, matching the py.pandas.positional-alignment misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens if s2 has index labels ['c', 'd', 'e'] instead, do they still add together position-wise?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The two Series are added element‑wise based on their order, not their index labels, so the values line up as [10+1, 20+2, 30+3] giving [11, 22, 33] (with no NaNs).",
+            "evidence_reason": "The candidate explicitly asserts that Series addition happens element-wise based on order rather than index labels, which directly matches the positional-alignment misconception.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The two Series are added element‑wise based on their order, not their index labels",
+        "evidence_reason": "The candidate explicitly states that Series addition is performed based on their order (position) rather than their index labels, which directly matches the py.pandas.positional-alignment misconception.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the resulting index labels when you add two Series with completely different sets of index labels?",
+          "answer": "When you add two Series that have totally different index labels, pandas just keeps the index from the left‑hand Series and adds the values in order, discarding any labels that don’t match, so the result uses the first Series’ index.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'] in a different order, what index labels would you expect the sum of s1 + s2 to have?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'] in a different order, what index labels would you expect the sum of s1 + s2 to have?",
+                "confidence_expressed": "high",
+                "supporting_quote": "adds the values in order, discarding any labels that don’t match, so the result uses the first Series’ index.",
+                "evidence_reason": "The candidate explicitly states that pandas adds Series values in order and discards non-matching labels while keeping the left-hand index, which directly reflects the belief that alignment is positional rather than label-based.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'] in a different order, what index labels would you expect in the resulting Series?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just keeps the index from the left‑hand Series and adds the values in order, discarding any labels that don’t match",
+                "evidence_reason": "The candidate explicitly states that pandas adds Series values in order and keeps the left-hand Series index, reflecting the positional-alignment misconception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'] in that order, what label will the middle element of their sum have?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas just keeps the index from the left‑hand Series and adds the values in order, discarding any labels that don’t match",
+                "evidence_reason": "The candidate explicitly states that pandas aligns and adds series values by their order while keeping the left-hand index and discarding unmatched labels, which directly reflects the positional-alignment misconception.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "adds the values in order, discarding any labels that don’t match, so the result uses the first Series’ index.",
+            "evidence_reason": "The candidate explicitly states that pandas adds Series values in order and discards non-matching labels while keeping the left-hand index, which directly reflects the belief that alignment is positional rather than label-based.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If s1 has index ['a', 'b', 'c'] and s2 has index ['b', 'c', 'd'] in a different order, what index labels would you expect the sum of s1 + s2 to have?",
+          "answer": "Because pandas aligns on the index labels, the resulting Series will have the combined index ['a', 'b', 'c', 'd'], with NaN for any label that isn’t present in both operands.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "partial",
+            "misconception_id": null,
+            "expected_score": 1,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate initially showed multiple misconceptions about positional alignment and NaN handling, but the follow-up replies corrected these errors, demonstrating a solid understanding that pandas aligns by index label, produces the union of indices with NaNs, and skips NaNs in calculations.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assumed that Series arithmetic aligns by position rather than index labels, leading to positional-alignment and nan-treated-as-zero misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-008",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: sql.window-functions.collapses-rows, sql.window-functions.rank-functions-identical, sql.window-functions.running-sum-is-total",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The query will list each row with the same running value equal to the total sales amount (100 + 50 + 30 + 20 = 200) for every day, and the rnk column simply numbers the rows in order of the day (1, 2, 3, 4).",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.window-functions.running-sum-is-total",
+        "follow_up": "If a window function includes an ORDER BY clause in the OVER part, how does the set of rows it sums change from the first row to the last row?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If a window function includes an ORDER BY clause in the OVER part, how does the set of rows it sums change from the first row to the last row?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The query will list each row with the same running value equal to the total sales amount (100 + 50 + 30 + 20 = 200) for every day",
+            "evidence_reason": "The candidate explicitly states that the running value is equal to the total sales amount (200) on every row, which directly matches the misconception that SUM with ORDER BY returns the grand total rather than a cumulative running sum.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If you apply SUM() with an ORDER BY clause in the OVER window, does the sum include rows that come after the current row?",
+            "confidence_expressed": "high",
+            "supporting_quote": "list each row with the same running value equal to the total sales amount (100 + 50 + 30 + 20 = 200) for every day",
+            "evidence_reason": "The candidate explicitly states that every row gets the grand total of all sales combined, which matches the misconception that SUM OVER ORDER BY returns the total rather than a running cumulative sum.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If a window function is used, does it return the same grand total on every row, or does the value change row by row?",
+            "confidence_expressed": "high",
+            "supporting_quote": "list each row with the same running value equal to the total sales amount (100 + 50 + 30 + 20 = 200) for every day",
+            "evidence_reason": "The candidate explicitly states that every row receives the same running total value equal to the grand sum, which matches the listed misconception that SUM OVER ORDER BY returns the total on every row.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The query will list each row with the same running value equal to the total sales amount (100 + 50 + 30 + 20 = 200) for every day",
+        "evidence_reason": "The candidate explicitly states that the running value is equal to the total sales amount (200) on every row, which directly matches the misconception that SUM with ORDER BY returns the grand total rather than a cumulative running sum.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If a window function includes an ORDER BY clause in the OVER part, how does the set of rows it sums change from the first row to the last row?",
+          "answer": "The set of rows being summed never changes – the ORDER BY inside the window just orders the output, but each row still aggregates the whole table, so every row’s running total includes all rows.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If a table has amounts 10, 20, 30 on days 1, 2, 3, what would SUM(amount) OVER (ORDER BY day) show for the row on day 2?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.running-sum-is-total",
+                "follow_up": "If a table has amounts 10, 20, 30 on days 1, 2, 3, what would SUM(amount) OVER (ORDER BY day) show for the row on day 2?",
+                "confidence_expressed": "high",
+                "supporting_quote": "each row still aggregates the whole table, so every row’s running total includes all rows",
+                "evidence_reason": "The candidate explicitly asserts that the running total column aggregates the entire table rather than accumulating up to the current row.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.running-sum-is-total",
+                "follow_up": "If a table has amounts 10, 20, and 30 on days 1, 2, and 3 respectively, what would the running sum value be on day 2?",
+                "confidence_expressed": "high",
+                "supporting_quote": "each row still aggregates the whole table, so every row’s running total includes all rows.",
+                "evidence_reason": "The candidate explicitly states that the window function aggregates the whole table on every row rather than computing a cumulative running total.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.running-sum-is-total",
+                "follow_up": "If a table has four rows with amounts 10, 20, 30, 40 ordered by a column, what would the running sum be for the second row according to your view, and what would it be if it accumulated progressively?",
+                "confidence_expressed": "high",
+                "supporting_quote": "each row still aggregates the whole table, so every row’s running total includes all rows",
+                "evidence_reason": "The candidate explicitly asserts that the window function aggregates the whole table on every row rather than computing a cumulative or running sum.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "each row still aggregates the whole table, so every row’s running total includes all rows",
+            "evidence_reason": "The candidate explicitly asserts that the running total column aggregates the entire table rather than accumulating up to the current row.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "expected_score": 0,
+            "effective_level": 3,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a table has amounts 10, 20, 30 on days 1, 2, 3, what would SUM(amount) OVER (ORDER BY day) show for the row on day 2?",
+          "answer": "It would show the overall total — 10 + 20 + 30 = 60, so the running column for the day‑2 row would be 60.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.running-sum-is-total",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "It would show the overall total",
+                "evidence_reason": "The candidate explicitly asserts that the running column shows the overall total rather than a cumulative sum.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.running-sum-is-total",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "It would show the overall total — 10 + 20 + 30 = 60, so the running column for the day‑2 row would be 60.",
+                "evidence_reason": "The candidate explicitly asserts that a running column using ORDER BY in OVER displays the overall total on every row rather than a cumulative sum.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.running-sum-is-total",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "It would show the overall total — 10 + 20 + 30 = 60, so the running column for the day‑2 row would be 60.",
+                "evidence_reason": "The candidate explicitly asserts that the running column displays the overall total on a specific row, which matches the listed misconception that SUM with ORDER BY returns the grand total.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "It would show the overall total",
+            "evidence_reason": "The candidate explicitly asserts that the running column shows the overall total rather than a cumulative sum.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "expected_score": 0,
+            "effective_level": 3,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate consistently believes that SUM() OVER (ORDER BY ...) computes the grand total for every row rather than a running total, demonstrating the sql.window-functions.running-sum-is-total misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believed that the running sum returns the grand total on every row and that the rnk column simply numbers the rows sequentially without handling ties or gaps properly, falling under the listed misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.window-functions.running-sum-is-total",
+        "expected_score": 0,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.83); level 2 is nearest its estimate +0.00; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-hash-tables (ds.arrays-strings.front-insert-constant, ds.hash-tables.keys-kept-sorted, ds.trees-bst.inorder-not-sorted)",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "I’d store the scores in a hash table because it gives constant‑time look‑ups and we can just pull the whole table when we need the list; the ordering can be handled later when we display it.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "follow_up": "If you iterate over the keys of a hash table in Python, in what order do they appear?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you iterate over the keys of a hash table in Python, in what order do they appear?",
+            "confidence_expressed": "high",
+            "supporting_quote": "store the scores in a hash table because it gives constant‑time look‑ups and we can just pull the whole table when we need the list; the ordering can be handled later",
+            "evidence_reason": "The candidate assumes the hash table natively holds the data ready to be pulled as a list without prior ordering steps, reflecting the belief that hash tables maintain or easily yield sorted order.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you iterate over the keys of a standard hash table in Python, what specific order do they appear in?",
+            "confidence_expressed": "high",
+            "supporting_quote": "store the scores in a hash table because it gives constant‑time look‑ups and we can just pull the whole table when we need the list; the ordering can be handled later",
+            "evidence_reason": "The candidate assumes that the hash table can simply be pulled as a whole list when needed and ordering handled later, implying a belief that the hash table inherently maintains or provides the data in a usable ordered state without extra sorting.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you iterate over the keys of a hash table directly, what order do they come out in?",
+            "confidence_expressed": "high",
+            "supporting_quote": "we can just pull the whole table when we need the list; the ordering can be handled later when we display it",
+            "evidence_reason": "The candidate assumes that the hash table inherently holds the data in a way that allows pulling the whole table without an additional sort step to satisfy score ordering.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "store the scores in a hash table because it gives constant‑time look‑ups and we can just pull the whole table when we need the list; the ordering can be handled later",
+        "evidence_reason": "The candidate assumes the hash table natively holds the data ready to be pulled as a list without prior ordering steps, reflecting the belief that hash tables maintain or easily yield sorted order.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you iterate over the keys of a hash table in Python, in what order do they appear?",
+          "answer": "They come out in the same order you inserted them, so iterating the keys will give you the insertion sequence.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "What happens if you insert keys in a random order into a hash table, and then immediately iterate over its keys? Do they appear sorted?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "What happens if you insert keys in a random order into a hash table, and then immediately iterate over its keys? Do they appear sorted?",
+                "confidence_expressed": "high",
+                "supporting_quote": "They come out in the same order you inserted them, so iterating the keys will give you the insertion sequence.",
+                "evidence_reason": "The candidate explicitly states that hash table keys are retrieved in insertion order rather than sorted order, reflecting the core belief of the misconception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you update a hash table by inserting a new score that is lower than all existing ones, what order do you get when you iterate through the keys?",
+                "confidence_expressed": "high",
+                "supporting_quote": "They come out in the same order you inserted them, so iterating the keys will give you the insertion sequence.",
+                "evidence_reason": "The candidate explicitly states that iterating the keys of a hash table yields them in insertion order, aligning directly with the misconception that hash tables preserve and output keys in a predictable sequence.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert keys into a hash table in a random order, what specific order do you get back when you iterate through its keys, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "They come out in the same order you inserted them, so iterating the keys will give you the insertion sequence.",
+                "evidence_reason": "The candidate explicitly asserts that iterating through hash table keys yields them in the order they were inserted, which directly aligns with the misconception that hash tables maintain a predictable ordering of keys.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "They come out in the same order you inserted them, so iterating the keys will give you the insertion sequence.",
+            "evidence_reason": "The candidate explicitly states that hash table keys are retrieved in insertion order rather than sorted order, reflecting the core belief of the misconception.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens if you insert keys in a random order into a hash table, and then immediately iterate over its keys? Do they appear sorted?",
+          "answer": "If you throw the keys in randomly, the hash function tends to spread them out, so when you iterate right after insertion they usually come out in a roughly ascending order, though not perfectly sorted.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "What happens to the iteration order of keys if you insert a larger score followed by a smaller score into a fresh hash table?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "What happens to the iteration order of keys if you insert a larger score followed by a smaller score into a fresh hash table?",
+                "confidence_expressed": "medium",
+                "supporting_quote": "when you iterate right after insertion they usually come out in a roughly ascending order, though not perfectly sorted.",
+                "evidence_reason": "The candidate asserts that iterating over a hash table yields keys in a roughly ascending order based on their values, which aligns with the misconception that hash tables naturally organize or keep keys in some sorted sequence.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "Can you trace what happens to the iteration order if you add keys that hash to lower bucket indices later on?",
+                "confidence_expressed": "medium",
+                "supporting_quote": "when you iterate right after insertion they usually come out in a roughly ascending order, though not perfectly sorted.",
+                "evidence_reason": "The candidate incorrectly believes that hash functions cause keys to be visited in a roughly ascending order upon iteration, showing a variant of the belief that hash tables provide meaningful ordering without explicit sorting.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "What happens to the iteration order if you insert keys in reverse sorted order instead of randomly?",
+                "confidence_expressed": "medium",
+                "supporting_quote": "they usually come out in a roughly ascending order, though not perfectly sorted.",
+                "evidence_reason": "The candidate incorrectly believes that a hash function naturally spreads out keys upon iteration to yield a roughly ascending order, demonstrating a belief related to hash tables maintaining some form of sorted order.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "medium",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "when you iterate right after insertion they usually come out in a roughly ascending order, though not perfectly sorted.",
+            "evidence_reason": "The candidate asserts that iterating over a hash table yields keys in a roughly ascending order based on their values, which aligns with the misconception that hash tables naturally organize or keep keys in some sorted sequence.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claimed that hash tables can be used for ordered output and showed a persistent misconception that a hash table's keys are stored in a sorted or roughly ascending order, matching the listed misconception ds.hash-tables.keys-kept-sorted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that a hash table can be used to easily pull the whole table in order and handle ordering later, showing a misconception about hash tables maintaining order. They failed to recognize the correct complexities and trade-offs of the three structures, earning a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; lists a suspected misconception to confirm: py.pandas.positional-alignment",
+      "prompt": "An analyst makes top = df[df[\"sales\"] > 100].sort_values(\"region\"), calls top.reset_index(drop=True) on its own line, and then sets df[\"top_sales\"] = top[\"sales\"]. Rows that were filtered out show NaN, but the other rows have their own correct values. They then change the middle line to top = top.reset_index(drop=True), and now the numbers land on the wrong rows. Explain both results.",
+      "answer": "In the first version, calling reset_index() separately just reorders the rows in the temporary DataFrame, so when you assign the “sales” column back to df it lines up with the original rows, leaving the filtered‑out rows as NaN; when you assign the result of reset_index() directly, the DataFrame’s internal ordering changes before the assignment, so the values get shifted and end up on the wrong rows.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the row labels of top after reset_index(drop=True), and how does pandas decide which row of df gets which value during assignment?",
+            "confidence_expressed": "high",
+            "supporting_quote": "when you assign the result of reset_index() directly, the DataFrame’s internal ordering changes before the assignment, so the values get shifted and end up on the wrong rows",
+            "evidence_reason": "The candidate explicitly attributes the index mismatch to a change in 'internal ordering' rather than index labels, demonstrating the misconception that pandas column assignment aligns data positionally rather than by index label.",
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate shows the misconception that reset_index() changes the rows in-place rather than returning a new object, and talks about positional matching and internal ordering rather than index label alignment.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate shows the misconception that reset_index() changes the rows in-place rather than returning a new object, and talks about positional matching and internal ordering rather than index label alignment.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8093,
+          "se": 0.6469,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation (sql.aggregation.aggregate-in-where, sql.aggregation.count-group-column-is-one, sql.aggregation.group-by-only-sorts)",
+      "prompt": "To find cities with at least two stores, a colleague starts from SELECT city, COUNT(city) FROM stores GROUP BY city. What does GROUP BY do to the rows, and what does COUNT(city) give for each group? Should the 'at least two stores' condition go in WHERE or HAVING, and why?",
+      "answer": "GROUP BY groups all rows that share the same city value into a single output row per city, and COUNT(city) returns the number of non‑NULL rows (i.e., stores) in each of those groups; the “at least two stores” test must be placed in a HAVING clause (e.g., HAVING COUNT(city) ≥ 2) because HAVING filters after the groups are formed, whereas WHERE works on individual rows before aggregation.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that GROUP BY produces one row per city, that COUNT(city) counts the non-NULL rows in each group, and that the aggregate condition must go in HAVING because WHERE filters individual rows before aggregation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that GROUP BY produces one row per city, that COUNT(city) counts the non-NULL rows in each group, and that the aggregate condition must go in HAVING because WHERE filters individual rows before aggregation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8093,
+          "se": 0.6469,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 1 is nearest its estimate -0.52; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-arrays-strings (ds.arrays-strings.strings-mutable, ds.sorting-searching.sort-not-stable)",
+      "prompt": "What does this code print, and why? Pay attention to the words that have the same length.\n\nwords = [\"kiwi\", \"fig\", \"apple\", \"pear\", \"date\"]\nwords.sort(key=len)\nfirst = words[0]\nfirst.upper()\nprint(words)\nprint(first)\n",
+      "answer": "It prints `['fig', 'kiwi', 'pear', 'date', 'apple']` followed by `fig` because sorting by length puts the 3‑letter word “fig” first, the 5‑letter “apple” last, and the three 4‑letter words stay in their original order (the sort is stable). The call to `first.upper()` creates a new string but doesn’t modify `first`, so `first` remains “fig”.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the exact output for both lines, explained that Python's sort is stable preserving the relative order of equal-length words, and correctly noted that strings are immutable so upper() returns a new string without changing the original.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the exact output for both lines, explained that Python's sort is stable preserving the relative order of equal-length words, and correctly noted that strings are immutable so upper() returns a new string without changing the original.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8093,
+          "se": 0.6469,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.61; lists a suspected misconception to confirm: sql.window-functions.running-sum-is-total",
+      "prompt": "How does SUM(amount) OVER (PARTITION BY customer_id) differ from SUM(amount) with GROUP BY customer_id in the rows it returns? What changes if you add ORDER BY order_date inside the OVER clause?",
+      "answer": "`SUM(amount) OVER (PARTITION BY customer_id)` returns the same grand total for each row of a given customer, while `SUM(amount) GROUP BY customer_id` returns one row per customer with that total. Adding `ORDER BY order_date` inside the OVER clause just sorts the rows, so every row still shows the overall total for that customer.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.window-functions.running-sum-is-total",
+        "follow_up": "If you have three orders for a customer with amounts 10, 20, and 30, what exact value would you expect to see on the row for the second order when using an ORDER BY inside the OVER clause?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If you have three orders for a customer with amounts 10, 20, and 30, what exact value would you expect to see on the row for the second order when using an ORDER BY inside the OVER clause?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Adding `ORDER BY order_date` inside the OVER clause just sorts the rows, so every row still shows the overall total for that customer.",
+            "evidence_reason": "The candidate explicitly states that adding ORDER BY inside the OVER clause leaves every row showing the overall total, which directly matches the misconception that running sums just return the total.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If you have three orders of $10, $20, and $30 on different dates, what value would you expect SUM(amount) OVER (PARTITION BY customer_id ORDER BY order_date) to show for the second order?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Adding `ORDER BY order_date` inside the OVER clause just sorts the rows, so every row still shows the overall total for that customer.",
+            "evidence_reason": "The candidate explicitly states that adding ORDER BY inside the OVER clause only sorts the rows and leaves the overall total unchanged on every row, which matches the listed misconception that it returns the total rather than a running sum.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If you have orders of 10, 20, and 30 on three consecutive days, what value would SUM(amount) OVER (PARTITION BY customer_id ORDER BY order_date) show on the row for the second day?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Adding `ORDER BY order_date` inside the OVER clause just sorts the rows, so every row still shows the overall total for that customer.",
+            "evidence_reason": "The candidate explicitly states that adding ORDER BY inside the OVER clause only sorts the rows and leaves the total unchanged, matching the misconception that it returns the grand total on every row rather than a running total.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Adding `ORDER BY order_date` inside the OVER clause just sorts the rows, so every row still shows the overall total for that customer.",
+        "evidence_reason": "The candidate explicitly states that adding ORDER BY inside the OVER clause leaves every row showing the overall total, which directly matches the misconception that running sums just return the total.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly explains the row count difference between GROUP BY and the window function, but exhibits the misconception that adding ORDER BY inside the OVER clause only sorts the rows rather than creating a running total.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly explains the row count difference between GROUP BY and the window function, but exhibits the misconception that adding ORDER BY inside the OVER clause only sorts the rows rather than creating a running total.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8093,
+          "se": 0.6469,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.4087,
+          "se": 0.6076,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.window-functions.running-sum-is-total",
+        "expected_score": 0,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.65); level 2 is nearest its estimate -0.19; lists a suspected misconception to confirm: ds.hash-tables.keys-kept-sorted",
+      "prompt": "You keep a Python dict that maps about 100,000 product names to their prices. What does it cost to (a) get one product's price, (b) list all products in alphabetical order, and (c) find the cheapest product? Explain each.",
+      "answer": "(a) Getting a price with d[name] is O(1) on average because the key’s hash jumps straight to its slot. (b) To list the products alphabetically you must sort the keys, e.g. sorted(d), which costs O(n log n). (c) The cheapest price isn’t indexed, so you have to scan all values (or use min(d, key=d.get)), which is O(n); a separate price‑ordered structure would be needed for faster repeated queries.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that lookup is O(1) using the hash, listing alphabetically requires O(n log n) sorting since dicts are not sorted, and finding the cheapest requires an O(n) scan of values because the dict is not ordered by price.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that lookup is O(1) using the hash, listing alphabetically requires O(n log n) sorting since dicts are not sorted, and finding the cheapest requires an O(n) scan of values because the dict is not ordered by price.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8093,
+          "se": 0.6469,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.4087,
+          "se": 0.6076,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.1889,
+          "se": 0.5947,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.81; lists misconceptions not yet probed: py.comprehensions-generators.generator-eager, py.comprehensions-generators.yield-is-return, py.functions-scope.closure-captures-value",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "It prints “created”, then `3 [] []`, and finally an empty list for `scaled`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.comprehensions-generators.generator-eager",
+        "follow_up": "What happens if you print the generator object directly right after calling countdown(3), before calling next()?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "What happens if you print the generator object directly right after calling countdown(3), before calling next()?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It prints “created”, then `3 [] []`, and finally an empty list for `scaled`.",
+            "evidence_reason": "The candidate believes that list(gen) consumes all elements at once when first called, or that the generator is already exhausted/empty after producing 3, which aligns with eager evaluation where values are computed immediately.",
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "If you print `next(gen)` and then `list(gen)`, how many elements do you expect to see in total from that generator?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It prints “created”, then `3 [] []`, and finally an empty list for `scaled`.",
+            "evidence_reason": "The candidate asserts that the second and third calls to `list(gen)` yield an empty list immediately after the first element, suggesting they believe the generator was already fully consumed or evaluated at creation time or upon the first extraction.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "It prints “created”, then `3 [] []`, and finally an empty list for `scaled`.",
+        "evidence_reason": "The candidate believes that list(gen) consumes all elements at once when first called, or that the generator is already exhausted/empty after producing 3, which aligns with eager evaluation where values are computed immediately.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens if you print the generator object directly right after calling countdown(3), before calling next()?",
+          "answer": "It will immediately print the first yielded value, so you’ll see `3`.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "When during the execution of the script do you think the first line inside countdown() actually runs?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "When during the execution of the script do you think the first line inside countdown() actually runs?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It will immediately print the first yielded value",
+                "evidence_reason": "The candidate asserts that the function runs immediately upon call and produces a value, directly demonstrating the belief that generators execute eagerly rather than lazily when next() is called.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "When does the code inside the countdown function actually start executing?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It will immediately print the first yielded value",
+                "evidence_reason": "The candidate asserts that the yielded value is printed immediately when the function is called, indicating the belief that calling a generator runs its body eagerly rather than lazily on the first next() call.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "When during execution of the script do you think the first print statement inside countdown runs?",
+                "confidence_expressed": "high",
+                "supporting_quote": "It will immediately print the first yielded value",
+                "evidence_reason": "The candidate claims that the first yielded value is printed immediately upon calling or setting up the generator, which directly reflects the belief that calling a generator function runs the body eagerly.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "It will immediately print the first yielded value",
+            "evidence_reason": "The candidate asserts that the function runs immediately upon call and produces a value, directly demonstrating the belief that generators execute eagerly rather than lazily when next() is called.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.comprehensions-generators.yield-is-return",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "When during the execution of the script do you think the first line inside countdown() actually runs?",
+          "answer": "The first line inside countdown runs right when you call countdown(3) — so it executes at the moment the generator object is created and assigned to gen.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "Can you check what output you actually get if you run just `gen = countdown(3)` without calling `next()` or printing anything else yet?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "Can you check what output you actually get if you run just `gen = countdown(3)` without calling `next()` or printing anything else yet?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The first line inside countdown runs right when you call countdown(3) — so it executes at the moment the generator object is created",
+                "evidence_reason": "The candidate explicitly states that the body of the generator function runs immediately when the generator object is created, which matches the listed misconception py.comprehensions-generators.generator-eager.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "If calling countdown(3) executes the first line immediately, what do you think is printed before 'created'?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The first line inside countdown runs right when you call countdown(3) — so it executes at the moment the generator object is created",
+                "evidence_reason": "The candidate explicitly states that the body of countdown runs immediately upon calling the generator function, which directly illustrates the belief that generator creation is eager rather than lazy.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "If calling countdown(3) runs the body immediately, why does 'created' appear before 'begin' in the output?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The first line inside countdown runs right when you call countdown(3) — so it executes at the moment the generator object is created and assigned to gen.",
+                "evidence_reason": "The candidate explicitly states that the body of the generator runs immediately upon calling the generator function, which directly matches the misconception that generators execute eagerly upon creation.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The first line inside countdown runs right when you call countdown(3) — so it executes at the moment the generator object is created",
+            "evidence_reason": "The candidate explicitly states that the body of the generator function runs immediately when the generator object is created, which matches the listed misconception py.comprehensions-generators.generator-eager.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.comprehensions-generators.yield-is-return",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that calling a generator function runs its body immediately (showing the eager generator misconception) and that yield only yields once.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly predicts the output for the generator consumption, claiming it prints 'created', then '3 [] []', missing the remaining yielded values (2, 1), and incorrectly predicts an empty list for the generator expression.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.4954,
+          "se": 0.5905,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.4087,
+          "se": 0.6076,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.1889,
+          "se": 0.5947,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.comprehensions-generators.yield-is-return",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-transactions"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.61); level 2 is nearest its estimate +0.41; lists misconceptions not yet probed: sql.transactions.default-isolation-prevents-all, sql.transactions.rollback-partial",
+      "prompt": "Explain the four ACID properties of a database transaction in a sentence each. Does 'isolation' mean that concurrent transactions always behave exactly as if they had run one after another?",
+      "answer": "Atomicity guarantees that a transaction’s changes are all applied or none at all; consistency ensures the database moves from one valid state to another, preserving all defined rules and constraints; isolation means that concurrent transactions are separated according to the chosen isolation level, so they may still see intermediate results and anomalies unless the level is set to SERIALIZABLE; durability assures that once a transaction commits, its effects persist even after a system crash. Therefore, isolation does not automatically make concurrent transactions behave exactly as if they ran sequentially—only the SERIALIZABLE level provides that guarantee.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate accurately defined all four ACID properties in a sentence each and correctly explained that isolation does not automatically mean serial execution unless using the SERIALIZABLE level, avoiding all misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate accurately defined all four ACID properties in a sentence each and correctly explained that isolation does not automatically mean serial execution unless using the SERIALIZABLE level, avoiding all misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.4954,
+          "se": 0.5905,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.6591,
+          "se": 0.5626,
+          "level": 2,
+          "n": 5
+        },
+        "ds": {
+          "estimate": 0.1889,
+          "se": 0.5947,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 21,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 2,
+        "estimate": 0.4954,
+        "se": 0.5905,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.554589,
+        "level_probabilities": {
+          "0": 0.002026,
+          "1": 0.093753,
+          "2": 0.554589,
+          "3": 0.349632
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.6591,
+        "se": 0.5626,
+        "confident": true,
+        "minimum": 3,
+        "level_probability": 0.504566,
+        "level_probabilities": {
+          "0": 0.000314,
+          "1": 0.046193,
+          "2": 0.504566,
+          "3": 0.448928
+        },
+        "meets_minimum": null
+      },
+      "ds": {
+        "level": 2,
+        "estimate": 0.1889,
+        "se": 0.5947,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.6029,
+        "level_probabilities": {
+          "0": 0.006358,
+          "1": 0.210102,
+          "2": 0.6029,
+          "3": 0.18064
+        },
+        "meets_minimum": null
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether sql reaches level 3; cannot tell whether ds reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "py.pandas.positional-alignment",
+        "confirmed": false,
+        "evidence_turns": [
+          4
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 0,
+            "reply_text": "The two Series are added element‑wise based on their order, not their index labels, so the values line up as [10+1, 20+2, 30+3] giving [11, 22, 33] (with no NaNs). Consequently the mean is 22 and the slice sum is 30.",
+            "vote_share": 1.0,
+            "supporting_quote": "The two Series are added element‑wise based on their order, not their index labels",
+            "quote_start": 0,
+            "quote_end": 82,
+            "reason": "The candidate explicitly states that Series addition is performed based on their order (position) rather than their index labels, which directly matches the py.pandas.positional-alignment misconception."
+          },
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 1,
+            "reply_text": "When you add two Series that have totally different index labels, pandas just keeps the index from the left‑hand Series and adds the values in order, discarding any labels that don’t match, so the result uses the first Series’ index.",
+            "vote_share": 1.0,
+            "supporting_quote": "adds the values in order, discarding any labels that don’t match, so the result uses the first Series’ index.",
+            "quote_start": 124,
+            "quote_end": 233,
+            "reason": "The candidate explicitly states that pandas adds Series values in order and discards non-matching labels while keeping the left-hand index, which directly reflects the belief that alignment is positional rather than label-based."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.window-functions.running-sum-is-total",
+        "confirmed": true,
+        "evidence_turns": [
+          5,
+          10
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "The query will list each row with the same running value equal to the total sales amount (100 + 50 + 30 + 20 = 200) for every day, and the rnk column simply numbers the rows in order of the day (1, 2, 3, 4).",
+            "vote_share": 1.0,
+            "supporting_quote": "The query will list each row with the same running value equal to the total sales amount (100 + 50 + 30 + 20 = 200) for every day",
+            "quote_start": 0,
+            "quote_end": 129,
+            "reason": "The candidate explicitly states that the running value is equal to the total sales amount (200) on every row, which directly matches the misconception that SUM with ORDER BY returns the grand total rather than a cumulative running sum."
+          },
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 5,
+            "reply_index": 1,
+            "reply_text": "The set of rows being summed never changes – the ORDER BY inside the window just orders the output, but each row still aggregates the whole table, so every row’s running total includes all rows.",
+            "vote_share": 1.0,
+            "supporting_quote": "each row still aggregates the whole table, so every row’s running total includes all rows",
+            "quote_start": 104,
+            "quote_end": 193,
+            "reason": "The candidate explicitly asserts that the running total column aggregates the entire table rather than accumulating up to the current row."
+          },
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 5,
+            "reply_index": 2,
+            "reply_text": "It would show the overall total — 10 + 20 + 30 = 60, so the running column for the day‑2 row would be 60.",
+            "vote_share": 1.0,
+            "supporting_quote": "It would show the overall total",
+            "quote_start": 0,
+            "quote_end": 31,
+            "reason": "The candidate explicitly asserts that the running column shows the overall total rather than a cumulative sum."
+          },
+          {
+            "question_id": "SQL-L3-012",
+            "turn": 10,
+            "reply_index": 0,
+            "reply_text": "`SUM(amount) OVER (PARTITION BY customer_id)` returns the same grand total for each row of a given customer, while `SUM(amount) GROUP BY customer_id` returns one row per customer with that total. Adding `ORDER BY order_date` inside the OVER clause just sorts the rows, so every row still shows the overall total for that customer.",
+            "vote_share": 1.0,
+            "supporting_quote": "Adding `ORDER BY order_date` inside the OVER clause just sorts the rows, so every row still shows the overall total for that customer.",
+            "quote_start": 196,
+            "quote_end": 330,
+            "reason": "The candidate explicitly states that adding ORDER BY inside the OVER clause leaves every row showing the overall total, which directly matches the misconception that running sums just return the total."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "ds.hash-tables.keys-kept-sorted",
+        "confirmed": false,
+        "evidence_turns": [
+          6
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-001",
+            "turn": 6,
+            "reply_index": 0,
+            "reply_text": "I’d store the scores in a hash table because it gives constant‑time look‑ups and we can just pull the whole table when we need the list; the ordering can be handled later when we display it.",
+            "vote_share": 1.0,
+            "supporting_quote": "store the scores in a hash table because it gives constant‑time look‑ups and we can just pull the whole table when we need the list; the ordering can be handled later",
+            "quote_start": 4,
+            "quote_end": 170,
+            "reason": "The candidate assumes the hash table natively holds the data ready to be pulled as a list without prior ordering steps, reflecting the belief that hash tables maintain or easily yield sorted order."
+          },
+          {
+            "question_id": "DS-L2-001",
+            "turn": 6,
+            "reply_index": 1,
+            "reply_text": "They come out in the same order you inserted them, so iterating the keys will give you the insertion sequence.",
+            "vote_share": 1.0,
+            "supporting_quote": "They come out in the same order you inserted them, so iterating the keys will give you the insertion sequence.",
+            "quote_start": 0,
+            "quote_end": 110,
+            "reason": "The candidate explicitly states that hash table keys are retrieved in insertion order rather than sorted order, reflecting the core belief of the misconception."
+          },
+          {
+            "question_id": "DS-L2-001",
+            "turn": 6,
+            "reply_index": 2,
+            "reply_text": "If you throw the keys in randomly, the hash function tends to spread them out, so when you iterate right after insertion they usually come out in a roughly ascending order, though not perfectly sorted.",
+            "vote_share": 1.0,
+            "supporting_quote": "when you iterate right after insertion they usually come out in a roughly ascending order, though not perfectly sorted.",
+            "quote_start": 82,
+            "quote_end": 201,
+            "reason": "The candidate asserts that iterating over a hash table yields keys in a roughly ascending order based on their values, which aligns with the misconception that hash tables naturally organize or keep keys in some sorted sequence."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.comprehensions-generators.generator-eager",
+        "confirmed": false,
+        "evidence_turns": [
+          12
+        ],
+        "vote_share": 0.889,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-009",
+            "turn": 12,
+            "reply_index": 0,
+            "reply_text": "It prints “created”, then `3 [] []`, and finally an empty list for `scaled`.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "It prints “created”, then `3 [] []`, and finally an empty list for `scaled`.",
+            "quote_start": 0,
+            "quote_end": 76,
+            "reason": "The candidate believes that list(gen) consumes all elements at once when first called, or that the generator is already exhausted/empty after producing 3, which aligns with eager evaluation where values are computed immediately."
+          },
+          {
+            "question_id": "PY-L3-009",
+            "turn": 12,
+            "reply_index": 1,
+            "reply_text": "It will immediately print the first yielded value, so you’ll see `3`.",
+            "vote_share": 1.0,
+            "supporting_quote": "It will immediately print the first yielded value",
+            "quote_start": 0,
+            "quote_end": 49,
+            "reason": "The candidate asserts that the function runs immediately upon call and produces a value, directly demonstrating the belief that generators execute eagerly rather than lazily when next() is called."
+          },
+          {
+            "question_id": "PY-L3-009",
+            "turn": 12,
+            "reply_index": 2,
+            "reply_text": "The first line inside countdown runs right when you call countdown(3) — so it executes at the moment the generator object is created and assigned to gen.",
+            "vote_share": 1.0,
+            "supporting_quote": "The first line inside countdown runs right when you call countdown(3) — so it executes at the moment the generator object is created",
+            "quote_start": 0,
+            "quote_end": 132,
+            "reason": "The candidate explicitly states that the body of the generator function runs immediately when the generator object is created, which matches the listed misconception py.comprehensions-generators.generator-eager."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.strings-mutable",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.sorting-searching.sort-not-stable",
+      "ds.trees-bst.inorder-not-sorted",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.closure-captures-value",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.aggregate-in-where",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.transactions.default-isolation-prevents-all",
+      "sql.transactions.rollback-partial",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-exceptions",
+        "py-pandas",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-heaps",
+        "ds-sorting-searching",
+        "ds-graphs"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-comprehensions-generators",
+        "py-exceptions",
+        "py-pandas",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-window-functions",
+        "sql-transactions",
+        "ds-hash-tables",
+        "ds-sorting-searching"
+      ],
+      "untested": [
+        "py-collections",
+        "sql-subqueries-cte",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "ds-complexity",
+        "ds-heaps",
+        "ds-graphs"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether sql reaches level 3; cannot tell whether ds reaches level 2. Estimated levels: py level 2 (needs 2), sql level 2 (needs 3), ds level 2 (needs 2). Suspected (insufficient corroboration) misconception: Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN. Confirmed misconception: Believes SUM(x) OVER (ORDER BY y) returns the grand total on every row, not knowing that ORDER BY inside OVER produces a running total in which tied rows share a value. Suspected (insufficient corroboration) misconception: Believes a hash table stores its keys in sorted order, so iterating over it yields keys sorted and it can produce ordered output or the smallest key without extra sorting. Suspected (insufficient corroboration) misconception: Believes calling a generator function (or creating a generator expression) runs the body and computes all the values immediately, rather than lazily, one value per request."
+  },
+  "usage": {
+    "llm_calls": 115,
+    "api_calls": 6,
+    "input_tokens": 128042,
+    "output_tokens": 10675,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 115,
+        "api_calls": 6,
+        "input_tokens": 128042,
+        "output_tokens": 10675
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 3,
+      "ds": 2
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.comprehensions-generators.yield-is-return",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

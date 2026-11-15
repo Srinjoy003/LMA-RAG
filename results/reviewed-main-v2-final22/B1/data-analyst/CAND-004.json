@@ -1,0 +1,1234 @@
+{
+  "interview_id": "B1-data-analyst-CAND-004-0",
+  "system": "B1",
+  "config": {
+    "system": "B1",
+    "driver": "code",
+    "mode": "fixed",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "fixed_count",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "off",
+    "generic_follow_up": false,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "reply",
+    "diagnostic_evidence": false,
+    "probe_missed_topics": false,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-004",
+  "started_at": "2026-11-14T05:35:39Z",
+  "finished_at": "2026-11-14T05:35:39Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-collections",
+        "py-control-flow",
+        "py-variables-mutability"
+      ],
+      "selection_reason": "fixed order: question 1 of py is level 1; covers required topics not yet tested: py-collections",
+      "prompt": "What does this code print, and why?\n\nnums = [3, 1, 2]\ncount = len(nums)\nresult = nums.sort()\nnums.append(0)\nprint(result, count)\nprint(nums)\nfor i in range(1, 3):\n    print(nums[i])",
+      "answer": "The code prints `None 3` on the first line because `list.sort()` sorts the list in place and returns `None`, while `count` was set to the length of the original list (3) before any modifications. After sorting, `nums.append(0)` adds a zero to the end, so `nums` becomes `[1, 2, 3, 0]`, which is printed on the second line. The `for` loop iterates over `range(1, 3)`, giving the indices 1 and 2, so it prints the elements at those positions: `2` and then `3`, each on its own line.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that sort() returns None, that count remains fixed at 3, and accurately traced the sorted list with the appended element and the correct range iteration.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that sort() returns None, that count remains fixed at 3, and accurately traced the sorted list with the appended element and the correct range iteration.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-select-filter"
+      ],
+      "selection_reason": "fixed order: question 1 of sql is level 1; covers required topics not yet tested: sql-select-filter",
+      "prompt": "What does this query return, and why?\n\nSELECT name\nFROM employees\nWHERE dept = 'IT' OR dept = 'HR' AND salary > 50000\nORDER BY name;\n\nTable employees:\nid | name | dept | salary\n1 | Asha | IT | 40000\n2 | Ben | HR | 60000\n3 | Chen | HR | 45000\n4 | Dana | Sales | 70000\n5 | Eli | IT | 80000\n6 | Farah | NULL | 90000",
+      "answer": "The query will return the names of employees who are either in the IT department or in the HR department, but only if their salary is greater than 50,000. Because the conditions are evaluated left‑to‑right with equal precedence, the “OR” part is applied first and then the salary filter is applied to both departments. In this data set that means the only rows that satisfy the criteria are Ben from HR (salary 60,000) and Eli from IT (salary 80,000). The result will be ordered alphabetically, so the output will be:\n\n```\nBen\nEli\n```",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assumes that AND and OR have equal precedence and are evaluated left-to-right, leading to the wrong rows (Ben and Eli) and showing the specific misconception listed in the rubric.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assumes that AND and OR have equal precedence and are evaluated left-to-right, leading to the wrong rows (Ben and Eli) and showing the specific misconception listed in the rubric.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.9994,
+          "se": 0.8261,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.select-filter.and-or-precedence",
+        "expected_score": 0,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-linked-lists",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "fixed order: question 1 of ds is level 1; covers required topics not yet tested: ds-arrays-strings",
+      "prompt": "Each new node is added at the front of this linked list. What does this code print, and how does the cost of `get(head, k)` grow with k, compared with `lst[k]` on a Python list?\n\nclass Node:\n    def __init__(self, val, nxt=None):\n        self.val, self.next = val, nxt\n\ndef get(head, k):\n    node, hops = head, 0\n    for _ in range(k):\n        node = node.next\n        hops += 1\n    return node.val, hops\n\nhead = None\nfor v in [10, 20, 30, 40]:\n    head = Node(v, head)\nprint(get(head, 0), get(head, 3))",
+      "answer": "The code prints “(40, 0) (10, 3)”. Because each new node is inserted at the front, the linked list ends up as 40 → 30 → 20 → 10, so get(head, 0) returns the head value 40 with 0 hops, and get(head, 3) walks three next pointers to reach the tail value 10 with 3 hops. Accessing the k‑th element in a singly‑linked list therefore requires k pointer traversals, i.e., O(k) time (O(n) in the worst case). In contrast, indexing a Python list with lst[k] is O(1) since the element’s memory address is computed directly from the index.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the printed output, explained the reversed order due to front-insertion, gave the correct O(k) complexity for linked list traversal, and correctly compared it to O(1) for Python list indexing.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the printed output, explained the reversed order due to front-insertion, gave the correct O(k) complexity for linked list traversal, and correctly compared it to O(1) for Python list indexing.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.9994,
+          "se": 0.8261,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "fixed order: question 2 of py is level 2; covers required topics not yet tested: py-pandas",
+      "prompt": "A colleague runs df.dropna() and then df[\"price\"].mean(). They are surprised that the rows with missing prices are still in df. Explain why, how to fix it, and how mean() treats the missing values anyway.",
+      "answer": "`df.dropna()` does not modify the original DataFrame; it creates and returns a new one, so when you call it without assigning the result the variable `df` still contains the rows with missing values. To actually remove those rows you need to store the output, for example `df = df.dropna()` or `df = df.dropna(subset=['price'])` if you only care about the price column. When you later compute `df[\"price\"].mean()`, pandas’ `mean()` function ignores any `NaN` values by default (`skipna=True`), so the calculation is performed only on the non‑missing prices. The missing entries are not counted as zero and they do not affect the divisor.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that dropna() returns a new DataFrame rather than modifying it in place, provides the correct assignment fix, and accurately states that pandas' mean() ignores NaN values by default.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that dropna() returns a new DataFrame rather than modifying it in place, provides the correct assignment fix, and accurately states that pandas' mean() ignores NaN values by default.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.9994,
+          "se": 0.8261,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "fixed order: question 2 of sql is level 2; covers required topics not yet tested: sql-aggregation, sql-joins, sql-null",
+      "prompt": "Each order has one shipping fee, and items lists the products in each order. What does this query return? Is Asha's shipping total correct?\n\nSELECT o.customer,\n       SUM(o.shipping_fee) AS shipping,\n       COUNT(i.product) AS n_items\nFROM orders o\nLEFT JOIN items i ON i.order_id = o.id\nGROUP BY o.customer\nORDER BY o.customer;\n\nTable orders:\nid | customer | shipping_fee\n1 | Asha | 5\n2 | Asha | 10\n3 | Ben | 8\n4 | Chen | NULL\n\nTable items:\norder_id | product\n1 | pen\n1 | ink\n1 | pad\n2 | cup\n4 | mug",
+      "answer": "The query returns three rows, one for each customer. Asha’s shipping total comes out as 25 and the item count as 4 because her first order (shipping 5) is duplicated three times – once for each product – and then added to the second order’s fee (10). Ben’s row shows a shipping total of 8 and an item count of 0; the left join keeps his order even though there are no matching items, and COUNT skips the NULL product values. Chen’s shipping value is NULL (and the count is 1 since his order has a single item). To get the correct shipping sums you need to aggregate the shipping fees per customer separately from the item counts, then join those two results.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including Asha's inflated shipping total due to the join duplication, Ben's preserved row with 0 items, and Chen's NULL shipping value with 1 item. They also correctly explained how to fix the issue using separate subqueries for aggregation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including Asha's inflated shipping total due to the join duplication, Ben's preserved row with 0 items, and Chen's NULL shipping value with 1 item. They also correctly explained how to fix the issue using separate subqueries for aggregation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-hash-tables"
+      ],
+      "selection_reason": "fixed order: question 2 of ds is level 2; covers required topics not yet tested: ds-hash-tables",
+      "prompt": "This is a tiny hash table with 4 buckets: it uses `key % 4` as the hash function and keeps a list (chain) of [key, value] pairs in each bucket. What does it print? How many key comparisons does looking up 13 take, and what would happen to lookups if every key had the form 4k + 1?\n\nbuckets = [[] for _ in range(4)]\n\ndef put(key, val):\n    bucket = buckets[key % 4]\n    for pair in bucket:\n        if pair[0] == key:\n            pair[1] = val\n            return\n    bucket.append([key, val])\n\nfor k, v in [(5, \"a\"), (9, \"b\"), (13, \"c\"), (6, \"d\"), (9, \"e\")]:\n    put(k, v)\nprint(buckets)\nprint([len(b) for b in buckets])",
+      "answer": "The program ends up with the bucket list `[[ ], [[5, 'a'], [9, 'e'], [13, 'c']], [[6, 'd']], [ ]]` and the corresponding sizes `[0, 3, 1, 0]`. Keys 5, 9 and 13 all hash to bucket 1, so they are stored together in a chain; the second insertion of key 9 simply updates its value to 'e' rather than creating a new entry. Looking up the key 13 first selects bucket 1 and then compares the search key with the three entries `[5, 'a']`, `[9, 'e']` and `[13, 'c']`, requiring three key comparisons. If every key were of the form 4k + 1, all keys would fall into the same bucket, turning each lookup into a linear scan of the whole chain (O(n) time) instead of the expected constant‑time behavior.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the printed output and bucket lengths, explained collision chaining and the update of key 9, stated the exact number of key comparisons for 13, and correctly described the O(n) worst-case performance when all keys collide.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the printed output and bucket lengths, explained collision chaining and the update of key 9, stated the exact number of key comparisons for 13, and correctly described the O(n) worst-case performance when all keys collide.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-comprehensions-generators"
+      ],
+      "selection_reason": "fixed order: question 3 of py is level 2; covers required topics not yet tested: py-comprehensions-generators",
+      "prompt": "What is the difference between [x * x for x in data] and (x * x for x in data)? Talk about when the values are computed, memory use, and whether you can loop over the result twice.",
+      "answer": "A list comprehension like `[x * x for x in data]` creates a real list, so all the squares are calculated right away and stored in memory, which lets you index into it or iterate over it as many times as you need. A generator expression written with parentheses, `(x * x for x in data)`, is lazy: it doesn’t compute any values until you request them, yielding one result at a time and therefore using only a tiny amount of memory even for large `data`. Because the generator produces items on the fly, once you have iterated through it once it becomes exhausted and cannot be reused without recreating it. In contrast, the list produced by the comprehension can be looped over repeatedly because all its elements are already materialised.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that the list comprehension computes all values eagerly and can be reused, while the generator expression is lazy, uses minimal memory, and becomes exhausted after one iteration.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that the list comprehension computes all values eagerly and can be reused, while the generator expression is lazy, uses minimal memory, and becomes exhausted after one iteration.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.185,
+          "se": 0.7295,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-013",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-subqueries-cte"
+      ],
+      "selection_reason": "fixed order: question 3 of sql is level 2; covers required topics not yet tested: sql-subqueries-cte",
+      "prompt": "To list customers with at least one order over 500 you can write WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id AND o.amount > 500). How is this subquery evaluated for each customer? How many times does a customer with three such orders appear, and would WHERE c.id IN (SELECT customer_id FROM orders WHERE amount > 500) give more rows? What goes wrong if o.customer_id = c.id is left out?",
+      "answer": "The subquery is correlated because it references c.id, so for every row in the customers table the engine runs the inner SELECT using that particular c.id value. EXISTS returns true as soon as it finds the first order with amount > 500, so a customer who has three such orders still appears only once in the result set. Using WHERE c.id IN (SELECT customer_id FROM orders WHERE amount > 500) produces the same single‑row per customer because the IN list is deduplicated, whereas a plain join would duplicate the customer for each matching order. If the condition o.customer_id = c.id is omitted, the subquery no longer depends on the outer row, so it evaluates to the same boolean for every customer – either all customers are returned (if any order > 500 exists) or none are.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the per-row evaluation of the correlated subquery, the deduplicated behavior of EXISTS and IN preventing multiple rows per customer, and the all-or-nothing result when the correlation condition is omitted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the per-row evaluation of the correlated subquery, the deduplicated behavior of EXISTS and IN preventing multiple rows per customer, and the all-or-nothing result when the correlation condition is omitted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.185,
+          "se": 0.7295,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-013",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-sorting-searching",
+        "ds-complexity"
+      ],
+      "selection_reason": "fixed order: question 3 of ds is level 2; covers required topics not yet tested: ds-complexity",
+      "prompt": "You have an unsorted list of n product prices. If you only need to check once whether a given price is present, should you sort the list and then use binary search, or just scan it? What changes if you need to answer thousands of such queries?",
+      "answer": "I would just sort the list first because having the data in order makes everything easier to work with later on. After sorting, I could just walk through the array until I find the price I’m looking for, which feels straightforward. Even for a single check, the sorting step doesn’t add much overhead compared to scanning. If I have to do thousands of checks, I’d still keep the list sorted and repeat the same walk‑through each time, since the sorted structure should speed things up overall. The main benefit is that the sorted list looks cleaner and more organized for any future operations.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly recommends sorting for a single query (missing the O(n log n) overhead), believes sorting takes O(n) or is free, and suggests walking through the sorted list instead of using binary search for queries.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly recommends sorting for a single query (missing the O(n log n) overhead), believes sorting takes O(n) or is free, and suggests walking through the sorted list instead of using binary search for queries.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.185,
+          "se": 0.7295,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope"
+      ],
+      "selection_reason": "fixed order: question 4 of py is level 3; covers required topics not yet tested: py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ncount = 100\ndef make_counter(log=[]):\n    count = 0\n    def step():\n        nonlocal count\n        count += 1\n        log.append(count)\n        return count\n    return step, log\n\nc1, log1 = make_counter()\nc2, log2 = make_counter()\nc1(); c1()\nprint(c1(), c2(), count)\nprint(log1, log1 is log2)",
+      "answer": "The code prints `3 1 100` on the first line because the first counter (`c1`) has been called three times, the second counter (`c2`) only once, and the global variable `count` remains unchanged at its initial value of 100. The second line prints `[1, 2, 3, 1] True` because the default list `log` is created once when the function is defined, so both `make_counter` calls share the same list and each call to `step` appends the current local count. Each call to `make_counter` creates its own `count` variable scoped to that closure, and the `nonlocal` statement lets `step` modify that inner `count` without affecting the global one. The `log1 is log2` comparison is `True` since both references point to the same default list.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all aspects of the code, including the separate local counts via closures, the global count remaining 100, and the shared mutable default argument for the log list.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all aspects of the code, including the separate local counts via closures, the global count remaining 100, and the shared mutable default argument for the log list.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.5779,
+          "se": 0.6831,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-subqueries-cte"
+      ],
+      "selection_reason": "fixed order: question 4 of sql is level 3; covers required topics not yet tested: sql-window-functions",
+      "prompt": "The goal is exactly one current address per customer: the most recent one. What does this query return, and why? Would ROW_NUMBER() fix it?\n\nWITH ranked AS (\n  SELECT customer_id, city,\n         RANK() OVER (PARTITION BY customer_id\n                      ORDER BY updated_on DESC NULLS LAST) AS rk\n  FROM addresses\n)\nSELECT customer_id, city\nFROM ranked\nWHERE rk = 1\nORDER BY customer_id, city;\n\nTable addresses:\ncustomer_id | city | updated_on\n1 | Pune | 2024-01-10\n1 | Delhi | 2024-03-02\n1 | Goa | 2024-03-02\n2 | Agra | 2023-12-01\n2 | Kochi | NULL\n3 | Surat | 2024-02-14",
+      "answer": "The query returns four rows: for customer 1 it returns both Delhi and Goa, for customer 2 it returns Agra, and for customer 3 it returns Surat. RANK() assigns the same rank to rows that tie on the ordering column, so the two rows for customer 1 that share the most recent updated_on date (2024‑03‑02) both get rk = 1 and are kept by the outer filter; the NULL updated_on for Kochi is placed last by NULLS LAST, so Agra becomes the top‑ranked row for customer 2. Because the window function does not remove rows, only the outer WHERE clause limits the result set. Using ROW_NUMBER() instead would produce exactly one row per customer, but without an additional tie‑breaker in the ORDER BY it would arbitrarily pick either Delhi or Goa for customer 1. Adding a unique column (e.g., address_id) to the order would make the choice deterministic.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the four output rows, explained the RANK tie and the NULLS LAST behavior, and accurately described how ROW_NUMBER works along with the need for a tie-breaker.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the four output rows, explained the RANK tie and the NULLS LAST behavior, and accurately described how ROW_NUMBER works along with the need for a tie-breaker.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.5779,
+          "se": 0.6831,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.7364,
+          "se": 0.6203,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs",
+        "ds-stacks-queues"
+      ],
+      "selection_reason": "fixed order: question 4 of ds is level 3; no preferred question available; picked among the rest",
+      "prompt": "What does this code print? What would happen if the `if node in seen: continue` check were removed, and why might this explicit-stack version be preferred over a recursive DFS on a graph containing a path of a million nodes?\n\ngraph = {1: [2, 3], 2: [4], 3: [4], 4: [1]}\n\ndef dfs(start):\n    seen, stack, order = set(), [start], []\n    while stack:\n        node = stack.pop()\n        if node in seen:\n            continue\n        seen.add(node)\n        order.append(node)\n        for nb in graph[node]:\n            stack.append(nb)\n    return order\n\nprint(dfs(1))\n",
+      "answer": "The code will print something like `[1, 2, 4, 3]` because it starts at node 1, then visits its first neighbor, then goes deeper before coming back to the other neighbor. If we removed the `if node in seen: continue` line, the function would still finish but it might visit some nodes more than once, resulting in duplicate entries in the output list. The explicit‑stack version is nicer than recursion because you can more easily control the order in which nodes are processed, and it lets you add extra logic to the loop without worrying about the call stack. Also, using a stack makes the algorithm look more iterative, which many people find easier to debug than a recursive version.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate missed the correct output, incorrectly claimed the loop would still terminate without the seen check despite the graph having a cycle, and failed to mention that the explicit stack prevents Python's RecursionError on deep graphs.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate missed the correct output, incorrectly claimed the loop would still terminate without the seen check despite the graph having a cycle, and failed to mention that the explicit stack prevents Python's RecursionError on deep graphs.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.5779,
+          "se": 0.6831,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.7364,
+          "se": 0.6203,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.6001,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 12,
+  "stop_reason": "fixed_length",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 1.5779,
+        "se": 0.6831,
+        "confident": false,
+        "minimum": 2,
+        "level_probability": 0.8983,
+        "level_probabilities": {
+          "0": 3e-06,
+          "1": 0.001852,
+          "2": 0.099846,
+          "3": 0.8983
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.7364,
+        "se": 0.6203,
+        "confident": false,
+        "minimum": 2,
+        "level_probability": 0.45179,
+        "level_probabilities": {
+          "0": 0.000443,
+          "1": 0.04758,
+          "2": 0.45179,
+          "3": 0.500187
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 2,
+        "estimate": 0.0,
+        "se": 0.6001,
+        "confident": false,
+        "minimum": 1,
+        "level_probability": 0.566312,
+        "level_probabilities": {
+          "0": 0.017273,
+          "1": 0.304313,
+          "2": 0.566312,
+          "3": 0.112102
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "fit",
+    "decision_reason": "Every skill meets the job minimum.",
+    "misconceptions": [],
+    "probed_misconceptions": [
+      "ds.arrays-strings.index-needs-scan",
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.visited-unneeded",
+      "ds.hash-tables.collision-overwrites",
+      "ds.hash-tables.worst-case-constant",
+      "ds.linked-lists.index-constant-time",
+      "ds.sorting-searching.binary-search-half-of-linear",
+      "ds.sorting-searching.binary-search-unsorted",
+      "ds.sorting-searching.sorting-is-linear",
+      "ds.stacks-queues.recursion-free-memory",
+      "py.collections.sort-returns-list",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.generator-reusable",
+      "py.control-flow.range-inclusive",
+      "py.functions-scope.assign-updates-global",
+      "py.functions-scope.mutable-default-fresh",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero",
+      "py.variables-mutability.variable-holds-expression",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.select-filter.and-or-precedence",
+      "sql.subqueries-cte.correlated-runs-once",
+      "sql.subqueries-cte.in-subquery-duplicates",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "untested": []
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: fit. Every skill meets the job minimum. Estimated levels: py level 3 (needs 2), sql level 2 (needs 2), ds level 2 (needs 1)."
+  },
+  "usage": {
+    "llm_calls": 37,
+    "api_calls": 0,
+    "input_tokens": 37794,
+    "output_tokens": 2104,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 37,
+        "api_calls": 0,
+        "input_tokens": 37794,
+        "output_tokens": 2104
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 3,
+      "ds": 2
+    },
+    "fit": true,
+    "misconceptions": [
+      "sql.select-filter.and-or-precedence"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

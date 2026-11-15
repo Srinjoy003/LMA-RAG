@@ -1,0 +1,2685 @@
+{
+  "interview_id": "A5E-data-analyst-CAND-001-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-001",
+  "started_at": "2026-11-14T05:32:57Z",
+  "finished_at": "2026-11-14T05:33:58Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The try section contains code that may raise an exception; if an exception occurs, the remaining statements in the try are skipped and Python looks for the first except clause (checked top‑to‑bottom) whose exception type matches and executes that handler, then continues after the whole try‑except‑else‑finally block. The else block runs only when the try block finishes without raising anything, and the finally block is executed in every case—whether the try or an except returns, raises, or finishes normally—just before control leaves the statement. If two except clauses could both match, the one that appears first is the one that runs.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the roles of all four blocks, noted that the first matching except clause runs (top-to-bottom), and correctly confirmed that finally runs even when there is a return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the roles of all four blocks, noted that the first matching except clause runs (top-to-bottom), and correctly confirmed that finally runs even when there is a return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query will return three rows – one for each customer – with the counts 2, 1, and 1 for Asha, Ben and Chen respectively, and the totals 330 for Asha and NULL for both Ben and Chen, because the LEFT JOIN still produces a row for customers without matching orders, and COUNT counts those NULL id values as well.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.aggregation.count-column-counts-nulls",
+        "follow_up": "What would COUNT(o.id) return for Ben if we changed it to COUNT(*), and why?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "What would COUNT(o.id) return for Ben if we changed it to COUNT(*), and why?",
+            "confidence_expressed": "high",
+            "supporting_quote": "and COUNT counts those NULL id values as well",
+            "evidence_reason": "The candidate explicitly states that COUNT counts the NULL id values generated by the left join for unmatched rows like Ben, which directly matches the misconception that COUNT(column) counts rows with nulls.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "What would COUNT(o.id) return for Ben if he had no matching orders, and how does COUNT(column) handle NULL values in that column?",
+            "confidence_expressed": "high",
+            "supporting_quote": "and COUNT counts those NULL id values as well.",
+            "evidence_reason": "The candidate explicitly states that COUNT counts the NULL id values produced for Ben, which directly matches the listed misconception that COUNT(column) counts rows where that column is NULL.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "What would COUNT(o.id) return if Ben had no orders, and how does COUNT(o.id) treat NULL values in the id column compared to COUNT(*)?",
+            "confidence_expressed": "high",
+            "supporting_quote": "and COUNT counts those NULL id values as well.",
+            "evidence_reason": "The candidate explicitly states that COUNT counts the NULL id values produced for Ben when using a LEFT JOIN, which directly matches the misconception that COUNT(column) counts rows containing NULL values.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "and COUNT counts those NULL id values as well",
+        "evidence_reason": "The candidate explicitly states that COUNT counts the NULL id values generated by the left join for unmatched rows like Ben, which directly matches the misconception that COUNT(column) counts rows with nulls.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What would COUNT(o.id) return for Ben if we changed it to COUNT(*), and why?",
+          "answer": "If we switch to COUNT(*) for Ben, it would still return 1. The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a left-joined row has NULL in the order id column because there are no matching orders, what does COUNT(o.id) evaluate to for that customer?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "If a left-joined row has NULL in the order id column because there are no matching orders, what does COUNT(o.id) evaluate to for that customer?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+                "evidence_reason": "The candidate incorrectly asserts that COUNT(*) and COUNT(o.id) behave the same way on a left-joined row with no matching orders, believing that COUNT(o.id) still evaluates to 1 because the group has one result row.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "What does COUNT(o.id) evaluate to for Ben in the original query, and why does it differ from COUNT(*)?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If we switch to COUNT(*) for Ben, it would still return 1. The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 ",
+                "evidence_reason": "The candidate asserts that Ben's count would be 1 because COUNT(*) counts every row for Ben, and earlier they stated that COUNT(o.id) counts NULL values as well, demonstrating the misconception that COUNT(column) behaves exactly like COUNT(*) and counts rows with NULLs.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "What would COUNT(o.id) return for Ben, where o.id is NULL due to the LEFT JOIN?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If we switch to COUNT(*) for Ben, it would still return 1. The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+                "evidence_reason": "The candidate asserts that COUNT(*) and COUNT(column) both evaluate to 1 on the generated row for Ben, treating the aggregated column and the row count interchangeably, which aligns with the misconception that COUNT(column) counts rows including NULLs exactly like COUNT(*).",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+            "evidence_reason": "The candidate incorrectly asserts that COUNT(*) and COUNT(o.id) behave the same way on a left-joined row with no matching orders, believing that COUNT(o.id) still evaluates to 1 because the group has one result row.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a left-joined row has NULL in the order id column because there are no matching orders, what does COUNT(o.id) evaluate to for that customer?",
+          "answer": "It will still count that row, so COUNT(o.id) returns 1 for the customer even though the id value is NULL. The LEFT JOIN guarantees a row, and COUNT treats the NULL id just like any other value.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a customer has no orders at all, what value does the joined row have in the o.id column?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "If a customer has no orders at all, what value does the joined row have in the o.id column?",
+                "confidence_expressed": "high",
+                "supporting_quote": "COUNT treats the NULL id just like any other value.",
+                "evidence_reason": "The candidate explicitly states that COUNT treats a NULL value in the column just like any other value, which matches the misconception that COUNT(column) counts rows containing NULLs.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "If a customer has a row with a NULL order id from the LEFT JOIN, does COUNT(o.id) include that row in its count?",
+                "confidence_expressed": "high",
+                "supporting_quote": "COUNT treats the NULL id just like any other value.",
+                "evidence_reason": "The candidate explicitly states that COUNT on a specific column treats NULL values just like any other value and counts them, which matches the listed misconception sql.aggregation.count-column-counts-nulls.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.aggregation.count-column-counts-nulls",
+                "follow_up": "What does COUNT(column) do when the column value is NULL for all rows in a group?",
+                "confidence_expressed": "high",
+                "supporting_quote": "COUNT treats the NULL id just like any other value.",
+                "evidence_reason": "The candidate explicitly states that COUNT treats a NULL id value just like any other value, which matches the belief that COUNT(column) counts rows where the column is NULL.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "COUNT treats the NULL id just like any other value.",
+            "evidence_reason": "The candidate explicitly states that COUNT treats a NULL value in the column just like any other value, which matches the misconception that COUNT(column) counts rows containing NULLs.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that COUNT(o.id) counts NULL values from left-joined rows where there are no matching orders, matching the listed misconception that COUNT(column) counts rows including NULLs. Therefore, the score is 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that COUNT(column) counts NULL values (a listed misconception), giving Ben a count of 1 instead of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.aggregation.count-column-counts-nulls",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map provides O(1) average lookup from a key to its node in the doubly‑linked list, while the list maintains the items in order of recent use so the most‑recent entry is at the head and the least‑recent at the tail. On a cache hit for key k, the map returns the node, we unlink it from its current position and splice it to the front of the list, then return its value; this uses only a constant number of pointer updates. A put operation either updates an existing node (moving it to the front as above) or inserts a new node at the head and adds a map entry, evicting the tail node and its map entry if the capacity is exceeded—again a fixed set of O(1) steps. Hence both get and put run in constant average time.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of both the hash map and the doubly linked list, walks through the pointer updates for a cache hit and put operation, and justifies the O(1) time complexity.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of both the hash map and the doubly linked list, walks through the pointer updates for a cache hit and put operation, and justifies the O(1) time complexity.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: py.pandas.loc-end-exclusive, py.pandas.nan-treated-as-zero, py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ns1 = pd.Series([10, 20, 30], index=[\"a\", \"b\", \"c\"])\ns2 = pd.Series([1, 2, 3], index=[\"b\", \"c\", \"d\"])\ntotal = s1 + s2\nprint(total.tolist())\nprint(total.mean())\nprint(s1.loc[\"a\":\"b\"].sum())",
+      "answer": "It will print `[11, 22, 33]` because the two Series are added element‑wise by their positions. The mean of that list is `22.0`. Finally, `s1.loc[\"a\":\"b\"].sum()` adds the values for “a” and “b”, giving `30`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "What happens to the resulting index labels and values if you change s2 to have the index ['x', 'y', 'z'] instead?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the resulting index labels and values if you change s2 to have the index ['x', 'y', 'z'] instead?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will print `[11, 22, 33]` because the two Series are added element‑wise by their positions.",
+            "evidence_reason": "The candidate explicitly states that addition happens element-wise by positions rather than by index labels, which directly matches the positional alignment misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If s1 had index [\"x\", \"y\", \"z\"] and s2 had index [\"a\", \"b\", \"c\"], what would s1 + s2 look like?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will print `[11, 22, 33]` because the two Series are added element‑wise by their positions.",
+            "evidence_reason": "The candidate explicitly states that Series are added element-wise by position rather than index alignment.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the resulting index labels and values if you reorder s2 to have index ['d', 'c', 'b'] before adding it to s1?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will print `[11, 22, 33]` because the two Series are added element‑wise by their positions.",
+            "evidence_reason": "The candidate explicitly states that Series addition is performed positionally rather than by index label.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "It will print `[11, 22, 33]` because the two Series are added element‑wise by their positions.",
+        "evidence_reason": "The candidate explicitly states that addition happens element-wise by positions rather than by index labels, which directly matches the positional alignment misconception.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the resulting index labels and values if you change s2 to have the index ['x', 'y', 'z'] instead?",
+          "answer": "If we change `s2` to have the index `['x', 'y', 'z']`, the addition still happens element‑wise by position, so the result will be `[11, 22, 33]` just like before. The resulting Series will keep the index labels from `s1` (`'a'`, `'b'`, `'c'`) because the indexes are ignored during the arithmetic. The mean and the slice sum remain `22.0` and `30`, respectively.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What index labels would you expect in the resulting Series if s1 has indices ['a', 'b', 'c'] and s2 has indices ['x', 'y', 'z'], and do any labels match between them?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "What index labels would you expect in the resulting Series if s1 has indices ['a', 'b', 'c'] and s2 has indices ['x', 'y', 'z'], and do any labels match between them?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the addition still happens element‑wise by position, so the result will be `[11, 22, 33]` just like before. The resulting Series will keep the index labels from `s1` (`'a'`, `'b'`, `'c'`) because the indexes are ignored during the arithmetic.",
+                "evidence_reason": "The candidate explicitly asserts that Series addition happens element-wise by position rather than by index alignment, directly matching py.pandas.positional-alignment.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['x', 'y', 'z'], what are the index labels of the resulting Series from s1 + s2, and what values appear at those labels?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the addition still happens element‑wise by position, so the result will be `[11, 22, 33]` just like before",
+                "evidence_reason": "The candidate explicitly states that addition happens element-wise by position rather than aligning by index labels, which directly matches the py.pandas.positional-alignment misconception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "What happens if you print the index and values of the resulting Series when adding two Series with completely non-overlapping indices?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the addition still happens element‑wise by position, so the result will be `[11, 22, 33]` just like before.",
+                "evidence_reason": "The candidate explicitly asserts that Series addition happens element-wise by position and that index labels are ignored, which matches the listed misconception py.pandas.positional-alignment.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the addition still happens element‑wise by position, so the result will be `[11, 22, 33]` just like before. The resulting Series will keep the index labels from `s1` (`'a'`, `'b'`, `'c'`) because the indexes are ignored during the arithmetic.",
+            "evidence_reason": "The candidate explicitly asserts that Series addition happens element-wise by position rather than by index alignment, directly matching py.pandas.positional-alignment.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What index labels would you expect in the resulting Series if s1 has indices ['a', 'b', 'c'] and s2 has indices ['x', 'y', 'z'], and do any labels match between them?",
+          "answer": "I’d expect the resulting Series to keep the index labels from `s1`—so it would be `['a', 'b', 'c']`. Since the two Series use completely different labels, none of the index labels actually match, so the addition just proceeds element‑wise as if the labels didn’t matter.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['x', 'y', 'z'] in that order, what label does pandas assign to the first element of the resulting Series?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 has index ['a', 'b', 'c'] and s2 has index ['x', 'y', 'z'] in that order, what label does pandas assign to the first element of the resulting Series?",
+                "confidence_expressed": "high",
+                "supporting_quote": "none of the index labels actually match, so the addition just proceeds element‑wise as if the labels didn’t matter.",
+                "evidence_reason": "The candidate explicitly states that when index labels do not match, pandas falls back to element-wise addition by position, demonstrating the listed misconception py.pandas.positional-alignment.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "What would total.index contain if you printed total after adding s1 and s2 with those non-overlapping index labels?",
+                "confidence_expressed": "high",
+                "supporting_quote": "none of the index labels actually match, so the addition just proceeds element‑wise as if the labels didn’t matter.",
+                "evidence_reason": "The candidate explicitly states that when index labels do not match, pandas falls back to positional element-wise addition instead of aligning by index and producing NaNs.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "What would be the index labels and values of s1 + s2 if s2 had index ['b', 'c', 'e'] instead?",
+                "confidence_expressed": "high",
+                "supporting_quote": "none of the index labels actually match, so the addition just proceeds element‑wise as if the labels didn’t matter.",
+                "evidence_reason": "The candidate explicitly believes that when index labels do not match between Series, pandas ignores them and falls back to positional element-wise addition instead of aligning them and producing NaNs.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "none of the index labels actually match, so the addition just proceeds element‑wise as if the labels didn’t matter.",
+            "evidence_reason": "The candidate explicitly states that when index labels do not match, pandas falls back to element-wise addition by position, demonstrating the listed misconception py.pandas.positional-alignment.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate consistently believes that pandas Series addition is positional rather than aligned by index labels, which falls under the listed misconception py.pandas.positional-alignment.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assumed that pandas adds Series by position rather than index alignment (resulting in positional addition and wrong mean), although they correctly calculated the final .loc sum.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-008",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; lists a suspected misconception to confirm: sql.aggregation.count-column-counts-nulls",
+      "prompt": "What does this query return? Explain each of the four values.\n\nSELECT COUNT(*) AS n_rows,\n       COUNT(bonus) AS n_bonus,\n       SUM(bonus) AS total,\n       AVG(bonus) AS avg_bonus\nFROM staff;\n\nTable staff:\nname | bonus\nAsha | 100\nBen | NULL\nChen | 200\nDana | NULL\nEli | 300",
+      "answer": "The query will return four columns. `n_rows` is 5 because there are five rows in the staff table. `n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL. `total` is the sum of the non‑null bonuses, which is 100 + 200 + 300 = 600. `avg_bonus` is the total divided by the count of rows, so 600 / 5 = 120.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.aggregation.count-column-counts-nulls",
+        "follow_up": "If a column has NULL values, how does the behavior of COUNT(column_name) differ from COUNT(*)?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a column has NULL values, how does the behavior of COUNT(column_name) differ from COUNT(*)?",
+            "confidence_expressed": "high",
+            "supporting_quote": "n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL.",
+            "evidence_reason": "The candidate explicitly states that COUNT(bonus) counts every row even when the value is NULL, matching the listed misconception sql.aggregation.count-column-counts-nulls.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+                "supporting_quote": "total` is the sum of the non‑null bonuses, which is 100 + 200 + 300 = 600",
+                "quote_start": 181,
+                "quote_end": 254,
+                "reason": "The candidate correctly calculates the sum using only the non-null values rather than treating NULL as zero."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a table has a column with some NULL values, how does the result of COUNT(column_name) differ from COUNT(*)?",
+            "confidence_expressed": "high",
+            "supporting_quote": "n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL.",
+            "evidence_reason": "The candidate explicitly states that COUNT(bonus) counts every row even when the bonus is NULL, which directly matches the listed misconception sql.aggregation.count-column-counts-nulls.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+                "supporting_quote": "avg_bonus` is the total divided by the count of rows, so 600 / 5 = 120",
+                "quote_start": 257,
+                "quote_end": 327,
+                "reason": "The candidate calculates the average as 600 / 5, showing they believe NULLs affect the divisor for AVG by being included in the total row count, which aligns with the misconception that aggregate functions treat NULL as zero or affect the row denominator similarly."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.aggregation.count-column-counts-nulls",
+            "follow_up": "If a table has 10 rows and 4 of them have NULL in the bonus column, what would COUNT(bonus) return?",
+            "confidence_expressed": "high",
+            "supporting_quote": "n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL.",
+            "evidence_reason": "The candidate explicitly states that COUNT(bonus) counts every row even when the column is NULL, which matches the listed misconception sql.aggregation.count-column-counts-nulls.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+                "supporting_quote": "total` is the sum of the non‑null bonuses, which is 100 + 200 + 300 = 600",
+                "quote_start": 181,
+                "quote_end": 254,
+                "reason": "The candidate correctly calculates the sum using only the non-null values rather than treating NULLs as zero."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL.",
+        "evidence_reason": "The candidate explicitly states that COUNT(bonus) counts every row even when the value is NULL, matching the listed misconception sql.aggregation.count-column-counts-nulls.",
+        "contradicting": [
+          {
+            "misconception_id": "sql.null.aggregates-treat-null-as-zero",
+            "supporting_quote": "total` is the sum of the non‑null bonuses, which is 100 + 200 + 300 = 600",
+            "quote_start": 181,
+            "quote_end": 254,
+            "reason": "The candidate correctly calculates the sum using only the non-null values rather than treating NULL as zero.",
+            "vote_share": 1.0
+          }
+        ]
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that COUNT(bonus) includes NULL rows and that AVG divides by the total number of rows (treating NULLs as zero), which matches the listed misconceptions and earns a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that COUNT(bonus) includes NULL rows and that AVG divides by the total number of rows (treating NULLs as zero), which matches the listed misconceptions and earns a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.aggregation.count-column-counts-nulls",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: ds.graphs.bfs-dfs-swapped, ds.graphs.bfs-weighted-shortest, ds.graphs.dfs-finds-shortest",
+      "prompt": "What does this code print? What do the numbers mean, and would they still be the shortest distances if each edge had a different length?\n\nfrom collections import deque\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"E\"], \"C\": [\"D\"], \"D\": [\"E\"], \"E\": [\"F\"], \"F\": []}\n\ndef bfs(start):\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        node = q.popleft()\n        for nb in graph[node]:\n            if nb not in dist:\n                dist[nb] = dist[node] + 1\n                q.append(nb)\n    return dist\n\nprint(bfs(\"A\"))\n",
+      "answer": "The program prints `{'A': 0, 'B': 1, 'C': 1, 'E': 2, 'D': 2, 'F': 3}`. The numbers are the minimum number of edges (hops) from the start node A to each reachable node, because the BFS uses a FIFO deque and visits all nodes at distance k before those at distance k+1. If the edges had varying lengths, these counts would no longer represent true shortest‑path distances; you would need an algorithm that accounts for edge weights, such as Dijkstra’s.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the exact output, correctly identified that the algorithm is a breadth-first search due to the FIFO queue yielding minimum hop counts, and correctly noted that Dijkstra's algorithm would be needed for weighted edges.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the exact output, correctly identified that the algorithm is a breadth-first search due to the FIFO queue yielding minimum hop counts, and correctly noted that Dijkstra's algorithm would be needed for weighted edges.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-select-filter",
+        "sql-schema-constraints"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.75); level 1 is nearest its estimate -1.30; lists misconceptions not yet probed: sql.schema-constraints.normalisation-only-saves-space, sql.select-filter.distinct-per-column, sql.select-filter.distinct-returns-first",
+      "prompt": "What does this query return? What does the result tell you about storing the customer's city on every order row?\n\nSELECT DISTINCT customer, city\nFROM orders_flat\nORDER BY customer, city;\n\nTable orders_flat:\norder_id | customer | city\n101 | Asha | Pune\n102 | Asha | Pune\n103 | Ben | Delhi\n104 | Asha | Mumbai\n105 | Ben | Delhi",
+      "answer": "The query returns three rows: (Asha, Mumbai), (Asha, Pune) and (Ben, Delhi). Because DISTINCT is applied to the whole (customer, city) pair, Asha appears twice since she has two different city values in the table. This shows an update anomaly – the customer's city is stored on each order row and can become inconsistent, which is why the city should be kept in a separate customers table rather than duplicated on every order.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the three rows returned, explained that DISTINCT applies to the (customer, city) pair, and correctly linked the inconsistent data for Asha to an update anomaly, hitting all rubric points for a full score of 2.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the three rows returned, explained that DISTINCT applies to the (customer, city) pair, and correctly linked the inconsistent data for Asha to an update anomaly, hitting all rubric points for a full score of 2.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-heaps"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; lists misconceptions not yet probed: ds.heaps.heap-is-sorted, ds.heaps.max-at-last-index, ds.heaps.pop-min-constant",
+      "prompt": "In a binary min-heap stored in an array, where is the smallest element and where is the largest? What do inserting an item and removing the minimum cost, and why?",
+      "answer": "The smallest element in a binary min‑heap is always at the root, which is stored at index 0 in the array, while the largest element can be found among the leaf nodes (roughly the second half of the array). Inserting a new item and removing the minimum each take O(log n) time because they involve a sift‑up or sift‑down along a single root‑to‑leaf path, and simply peeking at the minimum is O(1). The largest element happens to be at the last index of the array.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.heaps.max-at-last-index",
+        "follow_up": "If you add a new item to a min-heap that causes the tree to grow a new level, where does that new item initially go in the array, and does it become the new maximum?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.heaps.max-at-last-index",
+            "follow_up": "If you add a new item to a min-heap that causes the tree to grow a new level, where does that new item initially go in the array, and does it become the new maximum?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The largest element happens to be at the last index of the array.",
+            "evidence_reason": "The candidate explicitly asserts that the largest element is at the last index of the array, directly matching the listed misconception ds.heaps.max-at-last-index.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.heaps.max-at-last-index",
+            "follow_up": "If you have a min-heap with elements [2, 5, 10, 3], which index is the maximum element at?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The largest element happens to be at the last index of the array.",
+            "evidence_reason": "The candidate explicitly states that the largest element is at the last index of the array, directly matching the listed misconception ds.heaps.max-at-last-index.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.heaps.max-at-last-index",
+            "follow_up": "If you have a min-heap with elements 2, 5, 10, and 3, which one is at the last index, and which one is the largest?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The largest element happens to be at the last index of the array.",
+            "evidence_reason": "The candidate explicitly asserts that the largest element is located at the last index of the array, directly matching the misconception that the maximum of a min-heap resides at the end of the backing array.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The largest element happens to be at the last index of the array.",
+        "evidence_reason": "The candidate explicitly asserts that the largest element is at the last index of the array, directly matching the listed misconception ds.heaps.max-at-last-index.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you add a new item to a min-heap that causes the tree to grow a new level, where does that new item initially go in the array, and does it become the new maximum?",
+          "answer": "When a new element forces the heap to add another level, we first place it in the next open slot at the end of the array – the left‑most position of that new level. It then “sifts up” if it’s smaller than its parent; otherwise it stays there, so it is not automatically the maximum (the maximum is still somewhere among the leaf nodes).",
+          "diagnosis": {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "You described how insertion works, but could you also clarify where the largest element is located and the time complexity for removing the minimum?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "slip",
+                "misconception_id": null,
+                "follow_up": "You described how insertion works, but could you also clarify where the largest element is located and the time complexity for removing the minimum?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "slip",
+                "misconception_id": null,
+                "follow_up": "Could you briefly state where the minimum and maximum elements are, and what the time complexities for insert and remove-min are?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "Could you also explain what happens to the time complexity when we remove the minimum element from the min-heap?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 3,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "You described how insertion works, but could you also clarify where the largest element is located and the time complexity for removing the minimum?",
+          "answer": "The smallest element is always at the root of the min‑heap, which is stored at index 0, while the largest element must reside in one of the leaf nodes—typically somewhere in the second half of the array—but its exact position isn’t fixed. Removing the minimum (or inserting a new item) requires a single sift‑down or sift‑up along a root‑to‑leaf path, so each operation runs in O(log n) time, whereas just reading the minimum is O(1).",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 3,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate initially made a contradictory statement about the largest element being at the last index, but the follow-up replies completely corrected this misconception and correctly explained the locations of the minimum and maximum, as well as the O(log n) complexities for insert and remove-min.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identifies the smallest element at the root, the costs and mechanisms of insert and remove-min, but explicitly falls into the misconception that the largest element is at the last index of the array.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-012",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "slip",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; lists a suspected misconception to confirm: py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "It prints:\n```\n['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10, 30, 25, nan]\n```\nThe first list is the original name order, the second list selects the names at positions 1 and 2, and the bonus column is computed element‑wise from the filtered scores, giving 10, 30, 25 for the first three rows and NaN for the last one.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "What are the row index labels of the 'passed' DataFrame, and how do they line up with the original 'df' index labels during assignment?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What are the row index labels of the 'passed' DataFrame, and how do they line up with the original 'df' index labels during assignment?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving 10, 30, 25 for the first three rows and NaN for the last one",
+            "evidence_reason": "The candidate asserts that the bonus values align with the first three rows sequentially and NaN falls on the last row, which demonstrates positional alignment instead of index label alignment.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "How does pandas determine which row in df gets NaN when assigning the bonus series?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving 10, 30, 25 for the first three rows and NaN for the last one",
+            "evidence_reason": "The candidate explicitly states that the bonus values are assigned element-wise to the first three rows and NaN goes to the last row, which reflects the positional alignment misconception rather than index-based alignment.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "How does pandas determine which row receives which value when you assign a Series to df[\"bonus\"], given that 'passed' only has 3 elements while 'df' has 4?",
+            "confidence_expressed": "high",
+            "supporting_quote": "giving 10, 30, 25 for the first three rows and NaN for the last one.",
+            "evidence_reason": "The candidate explicitly states that the bonus values are assigned positionally to the first three rows with NaN at the end, demonstrating the listed misconception that assignment aligns by position rather than index labels.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "giving 10, 30, 25 for the first three rows and NaN for the last one",
+        "evidence_reason": "The candidate asserts that the bonus values align with the first three rows sequentially and NaN falls on the last row, which demonstrates positional alignment instead of index label alignment.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate got the first two outputs and reasons right, but missed the third output and reason entirely, showing the positional-alignment misconception by assuming bonus values align by position rather than index label.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate got the first two outputs and reasons right, but missed the third output and reason entirely, showing the positional-alignment misconception by assuming bonus values align by position rather than index label.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2041,
+          "se": 0.671,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-heaps",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists a suspected misconception to confirm: ds.heaps.max-at-last-index",
+      "prompt": "A job streams 10 million log records and must report the 100 with the highest latency. Why is keeping a min-heap of at most 100 latencies better than sorting all the records? In that heap, where are the smallest and the largest of the current top 100? What is the total cost of each approach?",
+      "answer": "Keeping a min‑heap of only 100 items means we never have to store or move the whole 10 million records, so the memory usage stays tiny and we avoid the huge overhead of sorting a massive array. In that heap the smallest value ends up at the bottom of the structure while the largest sits at the root, so we can quickly check if a new record belongs in the top‑100. The heap solution runs in linear time overall, O(n), whereas sorting all records would take quadratic time, O(n²), and would need to keep everything in memory.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.heaps.max-at-last-index",
+        "follow_up": "If a min-heap has its smallest element at the root and its largest at the bottom, where does the newly inserted element go and how does the heap ensure the order is maintained?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.heaps.max-at-last-index",
+            "follow_up": "If a min-heap has its smallest element at the root and its largest at the bottom, where does the newly inserted element go and how does the heap ensure the order is maintained?",
+            "confidence_expressed": "high",
+            "supporting_quote": "In that heap the smallest value ends up at the bottom of the structure while the largest sits at the root",
+            "evidence_reason": "The candidate explicitly states that the largest value sits at the root and the smallest at the bottom of a min-heap, which directly matches the misconception that extremes are located at fixed ends (though flipped).",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.heaps.max-at-last-index",
+            "follow_up": "If a min-heap always keeps the smallest element at the root, what happens to the elements when you insert new items, and where do the very smallest and largest of the top 100 end up in the underlying array?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the smallest value ends up at the bottom of the structure while the largest sits at the root",
+            "evidence_reason": "The candidate explicitly states the exact opposite of reality for a min-heap: they claim the smallest is at the bottom and the largest sits at the root, which directly supports the misconception that the structure's extremums are inverted or misidentified.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.heaps.max-at-last-index",
+            "follow_up": "If a min-heap always keeps the smallest element at the root, what happens to the root when you insert a new value that is smaller than everything currently in the heap?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the smallest value ends up at the bottom of the structure while the largest sits at the root",
+            "evidence_reason": "The candidate explicitly states the exact opposite of a min-heap's structure, claiming the smallest value is at the bottom and the largest is at the root, which matches the listed misconception ds.heaps.max-at-last-index.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "In that heap the smallest value ends up at the bottom of the structure while the largest sits at the root",
+        "evidence_reason": "The candidate explicitly states that the largest value sits at the root and the smallest at the bottom of a min-heap, which directly matches the misconception that extremes are located at fixed ends (though flipped).",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate shows multiple critical misconceptions: they state that sorting is O(n²), that the heap solution is O(n), and that the largest element sits at the root of a min-heap (which directly hits the listed misconception).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate shows multiple critical misconceptions: they state that sorting is O(n²), that the heap solution is O(n), and that the largest element sits at the root of a min-heap (which directly hits the listed misconception).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2041,
+          "se": 0.671,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-005",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.67); level 2 is nearest its estimate +0.20; lists misconceptions not yet probed: py.concurrency.async-multithreaded, py.concurrency.async-preempts, py.concurrency.threads-cpu-parallel",
+      "prompt": "An asyncio service handles many slow API calls with 'await session.get(...)'. One handler also runs a pure-Python loop that takes 3 seconds of CPU time. Explain how asyncio runs many requests at once, what happens to the other requests during that loop, and whether moving the loop into a thread would let it run on a second core in parallel with the rest.",
+      "answer": "Asyncio runs all of its coroutines on a single thread, so the event loop only switches tasks when an `await` actually yields control; while one request is waiting on `session.get` the loop can resume other coroutines. A pure‑Python loop that takes three seconds has no `await`, so it blocks the event loop for the whole duration and every other request is stalled. Moving that work to a thread (e.g. with `asyncio.to_thread`) frees the event loop and keeps it responsive, but because CPython’s GIL still serialises Python bytecode, the threaded loop won’t run in parallel on another core—true parallelism would require a process‑based pool.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate accurately explains single-threaded asyncio switching at await points, the blocking nature of a CPU-bound loop without awaits, and the limitations of threads and the GIL for CPU-bound tasks in standard CPython.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate accurately explains single-threaded asyncio switching at await points, the blocking nature of a CPU-bound loop without awaits, and the limitations of threads and the GIL for CPU-bound tasks in standard CPython.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.5356,
+          "se": 0.6088,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-schema-constraints",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.65); level 1 is nearest its estimate -0.81; lists misconceptions not yet probed: sql.schema-constraints.fk-must-be-unique, sql.schema-constraints.pk-needs-distinct",
+      "prompt": "orders.id is the primary key and orders.customer_id is a foreign key to customers.id. What does this query return, and why? Would SELECT DISTINCT id FROM orders return fewer rows than SELECT id FROM orders?\n\nSELECT DISTINCT customer_id, status\nFROM orders\nORDER BY customer_id, status;\n\nTable orders:\nid | customer_id | status\n101 | 1 | paid\n102 | 1 | paid\n103 | 2 | refunded\n104 | 1 | refunded\n105 | 3 | paid",
+      "answer": "The query returns one row for each distinct customer_id, so you’ll get three rows: (1), (2) and (3). Because DISTINCT is applied to the first column listed, it removes the duplicate customer 1 rows even though their status values differ. The ORDER BY just sorts those three customer IDs in ascending order.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.select-filter.distinct-per-column",
+        "follow_up": "What happens to the status column values in those three rows if SELECT DISTINCT selects both customer_id and status?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-per-column",
+            "follow_up": "What happens to the status column values in those three rows if SELECT DISTINCT selects both customer_id and status?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because DISTINCT is applied to the first column listed, it removes the duplicate customer 1 rows even though their status values differ.",
+            "evidence_reason": "The candidate explicitly states that DISTINCT applies only to the first column listed, which matches the misconception sql.select-filter.distinct-per-column.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-per-column",
+            "follow_up": "What happens to the status column values in those three rows you mentioned if we only select customer_id?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because DISTINCT is applied to the first column listed, it removes the duplicate customer 1 rows even though their status values differ.",
+            "evidence_reason": "The candidate explicitly states that DISTINCT applies only to the first column listed, which directly matches the misconception that DISTINCT operates per-column rather than on the entire selected row tuple.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.select-filter.distinct-per-column",
+            "follow_up": "How does the second column in the SELECT list, status, affect which rows are kept when customer_id is the same?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because DISTINCT is applied to the first column listed, it removes the duplicate customer 1 rows even though their status values differ.",
+            "evidence_reason": "The candidate explicitly states that DISTINCT applies only to the first column listed, which matches the misconception that DISTINCT operates per-column rather than on the entire selected row combination.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Because DISTINCT is applied to the first column listed, it removes the duplicate customer 1 rows even though their status values differ.",
+        "evidence_reason": "The candidate explicitly states that DISTINCT applies only to the first column listed, which matches the misconception sql.select-filter.distinct-per-column.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the status column values in those three rows if SELECT DISTINCT selects both customer_id and status?",
+          "answer": "The query returns one row for each unique combination of customer_id and status, so it produces four rows: (1, paid), (1, refunded), (2, refunded) and (3, paid). DISTINCT works on the whole row, not just the first column, so the two different status values for customer 1 are kept as separate rows. The ORDER BY simply sorts those four rows first by customer_id and then by status.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          1,
+          2
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate initially showed a misconception about DISTINCT applying only to the first column, but the follow-up reply completely corrected this, explained that DISTINCT applies to the whole combination of selected columns, and correctly identified all four rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims DISTINCT applies only to the first column and returns three rows, showing a fundamental misunderstanding of composite DISTINCT and holding a listed misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.5356,
+          "se": 0.6088,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.5874,
+          "se": 0.6062,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-014",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +0.54; lists misconceptions not yet probed: py.comprehensions-generators.generator-eager, py.comprehensions-generators.yield-is-return, py.functions-scope.closure-captures-value",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "It will first print “created”, then the call to next(gen) will output the string “begin” followed by the list [3, 2, 1] and another empty list, and finally the scaled generator will produce [0, 10, 20]. This happens because the generator runs all its code up front and the step variable is fixed at the time the generator expression is defined.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.comprehensions-generators.generator-eager",
+        "follow_up": "If the generator ran all of its code up front before next(gen) was even called, when do you think the word 'begin' would be printed?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "If the generator ran all of its code up front before next(gen) was even called, when do you think the word 'begin' would be printed?",
+            "confidence_expressed": "high",
+            "supporting_quote": "This happens because the generator runs all its code up front",
+            "evidence_reason": "The candidate explicitly states that the generator executes its body upfront rather than lazily, which matches py.comprehensions-generators.generator-eager.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "What happens to the code inside countdown before next(gen) is called?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the generator runs all its code up front",
+            "evidence_reason": "The candidate explicitly states that the generator runs all of its code up front, matching the misconception that generator functions execute eagerly rather than lazily.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "If the generator ran all of its code up front, when would the print(\"begin\") statement execute?",
+            "confidence_expressed": "high",
+            "supporting_quote": "This happens because the generator runs all its code up front",
+            "evidence_reason": "The candidate explicitly asserts that the generator executes all its code immediately upon creation, which directly matches the listed misconception that generator functions run eagerly rather than lazily.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "This happens because the generator runs all its code up front",
+        "evidence_reason": "The candidate explicitly states that the generator executes its body upfront rather than lazily, which matches py.comprehensions-generators.generator-eager.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If the generator ran all of its code up front before next(gen) was even called, when do you think the word 'begin' would be printed?",
+          "answer": "I think “begin” gets printed as soon as the generator object is created, so you’d see it right after the line `gen = countdown(3)`. That means it appears before the “created” message is printed.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "What happens right after calling countdown(3), before next(gen) is ever called?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "What happens right after calling countdown(3), before next(gen) is ever called?",
+                "confidence_expressed": "high",
+                "supporting_quote": "I think “begin” gets printed as soon as the generator object is created, so you’d see it right after the line `gen = countdown(3)`.",
+                "evidence_reason": "The candidate explicitly asserts that the generator body runs immediately upon calling the generator function, which matches the belief that generator creation is eager.",
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "What line of code actually starts executing the body of the countdown function?",
+                "confidence_expressed": "high",
+                "supporting_quote": "I think “begin” gets printed as soon as the generator object is created, so you’d see it right after the line `gen = countdown(3)`.",
+                "evidence_reason": "The candidate explicitly states that 'begin' is printed immediately upon creating the generator object, which demonstrates the belief that generator functions run their body eagerly rather than lazily upon the first next() call.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "I think “begin” gets printed as soon as the generator object is created, so you’d see it right after the line `gen = countdown(3)`.",
+            "evidence_reason": "The candidate explicitly asserts that the generator body runs immediately upon calling the generator function, which matches the belief that generator creation is eager.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens right after calling countdown(3), before next(gen) is ever called?",
+          "answer": "Right after you call `countdown(3)`, the function actually starts executing and it immediately prints “begin” and then it goes into a loop that builds a list of the numbers 3, 2, 1 internally. The generator object is already holding those values, so the next call to `next(gen)` will just pull the first element out of that pre‑computed list.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "If countdown(3) executes its body immediately when called, what does calling countdown(3) itself return as a value?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "If countdown(3) executes its body immediately when called, what does calling countdown(3) itself return as a value?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The generator object is already holding those values, so the next call to `next(gen)` will just pull the first element out of that pre‑computed list.",
+                "evidence_reason": "The candidate explicitly asserts that the generator pre-computes and holds all values internally in a list right when the generator function is called, which matches the listed misconception that generators compute values eagerly.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "If countdown(3) executes its body immediately when called, what is returned by the assignment `gen = countdown(3)` — a generator object or the list of printed values?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The generator object is already holding those values, so the next call to `next(gen)` will just pull the first element out of that pre‑computed list.",
+                "evidence_reason": "The candidate explicitly asserts that the generator pre-computes and holds all the values internally beforehand, directly exhibiting the belief that generator execution is eager rather than lazy.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "If countdown(3) already pre-computed everything and stored it internally right when it was called, what purpose do you think the yield statement serves compared to a normal return?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The generator object is already holding those values, so the next call to `next(gen)` will just pull the first element out of that pre‑computed list.",
+                "evidence_reason": "The candidate explicitly states that the generator pre-computes and stores all the values internally upon creation, which directly matches the listed misconception that generators are eager rather than lazy.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The generator object is already holding those values, so the next call to `next(gen)` will just pull the first element out of that pre‑computed list.",
+            "evidence_reason": "The candidate explicitly asserts that the generator pre-computes and holds all values internally in a list right when the generator function is called, which matches the listed misconception that generators compute values eagerly.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate consistently shows the misconception that generator functions execute eagerly upfront and pre-compute all values rather than lazily. They fail to understand lazy evaluation and generator execution.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes the late lookup of step for the generator expression, but believes the generator runs all its code up front, missing lazy execution and generator pausing/exhaustion.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2927,
+          "se": 0.5594,
+          "level": 2,
+          "n": 5
+        },
+        "sql": {
+          "estimate": -0.5874,
+          "se": 0.6062,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-select-filter",
+        "sql-schema-constraints"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.61); level 1 is nearest its estimate -0.59; lists a suspected misconception to confirm: sql.select-filter.distinct-per-column",
+      "prompt": "A products table has 6 rows and a primary key column id. SELECT DISTINCT category FROM products returns 3 rows. How many rows could SELECT DISTINCT category, supplier return, and how many will SELECT DISTINCT id, category return? Explain what DISTINCT actually compares.",
+      "answer": "DISTINCT removes duplicate rows based on the entire set of columns listed, so a row is kept only if its combination of values is different from all others. Because there are three different categories, SELECT DISTINCT category, supplier can return anywhere from three up to six rows (one for each unique category‑supplier pair, but no more than the total rows in the table). SELECT DISTINCT id, category will always return six rows, since id is the primary key and makes every (id, category) pair unique, so no duplicates are eliminated.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that DISTINCT compares the combination of all selected columns, gave the exact range of 3 to 6 rows for category and supplier, and correctly stated that id, category returns 6 rows because id is the primary key.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that DISTINCT compares the combination of all selected columns, gave the exact range of 3 to 6 rows for category and supplier, and correctly stated that id, category returns 6 rows because id is the primary key.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2927,
+          "se": 0.5594,
+          "level": 2,
+          "n": 5
+        },
+        "sql": {
+          "estimate": -0.3381,
+          "se": 0.5655,
+          "level": 1,
+          "n": 5
+        },
+        "ds": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 23,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 2,
+        "estimate": 0.2927,
+        "se": 0.5594,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.629035,
+        "level_probabilities": {
+          "0": 0.003163,
+          "1": 0.149924,
+          "2": 0.629035,
+          "3": 0.217877
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 1,
+        "estimate": -0.3381,
+        "se": 0.5655,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.505056,
+        "level_probabilities": {
+          "0": 0.045882,
+          "1": 0.505056,
+          "2": 0.416334,
+          "3": 0.032727
+        },
+        "meets_minimum": null
+      },
+      "ds": {
+        "level": 3,
+        "estimate": 1.1889,
+        "se": 0.5946,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.783538,
+        "level_probabilities": {
+          "0": 2.1e-05,
+          "1": 0.006337,
+          "2": 0.210104,
+          "3": 0.783538
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether sql reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "sql.aggregation.count-column-counts-nulls",
+        "confirmed": true,
+        "evidence_turns": [
+          2,
+          5
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 0,
+            "reply_text": "The query will return three rows – one for each customer – with the counts 2, 1, and 1 for Asha, Ben and Chen respectively, and the totals 330 for Asha and NULL for both Ben and Chen, because the LEFT JOIN still produces a row for customers without matching orders, and COUNT counts those NULL id values as well.",
+            "vote_share": 1.0,
+            "supporting_quote": "and COUNT counts those NULL id values as well",
+            "quote_start": 266,
+            "quote_end": 311,
+            "reason": "The candidate explicitly states that COUNT counts the NULL id values generated by the left join for unmatched rows like Ben, which directly matches the misconception that COUNT(column) counts rows with nulls."
+          },
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 1,
+            "reply_text": "If we switch to COUNT(*) for Ben, it would still return 1. The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+            "vote_share": 1.0,
+            "supporting_quote": "The LEFT JOIN creates a row for Ben even though there’s no matching order, and COUNT(*) counts every row regardless of NULL values. So the result stays 1 because there is exactly one row in the result set for Ben.",
+            "quote_start": 59,
+            "quote_end": 272,
+            "reason": "The candidate incorrectly asserts that COUNT(*) and COUNT(o.id) behave the same way on a left-joined row with no matching orders, believing that COUNT(o.id) still evaluates to 1 because the group has one result row."
+          },
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 2,
+            "reply_text": "It will still count that row, so COUNT(o.id) returns 1 for the customer even though the id value is NULL. The LEFT JOIN guarantees a row, and COUNT treats the NULL id just like any other value.",
+            "vote_share": 1.0,
+            "supporting_quote": "COUNT treats the NULL id just like any other value.",
+            "quote_start": 142,
+            "quote_end": 193,
+            "reason": "The candidate explicitly states that COUNT treats a NULL value in the column just like any other value, which matches the misconception that COUNT(column) counts rows containing NULLs."
+          },
+          {
+            "question_id": "SQL-L1-010",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "The query will return four columns. `n_rows` is 5 because there are five rows in the staff table. `n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL. `total` is the sum of the non‑null bonuses, which is 100 + 200 + 300 = 600. `avg_bonus` is the total divided by the count of rows, so 600 / 5 = 120.",
+            "vote_share": 1.0,
+            "supporting_quote": "n_bonus` is also 5, since COUNT(bonus) counts every row even when bonus is NULL.",
+            "quote_start": 99,
+            "quote_end": 179,
+            "reason": "The candidate explicitly states that COUNT(bonus) counts every row even when the value is NULL, matching the listed misconception sql.aggregation.count-column-counts-nulls."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "py.pandas.positional-alignment",
+        "confirmed": true,
+        "evidence_turns": [
+          4,
+          9
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 0,
+            "reply_text": "It will print `[11, 22, 33]` because the two Series are added element‑wise by their positions. The mean of that list is `22.0`. Finally, `s1.loc[\"a\":\"b\"].sum()` adds the values for “a” and “b”, giving `30`.",
+            "vote_share": 1.0,
+            "supporting_quote": "It will print `[11, 22, 33]` because the two Series are added element‑wise by their positions.",
+            "quote_start": 0,
+            "quote_end": 94,
+            "reason": "The candidate explicitly states that addition happens element-wise by positions rather than by index labels, which directly matches the positional alignment misconception."
+          },
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 1,
+            "reply_text": "If we change `s2` to have the index `['x', 'y', 'z']`, the addition still happens element‑wise by position, so the result will be `[11, 22, 33]` just like before. The resulting Series will keep the index labels from `s1` (`'a'`, `'b'`, `'c'`) because the indexes are ignored during the arithmetic. The mean and the slice sum remain `22.0` and `30`, respectively.",
+            "vote_share": 1.0,
+            "supporting_quote": "the addition still happens element‑wise by position, so the result will be `[11, 22, 33]` just like before. The resulting Series will keep the index labels from `s1` (`'a'`, `'b'`, `'c'`) because the indexes are ignored during the arithmetic.",
+            "quote_start": 55,
+            "quote_end": 297,
+            "reason": "The candidate explicitly asserts that Series addition happens element-wise by position rather than by index alignment, directly matching py.pandas.positional-alignment."
+          },
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 2,
+            "reply_text": "I’d expect the resulting Series to keep the index labels from `s1`—so it would be `['a', 'b', 'c']`. Since the two Series use completely different labels, none of the index labels actually match, so the addition just proceeds element‑wise as if the labels didn’t matter.",
+            "vote_share": 1.0,
+            "supporting_quote": "none of the index labels actually match, so the addition just proceeds element‑wise as if the labels didn’t matter.",
+            "quote_start": 155,
+            "quote_end": 270,
+            "reason": "The candidate explicitly states that when index labels do not match, pandas falls back to element-wise addition by position, demonstrating the listed misconception py.pandas.positional-alignment."
+          },
+          {
+            "question_id": "PY-L2-007",
+            "turn": 9,
+            "reply_index": 0,
+            "reply_text": "It prints:\n```\n['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10, 30, 25, nan]\n```\nThe first list is the original name order, the second list selects the names at positions 1 and 2, and the bonus column is computed element‑wise from the filtered scores, giving 10, 30, 25 for the first three rows and NaN for the last one.",
+            "vote_share": 1.0,
+            "supporting_quote": "giving 10, 30, 25 for the first three rows and NaN for the last one",
+            "quote_start": 247,
+            "quote_end": 314,
+            "reason": "The candidate asserts that the bonus values align with the first three rows sequentially and NaN falls on the last row, which demonstrates positional alignment instead of index label alignment."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "ds.heaps.max-at-last-index",
+        "confirmed": true,
+        "evidence_turns": [
+          8,
+          10
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L3-012",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "The smallest element in a binary min‑heap is always at the root, which is stored at index 0 in the array, while the largest element can be found among the leaf nodes (roughly the second half of the array). Inserting a new item and removing the minimum each take O(log n) time because they involve a sift‑up or sift‑down along a single root‑to‑leaf path, and simply peeking at the minimum is O(1). The largest element happens to be at the last index of the array.",
+            "vote_share": 1.0,
+            "supporting_quote": "The largest element happens to be at the last index of the array.",
+            "quote_start": 397,
+            "quote_end": 462,
+            "reason": "The candidate explicitly asserts that the largest element is at the last index of the array, directly matching the listed misconception ds.heaps.max-at-last-index."
+          },
+          {
+            "question_id": "DS-L3-005",
+            "turn": 10,
+            "reply_index": 0,
+            "reply_text": "Keeping a min‑heap of only 100 items means we never have to store or move the whole 10 million records, so the memory usage stays tiny and we avoid the huge overhead of sorting a massive array. In that heap the smallest value ends up at the bottom of the structure while the largest sits at the root, so we can quickly check if a new record belongs in the top‑100. The heap solution runs in linear time overall, O(n), whereas sorting all records would take quadratic time, O(n²), and would need to keep everything in memory.",
+            "vote_share": 1.0,
+            "supporting_quote": "In that heap the smallest value ends up at the bottom of the structure while the largest sits at the root",
+            "quote_start": 194,
+            "quote_end": 299,
+            "reason": "The candidate explicitly states that the largest value sits at the root and the smallest at the bottom of a min-heap, which directly matches the misconception that extremes are located at fixed ends (though flipped)."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "sql.select-filter.distinct-per-column",
+        "confirmed": false,
+        "evidence_turns": [
+          12
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L1-014",
+            "turn": 12,
+            "reply_index": 0,
+            "reply_text": "The query returns one row for each distinct customer_id, so you’ll get three rows: (1), (2) and (3). Because DISTINCT is applied to the first column listed, it removes the duplicate customer 1 rows even though their status values differ. The ORDER BY just sorts those three customer IDs in ascending order.",
+            "vote_share": 1.0,
+            "supporting_quote": "Because DISTINCT is applied to the first column listed, it removes the duplicate customer 1 rows even though their status values differ.",
+            "quote_start": 101,
+            "quote_end": 237,
+            "reason": "The candidate explicitly states that DISTINCT applies only to the first column listed, which matches the misconception sql.select-filter.distinct-per-column."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.comprehensions-generators.generator-eager",
+        "confirmed": false,
+        "evidence_turns": [
+          13
+        ],
+        "vote_share": 0.889,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-009",
+            "turn": 13,
+            "reply_index": 0,
+            "reply_text": "It will first print “created”, then the call to next(gen) will output the string “begin” followed by the list [3, 2, 1] and another empty list, and finally the scaled generator will produce [0, 10, 20]. This happens because the generator runs all its code up front and the step variable is fixed at the time the generator expression is defined.",
+            "vote_share": 1.0,
+            "supporting_quote": "This happens because the generator runs all its code up front",
+            "quote_start": 203,
+            "quote_end": 264,
+            "reason": "The candidate explicitly states that the generator executes its body upfront rather than lazily, which matches py.comprehensions-generators.generator-eager."
+          },
+          {
+            "question_id": "PY-L3-009",
+            "turn": 13,
+            "reply_index": 1,
+            "reply_text": "I think “begin” gets printed as soon as the generator object is created, so you’d see it right after the line `gen = countdown(3)`. That means it appears before the “created” message is printed.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "I think “begin” gets printed as soon as the generator object is created, so you’d see it right after the line `gen = countdown(3)`.",
+            "quote_start": 0,
+            "quote_end": 131,
+            "reason": "The candidate explicitly asserts that the generator body runs immediately upon calling the generator function, which matches the belief that generator creation is eager."
+          },
+          {
+            "question_id": "PY-L3-009",
+            "turn": 13,
+            "reply_index": 2,
+            "reply_text": "Right after you call `countdown(3)`, the function actually starts executing and it immediately prints “begin” and then it goes into a loop that builds a list of the numbers 3, 2, 1 internally. The generator object is already holding those values, so the next call to `next(gen)` will just pull the first element out of that pre‑computed list.",
+            "vote_share": 1.0,
+            "supporting_quote": "The generator object is already holding those values, so the next call to `next(gen)` will just pull the first element out of that pre‑computed list.",
+            "quote_start": 193,
+            "quote_end": 342,
+            "reason": "The candidate explicitly asserts that the generator pre-computes and holds all values internally in a list right when the generator function is called, which matches the listed misconception that generators compute values eagerly."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.bfs-weighted-shortest",
+      "ds.graphs.dfs-finds-shortest",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.heaps.heap-is-sorted",
+      "ds.heaps.max-at-last-index",
+      "ds.heaps.pop-min-constant",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.sorting-searching.sorting-is-linear",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.threads-cpu-parallel",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.closure-captures-value",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.null.aggregates-treat-null-as-zero",
+      "sql.schema-constraints.fk-must-be-unique",
+      "sql.schema-constraints.normalisation-only-saves-space",
+      "sql.schema-constraints.pk-needs-distinct",
+      "sql.select-filter.distinct-per-column",
+      "sql.select-filter.distinct-returns-first"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "ds-hash-tables"
+      ],
+      "untested": [
+        "py-collections",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether sql reaches level 2. Estimated levels: py level 2 (needs 2), sql level 1 (needs 2), ds level 3 (needs 1). Confirmed misconception: Believes COUNT(column) counts every row, including rows where that column is NULL, exactly like COUNT(*). Confirmed misconception: Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN. Confirmed misconception: Believes that in a min-heap the largest element is always the last item of the array (and vice versa for a max-heap), rather than somewhere among the leaves. Suspected (insufficient corroboration) misconception: Believes DISTINCT applies only to the first column after it (or to each column separately), instead of removing rows whose whole combination of selected columns repeats. Suspected (insufficient corroboration) misconception: Believes calling a generator function (or creating a generator expression) runs the body and computes all the values immediately, rather than lazily, one value per request."
+  },
+  "usage": {
+    "llm_calls": 127,
+    "api_calls": 45,
+    "input_tokens": 149859,
+    "output_tokens": 11997,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 127,
+        "api_calls": 45,
+        "input_tokens": 149859,
+        "output_tokens": 11997
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 2
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.pandas.positional-alignment",
+      "sql.aggregation.count-column-counts-nulls"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

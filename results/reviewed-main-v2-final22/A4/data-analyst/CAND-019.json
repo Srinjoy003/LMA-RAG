@@ -1,0 +1,1691 @@
+{
+  "interview_id": "A4-data-analyst-CAND-019-0",
+  "system": "A4",
+  "config": {
+    "system": "A4",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "single",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 1,
+    "misconception_confirmations": 1,
+    "misconception_confirmation_unit": "reply",
+    "diagnostic_evidence": false,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-019",
+  "started_at": "2026-11-14T06:15:08Z",
+  "finished_at": "2026-11-14T06:16:16Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-pandas",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "The first print will show the original order of names, so it prints `['Ann', 'Bo', 'Cy', 'Di']`. The second line will give the names at positions 1 and 2, which are `['Bo', 'Cy']`. For the bonus column, only the rows with scores 70 or higher get a value, so the list becomes `[10, NaN, 20, 25]`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "What index label does Bo have in the original DataFrame, and what index labels are present in the passed Series when you subtract 60?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What index label does Bo have in the original DataFrame, and what index labels are present in the passed Series when you subtract 60?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "I thought `sort_values` would rearrange the rows in place, so after that the DataFrame is ordered by score and the first `print` shows the names from lowest to highest score. Then `df.loc[1:2, \"name\"]` picks the second and third rows in that sorted order, which gives the names at those positions. When creating the `bonus` column, pandas just subtracts 60 from the scores that meet the condition, so the rows that didn’t pass get a default value of 0, resulting in a list like `[10, 0, 30, 25]`.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes sort_values modifies the dataframe in place, thinks .loc slicing uses positions rather than labels, and believes assignment aligns by position rather than index labels (producing 0 instead of NaN). These match multiple listed misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified the first two print outputs and the reason for the original order, but gave an incorrect value for Cy's bonus (90 - 60 = 30, not 20) and missed the explanation of index alignment resulting in NaN for Bo.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-aggregation, sql-joins, sql-null",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query returns three rows – one for each customer. Asha has two matching orders, so the result shows a count of 2 and a total of 250 + 80 = 330; Ben has no orders, so his count is 0 and the sum is NULL; Chen has one order but its amount is NULL, giving a count of 1 and a total of NULL. The row with order 13 is excluded because it has no customer_id, and the LEFT JOIN ensures all customers appear even when there are no orders.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the counts and totals for Asha, Ben, and Chen, and accurately explained the behavior of LEFT JOIN, COUNT, and SUM with NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the counts and totals for Asha, Ben, and Chen, and accurately explained the behavior of LEFT JOIN, COUNT, and SUM with NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-sorting-searching",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-complexity",
+      "prompt": "You have an unsorted list of n product prices. If you only need to check once whether a given price is present, should you sort the list and then use binary search, or just scan it? What changes if you need to answer thousands of such queries?",
+      "answer": "I’d sort the list first because once it’s ordered you can just look up the price directly, which feels faster than walking through the whole array. Even for a single check, the sorting step organizes the data and makes the search trivial. If you have thousands of queries, the sorted list lets you reuse the same ordering, so each subsequent lookup becomes even quicker.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.sorting-searching.sorting-is-linear",
+        "follow_up": "How long does the sorting operation take relative to n, and how does that compare to the time spent on a single linear scan?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How long does the sorting operation take relative to n, and how does that compare to the time spent on a single linear scan?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "I’d still go with sorting first because the sorting algorithm can be tuned to stop early once it finds the target value, so even a single lookup benefits from the initial ordering. When you have many queries, the sorted structure lets you batch the searches together and reuse the same sorted array, which reduces the overall work compared to scanning each time.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly recommends sorting the list even for a single query, believing sorting can be tuned to stop early for a target, and misses the core time complexities for one versus many queries.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly recommends sorting the list even for a single query, believing it makes the search faster, and misses the complexity trade-off where sorting dominates a one-time linear scan.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-011",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope",
+        "py-control-flow"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; covers required topics not yet tested: py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef area(w, h):\n    print(\"area\", w * h)\n\ndef is_big(n):\n    print(\"checking\", n)\n    return n > 10\n\na = area(2, 3)\nprint(a)\nif is_big(30) or is_big(1):\n    print(\"one big\")\nsize = \"M\"\nif size == \"S\" or \"XS\":\n    print(\"small\")",
+      "answer": "The expression `size == \"S\" or \"XS\"` is always true because the string `\"XS\"` is truthy, so the condition evaluates to true regardless of the value of `size`. Therefore the `print(\"small\")` line will always execute. I'm not sure about the other parts of the code.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "low"
+          }
+        ],
+        "confidence_expressed": "low"
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the truthy string behavior in the final condition, but admitted uncertainty about the rest of the code, thus missing the first two key points regarding the function return value and short-circuit evaluation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the truthy string behavior in the final condition, but admitted uncertainty about the rest of the code, thus missing the first two key points regarding the function return value and short-circuit evaluation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: sql-window-functions",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The RANK() function will give the two rows with day = 2 the same rank value of 2, and then the next rank will be 4 because it skips the rank after a tie. All five rows from the sales table are retained in the result set.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How would you calculate the running column value for the row where day is 2 and amount is 50?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would you calculate the running column value for the row where day is 2 and amount is 50?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that all five rows are retained and explains the tie handling and gap in the RANK column. However, they completely omitted any explanation of the running column and its values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that all five rows are retained and explains the tie handling and gap in the RANK column. However, they completely omitted any explanation of the running column and its values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-linked-lists",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; covers required topics not yet tested: ds-arrays-strings",
+      "prompt": "Compare an array (like a Python list) and a singly linked list for two tasks: reading the 1,000th element, and inserting a new element at the very front. Which structure is faster for each task, and why?",
+      "answer": "Reading the 1,000th element is constant‑time in an array because the index can be translated directly into a memory offset (O(1)), while a singly linked list requires traversing 999 next‑pointers from the head, which is linear time (O(n)). Inserting a new element at the front is O(1) for a linked list – you just create a node and point its next to the old head – but O(n) for an array because all existing elements must be shifted one position to make room.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that arrays allow O(1) indexing while linked lists require O(n) traversal, and that front insertion is O(1) for linked lists and O(n) for arrays due to shifting. All key points and time complexities were accurately explained.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that arrays allow O(1) indexing while linked lists require O(n) traversal, and that front insertion is O(1) for linked lists and O(n) for arrays due to shifting. All key points and time complexities were accurately explained.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; covers required topics not yet tested: ds-hash-tables",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "A hash table gives very fast inserts, but it doesn’t maintain any ordering of the scores. So if we need to list all players in score order, we would have to sort the entire collection each time we want to output it. I'm not sure how the sorted array or balanced binary search tree would compare for this scenario.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "low"
+          }
+        ],
+        "confidence_expressed": "low"
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that a hash table has fast inserts but no ordering, requiring a full sort to list scores. However, they fail to analyze the sorted array and balanced BST options, reasoning about only one operation and missing most key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that a hash table has fast inserts but no ordering, requiring a full sort to list scores. However, they fail to analyze the sorted array and balanced BST options, reasoning about only one operation and missing most key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-collections",
+        "py-control-flow",
+        "py-variables-mutability"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 1 is nearest its estimate -0.76; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-control-flow (py.collections.sort-returns-list, py.control-flow.range-inclusive, py.variables-mutability.variable-holds-expression)",
+      "prompt": "What does this code print, and why?\n\nnums = [3, 1, 2]\ncount = len(nums)\nresult = nums.sort()\nnums.append(0)\nprint(result, count)\nprint(nums)\nfor i in range(1, 3):\n    print(nums[i])",
+      "answer": "The code will first sort the list, so `result` becomes `[1, 2, 3]` and `count` is 3 because there are three elements initially. After appending 0, `nums` is `[1, 2, 3, 0]`, so the first print shows `[1, 2, 3] 3` and the second prints `[1, 2, 3, 0]`. The loop then prints the values at positions 1 and 2, which are `2` and `3`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.collections.sort-returns-list",
+        "follow_up": "What is the value of type(nums.sort()) after executing that line?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.collections.sort-returns-list",
+            "follow_up": "What is the value of type(nums.sort()) after executing that line?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "I thought `nums.sort()` would create a new sorted list and assign it to `result`, so `result` ends up being the sorted version of `nums`. Since `count` was calculated before the sort, it reflects the original length, and after appending the zero the list becomes `[1, 2, 3, 0]`. The loop iterates over the last two elements of the list, printing the values at positions 1 and 2, which are `2` and `3`.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly demonstrates the misconception that list.sort() returns the sorted list rather than None, and even in the follow-up reaffirms this belief.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that list.sort() returns the sorted list rather than None, and misses the behavior of the count variable.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.2338,
+          "se": 0.6586,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-014",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-subqueries-cte",
+        "sql-joins",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 3 is nearest its estimate +0.76; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation (sql.aggregation.group-by-only-sorts, sql.subqueries-cte.cte-unused-still-applies, sql.subqueries-cte.in-subquery-duplicates)",
+      "prompt": "What does this query return, and why? Does the WITH clause limit which orders are counted?\n\nWITH big AS (\n  SELECT customer_id FROM orders WHERE amount >= 100\n)\nSELECT c.name, COUNT(o.id) AS n_orders\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE c.id IN (SELECT customer_id FROM big)\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n4 | Dana\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 150\n11 | 1 | 40\n12 | 1 | 120\n13 | 2 | 30\n14 | 3 | NULL\n15 | 3 | 200",
+      "answer": "The `IN` clause just checks whether a customer’s id appears in the `big` result set, so duplicate entries for the same customer (like Asha) don’t cause multiple matches. Because the query groups by `c.name`, you’ll get a single row for each distinct customer that satisfies the `IN` condition.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that the IN clause checks membership without duplicating rows and that GROUP BY produces a single row per customer, but they completely miss the key points about which customers qualify (Asha and Chen) and that all of their orders are counted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that the IN clause checks membership without duplicating rows and that GROUP BY produces a single row per customer, but they completely miss the key points about which customers qualify (Asha and Chen) and that all of their orders are counted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.2338,
+          "se": 0.6586,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.8093,
+          "se": 0.6469,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope",
+        "py-variables-mutability"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.66); level 1 is nearest its estimate -1.23; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-functions-scope (py.functions-scope.assign-updates-global, py.variables-mutability.assignment-copies)",
+      "prompt": "What does this code print, and why?\n\ntotal = 0\nitems = [1, 2]\n\ndef add(x):\n    total = x\n    items.append(x)\n    return total\n\nresult = add(5)\nalias = items\nalias.append(9)\nprint(total, result, items)",
+      "answer": "It will print `0 5 [1, 2, 5, 9]` because the function `add` changes the global `total` variable to 5, and the list `items` gets the new element `5` from the function call and then `9` from the alias operation. The `total` printed is still 0 since it was never updated before the `print` statement.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.functions-scope.assign-updates-global",
+        "follow_up": "What happens to the outer 'total' variable if you remove the assignment 'total = x' inside the function, and why?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.functions-scope.assign-updates-global",
+            "follow_up": "What happens to the outer 'total' variable if you remove the assignment 'total = x' inside the function, and why?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "I thought that when `add` is called, the assignment `total = x` actually updates the variable that was defined outside, so `total` becomes 5, but then the later `alias.append(9)` overwrites that value with 9, which is why the printed total ends up being 0. The `result` variable just holds the return value from `add`, which is 5, and the list shows all the numbers that were added during the function call and the alias operation.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that assigning to 'total' inside the function updates the global variable, directly exhibiting the listed misconception py.functions-scope.assign-updates-global, and provides confused reasoning about the final output.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output as '0 5 [1, 2, 5, 9]', but claimed that the function 'add' changes the global 'total' variable while simultaneously stating the total printed is still 0, demonstrating confusion about local vs. global variable assignment.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.5528,
+          "se": 0.6137,
+          "level": 0,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.8093,
+          "se": 0.6469,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-015",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.65); level 2 is nearest its estimate -0.19; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-trees-bst (ds.trees-bst.always-balanced, ds.trees-bst.insert-scans-all-keys, ds.trees-bst.only-check-children)",
+      "prompt": "What property must every node of a binary search tree satisfy? Is it enough that each node is larger than its left child and smaller than its right child? How do you search for or insert a key, and how fast is that?",
+      "answer": "Every node in a binary search tree just has to be bigger than whatever sits directly to its left and smaller than whatever sits directly to its right, and that local rule is sufficient for the whole structure. To find or add a key you basically walk around the tree checking each node’s children until you either spot the key or run out of places, which ends up taking about the number of nodes times a small constant factor.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.trees-bst.only-check-children",
+        "follow_up": "If a parent has a left child of 10, and that left child has a right child of 15, does that 15 violate the BST property relative to the root node?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.trees-bst.only-check-children",
+            "follow_up": "If a parent has a left child of 10, and that left child has a right child of 15, does that 15 violate the BST property relative to the root node?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "Sure—my thinking is that as long as each node’s immediate left and right children respect the “smaller‑on‑left, larger‑on‑right” rule, the whole tree automatically stays ordered, so you don’t have to worry about the deeper levels. To find or add a key you basically scan the tree level by level, checking every node until you either locate the value or reach a leaf, which ends up taking roughly a linear amount of work proportional to the total number of nodes.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that checking only direct children is sufficient for the BST property (a listed misconception), and also claims search and insert take linear time rather than being proportional to the height.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that the local rule of checking only direct children is sufficient, fails to describe the single path root-to-leaf traversal correctly, and claims the cost is proportional to the number of nodes rather than the height.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.5528,
+          "se": 0.6137,
+          "level": 0,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.8093,
+          "se": 0.6469,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.5046,
+          "se": 0.5905,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-003",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-subqueries-cte",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.81; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-subqueries-cte (sql.null.not-in-with-null, sql.subqueries-cte.correlated-runs-once)",
+      "prompt": "Both columns are meant to answer 'does nobody report to this person?'. What does the query return, and why do the two columns disagree?\n\nSELECT s.name,\n       CASE WHEN s.id NOT IN (SELECT manager_id FROM staff)\n            THEN 'yes' ELSE 'no' END AS not_in_check,\n       CASE WHEN NOT EXISTS (SELECT 1 FROM staff r WHERE r.manager_id = s.id)\n            THEN 'yes' ELSE 'no' END AS not_exists_check\nFROM staff s\nORDER BY s.id;\n\nTable staff:\nid | name | manager_id\n1 | Asha | NULL\n2 | Ben | 1\n3 | Chen | 1\n4 | Dana | 2\n5 | Eli | 2",
+      "answer": "The NOT EXISTS version is evaluated for each individual row, checking directly whether any staff member has that person’s id as a manager. Because it looks at each person separately, it correctly returns ‘yes’ for Chen, Dana and Eli. I'm not sure about the other column.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "low"
+          }
+        ],
+        "confidence_expressed": "low"
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the NOT EXISTS column and its per-row evaluation, but admitted they were not sure about the NOT IN column, missing the explanation regarding NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the NOT EXISTS column and its per-row evaluation, but admitted they were not sure about the NOT IN column, missing the explanation regarding NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.5528,
+          "se": 0.6137,
+          "level": 0,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.841,
+          "se": 0.587,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.5046,
+          "se": 0.5905,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-control-flow"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.61); level 1 is nearest its estimate -1.55; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-control-flow (py.control-flow.elif-checks-all)",
+      "prompt": "A beginner writes: 'if grade == \"A\" or \"B\": print(\"good\")', then 'elif grade == \"C\": print(\"ok\")', then 'else: print(\"retake\")'. When grade is \"C\", what is printed, and why? How would you fix the condition?",
+      "answer": "When the grade is \"C\", the code will still go into the first `if` block and print “good” because the `or` condition is evaluated as a single check. To fix it, you should separate the two comparisons, for example using `if grade == \"A\" or grade == \"B\":`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.control-flow.or-distributes",
+        "follow_up": "If you evaluate just the right-hand side of the `or` operator by itself, what does Python consider the truth value of the string \"B\"?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.control-flow.or-distributes",
+            "follow_up": "If you evaluate just the right-hand side of the `or` operator by itself, what does Python consider the truth value of the string \"B\"?",
+            "confidence_expressed": "high"
+          }
+        ],
+        "confidence_expressed": "high"
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you explain your reasoning?",
+          "answer": "When `grade` is `\"C\"` the `elif` block actually runs, because the first `if` only checks if `grade` equals `\"A\"` and then stops, so it moves on to the next condition. Since `\"C\"` matches the `elif` condition, it prints `\"ok\"`. To make it work correctly you’d need to put the `or` inside parentheses, like `if (grade == \"A\" or \"B\"):`.",
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate's follow-up shows a clear misunderstanding of how the or operator works by suggesting parentheses around ('A' or 'B'), and contradicts their initial correct identification of the printed output by claiming 'ok' is printed.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly states that 'good' is printed and provides a correct fix using separate comparisons. However, they do not explain the truthy nature of the non-empty string 'B' as described in the rubric for a level 2 score.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.7881,
+          "se": 0.5829,
+          "level": 0,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 0.841,
+          "se": 0.587,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.5046,
+          "se": 0.5905,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-012",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 19,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 0,
+        "estimate": -1.7881,
+        "se": 0.5829,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.811059,
+        "level_probabilities": {
+          "0": 0.811059,
+          "1": 0.185772,
+          "2": 0.003166,
+          "3": 3e-06
+        },
+        "meets_minimum": false
+      },
+      "sql": {
+        "level": 3,
+        "estimate": 0.841,
+        "se": 0.587,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.578712,
+        "level_probabilities": {
+          "0": 0.000241,
+          "1": 0.028405,
+          "2": 0.392642,
+          "3": 0.578712
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 1,
+        "estimate": -0.5046,
+        "se": 0.5905,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.554589,
+        "level_probabilities": {
+          "0": 0.095779,
+          "1": 0.554589,
+          "2": 0.331734,
+          "3": 0.017897
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "not_fit",
+    "decision_reason": "py is below the job minimum (level 2; estimated below level 1).",
+    "misconceptions": [
+      {
+        "id": "py.pandas.positional-alignment",
+        "confirmed": true,
+        "evidence_turns": [
+          1
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "reply",
+        "confirmation_count": 1,
+        "required_confirmations": 1,
+        "evidence": [
+          {
+            "question_id": "PY-L2-007",
+            "turn": 1,
+            "reply_index": 0,
+            "reply_text": "The first print will show the original order of names, so it prints `['Ann', 'Bo', 'Cy', 'Di']`. The second line will give the names at positions 1 and 2, which are `['Bo', 'Cy']`. For the bonus column, only the rows with scores 70 or higher get a value, so the list becomes `[10, NaN, 20, 25]`.",
+            "vote_share": 1.0
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "ds.sorting-searching.sorting-is-linear",
+        "confirmed": true,
+        "evidence_turns": [
+          3
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "reply",
+        "confirmation_count": 1,
+        "required_confirmations": 1,
+        "evidence": [
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "I’d sort the list first because once it’s ordered you can just look up the price directly, which feels faster than walking through the whole array. Even for a single check, the sorting step organizes the data and makes the search trivial. If you have thousands of queries, the sorted list lets you reuse the same ordering, so each subsequent lookup becomes even quicker.",
+            "vote_share": 1.0
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "py.collections.sort-returns-list",
+        "confirmed": true,
+        "evidence_turns": [
+          8
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "reply",
+        "confirmation_count": 1,
+        "required_confirmations": 1,
+        "evidence": [
+          {
+            "question_id": "PY-L1-014",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "The code will first sort the list, so `result` becomes `[1, 2, 3]` and `count` is 3 because there are three elements initially. After appending 0, `nums` is `[1, 2, 3, 0]`, so the first print shows `[1, 2, 3] 3` and the second prints `[1, 2, 3, 0]`. The loop then prints the values at positions 1 and 2, which are `2` and `3`.",
+            "vote_share": 1.0
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "py.functions-scope.assign-updates-global",
+        "confirmed": true,
+        "evidence_turns": [
+          10
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "reply",
+        "confirmation_count": 1,
+        "required_confirmations": 1,
+        "evidence": [
+          {
+            "question_id": "PY-L1-015",
+            "turn": 10,
+            "reply_index": 0,
+            "reply_text": "It will print `0 5 [1, 2, 5, 9]` because the function `add` changes the global `total` variable to 5, and the list `items` gets the new element `5` from the function call and then `9` from the alias operation. The `total` printed is still 0 since it was never updated before the `print` statement.",
+            "vote_share": 1.0
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "ds.trees-bst.only-check-children",
+        "confirmed": true,
+        "evidence_turns": [
+          11
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "reply",
+        "confirmation_count": 1,
+        "required_confirmations": 1,
+        "evidence": [
+          {
+            "question_id": "DS-L2-003",
+            "turn": 11,
+            "reply_index": 0,
+            "reply_text": "Every node in a binary search tree just has to be bigger than whatever sits directly to its left and smaller than whatever sits directly to its right, and that local rule is sufficient for the whole structure. To find or add a key you basically walk around the tree checking each node’s children until you either spot the key or run out of places, which ends up taking about the number of nodes times a small constant factor.",
+            "vote_share": 1.0
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "py.control-flow.or-distributes",
+        "confirmed": true,
+        "evidence_turns": [
+          13
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "reply",
+        "confirmation_count": 1,
+        "required_confirmations": 1,
+        "evidence": [
+          {
+            "question_id": "PY-L1-012",
+            "turn": 13,
+            "reply_index": 0,
+            "reply_text": "When the grade is \"C\", the code will still go into the first `if` block and print “good” because the `or` condition is evaluated as a single check. To fix it, you should separate the two comparisons, for example using `if grade == \"A\" or grade == \"B\":`.",
+            "vote_share": 1.0
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.index-needs-scan",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.linked-lists.index-constant-time",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.sorting-searching.binary-search-half-of-linear",
+      "ds.sorting-searching.binary-search-unsorted",
+      "ds.sorting-searching.sorting-is-linear",
+      "ds.trees-bst.always-balanced",
+      "ds.trees-bst.inorder-not-sorted",
+      "ds.trees-bst.insert-scans-all-keys",
+      "ds.trees-bst.only-check-children",
+      "py.collections.sort-returns-list",
+      "py.control-flow.elif-checks-all",
+      "py.control-flow.no-short-circuit",
+      "py.control-flow.or-distributes",
+      "py.control-flow.range-inclusive",
+      "py.functions-scope.assign-updates-global",
+      "py.functions-scope.print-is-return",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.positional-alignment",
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.variable-holds-expression",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.null.not-in-with-null",
+      "sql.subqueries-cte.correlated-runs-once",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.subqueries-cte.in-subquery-duplicates",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-pandas",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "untested": [
+        "py-comprehensions-generators",
+        "sql-select-filter"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: not fit. py is below the job minimum (level 2; estimated below level 1). Estimated levels: py below level 1 (needs 2), sql level 3 (needs 2), ds level 1 (needs 1). Confirmed misconception: Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN. Confirmed misconception: Believes general-purpose (comparison) sorting such as sorted() takes O(n) time, so sorting first is effectively free compared with a single linear scan. Confirmed misconception: Believes list.sort() returns the sorted list, not knowing it sorts in place and returns None (unlike sorted(), which returns a new list). Confirmed misconception: Believes that assigning to a name inside a function changes the module-level (or enclosing) variable with the same name, without needing global or nonlocal. Confirmed misconception: Believes the BST property only requires each node to be greater than its left child and smaller than its right child, rather than greater than every key in its left subtree and smaller than every key in its right subtree. Confirmed misconception: Believes that in a condition like x == 'red' or 'blue' the comparison applies to both sides of 'or', so it means x == 'red' or x == 'blue'."
+  },
+  "usage": {
+    "llm_calls": 69,
+    "api_calls": 47,
+    "input_tokens": 66527,
+    "output_tokens": 3938,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 69,
+        "api_calls": 47,
+        "input_tokens": 66527,
+        "output_tokens": 3938
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 1,
+      "sql": 2,
+      "ds": 1
+    },
+    "fit": false,
+    "misconceptions": [
+      "ds.complexity.count-loops-for-big-o"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

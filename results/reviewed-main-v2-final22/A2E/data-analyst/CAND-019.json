@@ -1,0 +1,2292 @@
+{
+  "interview_id": "A2E-data-analyst-CAND-019-0",
+  "system": "A2E",
+  "config": {
+    "system": "A2E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-019",
+  "started_at": "2026-11-14T06:13:04Z",
+  "finished_at": "2026-11-14T06:15:08Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-pandas",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "The first print will show the original order of names, so it prints `['Ann', 'Bo', 'Cy', 'Di']`. The second line will give the names at positions 1 and 2, which are `['Bo', 'Cy']`. For the bonus column, only the rows with scores 70 or higher get a value, so the list becomes `[10, NaN, 20, 25]`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "How does pandas decide which score to subtract 60 from and where to place it in the new bonus column when you assign passed['score'] - 60 to df['bonus']?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "How does pandas decide which score to subtract 60 from and where to place it in the new bonus column when you assign passed['score'] - 60 to df['bonus']?",
+            "confidence_expressed": "high",
+            "supporting_quote": "For the bonus column, only the rows with scores 70 or higher get a value, so the list becomes `[10, NaN, 20, 25]`.",
+            "evidence_reason": "The candidate believes that subtraction and assignment map values strictly by position or filtering, resulting in the filtered values sliding into the first available slots rather than aligning strictly by the original index labels (which causes Bo at index 1 to receive NaN and Cy at index 2 to receive 30 instead of 20).",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What is the index label of Bo in the original DataFrame, and what index labels are present in the passed Series when you filter by score >= 70?",
+            "confidence_expressed": "high",
+            "supporting_quote": "For the bonus column, only the rows with scores 70 or higher get a value, so the list becomes `[10, NaN, 20, 25]`.",
+            "evidence_reason": "The candidate calculates the bonus values positionally (expecting the filtered rows to simply map into indices 0, 1, 2, 3 consecutively, treating Bo's omission as pushing Cy to position 1 and Di to position 2 with 20 instead of NaN), showing the positional alignment belief.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "How does pandas determine which row receives the value 20 when assigning passed[\"score\"] - 60 back to df[\"bonus\"]?",
+            "confidence_expressed": "high",
+            "supporting_quote": "For the bonus column, only the rows with scores 70 or higher get a value, so the list becomes `[10, NaN, 20, 25]`.",
+            "evidence_reason": "The candidate incorrectly calculates the bonus values as [10, NaN, 20, 25] (expecting row 2 to get 20 based on filtering out Bo), which demonstrates the belief that alignment happens positionally rather than by index labels.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "For the bonus column, only the rows with scores 70 or higher get a value, so the list becomes `[10, NaN, 20, 25]`.",
+        "evidence_reason": "The candidate believes that subtraction and assignment map values strictly by position or filtering, resulting in the filtered values sliding into the first available slots rather than aligning strictly by the original index labels (which causes Bo at index 1 to receive NaN and Cy at index 2 to receive 30 instead of 20).",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How does pandas decide which score to subtract 60 from and where to place it in the new bonus column when you assign passed['score'] - 60 to df['bonus']?",
+          "answer": "Pandas just takes the “passed” DataFrame as a temporary copy and uses its row order to fill the new column, so it subtracts 60 from each of the scores that met the condition and writes those results straight into the same row positions in df. Any rows that weren’t in passed are left as blank (NaN) because there’s nothing to subtract from, so the bonus column ends up with values only where the original score was ≥ 70.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If the filtered DataFrame `passed` had its index reset using `.reset_index(drop=True)`, how would that affect the values assigned to the new `bonus` column in `df`?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If the filtered DataFrame `passed` had its index reset using `.reset_index(drop=True)`, how would that affect the values assigned to the new `bonus` column in `df`?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Pandas just takes the “passed” DataFrame as a temporary copy and uses its row order to fill the new column, so it subtracts 60 from each of the scores that met the condition and writes those results straight into the same row positions in df.",
+                "evidence_reason": "The candidate explicitly states that pandas uses row order and writes results straight into the same row positions, demonstrating the belief in positional alignment rather than index-label alignment.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If 'passed' only contains rows with scores >= 70 (so 3 rows total), how does pandas decide which row gets NaN versus a calculated bonus when assigning it back to df which has 4 rows?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Pandas just takes the “passed” DataFrame as a temporary copy and uses its row order to fill the new column, so it subtracts 60 from each of the scores that met the condition and writes those results straight into the same row positions in df.",
+                "evidence_reason": "The candidate explicitly believes that the values from passed are assigned back to df based on positional row order rather than aligning by the index labels.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If 'passed' only contains rows with scores >= 70 (so 3 rows total), how does pandas decide which of the 4 rows in 'df' gets each of those 3 values during the assignment?",
+                "confidence_expressed": "high",
+                "supporting_quote": "uses its row order to fill the new column, so it subtracts 60 from each of the scores that met the condition and writes those results straight into the same row positions in df",
+                "evidence_reason": "The candidate explicitly explains the operation as writing results into row positions based on the order of the filtered dataframe, demonstrating the belief in positional alignment rather than index label alignment.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Pandas just takes the “passed” DataFrame as a temporary copy and uses its row order to fill the new column, so it subtracts 60 from each of the scores that met the condition and writes those results straight into the same row positions in df.",
+            "evidence_reason": "The candidate explicitly states that pandas uses row order and writes results straight into the same row positions, demonstrating the belief in positional alignment rather than index-label alignment.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If the filtered DataFrame `passed` had its index reset using `.reset_index(drop=True)`, how would that affect the values assigned to the new `bonus` column in `df`?",
+          "answer": "If you reset the index on `passed`, the rows will be renumbered starting from 0, so when you assign `passed[\"score\"] - 60` to `df[\"bonus\"]` pandas will match the values by their new positional order instead of the original labels. That means the bonus amounts will be shifted down one row, putting the first bonus value in the second row of df and leaving the first row as NaN.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If you add a new column to a DataFrame by assigning another Series, does pandas care about the index labels or the row positions of the Series?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If you add a new column to a DataFrame by assigning another Series, does pandas care about the index labels or the row positions of the Series?",
+                "confidence_expressed": "high",
+                "supporting_quote": "so when you assign `passed[\"score\"] - 60` to `df[\"bonus\"]` pandas will match the values by their new positional order instead of the original labels.",
+                "evidence_reason": "The candidate explicitly asserts that pandas matches values by positional order when assigning a Series to a DataFrame column rather than by index labels, which directly reflects the py.pandas.positional-alignment misconception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If df and passed have completely different index labels, what happens when you perform addition or assignment between them?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas will match the values by their new positional order instead of the original labels.",
+                "evidence_reason": "The candidate explicitly asserts that resetting the index causes pandas to match values by positional order rather than index labels during assignment, which is the exact misconception for positional alignment.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If df and passed have completely different index labels, say df has labels 0, 1, 2, 3 and passed has labels 10, 20, 30, how would pandas match them during an assignment?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas will match the values by their new positional order instead of the original labels",
+                "evidence_reason": "The candidate explicitly states that resetting the index causes pandas to match values by positional order rather than index labels, demonstrating the listed misconception py.pandas.positional-alignment.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "so when you assign `passed[\"score\"] - 60` to `df[\"bonus\"]` pandas will match the values by their new positional order instead of the original labels.",
+            "evidence_reason": "The candidate explicitly asserts that pandas matches values by positional order when assigning a Series to a DataFrame column rather than by index labels, which directly reflects the py.pandas.positional-alignment misconception.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that pandas aligns data by position rather than index labels, explicitly falling under the positional alignment misconception when explaining how assignment works.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified the first two print outputs and the reason for the original order, but gave an incorrect value for Cy's bonus (90 - 60 = 30, not 20) and missed the explanation of index alignment resulting in NaN for Bo.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-aggregation, sql-joins, sql-null",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query returns three rows – one for each customer. Asha has two matching orders, so the result shows a count of 2 and a total of 250 + 80 = 330; Ben has no orders, so his count is 0 and the sum is NULL; Chen has one order but its amount is NULL, giving a count of 1 and a total of NULL. The row with order 13 is excluded because it has no customer_id, and the LEFT JOIN ensures all customers appear even when there are no orders.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the counts and totals for Asha, Ben, and Chen, and accurately explained the behavior of LEFT JOIN, COUNT, and SUM with NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows including the counts and totals for Asha, Ben, and Chen, and accurately explained the behavior of LEFT JOIN, COUNT, and SUM with NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-sorting-searching",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-complexity",
+      "prompt": "You have an unsorted list of n product prices. If you only need to check once whether a given price is present, should you sort the list and then use binary search, or just scan it? What changes if you need to answer thousands of such queries?",
+      "answer": "I’d sort the list first because once it’s ordered you can just look up the price directly, which feels faster than walking through the whole array. Even for a single check, the sorting step organizes the data and makes the search trivial. If you have thousands of queries, the sorted list lets you reuse the same ordering, so each subsequent lookup becomes even quicker.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.sorting-searching.sorting-is-linear",
+        "follow_up": "How long does the sorting operation take relative to the size of the list, and how does that compare to the time needed for a single scan?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How long does the sorting operation take relative to the size of the list, and how does that compare to the time needed for a single scan?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Even for a single check, the sorting step organizes the data and makes the search trivial.",
+            "evidence_reason": "The candidate asserts that sorting is worthwhile even for a single check, implying that the sorting step is cheap or negligible compared to a linear scan, aligning with the misconception that sorting is linear.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How long does the sorting step itself take relative to the size of the list n, and how does that compare to a single linear scan?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Even for a single check, the sorting step organizes the data and makes the search trivial.",
+            "evidence_reason": "The candidate asserts that sorting first is efficient even for a single check, implying that the sorting operation has negligible overhead (linear time) compared to scanning.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How does the time taken to sort a list of n items compare to the time taken to simply iterate through it once?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Even for a single check, the sorting step organizes the data and makes the search trivial.",
+            "evidence_reason": "The candidate claims that sorting for a single check is efficient and makes search trivial, implying sorting is fast enough to beat a single scan.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Even for a single check, the sorting step organizes the data and makes the search trivial.",
+        "evidence_reason": "The candidate asserts that sorting is worthwhile even for a single check, implying that the sorting step is cheap or negligible compared to a linear scan, aligning with the misconception that sorting is linear.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How long does the sorting operation take relative to the size of the list, and how does that compare to the time needed for a single scan?",
+          "answer": "Sorting the list is pretty quick—it runs in roughly linear time, so for a list of size n it’s on the order of n operations, while a simple scan actually ends up being slower because it has to check each element plus some extra overhead that makes it closer to n log n. In practice that means the sort will finish faster than a single pass through the array.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "How does the number of operations required by a comparison-based sorting algorithm scale when you double the size of the input list?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "How does the number of operations required by a comparison-based sorting algorithm scale when you double the size of the input list?",
+                "confidence_expressed": "high",
+                "supporting_quote": "it runs in roughly linear time, so for a list of size n it’s on the order of n operations",
+                "evidence_reason": "The candidate explicitly asserts that comparison sorting runs in roughly linear time (O(n)), matching the listed misconception ds.sorting-searching.sorting-is-linear.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "How does the number of operations required to sort an unsorted list generally scale compared to the number of operations in a single pass through that same list?",
+                "confidence_expressed": "high",
+                "supporting_quote": "it runs in roughly linear time, so for a list of size n it’s on the order of n operations",
+                "evidence_reason": "The candidate explicitly asserts that sorting an unsorted list takes roughly linear time (on the order of n operations), which matches the listed misconception ds.sorting-searching.sorting-is-linear.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "How many comparisons does a comparison-based sorting algorithm typically perform in the worst case for n elements?",
+                "confidence_expressed": "high",
+                "supporting_quote": "it runs in roughly linear time, so for a list of size n it’s on the order of n operations",
+                "evidence_reason": "The candidate explicitly asserts that comparison sorting runs in linear time (on the order of n operations), which matches the listed misconception ds.sorting-searching.sorting-is-linear.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "it runs in roughly linear time, so for a list of size n it’s on the order of n operations",
+            "evidence_reason": "The candidate explicitly asserts that comparison sorting runs in roughly linear time (O(n)), matching the listed misconception ds.sorting-searching.sorting-is-linear.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "How does the number of operations required by a comparison-based sorting algorithm scale when you double the size of the input list?",
+          "answer": "If you double the number of prices, the sorting routine will take about twice as many steps, so the runtime grows linearly with the size of the list. In other words, the operation count roughly doubles each time you double the input.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.sorting-searching.sorting-is-linear",
+            "follow_up": "If you double the size of an input list, how many times larger does the output of n log_2(n) become?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "If you double the size of an input list, how many times larger does the output of n log_2(n) become?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the runtime grows linearly with the size of the list. In other words, the operation count roughly doubles each time you double the input.",
+                "evidence_reason": "The candidate explicitly states that doubling the input size results in a proportional (linear) doubling of the sorting runtime, confirming the belief that comparison sorting runs in O(n) time.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "If sorting takes linear time relative to n, what is the time complexity of comparison-based sorting algorithms like merge sort or Timsort?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the sorting routine will take about twice as many steps, so the runtime grows linearly with the size of the list.",
+                "evidence_reason": "The candidate explicitly states that doubling the input size doubles the runtime of the sorting routine, indicating linear growth (O(n)) for sorting, which matches the listed misconception ds.sorting-searching.sorting-is-linear.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.sorting-searching.sorting-is-linear",
+                "follow_up": "Can you double-check the time complexity of efficient comparison-based sorting algorithms like merge sort or Timsort?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you double the number of prices, the sorting routine will take about twice as many steps, so the runtime grows linearly with the size of the list.",
+                "evidence_reason": "The candidate explicitly states that doubling the input size doubles the number of steps for sorting, demonstrating the belief that general-purpose sorting runs in linear O(n) time.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the runtime grows linearly with the size of the list. In other words, the operation count roughly doubles each time you double the input.",
+            "evidence_reason": "The candidate explicitly states that doubling the input size results in a proportional (linear) doubling of the sorting runtime, confirming the belief that comparison sorting runs in O(n) time.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that general-purpose sorting takes O(n) linear time rather than O(n log n), falling directly into the listed misconception ds.sorting-searching.sorting-is-linear.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly recommends sorting the list even for a single query, believing it makes the search faster, and misses the complexity trade-off where sorting dominates a one-time linear scan.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-011",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope",
+        "py-control-flow"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; covers required topics not yet tested: py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef area(w, h):\n    print(\"area\", w * h)\n\ndef is_big(n):\n    print(\"checking\", n)\n    return n > 10\n\na = area(2, 3)\nprint(a)\nif is_big(30) or is_big(1):\n    print(\"one big\")\nsize = \"M\"\nif size == \"S\" or \"XS\":\n    print(\"small\")",
+      "answer": "The expression `size == \"S\" or \"XS\"` is always true because the string `\"XS\"` is truthy, so the condition evaluates to true regardless of the value of `size`. Therefore the `print(\"small\")` line will always execute. I'm not sure about the other parts of the code.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What value is assigned to variable a when you call a = area(2, 3)?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What value is assigned to variable a when you call a = area(2, 3)?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What does a function return by default if it does not contain a return statement?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What value is assigned to the variable 'a' when you call 'area(2, 3)'?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the truthy string behavior in the final condition, but admitted uncertainty about the rest of the code, thus missing the first two key points regarding the function return value and short-circuit evaluation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the truthy string behavior in the final condition, but admitted uncertainty about the rest of the code, thus missing the first two key points regarding the function return value and short-circuit evaluation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: sql-window-functions",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The RANK() function will give the two rows with day = 2 the same rank value of 2, and then the next rank will be 4 because it skips the rank after a tie. All five rows from the sales table are retained in the result set.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What values would you expect to see in the running column for the two rows where day is 2?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What values would you expect to see in the running column for the two rows where day is 2?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "Can you also explain what values will appear in the running column for the two rows where day is 2?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "Can you also explain what values will appear in the running column for those two rows where day is 2?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that all five rows are retained and explains the tie handling and gap in the RANK column. However, they completely omitted any explanation of the running column and its values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly notes that all five rows are retained and explains the tie handling and gap in the RANK column. However, they completely omitted any explanation of the running column and its values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-stacks-queues",
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-complexity (ds.arrays-strings.front-insert-constant, ds.complexity.count-loops-for-big-o, ds.complexity.short-code-is-fast)",
+      "prompt": "A script keeps pending jobs in a Python list: it adds jobs with `jobs.append(job)` and takes the next one with `jobs.pop(0)`. It works fine with 100 jobs, but draining a backlog of one million jobs with `while jobs: handle(jobs.pop(0))` is extremely slow. Why? What is the total cost of draining the list, and what would you use instead?",
+      "answer": "The loop itself runs once for each job, but each `pop(0)` has to shift all the remaining elements in the list, which is another loop over the current size of the list. Because you’re effectively doing a loop inside a loop for every element, the total cost of draining the list is O(n²). Instead of using a list, you should use a data structure that supports O(1) removals from the front, such as a `collections.deque`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that pop(0) requires shifting all remaining elements (O(n) per operation), correctly identifies the total cost as O(n^2) due to the hidden work inside the loop, and proposes using collections.deque for efficient pops.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that pop(0) requires shifting all remaining elements (O(n) per operation), correctly identifies the total cost as O(n^2) due to the hidden work inside the loop, and proposes using collections.deque for efficient pops.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "ds.complexity.count-loops-for-big-o",
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-complexity",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; lists a suspected misconception to confirm: ds.sorting-searching.sorting-is-linear",
+      "prompt": "A service receives 100,000 user IDs and must report whether any ID appears twice. Compare three approaches: keep a list of seen IDs and check `if uid in seen_list`; keep a set of seen IDs; or sort all the IDs and compare neighbours. What is the time complexity of each?",
+      "answer": "I know that sorting the IDs first and then comparing neighboring elements takes O(n log n) time, because the sorting dominates the cost. I'm not sure about the exact complexities for the list‑check or set‑check approaches.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does the time taken to check if an element is in a list grow as the list gets larger?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the time taken to check if an element is in a list grow as the list gets larger?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does checking if an item is present in a Python list behave as the list grows larger?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens when you check if an item is present in a Python list versus a set as the number of elements grows?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the complexity for the sorting approach but failed to provide the complexities for the list and set approaches.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the complexity for the sorting approach but failed to provide the complexities for the list and set approaches.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-collections",
+        "py-control-flow",
+        "py-variables-mutability"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 1 is nearest its estimate -0.76; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-control-flow (py.collections.sort-returns-list, py.control-flow.range-inclusive, py.variables-mutability.variable-holds-expression)",
+      "prompt": "What does this code print, and why?\n\nnums = [3, 1, 2]\ncount = len(nums)\nresult = nums.sort()\nnums.append(0)\nprint(result, count)\nprint(nums)\nfor i in range(1, 3):\n    print(nums[i])",
+      "answer": "I know that `range(1, 3)` stops before 3, so the loop will only print the elements at indexes 1 and 2. As for the rest of the output, I’m not sure.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What value do you think `nums.sort()` returns when called on a list?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What value do you think `nums.sort()` returns when called on a list?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What value is assigned to the variable result when you call nums.sort()?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What value do you think `nums.sort()` returns when it is called on a list?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that range(1, 3) stops before 3, but was unsure about the rest of the output, missing key points regarding list.sort() returning None and the fixed value of count.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that range(1, 3) stops before 3, but was unsure about the rest of the output, missing key points regarding list.sort() returning None and the fixed value of count.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-subqueries-cte",
+        "sql-joins",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 3 is nearest its estimate +0.76; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation (sql.aggregation.group-by-only-sorts, sql.subqueries-cte.cte-unused-still-applies, sql.subqueries-cte.in-subquery-duplicates)",
+      "prompt": "What does this query return, and why? Does the WITH clause limit which orders are counted?\n\nWITH big AS (\n  SELECT customer_id FROM orders WHERE amount >= 100\n)\nSELECT c.name, COUNT(o.id) AS n_orders\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE c.id IN (SELECT customer_id FROM big)\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n4 | Dana\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 150\n11 | 1 | 40\n12 | 1 | 120\n13 | 2 | 30\n14 | 3 | NULL\n15 | 3 | 200",
+      "answer": "The query will list each customer’s name together with the total number of orders they have placed, but only for customers who have at least one order of $100 or more. Because the CTE selects those high‑value orders, the outer query’s WHERE clause restricts the result set to those customers, and then the COUNT aggregates all of their orders. The final list is sorted alphabetically by the customer name.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          1,
+          2,
+          2
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified the filtered customers (Asha and Chen) and explained that the CTE and IN clause only restrict the customers while COUNT aggregates all of their orders.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          1,
+          2,
+          2
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified the filtered customers (Asha and Chen) and explained that the CTE and IN clause only restrict the customers while COUNT aggregates all of their orders.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.0988,
+          "se": 0.6782,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.10; lists misconceptions not yet probed: sql.indexes-performance.composite-any-column, sql.indexes-performance.function-on-column-uses-index, sql.indexes-performance.index-always-helps",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "I’m not completely sure about all the reasons, but I know that a composite index can’t be used efficiently if the query only filters on the second column (order_date) without also using the first column (customer_id).",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "Can you think of another reason related to query selectivity or how the table size affects the database planner's choice between an index scan and a full table scan?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "Can you think of another reason related to query selectivity or how the table size affects the database planner's choice between an index scan and a full table scan?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "Can you think of any other reasons related to the size of the table or how the WHERE clause columns are written?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that a composite index cannot be used efficiently if only filtering on the second column, which is one of the three required key points. However, they missed the other two reasons regarding query selectivity and functions on columns.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that a composite index cannot be used efficiently if only filtering on the second column, which is one of the three required key points. However, they missed the other two reasons regarding query selectivity and functions on columns.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.0772,
+          "se": 0.6097,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.65); level 2 is nearest its estimate -0.19; lists a suspected misconception to confirm: ds.sorting-searching.sorting-is-linear",
+      "prompt": "Explain how merge sort sorts a list. Why does it take O(n log n) time: how many levels of splitting are there, and how much work is done at each level? Is merge sort stable?",
+      "answer": "Merge sort works by recursively dividing the list in half until each sub‑list contains a single element, then repeatedly merging adjacent sorted sub‑lists by always taking the smaller front element (and, for equal keys, preferring the element from the left sub‑list). Because the list is halved at each recursion, there are about log₂ n levels of splitting, and each level merges all n elements once, giving O(n log n) total work. The algorithm therefore meets the Ω(n log n) lower bound for comparison sorts and cannot be faster in the worst case. Since the merge step keeps the original order of equal items, merge sort is a stable sorting method.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the recursive splitting and merging process, clearly justifies the O(n log n) time complexity using the levels-times-work argument, and correctly identifies that merge sort is stable by keeping the relative order on ties.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the recursive splitting and merging process, clearly justifies the O(n log n) time complexity using the levels-times-work argument, and correctly identifies that merge sort is stable by keeping the relative order on ties.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.8093,
+          "se": 0.6469,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.0772,
+          "se": 0.6097,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.1889,
+          "se": 0.5947,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-013",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-variables-mutability",
+        "py-collections"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 1 is nearest its estimate -0.81; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-collections, py-variables-mutability (py.variables-mutability.assignment-copies, py.variables-mutability.string-method-mutates)",
+      "prompt": "What does this code print, and why?\n\na = [1, 2, 3]\nb = a\nn = len(a)\nb.append(4)\ns = \"hi\"\ns.upper()\nprint(a, n, s)",
+      "answer": "It will print `[1, 2, 3, 4] 4 hi` because the list now has four elements and the length variable `n` was updated automatically, while the string stays the same.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.variables-mutability.variable-holds-expression",
+        "follow_up": "What is the exact value stored in `n` after the line `n = len(a)` executes, and does Python go back to re-run `len(a)` later when `a` changes?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.variables-mutability.variable-holds-expression",
+            "follow_up": "What is the exact value stored in `n` after the line `n = len(a)` executes, and does Python go back to re-run `len(a)` later when `a` changes?",
+            "confidence_expressed": "high",
+            "supporting_quote": "and the length variable `n` was updated automatically",
+            "evidence_reason": "The candidate explicitly states that the length variable n was updated automatically when the list changed, which directly expresses the belief that variables recompute their expressions when referenced objects change.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.variables-mutability.variable-holds-expression",
+            "follow_up": "What is the exact value stored in `n` after the line `n = len(a)` runs, and does that value change on its own when `a` later grows?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the length variable `n` was updated automatically",
+            "evidence_reason": "The candidate explicitly believes that the variable `n` dynamically tracks and updates its value based on subsequent changes to `a`, fitting the misconception that a variable holds the expression rather than the computed value.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.variables-mutability.variable-holds-expression",
+            "follow_up": "What is the exact value stored in `n` after the line `n = len(a)` runs, and does that value change on its own when `a` later grows?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the length variable `n` was updated automatically",
+            "evidence_reason": "The candidate explicitly asserts that the variable `n` was updated automatically when the list grew, demonstrating the misconception that variables hold a live expression or reference that recomputes when dependencies change.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "and the length variable `n` was updated automatically",
+        "evidence_reason": "The candidate explicitly states that the length variable n was updated automatically when the list changed, which directly expresses the belief that variables recompute their expressions when referenced objects change.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What is the exact value stored in `n` after the line `n = len(a)` executes, and does Python go back to re-run `len(a)` later when `a` changes?",
+          "answer": "`n` will end up being 4 because after we append the new element, Python automatically updates any length variables that were already calculated. So when we later print `n`, it reflects the current size of `a` without needing to call `len` again.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.variables-mutability.variable-holds-expression",
+            "follow_up": "What is the exact integer value stored in `n` immediately after the line `n = len(a)` executes?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.variables-mutability.variable-holds-expression",
+                "follow_up": "What is the exact integer value stored in `n` immediately after the line `n = len(a)` executes?",
+                "confidence_expressed": "high",
+                "supporting_quote": "after we append the new element, Python automatically updates any length variables that were already calculated",
+                "evidence_reason": "The candidate explicitly states that Python automatically updates previously calculated length variables when the underlying list changes, which is the exact belief described by py.variables-mutability.variable-holds-expression.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.variables-mutability.variable-holds-expression",
+                "follow_up": "What value was assigned to n at the moment the line `n = len(a)` was executed, and does Python re-evaluate that line automatically later?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python automatically updates any length variables that were already calculated",
+                "evidence_reason": "The candidate explicitly states that Python automatically updates the variable `n` after the list changes, showing the misconception that a variable holds a live expression rather than the computed value.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.variables-mutability.variable-holds-expression",
+                "follow_up": "What value was stored in n at the exact moment the line n = len(a) was executed?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python automatically updates any length variables that were already calculated.",
+                "evidence_reason": "The candidate explicitly asserts that a variable storing a length will automatically update when the underlying list changes, mirroring the belief that variables hold live expressions.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "after we append the new element, Python automatically updates any length variables that were already calculated",
+            "evidence_reason": "The candidate explicitly states that Python automatically updates previously calculated length variables when the underlying list changes, which is the exact belief described by py.variables-mutability.variable-holds-expression.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What is the exact integer value stored in `n` immediately after the line `n = len(a)` executes?",
+          "answer": "The variable `n` will be set to 4 right after the `len(a)` call, because Python already knows that the list will eventually have four items. So when we later print `n` it shows that final length.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.variables-mutability.variable-holds-expression",
+            "follow_up": "What value does len(a) evaluate to when it runs on the line 'n = len(a)', before any items are appended?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.variables-mutability.variable-holds-expression",
+                "follow_up": "What value does len(a) evaluate to when it runs on the line 'n = len(a)', before any items are appended?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python already knows that the list will eventually have four items. So when we later print `n` it shows that final length.",
+                "evidence_reason": "The candidate explicitly states that Python knows the list will eventually have four items when n = len(a) is evaluated, showing the misconception that a variable dynamically recomputes or anticipates future changes to an expression rather than storing the value computed at assignment time.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.variables-mutability.variable-holds-expression",
+                "follow_up": "What is the value of n immediately after the line n = len(a) runs, before the append happens?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python already knows that the list will eventually have four items",
+                "evidence_reason": "The candidate explicitly claims that Python anticipates future changes to the list and makes the variable reflect the final state, which aligns with the misconception that a variable holds a dynamic expression that updates automatically.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.variables-mutability.variable-holds-expression",
+                "follow_up": "What happens to the value of an integer variable when you reassign it or when another object it depends on changes?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Python already knows that the list will eventually have four items",
+                "evidence_reason": "The candidate asserts that Python anticipates future changes to the list during the initial assignment of len(a), explicitly exhibiting the misconception that a variable holds a dynamic expression that recomputes as its underlying objects change.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Python already knows that the list will eventually have four items. So when we later print `n` it shows that final length.",
+            "evidence_reason": "The candidate explicitly states that Python knows the list will eventually have four items when n = len(a) is evaluated, showing the misconception that a variable dynamically recomputes or anticipates future changes to an expression rather than storing the value computed at assignment time.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that variable n automatically updates when the underlying list changes, demonstrating the py.variables-mutability.variable-holds-expression misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the list shows the appended element and that the string remains 'hi', but incorrectly believed that the length variable n updates automatically when the list changes.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.1889,
+          "se": 0.5946,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.0772,
+          "se": 0.6097,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.1889,
+          "se": 0.5947,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-010",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-transactions"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +1.08; lists misconceptions not yet probed: sql.transactions.default-isolation-prevents-all, sql.transactions.uncommitted-visible",
+      "prompt": "Two transactions run at the same time under READ COMMITTED. Both read the product's stock (10) before either writes; each then subtracts 1 in the application, writes back 9 and commits. What is the final stock, why, and how could you prevent this?",
+      "answer": "The final stock ends up as 9 because both transactions read the initial value 10, each subtracts 1 in the application and then write back 9, so the second write overwrites the first – a classic lost‑update under READ COMMITTED. READ COMMITTED only hides uncommitted rows and does not prevent this race condition. To avoid it you can perform the decrement in a single atomic statement (e.g., UPDATE products SET stock = stock‑1 WHERE id = …), or lock the row first with SELECT … FOR UPDATE, or run the transaction at SERIALIZABLE and retry on conflict.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the final stock as 9 due to a lost update, explains why READ COMMITTED allows this race condition, and provides valid fixes including atomic updates and SELECT ... FOR UPDATE.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the final stock as 9 due to a lost update, explains why READ COMMITTED allows this race condition, and provides valid fixes including atomic updates and SELECT ... FOR UPDATE.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -1.1889,
+          "se": 0.5946,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.3798,
+          "se": 0.5699,
+          "level": 3,
+          "n": 5
+        },
+        "ds": {
+          "estimate": 0.1889,
+          "se": 0.5947,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-005",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 19,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 1,
+        "estimate": -1.1889,
+        "se": 0.5946,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.503907,
+        "level_probabilities": {
+          "0": 0.436657,
+          "1": 0.503907,
+          "2": 0.058818,
+          "3": 0.000618
+        },
+        "meets_minimum": false
+      },
+      "sql": {
+        "level": 3,
+        "estimate": 1.3798,
+        "se": 0.5699,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.877886,
+        "level_probabilities": {
+          "0": 2e-06,
+          "1": 0.001502,
+          "2": 0.12061,
+          "3": 0.877886
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 2,
+        "estimate": 0.1889,
+        "se": 0.5947,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.6029,
+        "level_probabilities": {
+          "0": 0.006358,
+          "1": 0.210102,
+          "2": 0.6029,
+          "3": 0.18064
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "not_fit",
+    "decision_reason": "py is below the job minimum (level 2; estimated level 1).",
+    "misconceptions": [
+      {
+        "id": "py.pandas.positional-alignment",
+        "confirmed": false,
+        "evidence_turns": [
+          1
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L2-007",
+            "turn": 1,
+            "reply_index": 0,
+            "reply_text": "The first print will show the original order of names, so it prints `['Ann', 'Bo', 'Cy', 'Di']`. The second line will give the names at positions 1 and 2, which are `['Bo', 'Cy']`. For the bonus column, only the rows with scores 70 or higher get a value, so the list becomes `[10, NaN, 20, 25]`.",
+            "vote_share": 1.0,
+            "supporting_quote": "For the bonus column, only the rows with scores 70 or higher get a value, so the list becomes `[10, NaN, 20, 25]`.",
+            "quote_start": 181,
+            "quote_end": 295,
+            "reason": "The candidate believes that subtraction and assignment map values strictly by position or filtering, resulting in the filtered values sliding into the first available slots rather than aligning strictly by the original index labels (which causes Bo at index 1 to receive NaN and Cy at index 2 to receive 30 instead of 20)."
+          },
+          {
+            "question_id": "PY-L2-007",
+            "turn": 1,
+            "reply_index": 1,
+            "reply_text": "Pandas just takes the “passed” DataFrame as a temporary copy and uses its row order to fill the new column, so it subtracts 60 from each of the scores that met the condition and writes those results straight into the same row positions in df. Any rows that weren’t in passed are left as blank (NaN) because there’s nothing to subtract from, so the bonus column ends up with values only where the original score was ≥ 70.",
+            "vote_share": 1.0,
+            "supporting_quote": "Pandas just takes the “passed” DataFrame as a temporary copy and uses its row order to fill the new column, so it subtracts 60 from each of the scores that met the condition and writes those results straight into the same row positions in df.",
+            "quote_start": 0,
+            "quote_end": 242,
+            "reason": "The candidate explicitly states that pandas uses row order and writes results straight into the same row positions, demonstrating the belief in positional alignment rather than index-label alignment."
+          },
+          {
+            "question_id": "PY-L2-007",
+            "turn": 1,
+            "reply_index": 2,
+            "reply_text": "If you reset the index on `passed`, the rows will be renumbered starting from 0, so when you assign `passed[\"score\"] - 60` to `df[\"bonus\"]` pandas will match the values by their new positional order instead of the original labels. That means the bonus amounts will be shifted down one row, putting the first bonus value in the second row of df and leaving the first row as NaN.",
+            "vote_share": 1.0,
+            "supporting_quote": "so when you assign `passed[\"score\"] - 60` to `df[\"bonus\"]` pandas will match the values by their new positional order instead of the original labels.",
+            "quote_start": 81,
+            "quote_end": 230,
+            "reason": "The candidate explicitly asserts that pandas matches values by positional order when assigning a Series to a DataFrame column rather than by index labels, which directly reflects the py.pandas.positional-alignment misconception."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.sorting-searching.sorting-is-linear",
+        "confirmed": false,
+        "evidence_turns": [
+          3
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "I’d sort the list first because once it’s ordered you can just look up the price directly, which feels faster than walking through the whole array. Even for a single check, the sorting step organizes the data and makes the search trivial. If you have thousands of queries, the sorted list lets you reuse the same ordering, so each subsequent lookup becomes even quicker.",
+            "vote_share": 1.0,
+            "supporting_quote": "Even for a single check, the sorting step organizes the data and makes the search trivial.",
+            "quote_start": 148,
+            "quote_end": 238,
+            "reason": "The candidate asserts that sorting is worthwhile even for a single check, implying that the sorting step is cheap or negligible compared to a linear scan, aligning with the misconception that sorting is linear."
+          },
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 1,
+            "reply_text": "Sorting the list is pretty quick—it runs in roughly linear time, so for a list of size n it’s on the order of n operations, while a simple scan actually ends up being slower because it has to check each element plus some extra overhead that makes it closer to n log n. In practice that means the sort will finish faster than a single pass through the array.",
+            "vote_share": 1.0,
+            "supporting_quote": "it runs in roughly linear time, so for a list of size n it’s on the order of n operations",
+            "quote_start": 33,
+            "quote_end": 122,
+            "reason": "The candidate explicitly asserts that comparison sorting runs in roughly linear time (O(n)), matching the listed misconception ds.sorting-searching.sorting-is-linear."
+          },
+          {
+            "question_id": "DS-L2-011",
+            "turn": 3,
+            "reply_index": 2,
+            "reply_text": "If you double the number of prices, the sorting routine will take about twice as many steps, so the runtime grows linearly with the size of the list. In other words, the operation count roughly doubles each time you double the input.",
+            "vote_share": 1.0,
+            "supporting_quote": "the runtime grows linearly with the size of the list. In other words, the operation count roughly doubles each time you double the input.",
+            "quote_start": 96,
+            "quote_end": 233,
+            "reason": "The candidate explicitly states that doubling the input size results in a proportional (linear) doubling of the sorting runtime, confirming the belief that comparison sorting runs in O(n) time."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.variables-mutability.variable-holds-expression",
+        "confirmed": false,
+        "evidence_turns": [
+          12
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L1-010",
+            "turn": 12,
+            "reply_index": 0,
+            "reply_text": "It will print `[1, 2, 3, 4] 4 hi` because the list now has four elements and the length variable `n` was updated automatically, while the string stays the same.",
+            "vote_share": 1.0,
+            "supporting_quote": "and the length variable `n` was updated automatically",
+            "quote_start": 73,
+            "quote_end": 126,
+            "reason": "The candidate explicitly states that the length variable n was updated automatically when the list changed, which directly expresses the belief that variables recompute their expressions when referenced objects change."
+          },
+          {
+            "question_id": "PY-L1-010",
+            "turn": 12,
+            "reply_index": 1,
+            "reply_text": "`n` will end up being 4 because after we append the new element, Python automatically updates any length variables that were already calculated. So when we later print `n`, it reflects the current size of `a` without needing to call `len` again.",
+            "vote_share": 1.0,
+            "supporting_quote": "after we append the new element, Python automatically updates any length variables that were already calculated",
+            "quote_start": 32,
+            "quote_end": 143,
+            "reason": "The candidate explicitly states that Python automatically updates previously calculated length variables when the underlying list changes, which is the exact belief described by py.variables-mutability.variable-holds-expression."
+          },
+          {
+            "question_id": "PY-L1-010",
+            "turn": 12,
+            "reply_index": 2,
+            "reply_text": "The variable `n` will be set to 4 right after the `len(a)` call, because Python already knows that the list will eventually have four items. So when we later print `n` it shows that final length.",
+            "vote_share": 1.0,
+            "supporting_quote": "Python already knows that the list will eventually have four items. So when we later print `n` it shows that final length.",
+            "quote_start": 73,
+            "quote_end": 195,
+            "reason": "The candidate explicitly states that Python knows the list will eventually have four items when n = len(a) is evaluated, showing the misconception that a variable dynamically recomputes or anticipates future changes to an expression rather than storing the value computed at assignment time."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.complexity.count-loops-for-big-o",
+      "ds.complexity.short-code-is-fast",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.sorting-searching.binary-search-half-of-linear",
+      "ds.sorting-searching.binary-search-unsorted",
+      "ds.sorting-searching.sort-not-stable",
+      "ds.sorting-searching.sorting-is-linear",
+      "py.collections.sort-returns-list",
+      "py.control-flow.no-short-circuit",
+      "py.control-flow.or-distributes",
+      "py.control-flow.range-inclusive",
+      "py.functions-scope.print-is-return",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.positional-alignment",
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.string-method-mutates",
+      "py.variables-mutability.variable-holds-expression",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.subqueries-cte.in-subquery-duplicates",
+      "sql.transactions.default-isolation-prevents-all",
+      "sql.transactions.uncommitted-visible",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-pandas",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "untested": [
+        "py-comprehensions-generators",
+        "sql-select-filter"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: not fit. py is below the job minimum (level 2; estimated level 1). Estimated levels: py level 1 (needs 2), sql level 3 (needs 2), ds level 2 (needs 1). Suspected (insufficient corroboration) misconception: Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN. Suspected (insufficient corroboration) misconception: Believes general-purpose (comparison) sorting such as sorted() takes O(n) time, so sorting first is effectively free compared with a single linear scan. Suspected (insufficient corroboration) misconception: Believes a variable stores the expression it was assigned from and is recomputed when the variables in that expression change, instead of holding the value computed at assignment time."
+  },
+  "usage": {
+    "llm_calls": 106,
+    "api_calls": 90,
+    "input_tokens": 119028,
+    "output_tokens": 9228,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 106,
+        "api_calls": 90,
+        "input_tokens": 119028,
+        "output_tokens": 9228
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 1,
+      "sql": 2,
+      "ds": 1
+    },
+    "fit": false,
+    "misconceptions": [
+      "ds.complexity.count-loops-for-big-o"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

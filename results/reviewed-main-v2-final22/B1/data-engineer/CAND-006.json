@@ -1,0 +1,1249 @@
+{
+  "interview_id": "B1-data-engineer-CAND-006-0",
+  "system": "B1",
+  "config": {
+    "system": "B1",
+    "driver": "code",
+    "mode": "fixed",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "fixed_count",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "off",
+    "generic_follow_up": false,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "reply",
+    "diagnostic_evidence": false,
+    "probe_missed_topics": false,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0
+  },
+  "job_id": "data-engineer",
+  "candidate_id": "CAND-006",
+  "started_at": "2026-11-14T05:37:29Z",
+  "finished_at": "2026-11-14T05:37:29Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-exceptions",
+    "py-pandas",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-heaps",
+    "ds-sorting-searching",
+    "ds-graphs"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-collections",
+        "py-control-flow",
+        "py-variables-mutability"
+      ],
+      "selection_reason": "fixed order: question 1 of py is level 1; covers required topics not yet tested: py-collections",
+      "prompt": "What does this code print, and why?\n\nnums = [3, 1, 2]\ncount = len(nums)\nresult = nums.sort()\nnums.append(0)\nprint(result, count)\nprint(nums)\nfor i in range(1, 3):\n    print(nums[i])",
+      "answer": "The code prints `None 3` because `nums.sort()` sorts the list in place and returns `None`, while `count` was set to the length of the original list (3) before any modifications. After sorting, `nums` becomes `[1, 2, 3]`, and appending `0` makes it `[1, 2, 3, 0]`, which is printed on the next line. The loop iterates over `i = 1` and `i = 2`, so it prints `nums[1]` (2) and `nums[2]` (3) on separate lines.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that sort() returns None, that count remains 3 because it evaluates at assignment, and that range(1, 3) excludes 3. The output and explanations are completely accurate.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that sort() returns None, that count remains 3 because it evaluates at assignment, and that range(1, 3) excludes 3. The output and explanations are completely accurate.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-schema-constraints"
+      ],
+      "selection_reason": "fixed order: question 1 of sql is level 1; covers required topics not yet tested: sql-schema-constraints",
+      "prompt": "A company keeps a single table employees(emp_id, name, dept_name, dept_floor), with the department's floor repeated on every employee row. What goes wrong when the Sales department moves to another floor, when you want to record a new department that has no employees yet, and when the last employee of a department leaves? How would you fix the design?",
+      "answer": "Because the floor is stored on every employee row, moving the Sales department requires updating every Sales employee; if any row is missed the department ends up with two different floor values (update anomaly). Also you can’t add a department that has no employees yet without inserting a dummy employee (insertion anomaly), and when the last employee leaves the only row that records the department’s floor disappears (deletion anomaly). The proper fix is to normalize the schema: create a separate Departments table (dept_id, dept_name, dept_floor) and store only the department’s key in Employees, with a foreign‑key relationship, so floor information is kept in one place and independent of employee rows.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains all three anomalies (update, insertion, and deletion) and proposes the correct fix of normalising the schema into separate tables connected by a foreign key.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains all three anomalies (update, insertion, and deletion) and proposes the correct fix of normalising the schema into separate tables connected by a foreign key.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-complexity",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "fixed order: question 1 of ds is level 1; covers required topics not yet tested: ds-complexity, ds-sorting-searching",
+      "prompt": "A teammate needs to check whether a customer ID is in an unsorted Python list of one million IDs. They say: \"`if cid in ids:` is O(1) because it is a single line, so it beats any loop I could write; and if it ever got slow, I would just run binary search on the list instead.\" What is wrong with each of these two claims?",
+      "answer": "The `in` operator on a Python list is implemented as a single, built‑in membership test, so it runs in constant time regardless of the list size. Because it’s just one line of code, the interpreter can look up the element directly without iterating through the list. This makes `if cid in ids:` inherently O(1) and always faster than any explicit loop you might write.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that the `in` operator on an unsorted list runs in O(1) constant time, and shows the specific misconception that single-line built-ins are automatically O(1) or faster than explicit loops.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that the `in` operator on an unsorted list runs in O(1) constant time, and shows the specific misconception that single-line built-ins are automatically O(1) or faster than explicit loops.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.9994,
+          "se": 0.8261,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-exceptions",
+        "py-functions-scope"
+      ],
+      "selection_reason": "fixed order: question 2 of py is level 2; covers required topics not yet tested: py-exceptions, py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef to_int(v, bad=[]):\n    try:\n        n = int(v)\n        print(\"parsed\", n)\n        return n\n    except ValueError:\n        bad.append(v)\n        print(\"bad\", bad)\n        return 0\n    finally:\n        print(\"done\", v)\n\ntotal = to_int(\"4\") + to_int(\"x\") + to_int(\"y\")\nprint(total)",
+      "answer": "The code prints:\n\n```\nparsed 4\ndone 4\nbad ['x']\ndone x\nbad ['x', 'y']\ndone y\n4\n```\n\n`finally` executes on every call, even after the `return` in the `try` or `except` block, so “done …” is printed each time. When `int(v)` fails for “x” and “y”, the `except` runs, appends the value to the shared default list `bad`, and returns 0. Because the default list is created once, the list accumulates both “x” and “y”. The three calls return 4, 0, 0, so the final total printed is 4.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the exact output, explains that finally always runs despite return, correctly notes that the default argument is shared, and gives the correct final total.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the exact output, explains that finally always runs despite return, correctly notes that the default argument is shared, and gives the correct final total.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.4244,
+          "se": 0.8742,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.9994,
+          "se": 0.8261,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "fixed order: question 2 of sql is level 2; covers required topics not yet tested: sql-aggregation, sql-joins",
+      "prompt": "Each order has one shipping fee, and items lists the products in each order. What does this query return? Is Asha's shipping total correct?\n\nSELECT o.customer,\n       SUM(o.shipping_fee) AS shipping,\n       COUNT(i.product) AS n_items\nFROM orders o\nLEFT JOIN items i ON i.order_id = o.id\nGROUP BY o.customer\nORDER BY o.customer;\n\nTable orders:\nid | customer | shipping_fee\n1 | Asha | 5\n2 | Asha | 10\n3 | Ben | 8\n4 | Chen | NULL\n\nTable items:\norder_id | product\n1 | pen\n1 | ink\n1 | pad\n2 | cup\n4 | mug",
+      "answer": "The query returns three rows: for Asha it shows a shipping total of 25 and 4 items, for Ben a shipping total of 8 and 0 items, and for Chen a shipping total of NULL and 1 item. Asha’s shipping total is not correct – because the order‑item join duplicates order 1’s fee three times, the fee of 5 is summed three times (5 + 5 + 5 + 10 = 25) instead of the actual 15. Ben’s order is kept by the LEFT JOIN, so his fee is counted once and the item count is 0 (COUNT skips the NULL product). Chen’s shipping fee is NULL, so SUM returns NULL, and he has one item. To get the correct shipping totals you need to aggregate the shipping fees per customer separately from the item counts and then join the two results.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows (Asha, Ben, Chen), explained the fan-out issue causing Asha's shipping fee to be incorrectly summed as 25, correctly handled Ben and Chen, and explained how to fix the query.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all three rows (Asha, Ben, Chen), explained the fan-out issue causing Asha's shipping fee to be incorrectly summed as 25, correctly handled Ben and Chen, and explained how to fix the query.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.9994,
+          "se": 0.8261,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "fixed order: question 2 of ds is level 2; covers required topics not yet tested: ds-hash-tables",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map is mainly used to keep track of which keys are currently in the cache, while the doubly linked list is just a convenient way to store all the entries so we can iterate over them later. When a key k is accessed we look it up in the map, read the value, and then move the corresponding list node to the front by adjusting a couple of pointers. Because both the map lookup and the pointer adjustments touch only a fixed number of elements, the get and put operations end up being constant‑time on average.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the hash map's lookup role, the doubly linked list's recency tracking, and why both operations run in O(1) time. However, the hit walkthrough is vague about the exact pointer adjustments and unlinking process, which fits the level-1 criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the hash map's lookup role, the doubly linked list's recency tracking, and why both operations run in O(1) time. However, the hit walkthrough is vague about the exact pointer adjustments and unlinking process, which fits the level-1 criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-collections",
+        "py-comprehensions-generators"
+      ],
+      "selection_reason": "fixed order: question 3 of py is level 2; covers required topics not yet tested: py-comprehensions-generators",
+      "prompt": "What does this code print, and why?\n\nwords = [\"apple\", \"avocado\", \"banana\", \"blueberry\", \"cherry\"]\nby_letter = {w[0]: w for w in words}\nlengths = [len(w) for w in words]\nloud = (w.upper() for w in words if \"e\" in w)\nprint(by_letter)\nprint(lengths.sort(), lengths)\nprint(next(loud), list(loud))\nprint(list(loud))",
+      "answer": "It will first print a dictionary mapping each starting letter to the first word that begins with it, so something like `{'a': 'apple', 'b': 'banana', 'c': 'cherry'}`. Then the lengths line will show the sorted list of lengths together with the original list, for example `([5, 6, 6, 7, 9], [5, 6, 6, 7, 9])`. The generator `loud` will yield the uppercase versions of the words containing an “e”, so the next call prints `\"APPLE\"` and the following list shows `[\"AVOCADO\", \"CHERRY\"]`. The final `list(loud)` call will be empty because the generator has already been exhausted.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly thinks dict comprehension keeps the first value ('apple' instead of 'avocado'), gets the list.sort() return value wrong (believes it returns a new list), and gets the generator filtering wrong (thinks 'avocado' has 'e').",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly thinks dict comprehension keeps the first value ('apple' instead of 'avocado'), gets the list.sort() return value wrong (believes it returns a new list), and gets the generator filtering wrong (thinks 'avocado' has 'e').",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.8887,
+          "se": 0.7844,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-subqueries-cte",
+        "sql-null"
+      ],
+      "selection_reason": "fixed order: question 3 of sql is level 2; covers required topics not yet tested: sql-subqueries-cte",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name,\n       (SELECT COUNT(*) FROM orders o WHERE o.customer_id = c.id) AS n_orders\nFROM customers c\nWHERE c.id IN (SELECT customer_id FROM orders)\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n4 | Dana\n\nTable orders:\nid | customer_id\n10 | 1\n11 | 1\n12 | 3\n13 | 1\n14 | NULL",
+      "answer": "The query returns two rows: Asha with 3 orders and Chen with 1 order. The WHERE clause limits the customers to those whose id appears in the orders table, so only Asha (id 1) and Chen (id 3) qualify; Ben and Dana have no orders and the NULL value in orders.customer_id does not match any customer. For each qualifying customer the correlated subquery counts rows in orders where customer_id equals that customer’s id, giving Asha three matching rows and Chen one.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the returned rows and counts (Asha 3, Chen 1), explains how the WHERE IN clause filters customers and correctly describes the correlated subquery's per-customer evaluation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the returned rows and counts (Asha 3, Chen 1), explains how the WHERE IN clause filters customers and correctly describes the correlated subquery's per-customer evaluation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.185,
+          "se": 0.7295,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.7632,
+          "se": 0.7271,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-hash-tables",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "fixed order: question 3 of ds is level 2; no preferred question available; picked among the rest",
+      "prompt": "What does this code print, and why do the words appear in that order on each line?\n\nwords = [\"pear\", \"apple\", \"fig\", \"apple\", \"pear\", \"kiwi\"]\ncounts = {}\nfor w in words:\n    counts[w] = counts.get(w, 0) + 1\nprint(list(counts))\nranked = sorted(counts.items(), key=lambda kv: kv[1], reverse=True)\nprint(ranked)\n",
+      "answer": "The code will first print a list of the unique words in the order they first appear in the original list, so it shows `['pear', 'apple', 'fig', 'kiwi']`. Then it prints the word‑count pairs sorted by how many times each word occurs, with the most frequent words first, which results in something like `[('apple', 2), ('pear', 2), ('fig', 1), ('kiwi', 1)]`.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the insertion order for the dictionary keys, but incorrectly guessed the tie-breaker order for the sorted output (putting apple before pear instead of preserving their insertion order via stability).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the insertion order for the dictionary keys, but incorrectly guessed the tie-breaker order for the sorted output (putting apple before pear instead of preserving their insertion order via stability).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.185,
+          "se": 0.7295,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "fixed order: question 4 of py is level 3; covers required topics not yet tested: py-pandas",
+      "prompt": "An analyst makes top = df[df[\"sales\"] > 100].sort_values(\"region\"), calls top.reset_index(drop=True) on its own line, and then sets df[\"top_sales\"] = top[\"sales\"]. Rows that were filtered out show NaN, but the other rows have their own correct values. They then change the middle line to top = top.reset_index(drop=True), and now the numbers land on the wrong rows. Explain both results.",
+      "answer": "When you do `top = df[df[\"sales\"] > 100].sort_values(\"region\")` and then call `top.reset_index(drop=True)` on a separate line, the reset returns a new DataFrame that you discard, so `top` still carries the original index labels from df; assigning `top[\"sales\"]` to `df[\"top_sales\"]` therefore aligns on those labels, giving each original row its own value and NaN for rows that were filtered out. When you change it to `top = top.reset_index(drop=True)`, the index is actually replaced with 0, 1, 2…, so the series is now aligned by these new labels, which do not correspond to the original df’s rows, and the values end up on the wrong rows.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that pandas aligns by index labels rather than position, why the unassigned reset_index() call left top's original labels intact, and why reassigning the reset index caused values to be placed on wrong rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that pandas aligns by index labels rather than position, why the unassigned reset_index() call left top's original labels intact, and why reassigning the reset index caused values to be placed on wrong rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7364,
+          "se": 0.6203,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.185,
+          "se": 0.7295,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "fixed order: question 4 of sql is level 3; covers required topics not yet tested: sql-indexes-performance",
+      "prompt": "An orders table has an index on (customer_id, created_at), but this query is still slow: SELECT * FROM orders WHERE EXTRACT(YEAR FROM created_at) = 2024. Explain why the index does not help, and how you would change the query or the indexes.",
+      "answer": "The index can’t be used because its first column is customer_id, which isn’t constrained in the query, and the predicate applies EXTRACT(YEAR …) to created_at, so the raw timestamp values in the index don’t match the filtered expression. To make it efficient you should rewrite the filter as a range on the original column (e.g., created_at >= '2024‑01‑01' AND created_at < '2025‑01‑01') and add an index that starts with created_at or a functional index on EXTRACT(YEAR FROM created_at).",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified both the leading-column issue with customer_id and the function-on-column issue with created_at. They also provided a workable fix using a range condition and an appropriate index.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified both the leading-column issue with customer_id and the function-on-column issue with created_at. They also provided a workable fix using a range condition and an appropriate index.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7364,
+          "se": 0.6203,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.5779,
+          "se": 0.6831,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-heaps"
+      ],
+      "selection_reason": "fixed order: question 4 of ds is level 3; covers required topics not yet tested: ds-heaps",
+      "prompt": "`heapq` keeps a min-heap inside a plain Python list. What does this code print, and why?\n\nimport heapq\n\nh = []\nfor x in [5, 3, 8, 1, 9, 2]:\n    heapq.heappush(h, x)\nprint(h[0], h[-1], h == sorted(h))\nprint([heapq.heappop(h) for _ in range(3)], len(h))\n",
+      "answer": "The first print shows the smallest element at index 0 (1) and the element at the end of the internal list (8), and the list is not sorted so the equality with sorted(h) is False – it prints `1 8 False`. After three heappops the heap yields the three smallest values in order, `[1, 2, 3]`, and three elements remain, so the second line prints `[1, 2, 3] 3`.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly gives the exact output for both print statements, identifies that index 0 holds the minimum and the last element is 8 (not the max), and explains the heap operations and remaining length correctly.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly gives the exact output for both print statements, identifies that index 0 holds the minimum and the last element is 8 (not the max), and explains the heap operations and remaining length correctly.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7364,
+          "se": 0.6203,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.5779,
+          "se": 0.6831,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.0,
+          "se": 0.6001,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 12,
+  "stop_reason": "fixed_length",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 2,
+        "estimate": 0.7364,
+        "se": 0.6203,
+        "confident": false,
+        "minimum": 2,
+        "level_probability": 0.45179,
+        "level_probabilities": {
+          "0": 0.000443,
+          "1": 0.04758,
+          "2": 0.45179,
+          "3": 0.500187
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 3,
+        "estimate": 1.5779,
+        "se": 0.6831,
+        "confident": false,
+        "minimum": 3,
+        "level_probability": 0.8983,
+        "level_probabilities": {
+          "0": 3e-06,
+          "1": 0.001852,
+          "2": 0.099846,
+          "3": 0.8983
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 2,
+        "estimate": -0.0,
+        "se": 0.6001,
+        "confident": false,
+        "minimum": 2,
+        "level_probability": 0.566312,
+        "level_probabilities": {
+          "0": 0.017273,
+          "1": 0.304313,
+          "2": 0.566312,
+          "3": 0.112102
+        },
+        "meets_minimum": null
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether ds reaches level 2.",
+    "misconceptions": [],
+    "probed_misconceptions": [
+      "ds.complexity.short-code-is-fast",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.heaps.heap-is-sorted",
+      "ds.heaps.max-at-last-index",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.sorting-searching.binary-search-unsorted",
+      "ds.sorting-searching.sort-not-stable",
+      "py.collections.sort-returns-list",
+      "py.comprehensions-generators.generator-reusable",
+      "py.control-flow.range-inclusive",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.mutable-default-fresh",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.positional-alignment",
+      "py.variables-mutability.variable-holds-expression",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.schema-constraints.normalisation-only-saves-space",
+      "sql.subqueries-cte.correlated-runs-once",
+      "sql.subqueries-cte.in-subquery-duplicates"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-exceptions",
+        "py-pandas",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-heaps",
+        "ds-sorting-searching",
+        "ds-graphs"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-exceptions",
+        "py-pandas",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-heaps",
+        "ds-sorting-searching"
+      ],
+      "untested": [
+        "sql-window-functions",
+        "sql-transactions",
+        "ds-graphs"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether ds reaches level 2. Estimated levels: py level 2 (needs 2), sql level 3 (needs 3), ds level 2 (needs 2)."
+  },
+  "usage": {
+    "llm_calls": 37,
+    "api_calls": 0,
+    "input_tokens": 36155,
+    "output_tokens": 2132,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 37,
+        "api_calls": 0,
+        "input_tokens": 36155,
+        "output_tokens": 2132
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 3,
+      "ds": 2
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.exceptions.most-specific-except-wins",
+      "sql.indexes-performance.index-always-helps"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

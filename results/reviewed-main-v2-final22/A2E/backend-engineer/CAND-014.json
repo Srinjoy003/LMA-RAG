@@ -1,0 +1,2578 @@
+{
+  "interview_id": "A2E-backend-engineer-CAND-014-0",
+  "system": "A2E",
+  "config": {
+    "system": "A2E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-014",
+  "started_at": "2026-11-14T05:50:50Z",
+  "finished_at": "2026-11-14T05:53:11Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-exceptions",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The `try` block contains the code that might raise an exception, and the `except` blocks handle specific errors that occur. If an exception is raised part‑way through the `try`, the matching `except` runs and then execution continues with the next statement inside the original `try` block, right after the line that caused the exception. If two `except` clauses could both match, Python chooses the first one that appears in the source code. The `else` block runs only when no exception was raised at all, and the `finally` block always runs, even if the `try` block executes a `return`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.exceptions.resumes-after-raise",
+        "follow_up": "If you have a try block with three statements, and the second statement raises an exception, which line of code runs immediately after the except block finishes?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "If you have a try block with three statements, and the second statement raises an exception, which line of code runs immediately after the except block finishes?",
+            "confidence_expressed": "high",
+            "supporting_quote": "execution continues with the next statement inside the original `try` block, right after the line that caused the exception",
+            "evidence_reason": "The candidate explicitly states that after an exception is caught, execution goes back to the try block and continues with the line after the one that raised, which matches py.exceptions.resumes-after-raise.",
+            "contradicting": [
+              {
+                "misconception_id": "py.exceptions.finally-skipped-on-return",
+                "supporting_quote": "the `finally` block always runs, even if the `try` block executes a `return",
+                "quote_start": 511,
+                "quote_end": 586,
+                "reason": "The candidate directly and correctly states that finally runs even if the try block executes a return, contradicting the idea that it is skipped."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "If an exception happens and is caught, what happens to the remaining code in the try block that was after the error?",
+            "confidence_expressed": "high",
+            "supporting_quote": "execution continues with the next statement inside the original `try` block, right after the line that caused the exception.",
+            "evidence_reason": "The candidate explicitly states that execution returns inside the try block to the line after the one that caused the exception, which matches the misconception py.exceptions.resumes-after-raise.",
+            "contradicting": [
+              {
+                "misconception_id": "py.exceptions.finally-skipped-on-return",
+                "supporting_quote": "the `finally` block always runs, even if the `try` block executes a `return`.",
+                "quote_start": 511,
+                "quote_end": 588,
+                "reason": "The candidate explicitly rejects the idea that finally is skipped on return by stating that it always runs even if try returns."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "If an exception is caught by an except block, does the code inside the try block below the raise statement ever get executed?",
+            "confidence_expressed": "high",
+            "supporting_quote": "execution continues with the next statement inside the original `try` block, right after the line that caused the exception.",
+            "evidence_reason": "The candidate explicitly states that after an exception occurs and is handled, execution goes back inside the try block to the statement after the error, matching py.exceptions.resumes-after-raise.",
+            "contradicting": [
+              {
+                "misconception_id": "py.exceptions.finally-skipped-on-return",
+                "supporting_quote": "the `finally` block always runs, even if the `try` block executes a `return`.",
+                "quote_start": 511,
+                "quote_end": 588,
+                "reason": "The candidate explicitly rejects the idea that finally is skipped on return by correctly stating that it always runs even if a return is executed."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "execution continues with the next statement inside the original `try` block, right after the line that caused the exception",
+        "evidence_reason": "The candidate explicitly states that after an exception is caught, execution goes back to the try block and continues with the line after the one that raised, which matches py.exceptions.resumes-after-raise.",
+        "contradicting": [
+          {
+            "misconception_id": "py.exceptions.finally-skipped-on-return",
+            "supporting_quote": "the `finally` block always runs, even if the `try` block executes a `return",
+            "quote_start": 511,
+            "quote_end": 586,
+            "reason": "The candidate directly and correctly states that finally runs even if the try block executes a return, contradicting the idea that it is skipped.",
+            "vote_share": 1.0
+          }
+        ]
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you have a try block with three statements, and the second statement raises an exception, which line of code runs immediately after the except block finishes?",
+          "answer": "When the second statement raises an exception, control jumps to the matching `except` block, runs its code, and then resumes execution at the very next line of the original `try` block – that is, the third statement. So after the `except` finishes, the third statement in the `try` runs.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "What happens to the remaining statements in the try block if the exception is caught and handled?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "What happens to the remaining statements in the try block if the exception is caught and handled?",
+                "confidence_expressed": "high",
+                "supporting_quote": "resumes execution at the very next line of the original `try` block – that is, the third statement.",
+                "evidence_reason": "The candidate explicitly states that after the except block finishes, execution goes back to the try block to run the next line, which matches the listed misconception that execution resumes after the raise point.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "If an exception is caught and handled by an except block, what line of code runs next in relation to the entire try...except structure?",
+                "confidence_expressed": "high",
+                "supporting_quote": "resumes execution at the very next line of the original `try` block",
+                "evidence_reason": "The candidate explicitly states that after the except block runs, execution goes back inside the try block to the line after the one that raised.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "What happens to the statements in the try block that come after the line that raised the exception if there is no exception raised at all?",
+                "confidence_expressed": "high",
+                "supporting_quote": "resumes execution at the very next line of the original `try` block",
+                "evidence_reason": "The candidate explicitly states that after the except block runs, execution resumes inside the try block at the next line after the one that raised.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "resumes execution at the very next line of the original `try` block – that is, the third statement.",
+            "evidence_reason": "The candidate explicitly states that after the except block finishes, execution goes back to the try block to run the next line, which matches the listed misconception that execution resumes after the raise point.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens to the remaining statements in the try block if the exception is caught and handled?",
+          "answer": "When an exception is raised inside the try block, Python jumps to the matching except block, runs its code, and then resumes execution right where it left off in the try. That means any statements that come after the line that raised the exception will still be executed. The else clause only runs if no exception occurs at all, while the finally clause always runs, even if the try block contains a return. If you have multiple except handlers that could match, Python picks the first one it finds in the source order. So the remaining statements in the try block are not skipped; they continue after the except finishes.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "If a try block raises an exception on line 1 of a 5-line block, does Python run lines 2, 3, 4, and 5 before going to the except block, or does it skip them?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "If a try block raises an exception on line 1 of a 5-line block, does Python run lines 2, 3, 4, and 5 before going to the except block, or does it skip them?",
+                "confidence_expressed": "high",
+                "supporting_quote": "resumes execution right where it left off in the try. That means any statements that come after the line that raised the exception will still be executed.",
+                "evidence_reason": "The candidate explicitly states that after the except block finishes, execution resumes in the try block and statements coming after the one that raised still get executed, directly matching the misconception that execution resumes after the raise point.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "If a try block raises an exception on its first line, and the except block handles it successfully, does the second line of that try block execute?",
+                "confidence_expressed": "high",
+                "supporting_quote": "and then resumes execution right where it left off in the try. That means any statements that come after the line that raised the exception will still be executed.",
+                "evidence_reason": "The candidate explicitly states that after an exception is handled, execution resumes inside the try block and statements after the error are executed, which matches py.exceptions.resumes-after-raise.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.exceptions.resumes-after-raise",
+                "follow_up": "If a file is opened on the first line of a try block and an error occurs on the second line, do you think the third line of the try block runs before or after the except block?",
+                "confidence_expressed": "high",
+                "supporting_quote": "and then resumes execution right where it left off in the try. That means any statements that come after the line that raised the exception will still be executed.",
+                "evidence_reason": "The candidate explicitly states that after an exception, execution resumes in the try block and statements after the error are still executed, which matches the misconception that execution resumes after the raise point.",
+                "contradicting": [
+                  {
+                    "misconception_id": "py.exceptions.finally-skipped-on-return",
+                    "supporting_quote": "while the finally clause always runs, even if the try block contains a return.",
+                    "quote_start": 329,
+                    "quote_end": 407,
+                    "reason": "The candidate explicitly states that finally runs even if there is a return, which contradicts this misconception."
+                  }
+                ]
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "resumes execution right where it left off in the try. That means any statements that come after the line that raised the exception will still be executed.",
+            "evidence_reason": "The candidate explicitly states that after the except block finishes, execution resumes in the try block and statements coming after the one that raised still get executed, directly matching the misconception that execution resumes after the raise point.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that after an exception is caught, execution resumes inside the try block at the next line (triggering the misconception py.exceptions.resumes-after-raise), despite being given follow-up opportunities to correct this misunderstanding.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of try, except, else, and finally, including that finally runs on return and the first matching except clause runs. However, they show the misconception that execution resumes inside the try block after an exception is caught.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.exceptions.resumes-after-raise",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-subqueries-cte",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-joins",
+      "prompt": "A teammate wants the number of employees in each department. What does this query return, and why?\n\nWITH staff_per_dept AS (\n  SELECT d.name, e.id\n  FROM departments d\n  JOIN employees e ON e.dept_id = d.id\n)\nSELECT d.name, COUNT(d.name) AS n_rows, COUNT(e.dept_id) AS n_staff\nFROM departments d, employees e\nGROUP BY d.name\nORDER BY d.name;\n\nTable departments:\nid | name\n1 | Sales\n2 | IT\n3 | HR\n\nTable employees:\nid | name | dept_id\n1 | Asha | 1\n2 | Ben | 1\n3 | Chen | 2\n4 | Dana | NULL",
+      "answer": "The query will list each department name together with two counts: the first count shows how many rows exist for that department in the result set, and the second count shows how many employees are assigned to that department. Because the FROM clause lists both tables without a join condition, the database creates a Cartesian product, so each department is paired with every employee. This means the first count will be larger than the actual number of employees, while the second count will be the same as the first one because it counts the same rows. The ORDER BY simply sorts the output alphabetically by department name.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.auto-join-on-shared-column",
+        "follow_up": "If a department has 3 employees and another table has 4 rows, how many total rows would you expect in the result if you list both tables in the FROM clause without any join condition or WHERE clause?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "follow_up": "If a department has 3 employees and another table has 4 rows, how many total rows would you expect in the result if you list both tables in the FROM clause without any join condition or WHERE clause?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because the FROM clause lists both tables without a join condition, the database creates a Cartesian product, so each department is paired with every employee.",
+            "evidence_reason": "The candidate incorrectly describes that a Cartesian product pairs each department with every employee, which aligns with the misconception that queries automatically perform a join or relate keys when multiple tables are listed without explicit conditions.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "follow_up": "If a department has 3 employees, how many total rows do you expect in a Cartesian product between 3 departments and 4 employees?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because the FROM clause lists both tables without a join condition, the database creates a Cartesian product, so each department is paired with every employee. This means the first count will be larger than the actual number of employees, while the second count will be the same as the first one because it counts the same rows.",
+            "evidence_reason": "The candidate understands that a Cartesian product occurs when tables are listed without a join condition, but holds a misconception regarding the resulting counts, explicitly stating that both count expressions will yield the same value because they count the same generated rows.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "follow_up": "If a department has 3 employees and you cross it with all 4 employees from the company, what specific numbers would you expect the two COUNT expressions to return?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Because the FROM clause lists both tables without a join condition, the database creates a Cartesian product, so each department is paired with every employee. This means the first count will be larger than the actual number of employees, while the second count will be the same as the first one because it counts the same rows.",
+            "evidence_reason": "The candidate understands the Cartesian product occurs due to the missing join condition, but explicitly believes that COUNT(e.dept_id) will equal COUNT(d.name) because both count the same generated rows, missing how COUNT ignores NULLs (e.g., Dana's NULL dept_id) and failing to recognize the CTE is unused.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Because the FROM clause lists both tables without a join condition, the database creates a Cartesian product, so each department is paired with every employee.",
+        "evidence_reason": "The candidate incorrectly describes that a Cartesian product pairs each department with every employee, which aligns with the misconception that queries automatically perform a join or relate keys when multiple tables are listed without explicit conditions.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If a department has 3 employees and another table has 4 rows, how many total rows would you expect in the result if you list both tables in the FROM clause without any join condition or WHERE clause?",
+          "answer": "If you just list the two tables together, the result set will have one row for each department plus one row for each employee, so you’d end up with three department rows plus four employee rows, giving you seven rows total. The counts that appear in the SELECT clause will just reflect those individual row totals, so the first count would be 3 and the second would be 4. Since there’s no filtering, every department and every employee shows up exactly once. The ORDER BY will then sort those seven rows by the department name column, but it won’t change the number of rows.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "follow_up": "If a department has 3 employees and you list both tables in the FROM clause without a join condition, how many total rows will be produced for that single department?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If a department has 3 employees and you list both tables in the FROM clause without a join condition, how many total rows will be produced for that single department?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you just list the two tables together, the result set will have one row for each department plus one row for each employee, so you’d end up with three department rows plus four employee rows, giving you seven rows total.",
+                "evidence_reason": "The candidate explicitly believes that listing two tables in the FROM clause results in an additive combination of rows (three department rows plus four employee rows equals seven rows total) rather than a Cartesian product.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If you have 3 departments and 4 employees, and you list both tables in the FROM clause without a join condition, how many rows are in the resulting product table before grouping?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you just list the two tables together, the result set will have one row for each department plus one row for each employee, so you’d end up with three department rows plus four employee rows, giving you seven rows total.",
+                "evidence_reason": "The candidate believes listing two tables in FROM produces a sum of their rows (3 + 4 = 7) rather than a Cartesian product (3 * 4 = 12), illustrating a fundamental misunderstanding of implicit cross joins/cartesian products.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If the departments table has 3 rows and the employees table has 4 rows, how many total combinations of rows are produced when both tables are listed in the FROM clause without any WHERE or JOIN condition?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you just list the two tables together, the result set will have one row for each department plus one row for each employee, so you’d end up with three department rows plus four employee rows, giving you seven rows total.",
+                "evidence_reason": "The candidate explicitly believes that listing two tables in the FROM clause adds their row counts together (3 + 4 = 7 rows) rather than creating a Cartesian product (3 * 4 = 12 rows), which reflects a misunderstanding of how unjoined tables are combined.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "If you just list the two tables together, the result set will have one row for each department plus one row for each employee, so you’d end up with three department rows plus four employee rows, giving you seven rows total.",
+            "evidence_reason": "The candidate explicitly believes that listing two tables in the FROM clause results in an additive combination of rows (three department rows plus four employee rows equals seven rows total) rather than a Cartesian product.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a department has 3 employees and you list both tables in the FROM clause without a join condition, how many total rows will be produced for that single department?",
+          "answer": "If you just list the two tables together, the engine will treat each department as a separate block and then attach the employees that belong to it. For a department that has three employees, you’ll end up with three rows – one for each employee in that department. The department name will be repeated on each of those rows, so you’ll see the same department showing up three times in the result set.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.auto-join-on-shared-column",
+            "follow_up": "If department 'Sales' has 2 employees and department 'IT' has 1 employee, how many total rows will appear in the result of SELECT * FROM departments, employees?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If department 'Sales' has 2 employees and department 'IT' has 1 employee, how many total rows will appear in the result of SELECT * FROM departments, employees?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the engine will treat each department as a separate block and then attach the employees that belong to it. For a department that has three employees, you’ll end up with three rows – one for each employee in that department.",
+                "evidence_reason": "The candidate explicitly believes that listing two tables in FROM without a join condition causes the database to automatically match departments with only their respective employees, rather than producing a full Cartesian product of all departments with all employees.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": "If department 1 has 2 employees and department 2 has 2 employees, and we list both tables in the FROM clause without a join condition, how many total rows will appear in the final result set according to that logic?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the engine will treat each department as a separate block and then attach the employees that belong to it. For a department that has three employees, you’ll end up with three rows – one for each employee in that department.",
+                "evidence_reason": "The candidate explicitly believes that listing two tables in FROM without a join condition automatically matches rows based on their relationship (attaching employees belonging to that department), rather than producing a full Cartesian product.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.auto-join-on-shared-column",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "the engine will treat each department as a separate block and then attach the employees that belong to it. For a department that has three employees, you’ll end up with three rows – one for each employee in that department.",
+                "evidence_reason": "The candidate explicitly believes that listing two tables in the FROM clause without an explicit join condition automatically matches related rows (attaching employees that belong to the department) instead of producing a full Cartesian product.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the engine will treat each department as a separate block and then attach the employees that belong to it. For a department that has three employees, you’ll end up with three rows – one for each employee in that department.",
+            "evidence_reason": "The candidate explicitly believes that listing two tables in FROM without a join condition causes the database to automatically match departments with only their respective employees, rather than producing a full Cartesian product of all departments with all employees.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate understands that the comma-separated FROM clause creates a cross product in theory, but in the follow-ups they reveal a serious misconception about Cartesian products (believing it sums rows rather than multiplies them, or that only matching employees attach). They also completely miss that the CTE is unused.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the Cartesian product from the missing join condition and mentions the unused CTE implicitly or understands the tables used, but gets the second count wrong (stating it will be the same as the first instead of 3 due to the NULL value).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-010",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-hash-tables, ds-trees-bst",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "A hash table lets us insert new scores quickly, but it doesn’t keep any ordering, so producing a full leaderboard would require sorting the whole collection each time, which is O(n log n). A sorted array is already in order, making listing trivial, but inserting a new score means finding the right slot and shifting all later elements, which costs O(n) per update. A balanced binary search tree gives O(log n) insertions while maintaining the elements in sorted order, and an in‑order traversal can output the entire list in O(n) time. Because both inserts and full ordered reads are frequent, the balanced BST provides the best overall trade‑off. If we only needed the top‑k scores, a heap would be another option, but for the full list a BST is preferred.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly analyzed all three data structures, identified their time complexities for both insertions and ordered listings, and chose the balanced BST with proper reasoning.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly analyzed all three data structures, identified their time complexities for both insertions and ordered listings, and chose the balanced BST with proper reasoning.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-variables-mutability",
+        "py-collections"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; covers required topics not yet tested: py-collections, py-variables-mutability",
+      "prompt": "What does this code print, and why?\n\na = [1, 2, 3]\nb = a\nn = len(a)\nb.append(4)\ns = \"hi\"\ns.upper()\nprint(a, n, s)",
+      "answer": "The code will output:\n\n```\n[1, 2, 3, 4] 3 hi\n```\n\nHere’s why: `b = a` does not create a copy; it just gives another reference to the same list, so when `b.append(4)` runs, the list that `a` points to is also extended. The variable `n` was assigned the length of `a` before the append, so it stays at 3. The call `s.upper()` returns a new uppercase string, but the result isn’t stored, and strings are immutable, so `s` remains `\"hi\"`. Consequently, printing `a, n, s` shows the modified list, the original length, and the unchanged string.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly predicted the exact output and provided accurate explanations for all three key points: list reference mutability, integer assignment timing, and string immutability.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly predicted the exact output and provided accurate explanations for all three key points: list reference mutability, integer assignment timing, and string immutability.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation (sql.aggregation.count-column-counts-nulls, sql.null.aggregates-treat-null-as-zero)",
+      "prompt": "A staff table has a bonus column, and some bonuses are NULL. How do SUM(bonus) and AVG(bonus) treat those NULLs, and how would AVG(bonus) compare with SUM(bonus) divided by COUNT(*)?",
+      "answer": "Both SUM(bonus) and AVG(bonus) ignore rows where bonus is NULL; they don’t treat the missing value as 0. SUM simply adds up only the non‑NULL bonuses. AVG first computes the same sum of the non‑NULL values and then divides by the number of non‑NULL rows, i.e., COUNT(bonus). If you divide SUM(bonus) by COUNT(*), the denominator includes every row, even those with a NULL bonus, so the result will be lower (for positive bonuses) than AVG(bonus) unless you explicitly replace NULLs with 0 (e.g., AVG(COALESCE(bonus,0))).",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that SUM and AVG ignore NULL values, that AVG divides by the non-NULL count, and that dividing SUM by COUNT(*) yields a lower result due to including NULL rows in the denominator.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that SUM and AVG ignore NULL values, that AVG divides by the non-NULL count, and that dividing SUM by COUNT(*) yields a lower result due to including NULL rows in the denominator.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-013",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs",
+        "ds-stacks-queues"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: ds-stacks-queues",
+      "prompt": "What does this code print? What would happen if the `if node in seen: continue` check were removed, and why might this explicit-stack version be preferred over a recursive DFS on a graph containing a path of a million nodes?\n\ngraph = {1: [2, 3], 2: [4], 3: [4], 4: [1]}\n\ndef dfs(start):\n    seen, stack, order = set(), [start], []\n    while stack:\n        node = stack.pop()\n        if node in seen:\n            continue\n        seen.add(node)\n        order.append(node)\n        for nb in graph[node]:\n            stack.append(nb)\n    return order\n\nprint(dfs(1))\n",
+      "answer": "The call prints `[1, 3, 4, 2]`. Because the list is used as a stack, the neighbor that is appended last (3) is popped first, so the traversal goes 1 → 3 → 4 before it back‑tracks and later visits 2. If we remove the `if node in seen: continue` test, the cycle 4 → 1 will keep re‑adding already‑visited nodes, causing the stack to never empty and the loop to run indefinitely. An explicit stack version is preferred for very deep graphs (e.g., a million‑node path) because it avoids Python’s recursion limit and the overhead of a million nested function calls, using a normal list that can grow as needed.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output and the DFS behavior, explained that removing the seen check leads to an infinite loop due to the cycle, and correctly noted that an explicit stack avoids Python's recursion limit for deep paths.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output and the DFS behavior, explained that removing the seen check leads to an infinite loop due to the cycle, and correctly noted that an explicit stack avoids Python's recursion limit for deep paths.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; covers required topics not yet tested: ds-complexity",
+      "prompt": "This class simulates how a dynamic array such as a Python list grows: when it is full, it moves every item into a new block twice as large and counts the moved items. What does it print? What do the numbers tell you about the cost of a single append and of n appends?\n\nclass DynArray:\n    def __init__(self):\n        self.size, self.cap, self.copies = 0, 1, 0\n\n    def append(self, x):\n        if self.size == self.cap:\n            self.copies += self.size  # move every item to a bigger block\n            self.cap *= 2\n        self.size += 1\n\nfor n in [16, 17, 1000]:\n    arr = DynArray()\n    for i in range(n):\n        arr.append(i)\n    print(n, arr.cap, arr.copies)",
+      "answer": "When you run the snippet it prints something like:\n\n```\n16 32 24\n17 32 24\n1000 2048 1024\n```\n\nThe capacity seems to double each time the array fills up, so after 16 elements it already jumps to a capacity of 32. The copy count grows roughly as half the capacity each time a resize happens, which makes the total copying work look linear in the number of elements. Because the copies increase with each resize, the cost of a single append can be relatively large when a resize occurs, while most appends are cheap. So overall the cost of doing n appends ends up being proportional to n, but with a noticeable overhead from the resizing steps.",
+      "diagnosis": {
+        "cause": "slip",
+        "misconception_id": null,
+        "follow_up": "Could you trace the exact sequence of capacity changes and copies for the first few appends when n is 16 to double-check those printed numbers?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "Could you carefully trace the exact number of copies made when inserting the 17th element in the loop?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "Could you trace the exact sequence of capacity changes and copies for the first few appends when n is 16 to double-check those printed numbers?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "slip",
+            "misconception_id": null,
+            "follow_up": "Could you double-check the exact output of the loop for n = 16 by tracing the number of copies when capacity equals 16?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you trace the exact sequence of capacity changes and copies for the first few appends when n is 16 to double-check those printed numbers?",
+          "answer": "Sure, let me walk through the first few steps when we insert up to 16 items. We start with capacity 1 and size 0, so the first append just increments size to 1 and leaves capacity at 1. The second append sees that size equals capacity, so it doubles the capacity to 2 and adds the current size (1) to the copy counter, then increments size to 2. The third append again hits a full array, doubles capacity to 4, adds the current size (2) to copies, and bumps size to 3; the fourth append just increments size to 4 without copying. By the time we get to the eighth insert we’ve doubled a few times (1→2→4→8) and the copy total is the sum of the sizes at each resize, which ends up being something like 1 + 2 + 4 = 7. Continuing this pattern, the sixteenth insert will have triggered a resize from 8 to 16, adding another 8 copies, so the final copy count after 16 appends is around 15, with capacity now at 16.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate corrected their output in the follow-up, correctly traced the copy counts and capacities up to 16, and explained the amortised O(1) behaviour with occasional expensive resizes.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          0,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate's output values are incorrect and do not match the code behavior, but they correctly identify that appends are mostly cheap with occasional expensive resizes, and that n appends cost O(n) overall. However, because the output and specific copy counts are incorrect and the amortised O(1) concept is incomplete, it hits level 1.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-007",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-exceptions",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; lists a suspected misconception to confirm: py.exceptions.resumes-after-raise",
+      "prompt": "What does this code print, and why?\n\ndef to_int(v, bad=[]):\n    try:\n        n = int(v)\n        print(\"parsed\", n)\n        return n\n    except ValueError:\n        bad.append(v)\n        print(\"bad\", bad)\n        return 0\n    finally:\n        print(\"done\", v)\n\ntotal = to_int(\"4\") + to_int(\"x\") + to_int(\"y\")\nprint(total)",
+      "answer": "The first call to `to_int(\"4\")` parses successfully, so it prints “parsed 4” and then the `finally` block runs, printing “done 4”. When `to_int(\"x\")` raises a `ValueError`, the `except` block executes and prints “bad ['x']”, and after that the code goes back to the `try` block and continues, so it also prints “parsed 0” before the `finally` prints “done x”. The same thing happens for `to_int(\"y”)`: the `except` prints “bad ['x', 'y']”, then the `try` resumes and prints “parsed 0”, and finally “done y” is printed. The three calls return 4, 0, and 0, so the total printed at the end is `4`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.exceptions.resumes-after-raise",
+        "follow_up": "What happens to the remaining lines inside the try block after an exception is raised?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "What happens to the remaining lines inside the try block after an exception is raised?",
+            "confidence_expressed": "high",
+            "supporting_quote": "after that the code goes back to the `try` block and continues, so it also prints “parsed 0",
+            "evidence_reason": "The candidate explicitly states that after the except block executes, execution goes back to the try block and continues with the line after the one that raised.",
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.exceptions.resumes-after-raise",
+            "follow_up": "What happens to the line `print(\"parsed\", n)` when `int(v)` raises a ValueError inside the try block?",
+            "confidence_expressed": "high",
+            "supporting_quote": "after that the code goes back to the `try` block and continues, so it also prints “parsed 0”",
+            "evidence_reason": "The candidate explicitly states that after the except block executes, execution returns to the try block to continue, which directly matches the misconception that execution resumes inside the try block after an exception is caught.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "after that the code goes back to the `try` block and continues, so it also prints “parsed 0",
+        "evidence_reason": "The candidate explicitly states that after the except block executes, execution goes back to the try block and continues with the line after the one that raised.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the default list is shared and that the final total is 4, but incorrectly believes that execution resumes in the try block after an exception is caught.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the default list is shared and that the final total is 4, but incorrectly believes that execution resumes in the try block after an exception is caught.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.exceptions.resumes-after-raise",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-joins"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; lists a suspected misconception to confirm: sql.joins.auto-join-on-shared-column",
+      "prompt": "Explain what the ON condition in a join does, and how INNER JOIN and LEFT JOIN between customers and orders differ for a customer who has no orders. If you then add WHERE o.status = 'paid' to the LEFT JOIN query, is that customer still in the result?",
+      "answer": "The ON clause tells the database how rows from the two tables should be paired, specifying the columns that must match for a row from customers to be joined with a row from orders. With an INNER JOIN, only customers that have at least one matching order are returned, so a customer with no orders is omitted entirely. A LEFT JOIN returns every customer; if there is no matching order, the order columns are filled with NULL for that customer. Adding a WHERE condition such as o.status = 'paid' after a LEFT JOIN filters the result set, and because the status field is NULL for customers without orders, the condition evaluates to false, causing those customers to be dropped. To keep those customers while still restricting orders to paid ones, the status check should be placed in the ON clause instead of the WHERE clause.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the purpose of the ON condition, the difference between INNER JOIN and LEFT JOIN regarding unmatched rows, and how a WHERE clause filtering on the right table turns the LEFT JOIN into an inner join, noting the correct fix by moving the condition to the ON clause.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the purpose of the ON condition, the difference between INNER JOIN and LEFT JOIN regarding unmatched rows, and how a WHERE clause filtering on the right table turns the LEFT JOIN into an inner join, noting the correct fix by moving the condition to the ON clause.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs",
+        "ds-heaps"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists misconceptions not yet probed: ds.graphs.bfs-weighted-shortest, ds.graphs.dfs-finds-shortest, ds.heaps.pop-min-constant",
+      "prompt": "This is Dijkstra's algorithm with `heapq` as the priority queue. What does it print? Why is the distance to C 3 and not 5, even though there is a direct edge A -> C? Would BFS, or a DFS that keeps the first path it finds, give the same distances? What does each `heappop` cost?\n\nimport heapq\ngraph = {\"A\": [(\"C\", 5), (\"B\", 1)], \"B\": [(\"D\", 1)], \"C\": [(\"E\", 1)], \"D\": [(\"C\", 1)], \"E\": []}\n\ndef dijkstra(src):\n    dist, pq = {src: 0}, [(0, src)]\n    while pq:\n        d, u = heapq.heappop(pq)\n        if d > dist[u]:\n            continue\n        for v, w in graph[u]:\n            if d + w < dist.get(v, float(\"inf\")):\n                dist[v] = d + w\n                heapq.heappush(pq, (d + w, v))\n    return dist\nprint(dijkstra(\"A\"))",
+      "answer": "It prints `{'A': 0, 'B': 1, 'D': 2, 'C': 3, 'E': 4}`. Although there is a direct edge A→C of weight 5, the path A→B→D→C has total weight 1+1+1 = 3, and Dijkstra always expands the vertex with the smallest tentative distance, so it settles B (1) and D (2) before C and updates C’s distance to 3, later discarding the stale (5, 'C') entry. A plain BFS would only minimise the number of edges, so it would record C via the single‑edge path with cost 5 (and E would be 6), and a DFS that stops at the first found path would behave similarly, depending on the adjacency order. Each `heapq.heappop` operation runs in O(log n) time because the heap must sift‑down to restore the heap property after removing the root.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the correct output, explained why C is 3 via the alternative path and how stale entries are handled, correctly contrasted with BFS and DFS on weighted graphs, and gave O(log n) for heappop with the correct explanation of sift-down.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the correct output, explained why C is 3 via the alternative path and how stale entries are handled, correctly contrasted with BFS and DFS on weighted graphs, and gave O(log n) for heappop with the correct explanation of sift-down.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-joins"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.66); level 2 is nearest its estimate +0.23; lists a suspected misconception to confirm: sql.joins.auto-join-on-shared-column",
+      "prompt": "customers has 3 rows: Asha, Ben and Chen. orders has 3 rows: two orders by Asha (amounts 50 and 200) and one by Chen (amount 300); Ben has none. How many rows does each of these return, and why: (a) FROM customers, orders with no WHERE clause; (b) customers INNER JOIN orders ON orders.customer_id = customers.id; (c) the same with LEFT JOIN; (d) that LEFT JOIN plus WHERE orders.amount > 100?",
+      "answer": "(a) Returns 9 rows because without a WHERE the query produces the Cartesian product of the two tables, pairing each of the three customers with each of the three orders.  \n(b) Returns 3 rows – only the rows where the customer_id matches the customer’s id are kept, so Asha appears twice (her two orders) and Chen once, while Ben has none.  \n(c) Returns 4 rows – the same three matching rows as the inner join plus one extra row for Ben with NULL values for the order columns.  \n(d) Returns 2 rows – after the LEFT JOIN the WHERE clause filters out rows where orders.amount is not greater than 100, which removes Ben’s NULL row and Asha’s 50‑dollar order, leaving only Asha’s 200 and Chen’s 300.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all four row counts (9, 3, 4, 2) and provided the exact correct reasoning for each part, including the Cartesian product, join matching behavior, left join behavior with NULLs, and the filtering effect of the WHERE clause on the outer-joined rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all four row counts (9, 3, 4, 2) and provided the exact correct reasoning for each part, including the Cartesian product, join matching behavior, left join behavior with NULLs, and the filtering effect of the WHERE clause on the outer-joined rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.5532,
+          "se": 0.6145,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-005",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope",
+        "py-control-flow"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 1 is nearest its estimate -0.61; lists misconceptions not yet probed: py.control-flow.no-short-circuit, py.control-flow.or-distributes, py.functions-scope.print-is-return",
+      "prompt": "What does this code print, and why?\n\ndef area(w, h):\n    print(\"area\", w * h)\n\ndef is_big(n):\n    print(\"checking\", n)\n    return n > 10\n\na = area(2, 3)\nprint(a)\nif is_big(30) or is_big(1):\n    print(\"one big\")\nsize = \"M\"\nif size == \"S\" or \"XS\":\n    print(\"small\")",
+      "answer": "The code first calls area(2, 3), which prints “area 6” and returns None, so the subsequent print(a) outputs None. Then is_big(30) is evaluated, printing “checking 30” and returning True; because the left side of the or is true, the right side is_big(1) is never called, and “one big” is printed. Finally, the condition size == \"S\" or \"XS\" is interpreted as (size == \"S\") or True (since the non‑empty string “XS” is truthy), so the block runs and prints “small”.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that area returns None, explained short-circuit evaluation for the 'or' operator, and correctly recognized that the non-empty string 'XS' is truthy.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that area returns None, explained short-circuit evaluation for the 'or' operator, and correctly recognized that the non-empty string 'XS' is truthy.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.5532,
+          "se": 0.6145,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.64); level 3 is nearest its estimate +1.95; lists misconceptions not yet probed: ds.trees-bst.always-balanced, ds.trees-bst.insert-scans-all-keys",
+      "prompt": "You insert the keys 1, 2, 3, …, n in that order into a plain (not self-balancing) binary search tree. What shape does the tree take, and what do search and insert cost? How do self-balancing trees such as AVL or red-black trees avoid this, and what do their operations cost?",
+      "answer": "Inserting the keys 1, 2, 3,…, n in order into an ordinary BST always puts each new key to the right of the previous one, so the tree collapses into a right‑leaning chain of height n (Θ(n)). Consequently a search or an insertion must walk down that chain, giving Θ(n) time per operation and Θ(n²) total time to build the tree. Self‑balancing trees such as AVL or red‑black trees perform rotations (and recolorings for red‑black) after each insertion or deletion to keep the height bounded by a constant factor of log n. Because the height stays Θ(log n), search, insert and delete all run in Θ(log n) worst‑case time.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that sequential insertion causes the BST to degenerate into a chain of height O(n) with O(n) operation costs, and explained how rotations in self-balancing trees keep the height and operations at O(log n).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that sequential insertion causes the BST to degenerate into a chain of height O(n) with O(n) operation costs, and explained how rotations in self-balancing trees keep the height and operations at O(log n).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.5532,
+          "se": 0.6145,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 2.1444,
+          "se": 0.6105,
+          "level": 3,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +0.55; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation (sql.window-functions.collapses-rows, sql.window-functions.rank-functions-identical, sql.window-functions.running-sum-is-total)",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The query will produce a result set with four columns: day, amount, a running total and a rank. The running column will show the same value for every row because it just repeats the total sum of all amounts in the table. The rank column will assign a unique sequential number to each row based on the day, so the first day gets 1, the second day gets 2, the third day gets 3, and so on. Since there is a NULL value for day 3, that row will get a NULL in the running column and will be excluded from the ranking, causing the next row to continue the sequence. The final output will therefore list the days in order with their original amounts, a constant running total, and incremental ranks that skip the NULL row.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.window-functions.running-sum-is-total",
+        "follow_up": "If you have multiple rows with the same day value, what does the cumulative sum look like for those specific rows?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If you have multiple rows with the same day value, what does the cumulative sum look like for those specific rows?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The running column will show the same value for every row because it just repeats the total sum of all amounts in the table.",
+            "evidence_reason": "The candidate explicitly states that the running total column repeats the total sum of all amounts on every row, demonstrating the listed misconception that an ORDER BY inside the OVER clause produces a grand total rather than a running total.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If you sum the amounts row by row in order of the day column, what values do you get at day 1, day 2, and day 3?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The running column will show the same value for every row because it just repeats the total sum of all amounts in the table.",
+            "evidence_reason": "The candidate explicitly states that the running column repeats the total sum of all amounts on every row, which matches the listed misconception sql.window-functions.running-sum-is-total.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "Can you trace the value of the running column row by row for the first three rows?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The running column will show the same value for every row because it just repeats the total sum of all amounts in the table.",
+            "evidence_reason": "The candidate explicitly states that the running column repeats the grand total for every row rather than being a running sum.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The running column will show the same value for every row because it just repeats the total sum of all amounts in the table.",
+        "evidence_reason": "The candidate explicitly states that the running total column repeats the total sum of all amounts on every row, demonstrating the listed misconception that an ORDER BY inside the OVER clause produces a grand total rather than a running total.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you have multiple rows with the same day value, what does the cumulative sum look like for those specific rows?",
+          "answer": "If there are two rows with the same day value, the window function will treat each of them as a separate partition, so the running total will start over for each row with that day. That means the first row for day 2 will show the sum of all previous days plus its own amount, and the second row for day 2 will only include its own amount in the running column. The rank column will still give each row a distinct number, so the two day‑2 rows will get consecutive ranks. Essentially, the cumulative sum does not accumulate across rows that share the same day; it resets for each duplicate.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.running-sum-is-total",
+                "follow_up": "How does the default frame clause behave when there is an ORDER BY without an explicit ROWS or RANGE specification?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Essentially, the cumulative sum does not accumulate across rows that share the same day; it resets for each duplicate.",
+                "evidence_reason": "The candidate incorrectly believes that duplicate values in the ORDER BY column cause the window frame or cumulative sum to treat rows separately or reset, which relates to their ongoing misunderstanding of how OVER (ORDER BY ...) aggregates values sequentially.",
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes the running sum produces a constant total, misunderstands the window frame with ties, and thinks running sums reset for duplicate day values, showing multiple listed misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that the running sum repeats the grand total on every row and that NULL is excluded from the ranking, which demonstrates core misconceptions about window functions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.3047,
+          "se": 0.5546,
+          "level": 2,
+          "n": 5
+        },
+        "ds": {
+          "estimate": 2.1444,
+          "se": 0.6105,
+          "level": 3,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 15,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +2.14; lists misconceptions not yet probed: ds.hash-tables.collision-overwrites, ds.hash-tables.worst-case-constant",
+      "prompt": "Hash table lookups are usually described as O(1). When can a lookup become O(n), and what does the table do to keep operations fast as more and more keys are added?",
+      "answer": "A hash table gives O(1) look‑ups only on average, assuming the hash function distributes keys uniformly across the buckets. If many keys end up in the same bucket—because the hash function is poor or an attacker forces collisions—the bucket becomes a list (or probe chain) that must be scanned linearly, so a single lookup can degrade to O(n) in the worst case. To avoid that, implementations track the load factor (the ratio of stored entries to bucket count) and, when it exceeds a threshold, allocate a larger array and re‑hash all existing keys into it. The resize operation costs O(n) but happens infrequently, so inserts and look‑ups remain amortised O(1) under normal conditions.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that O(1) is an average-case performance relying on a uniform hash function, identified that collisions cause worst-case O(n) performance due to linear scanning, and mentioned load factors and resizing/rehashing for amortised O(1) operations.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that O(1) is an average-case performance relying on a uniform hash function, identified that collisions cause worst-case O(n) performance due to linear scanning, and mentioned load factors and resizing/rehashing for amortised O(1) operations.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.3047,
+          "se": 0.5546,
+          "level": 2,
+          "n": 5
+        },
+        "ds": {
+          "estimate": 2.3021,
+          "se": 0.5867,
+          "level": 3,
+          "n": 6
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 21,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 1,
+        "estimate": -0.3256,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.483581,
+        "level_probabilities": {
+          "0": 0.052999,
+          "1": 0.483581,
+          "2": 0.424654,
+          "3": 0.038767
+        },
+        "meets_minimum": null
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.3047,
+        "se": 0.5546,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.633075,
+        "level_probabilities": {
+          "0": 0.002159,
+          "1": 0.14373,
+          "2": 0.633075,
+          "3": 0.221036
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 3,
+        "estimate": 2.3021,
+        "se": 0.5867,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.998055,
+        "level_probabilities": {
+          "0": 0.0,
+          "1": 1e-06,
+          "2": 0.001945,
+          "3": 0.998055
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether py reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "py.exceptions.resumes-after-raise",
+        "confirmed": true,
+        "evidence_turns": [
+          1,
+          8
+        ],
+        "vote_share": 0.917,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L2-011",
+            "turn": 1,
+            "reply_index": 0,
+            "reply_text": "The `try` block contains the code that might raise an exception, and the `except` blocks handle specific errors that occur. If an exception is raised part‑way through the `try`, the matching `except` runs and then execution continues with the next statement inside the original `try` block, right after the line that caused the exception. If two `except` clauses could both match, Python chooses the first one that appears in the source code. The `else` block runs only when no exception was raised at all, and the `finally` block always runs, even if the `try` block executes a `return`.",
+            "vote_share": 1.0,
+            "supporting_quote": "execution continues with the next statement inside the original `try` block, right after the line that caused the exception",
+            "quote_start": 214,
+            "quote_end": 337,
+            "reason": "The candidate explicitly states that after an exception is caught, execution goes back to the try block and continues with the line after the one that raised, which matches py.exceptions.resumes-after-raise."
+          },
+          {
+            "question_id": "PY-L2-011",
+            "turn": 1,
+            "reply_index": 1,
+            "reply_text": "When the second statement raises an exception, control jumps to the matching `except` block, runs its code, and then resumes execution at the very next line of the original `try` block – that is, the third statement. So after the `except` finishes, the third statement in the `try` runs.",
+            "vote_share": 1.0,
+            "supporting_quote": "resumes execution at the very next line of the original `try` block – that is, the third statement.",
+            "quote_start": 117,
+            "quote_end": 216,
+            "reason": "The candidate explicitly states that after the except block finishes, execution goes back to the try block to run the next line, which matches the listed misconception that execution resumes after the raise point."
+          },
+          {
+            "question_id": "PY-L2-011",
+            "turn": 1,
+            "reply_index": 2,
+            "reply_text": "When an exception is raised inside the try block, Python jumps to the matching except block, runs its code, and then resumes execution right where it left off in the try. That means any statements that come after the line that raised the exception will still be executed. The else clause only runs if no exception occurs at all, while the finally clause always runs, even if the try block contains a return. If you have multiple except handlers that could match, Python picks the first one it finds in the source order. So the remaining statements in the try block are not skipped; they continue after the except finishes.",
+            "vote_share": 1.0,
+            "supporting_quote": "resumes execution right where it left off in the try. That means any statements that come after the line that raised the exception will still be executed.",
+            "quote_start": 117,
+            "quote_end": 271,
+            "reason": "The candidate explicitly states that after the except block finishes, execution resumes in the try block and statements coming after the one that raised still get executed, directly matching the misconception that execution resumes after the raise point."
+          },
+          {
+            "question_id": "PY-L2-008",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "The first call to `to_int(\"4\")` parses successfully, so it prints “parsed 4” and then the `finally` block runs, printing “done 4”. When `to_int(\"x\")` raises a `ValueError`, the `except` block executes and prints “bad ['x']”, and after that the code goes back to the `try` block and continues, so it also prints “parsed 0” before the `finally` prints “done x”. The same thing happens for `to_int(\"y”)`: the `except` prints “bad ['x', 'y']”, then the `try` resumes and prints “parsed 0”, and finally “done y” is printed. The three calls return 4, 0, and 0, so the total printed at the end is `4`.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "after that the code goes back to the `try` block and continues, so it also prints “parsed 0",
+            "quote_start": 229,
+            "quote_end": 320,
+            "reason": "The candidate explicitly states that after the except block executes, execution goes back to the try block and continues with the line after the one that raised."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "sql.joins.auto-join-on-shared-column",
+        "confirmed": false,
+        "evidence_turns": [
+          2
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L2-010",
+            "turn": 2,
+            "reply_index": 0,
+            "reply_text": "The query will list each department name together with two counts: the first count shows how many rows exist for that department in the result set, and the second count shows how many employees are assigned to that department. Because the FROM clause lists both tables without a join condition, the database creates a Cartesian product, so each department is paired with every employee. This means the first count will be larger than the actual number of employees, while the second count will be the same as the first one because it counts the same rows. The ORDER BY simply sorts the output alphabetically by department name.",
+            "vote_share": 1.0,
+            "supporting_quote": "Because the FROM clause lists both tables without a join condition, the database creates a Cartesian product, so each department is paired with every employee.",
+            "quote_start": 227,
+            "quote_end": 386,
+            "reason": "The candidate incorrectly describes that a Cartesian product pairs each department with every employee, which aligns with the misconception that queries automatically perform a join or relate keys when multiple tables are listed without explicit conditions."
+          },
+          {
+            "question_id": "SQL-L2-010",
+            "turn": 2,
+            "reply_index": 1,
+            "reply_text": "If you just list the two tables together, the result set will have one row for each department plus one row for each employee, so you’d end up with three department rows plus four employee rows, giving you seven rows total. The counts that appear in the SELECT clause will just reflect those individual row totals, so the first count would be 3 and the second would be 4. Since there’s no filtering, every department and every employee shows up exactly once. The ORDER BY will then sort those seven rows by the department name column, but it won’t change the number of rows.",
+            "vote_share": 1.0,
+            "supporting_quote": "If you just list the two tables together, the result set will have one row for each department plus one row for each employee, so you’d end up with three department rows plus four employee rows, giving you seven rows total.",
+            "quote_start": 0,
+            "quote_end": 223,
+            "reason": "The candidate explicitly believes that listing two tables in the FROM clause results in an additive combination of rows (three department rows plus four employee rows equals seven rows total) rather than a Cartesian product."
+          },
+          {
+            "question_id": "SQL-L2-010",
+            "turn": 2,
+            "reply_index": 2,
+            "reply_text": "If you just list the two tables together, the engine will treat each department as a separate block and then attach the employees that belong to it. For a department that has three employees, you’ll end up with three rows – one for each employee in that department. The department name will be repeated on each of those rows, so you’ll see the same department showing up three times in the result set.",
+            "vote_share": 1.0,
+            "supporting_quote": "the engine will treat each department as a separate block and then attach the employees that belong to it. For a department that has three employees, you’ll end up with three rows – one for each employee in that department.",
+            "quote_start": 42,
+            "quote_end": 265,
+            "reason": "The candidate explicitly believes that listing two tables in FROM without a join condition causes the database to automatically match departments with only their respective employees, rather than producing a full Cartesian product of all departments with all employees."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.window-functions.running-sum-is-total",
+        "confirmed": false,
+        "evidence_turns": [
+          14
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 14,
+            "reply_index": 0,
+            "reply_text": "The query will produce a result set with four columns: day, amount, a running total and a rank. The running column will show the same value for every row because it just repeats the total sum of all amounts in the table. The rank column will assign a unique sequential number to each row based on the day, so the first day gets 1, the second day gets 2, the third day gets 3, and so on. Since there is a NULL value for day 3, that row will get a NULL in the running column and will be excluded from the ranking, causing the next row to continue the sequence. The final output will therefore list the days in order with their original amounts, a constant running total, and incremental ranks that skip the NULL row.",
+            "vote_share": 1.0,
+            "supporting_quote": "The running column will show the same value for every row because it just repeats the total sum of all amounts in the table.",
+            "quote_start": 96,
+            "quote_end": 220,
+            "reason": "The candidate explicitly states that the running total column repeats the total sum of all amounts on every row, demonstrating the listed misconception that an ORDER BY inside the OVER clause produces a grand total rather than a running total."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.arrays-strings.front-insert-constant",
+      "ds.complexity.big-o-is-exact-time",
+      "ds.complexity.constants-change-class",
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.bfs-weighted-shortest",
+      "ds.graphs.dfs-finds-shortest",
+      "ds.graphs.visited-unneeded",
+      "ds.hash-tables.collision-overwrites",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.worst-case-constant",
+      "ds.heaps.pop-min-constant",
+      "ds.stacks-queues.recursion-free-memory",
+      "ds.trees-bst.always-balanced",
+      "ds.trees-bst.inorder-not-sorted",
+      "ds.trees-bst.insert-scans-all-keys",
+      "py.control-flow.no-short-circuit",
+      "py.control-flow.or-distributes",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.mutable-default-fresh",
+      "py.functions-scope.print-is-return",
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.string-method-mutates",
+      "py.variables-mutability.variable-holds-expression",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.joins.where-filter-keeps-left-rows",
+      "sql.null.aggregates-treat-null-as-zero",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-exceptions",
+        "sql-joins",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-trees-bst"
+      ],
+      "untested": [
+        "py-oop",
+        "py-concurrency",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-linked-lists"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether py reaches level 2. Estimated levels: py level 1 (needs 2), sql level 2 (needs 2), ds level 3 (needs 2). Confirmed misconception: Believes that after an exception is caught, execution goes back to the try block and continues with the line after the one that raised. Suspected (insufficient corroboration) misconception: Believes that listing two tables in FROM without a join condition makes the database match rows on their related key automatically, instead of producing every combination of rows. Suspected (insufficient corroboration) misconception: Believes SUM(x) OVER (ORDER BY y) returns the grand total on every row, not knowing that ORDER BY inside OVER produces a running total in which tied rows share a value."
+  },
+  "usage": {
+    "llm_calls": 121,
+    "api_calls": 105,
+    "input_tokens": 151929,
+    "output_tokens": 10947,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 121,
+        "api_calls": 105,
+        "input_tokens": 151929,
+        "output_tokens": 10947
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 3
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.exceptions.resumes-after-raise"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

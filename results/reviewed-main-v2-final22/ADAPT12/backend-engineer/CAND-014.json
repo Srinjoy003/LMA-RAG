@@ -1,0 +1,1250 @@
+{
+  "interview_id": "ADAPT12-backend-engineer-CAND-014-0",
+  "system": "ADAPT12",
+  "config": {
+    "system": "ADAPT12",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "fixed_count",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "off",
+    "generic_follow_up": false,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "reply",
+    "diagnostic_evidence": false,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-014",
+  "started_at": "2026-11-14T05:54:04Z",
+  "finished_at": "2026-11-14T05:54:12Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-exceptions",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The `try` block contains the code that might raise an exception, and the `except` blocks handle specific errors that occur. If an exception is raised part‑way through the `try`, the matching `except` runs and then execution continues with the next statement inside the original `try` block, right after the line that caused the exception. If two `except` clauses could both match, Python chooses the first one that appears in the source code. The `else` block runs only when no exception was raised at all, and the `finally` block always runs, even if the `try` block executes a `return`.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of try, except, else, and finally, including that finally runs on return and the first matching except clause runs. However, they show the misconception that execution resumes inside the try block after an exception is caught.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of try, except, else, and finally, including that finally runs on return and the first matching except clause runs. However, they show the misconception that execution resumes inside the try block after an exception is caught.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.exceptions.resumes-after-raise",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-subqueries-cte",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-joins",
+      "prompt": "A teammate wants the number of employees in each department. What does this query return, and why?\n\nWITH staff_per_dept AS (\n  SELECT d.name, e.id\n  FROM departments d\n  JOIN employees e ON e.dept_id = d.id\n)\nSELECT d.name, COUNT(d.name) AS n_rows, COUNT(e.dept_id) AS n_staff\nFROM departments d, employees e\nGROUP BY d.name\nORDER BY d.name;\n\nTable departments:\nid | name\n1 | Sales\n2 | IT\n3 | HR\n\nTable employees:\nid | name | dept_id\n1 | Asha | 1\n2 | Ben | 1\n3 | Chen | 2\n4 | Dana | NULL",
+      "answer": "The query will list each department name together with two counts: the first count shows how many rows exist for that department in the result set, and the second count shows how many employees are assigned to that department. Because the FROM clause lists both tables without a join condition, the database creates a Cartesian product, so each department is paired with every employee. This means the first count will be larger than the actual number of employees, while the second count will be the same as the first one because it counts the same rows. The ORDER BY simply sorts the output alphabetically by department name.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the Cartesian product from the missing join condition and mentions the unused CTE implicitly or understands the tables used, but gets the second count wrong (stating it will be the same as the first instead of 3 due to the NULL value).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the Cartesian product from the missing join condition and mentions the unused CTE implicitly or understands the tables used, but gets the second count wrong (stating it will be the same as the first instead of 3 due to the NULL value).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-hash-tables, ds-trees-bst",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "A hash table lets us insert new scores quickly, but it doesn’t keep any ordering, so producing a full leaderboard would require sorting the whole collection each time, which is O(n log n). A sorted array is already in order, making listing trivial, but inserting a new score means finding the right slot and shifting all later elements, which costs O(n) per update. A balanced binary search tree gives O(log n) insertions while maintaining the elements in sorted order, and an in‑order traversal can output the entire list in O(n) time. Because both inserts and full ordered reads are frequent, the balanced BST provides the best overall trade‑off. If we only needed the top‑k scores, a heap would be another option, but for the full list a BST is preferred.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly analyzed all three data structures, identified their time complexities for both insertions and ordered listings, and chose the balanced BST with proper reasoning.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly analyzed all three data structures, identified their time complexities for both insertions and ordered listings, and chose the balanced BST with proper reasoning.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-variables-mutability",
+        "py-collections"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; covers required topics not yet tested: py-collections, py-variables-mutability",
+      "prompt": "What does this code print, and why?\n\na = [1, 2, 3]\nb = a\nn = len(a)\nb.append(4)\ns = \"hi\"\ns.upper()\nprint(a, n, s)",
+      "answer": "The code will output:\n\n```\n[1, 2, 3, 4] 3 hi\n```\n\nHere’s why: `b = a` does not create a copy; it just gives another reference to the same list, so when `b.append(4)` runs, the list that `a` points to is also extended. The variable `n` was assigned the length of `a` before the append, so it stays at 3. The call `s.upper()` returns a new uppercase string, but the result isn’t stored, and strings are immutable, so `s` remains `\"hi\"`. Consequently, printing `a, n, s` shows the modified list, the original length, and the unchanged string.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly predicted the exact output and provided accurate explanations for all three key points: list reference mutability, integer assignment timing, and string immutability.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly predicted the exact output and provided accurate explanations for all three key points: list reference mutability, integer assignment timing, and string immutability.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs",
+        "ds-stacks-queues"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: ds-stacks-queues",
+      "prompt": "What does this code print? What would happen if the `if node in seen: continue` check were removed, and why might this explicit-stack version be preferred over a recursive DFS on a graph containing a path of a million nodes?\n\ngraph = {1: [2, 3], 2: [4], 3: [4], 4: [1]}\n\ndef dfs(start):\n    seen, stack, order = set(), [start], []\n    while stack:\n        node = stack.pop()\n        if node in seen:\n            continue\n        seen.add(node)\n        order.append(node)\n        for nb in graph[node]:\n            stack.append(nb)\n    return order\n\nprint(dfs(1))\n",
+      "answer": "The call prints `[1, 3, 4, 2]`. Because the list is used as a stack, the neighbor that is appended last (3) is popped first, so the traversal goes 1 → 3 → 4 before it back‑tracks and later visits 2. If we remove the `if node in seen: continue` test, the cycle 4 → 1 will keep re‑adding already‑visited nodes, causing the stack to never empty and the loop to run indefinitely. An explicit stack version is preferred for very deep graphs (e.g., a million‑node path) because it avoids Python’s recursion limit and the overhead of a million nested function calls, using a normal list that can grow as needed.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output and the DFS behavior, explained that removing the seen check leads to an infinite loop due to the cycle, and correctly noted that an explicit stack avoids Python's recursion limit for deep paths.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output and the DFS behavior, explained that removing the seen check leads to an infinite loop due to the cycle, and correctly noted that an explicit stack avoids Python's recursion limit for deep paths.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-aggregation",
+        "sql-schema-constraints",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.83); level 2 is nearest its estimate +0.00; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation (sql.aggregation.count-column-counts-nulls, sql.schema-constraints.normalisation-only-saves-space)",
+      "prompt": "Each product row stores its supplier's phone number. What does this query return, and what does the result tell you about this table design?\n\nSELECT supplier, supplier_phone,\n       COUNT(supplier) AS n_rows,\n       COUNT(supplier_phone) AS n_phone\nFROM products\nGROUP BY supplier, supplier_phone\nORDER BY supplier, supplier_phone NULLS LAST;\n\nTable products:\nname | supplier | supplier_phone\nPen | Acme | 555-0101\nInk | Acme | 555-0101\nPad | Acme | 555-0199\nCup | Bolt | NULL\nMug | Bolt | NULL",
+      "answer": "The query will list each distinct combination of supplier and phone number, showing how many rows belong to each combination and how many rows actually have a phone value for that combination. For Acme you’ll see two rows – one with the 555‑0101 number and another with 555‑0199 – each with a count of 2 and a count of 1 respectively, indicating that the same supplier can appear with different phone numbers. For Bolt you’ll get a single row with a NULL phone and both counts showing zero, which tells you that rows with missing phone numbers are completely ignored by the aggregation. This result suggests that storing the phone number directly in the products table is not ideal because the same supplier can have multiple different phone entries, leading to duplicate information.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate miscalculated the counts for Acme (stating count 2 for the first row which actually has 2 rows total, but then misinterpreting counts), miscalculated Bolt's count (stating n_phone is 0 which is correct, but n_rows is 0 instead of 2), and completely missed the update anomaly concept, merely citing duplicate info.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate miscalculated the counts for Acme (stating count 2 for the first row which actually has 2 rows total, but then misinterpreting counts), miscalculated Bolt's count (stating n_phone is 0 which is correct, but n_rows is 0 instead of 2), and completely missed the update anomaly concept, merely citing duplicate info.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; covers required topics not yet tested: ds-complexity",
+      "prompt": "This class simulates how a dynamic array such as a Python list grows: when it is full, it moves every item into a new block twice as large and counts the moved items. What does it print? What do the numbers tell you about the cost of a single append and of n appends?\n\nclass DynArray:\n    def __init__(self):\n        self.size, self.cap, self.copies = 0, 1, 0\n\n    def append(self, x):\n        if self.size == self.cap:\n            self.copies += self.size  # move every item to a bigger block\n            self.cap *= 2\n        self.size += 1\n\nfor n in [16, 17, 1000]:\n    arr = DynArray()\n    for i in range(n):\n        arr.append(i)\n    print(n, arr.cap, arr.copies)",
+      "answer": "When you run the snippet it prints something like:\n\n```\n16 32 24\n17 32 24\n1000 2048 1024\n```\n\nThe capacity seems to double each time the array fills up, so after 16 elements it already jumps to a capacity of 32. The copy count grows roughly as half the capacity each time a resize happens, which makes the total copying work look linear in the number of elements. Because the copies increase with each resize, the cost of a single append can be relatively large when a resize occurs, while most appends are cheap. So overall the cost of doing n appends ends up being proportional to n, but with a noticeable overhead from the resizing steps.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          0,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate's output values are incorrect and do not match the code behavior, but they correctly identify that appends are mostly cheap with occasional expensive resizes, and that n appends cost O(n) overall. However, because the output and specific copy counts are incorrect and the amortised O(1) concept is incomplete, it hits level 1.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          0,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate's output values are incorrect and do not match the code behavior, but they correctly identify that appends are mostly cheap with occasional expensive resizes, and that n appends cost O(n) overall. However, because the output and specific copy counts are incorrect and the amortised O(1) concept is incomplete, it hits level 1.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.2535,
+          "se": 0.6844,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-exceptions",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-exceptions (py.functions-scope.mutable-default-fresh)",
+      "prompt": "What does this code print, and why?\n\ndef to_int(v, bad=[]):\n    try:\n        n = int(v)\n        print(\"parsed\", n)\n        return n\n    except ValueError:\n        bad.append(v)\n        print(\"bad\", bad)\n        return 0\n    finally:\n        print(\"done\", v)\n\ntotal = to_int(\"4\") + to_int(\"x\") + to_int(\"y\")\nprint(total)",
+      "answer": "The first call to `to_int(\"4\")` parses successfully, so it prints “parsed 4” and then the `finally` block runs, printing “done 4”. When `to_int(\"x\")` raises a `ValueError`, the `except` block executes and prints “bad ['x']”, and after that the code goes back to the `try` block and continues, so it also prints “parsed 0” before the `finally` prints “done x”. The same thing happens for `to_int(\"y”)`: the `except` prints “bad ['x', 'y']”, then the `try` resumes and prints “parsed 0”, and finally “done y” is printed. The three calls return 4, 0, and 0, so the total printed at the end is `4`.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the default list is shared and that the final total is 4, but incorrectly believes that execution resumes in the try block after an exception is caught.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the default list is shared and that the final total is 4, but incorrectly believes that execution resumes in the try block after an exception is caught.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.2535,
+          "se": 0.6844,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "py.exceptions.resumes-after-raise",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-schema-constraints",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 1 is nearest its estimate -0.52; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-schema-constraints (sql.schema-constraints.fk-must-be-unique, sql.schema-constraints.pk-needs-distinct, sql.select-filter.distinct-per-column)",
+      "prompt": "orders.id is the primary key and orders.customer_id is a foreign key to customers.id. What does this query return, and why? Would SELECT DISTINCT id FROM orders return fewer rows than SELECT id FROM orders?\n\nSELECT DISTINCT customer_id, status\nFROM orders\nORDER BY customer_id, status;\n\nTable orders:\nid | customer_id | status\n101 | 1 | paid\n102 | 1 | paid\n103 | 2 | refunded\n104 | 1 | refunded\n105 | 3 | paid",
+      "answer": "The query returns four rows: (1, paid), (1, refunded), (2, refunded) and (3, paid). DISTINCT works on the whole (customer_id, status) combination, so only the duplicate pair (1, paid) from the first two orders is removed, while customer 1 still appears a second time because its status is different. A foreign‑key column can contain the same value many times, since a single customer may have multiple orders. Because id is the primary key, every row already has a unique id, so SELECT DISTINCT id would return exactly the same five rows as a plain SELECT id.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all four rows returned by the query, explained that DISTINCT applies to the combination of columns, and correctly noted that SELECT DISTINCT id would return the same five rows because the primary key is already unique.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all four rows returned by the query, explained that DISTINCT applies to the combination of columns, and correctly noted that SELECT DISTINCT id would return the same five rows because the primary key is already unique.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.2535,
+          "se": 0.6844,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-heaps",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.25; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-arrays-strings (ds.heaps.heap-is-sorted, ds.heaps.pop-min-constant)",
+      "prompt": "A hospital triage system must repeatedly add patients with a priority and remove the most urgent one. Compare an unsorted list, a list kept in sorted order, and a binary heap: what do insert and remove-most-urgent cost in each? Why is the heap usually chosen even though it is not kept sorted?",
+      "answer": "For a binary heap, inserting a new patient takes O(log n) time because the element may need to sift up the tree. Removing the most urgent patient also costs O(log n) since the heap must sift the replacement element down to restore the heap property. The heap is only partially ordered—each parent is more urgent than its children—so the most urgent element is always at the root. I’m not sure about the exact costs for an unsorted list or a sorted list.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the binary heap costs and its partial ordering property, but missed the time complexities for both the unsorted and sorted list structures.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained the binary heap costs and its partial ordering property, but missed the time complexities for both the unsorted and sorted list structures.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.2019,
+          "se": 0.614,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "py",
+      "level": 1,
+      "question_id": "PY-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-functions-scope",
+        "py-control-flow"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 1 is nearest its estimate -0.61; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-functions-scope (py.control-flow.no-short-circuit, py.control-flow.or-distributes, py.functions-scope.print-is-return)",
+      "prompt": "What does this code print, and why?\n\ndef area(w, h):\n    print(\"area\", w * h)\n\ndef is_big(n):\n    print(\"checking\", n)\n    return n > 10\n\na = area(2, 3)\nprint(a)\nif is_big(30) or is_big(1):\n    print(\"one big\")\nsize = \"M\"\nif size == \"S\" or \"XS\":\n    print(\"small\")",
+      "answer": "The code first calls area(2, 3), which prints “area 6” and returns None, so the subsequent print(a) outputs None. Then is_big(30) is evaluated, printing “checking 30” and returning True; because the left side of the or is true, the right side is_big(1) is never called, and “one big” is printed. Finally, the condition size == \"S\" or \"XS\" is interpreted as (size == \"S\") or True (since the non‑empty string “XS” is truthy), so the block runs and prints “small”.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that area returns None, explained short-circuit evaluation for the 'or' operator, and correctly recognized that the non-empty string 'XS' is truthy.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that area returns None, explained short-circuit evaluation for the 'or' operator, and correctly recognized that the non-empty string 'XS' is truthy.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.2019,
+          "se": 0.614,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L1-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance",
+        "sql-schema-constraints"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.65); level 2 is nearest its estimate -0.19; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-schema-constraints (sql.indexes-performance.composite-any-column)",
+      "prompt": "orders.customer_id is a foreign key to customers.id, and orders has an index on (customer_id, created_at). Does that index help joins to customers and queries like WHERE customer_id = 7? Could it be declared UNIQUE on customer_id alone? Would a query that filters only on created_at use it efficiently?",
+      "answer": "The composite index on (customer_id, created_at) is useful for the join to customers and for any query that filters by customer_id (e.g., WHERE customer_id = 7) because the index is ordered first by customer_id. Declaring the index as UNIQUE on customer_id alone would be incorrect here, since a customer can have many orders and the uniqueness constraint would prevent that. The second column, created_at, can only be used efficiently when the leading column is also specified; a query that filters solely on created_at won’t benefit much from this index and would typically require a separate index that starts with created_at.",
+      "diagnosis": null,
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the leading column helps joins and lookups, explained why a UNIQUE constraint would be incorrect because orders repeat per customer, and correctly noted that filtering only on the second column (created_at) cannot use the index efficiently.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the leading column helps joins and lookups, explained why a UNIQUE constraint would be incorrect because orders repeat per customer, and correctly noted that filtering only on the second column (created_at) cannot use the index efficiently.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.1889,
+          "se": 0.5947,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.2019,
+          "se": 0.614,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 12,
+  "stop_reason": "fixed_length",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 1,
+        "estimate": -0.3256,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.483581,
+        "level_probabilities": {
+          "0": 0.052999,
+          "1": 0.483581,
+          "2": 0.424654,
+          "3": 0.038767
+        },
+        "meets_minimum": null
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.1889,
+        "se": 0.5947,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.6029,
+        "level_probabilities": {
+          "0": 0.006358,
+          "1": 0.210102,
+          "2": 0.6029,
+          "3": 0.18064
+        },
+        "meets_minimum": null
+      },
+      "ds": {
+        "level": 3,
+        "estimate": 1.2019,
+        "se": 0.614,
+        "confident": false,
+        "minimum": 2,
+        "level_probability": 0.782434,
+        "level_probabilities": {
+          "0": 3.1e-05,
+          "1": 0.00733,
+          "2": 0.210205,
+          "3": 0.782434
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether py reaches level 2; cannot tell whether sql reaches level 2.",
+    "misconceptions": [],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.arrays-strings.front-insert-constant",
+      "ds.complexity.big-o-is-exact-time",
+      "ds.complexity.constants-change-class",
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.visited-unneeded",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.heaps.heap-is-sorted",
+      "ds.heaps.pop-min-constant",
+      "ds.stacks-queues.recursion-free-memory",
+      "ds.trees-bst.inorder-not-sorted",
+      "py.control-flow.no-short-circuit",
+      "py.control-flow.or-distributes",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.mutable-default-fresh",
+      "py.functions-scope.print-is-return",
+      "py.variables-mutability.assignment-copies",
+      "py.variables-mutability.string-method-mutates",
+      "py.variables-mutability.variable-holds-expression",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.indexes-performance.composite-any-column",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.schema-constraints.fk-must-be-unique",
+      "sql.schema-constraints.normalisation-only-saves-space",
+      "sql.schema-constraints.pk-needs-distinct",
+      "sql.select-filter.distinct-per-column",
+      "sql.subqueries-cte.cte-unused-still-applies"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-exceptions",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-trees-bst"
+      ],
+      "untested": [
+        "py-oop",
+        "py-concurrency",
+        "sql-transactions",
+        "ds-linked-lists"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether py reaches level 2; cannot tell whether sql reaches level 2. Estimated levels: py level 1 (needs 2), sql level 2 (needs 2), ds level 3 (needs 2)."
+  },
+  "usage": {
+    "llm_calls": 37,
+    "api_calls": 6,
+    "input_tokens": 38673,
+    "output_tokens": 2209,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 37,
+        "api_calls": 6,
+        "input_tokens": 38673,
+        "output_tokens": 2209
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 3
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.exceptions.resumes-after-raise"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

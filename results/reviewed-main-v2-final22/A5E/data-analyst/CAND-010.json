@@ -1,0 +1,2829 @@
+{
+  "interview_id": "A5E-data-analyst-CAND-010-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-010",
+  "started_at": "2026-11-14T05:42:18Z",
+  "finished_at": "2026-11-14T05:42:18Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The try block contains the code that might raise an exception, and if an exception occurs the rest of that block is skipped and Python jumps to the first except clause (checked in the order they appear) whose exception type matches; that handler runs and then execution continues after the whole try/except statement. Else is executed only when the try block finishes without raising any exception. Finally is guaranteed to run no matter what—whether the try completes normally, an exception is caught, a return or break occurs, or the exception propagates. If an exception is raised halfway through the try, control moves directly to the matching except and never returns to the remaining try code. If two except clauses could both match, the one that appears first is the one that is executed.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, the first-match order of except clauses, and confirmed that finally runs even on return without exhibiting any misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, the first-match order of except clauses, and confirmed that finally runs even on return without exhibiting any misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query will list each customer’s name together with the number of rows that were joined from the orders table and the total of the amount column for those rows. Because it’s a LEFT JOIN, customers that have no matching order rows will still be shown, but their count and sum will both be zero. For Asha you’ll see a count of two and a total of 330, which is just the sum of the two order amounts. Ben will appear with a count of one and a total of 40, since the order with a NULL customer_id still contributes to the aggregation. Chen will have a count of one and a total of NULL because one of his orders has a NULL amount.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.left-join-drops-unmatched",
+        "follow_up": "Can you check which customer_id order 13 has, and whether that ID appears in the customers table?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "Can you check which customer_id order 13 has, and whether that ID appears in the customers table?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Ben will appear with a count of one and a total of 40, since the order with a NULL customer_id still contributes to the aggregation.",
+            "evidence_reason": "The candidate explicitly believes that an order with a NULL customer_id will be joined to the customers table and contribute to Ben's aggregation in a LEFT JOIN, which contradicts how unmatched rows from the right table behave.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "What is the customer_id of the order with amount 40, and which customer row in the customers table would it join with?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Ben will appear with a count of one and a total of 40, since the order with a NULL customer_id still contributes to the aggregation",
+            "evidence_reason": "The candidate incorrectly claims that an order with a NULL customer_id is joined to Ben, demonstrating a fundamental misunderstanding of how LEFT JOIN matches rows and improperly retaining an unmatched order for a left-table row.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "Can you check which customers from the customers table match the order with customer_id NULL?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Ben will appear with a count of one and a total of 40, since the order with a NULL customer_id still contributes to the aggregation",
+            "evidence_reason": "The candidate explicitly believes that an order with a NULL customer_id joins onto Ben, which contradicts how LEFT JOIN works with unmatched or unassociated rows, and reflects confusion around the join condition and left-table retention.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Ben will appear with a count of one and a total of 40, since the order with a NULL customer_id still contributes to the aggregation.",
+        "evidence_reason": "The candidate explicitly believes that an order with a NULL customer_id will be joined to the customers table and contribute to Ben's aggregation in a LEFT JOIN, which contradicts how unmatched rows from the right table behave.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "Can you check which customer_id order 13 has, and whether that ID appears in the customers table?",
+          "answer": "Sure, let me take a look. Order 13 has a customer_id of NULL, so it isn’t really linked to any specific customer. Since there’s no matching ID in the customers table, that row just gets ignored by the join. That means the query never counts that order at all. So basically, order 13 doesn’t contribute to any of the aggregates for Asha, Ben, or Chen.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "How does the LEFT JOIN treat rows in the right table that do not match any row in the left table, and which table is on the left side here?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate corrected their mistake regarding order 13 during the follow-up, but still failed to give the correct result and explanation for Ben (claiming Ben has a count of one and a total of 40 due to misunderstanding how the LEFT JOIN filters before aggregation). Because Ben's count and total are incorrect, the score is 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly gives Ben a count of one and a total of 40 due to misunderstanding how the LEFT JOIN filters unmatched rows and how NULL customer_id is handled.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.5136,
+          "se": 0.881,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map is mainly used to keep the actual data values, while the doubly linked list is just a convenient way to store the keys in the order they were added. When a cache hit occurs for key k, we look up k in the map, get the value, and then we simply move the corresponding list node to the front by deleting it and appending a new node with the same key and value. Insertion (put) works by adding the new entry to the map and then pushing a node onto the tail of the list; if the list grows beyond the capacity we just drop the head element. Because both the map and the list operations are constant‑time lookups and appends, the overall get and put operations stay O(1) on average.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+        "follow_up": "If you delete and append a node in a doubly linked list, how do you ensure the list remains connected without moving the other nodes in memory?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "If you delete and append a node in a doubly linked list, how do you ensure the list remains connected without moving the other nodes in memory?",
+            "confidence_expressed": "high",
+            "supporting_quote": "move the corresponding list node to the front by deleting it and appending a new node with the same key and value",
+            "evidence_reason": "The candidate believes that moving a node to the front requires recreating or shifting structural nodes ('deleting it and appending a new node') rather than simply re-routing pointers on the existing node.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "If you delete and recreate a node to move it to the front of the list, how does that affect the references to its neighbors and why might we want to avoid creating new nodes during a cache hit?",
+            "confidence_expressed": "high",
+            "supporting_quote": "move the corresponding list node to the front by deleting it and appending a new node with the same key and value",
+            "evidence_reason": "The candidate explicitly states that moving a node involves deleting it and appending a new node, and later mentions operations like adding to the tail and dropping the head, revealing a misunderstanding of how doubly linked list nodes are re-routed in place versus shifted or recreated.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "If you delete the node and create a new one at the end of the list on every cache hit, how does that affect the time complexity or the doubly linked list pointers?",
+            "confidence_expressed": "high",
+            "supporting_quote": "move the corresponding list node to the front by deleting it and appending a new node with the same key and value",
+            "evidence_reason": "The candidate believes that moving a node requires deleting and recreating/shifting elements rather than just rewiring pointers in O(1).",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "move the corresponding list node to the front by deleting it and appending a new node with the same key and value",
+        "evidence_reason": "The candidate believes that moving a node to the front requires recreating or shifting structural nodes ('deleting it and appending a new node') rather than simply re-routing pointers on the existing node.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you delete and append a node in a doubly linked list, how do you ensure the list remains connected without moving the other nodes in memory?",
+          "answer": "When you delete a node you just mark its “next” and “prev” fields as null, then you attach the node’s data to a new placeholder object at the head of the list. The list stays connected because the head pointer always points to a dummy sentinel that never changes, so the other nodes don’t need to know that the old node disappeared. To append, you create a fresh node and set its “prev” to the current tail, then point the tail’s “next” to this new node; the old tail’s “next” field is overwritten after you store its address in a temporary variable. Since the list only ever grows or shrinks at the ends, you never have to move any of the interior nodes in memory, and the connections remain intact.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "How does removing or moving an existing node in the middle of a doubly linked list affect the nodes that come after it?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "How does removing or moving an existing node in the middle of a doubly linked list affect the nodes that come after it?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When you delete a node you just mark its “next” and “prev” fields as null, then you attach the node’s data to a new placeholder object at the head of the list.",
+                "evidence_reason": "The candidate incorrectly believes that deleting/moving a node involves clearing its links and creating a placeholder/new object elsewhere, rather than simply rewiring existing node pointers.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "Can you trace the exact pointer updates needed to move a node from the middle of a doubly linked list to the front, and explain where the node's memory goes?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When you delete a node you just mark its “next” and “prev” fields as null, then you attach the node’s data to a new placeholder object at the head of the list.",
+                "evidence_reason": "The candidate believes that deleting and moving nodes involves modifying node data or placeholder objects rather than rewiring the surrounding neighbor pointers, and shows confusion about standard linked list node manipulation.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "Can you trace how an interior node is unlinked and moved to the front using pointer updates without creating a new placeholder object?",
+                "confidence_expressed": "high",
+                "supporting_quote": "then you attach the node’s data to a new placeholder object at the head of the list. The list stays connected because the head pointer always points to a dummy sentinel that never changes, so the other nodes don’t need to know that the old node disappeared.",
+                "evidence_reason": "The candidate believes that moving or deleting nodes involves creating new placeholder objects or dummy sentinels rather than rewiring existing pointers between neighbouring nodes.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "When you delete a node you just mark its “next” and “prev” fields as null, then you attach the node’s data to a new placeholder object at the head of the list.",
+            "evidence_reason": "The candidate incorrectly believes that deleting/moving a node involves clearing its links and creating a placeholder/new object elsewhere, rather than simply rewiring existing node pointers.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "How does removing or moving an existing node in the middle of a doubly linked list affect the nodes that come after it?",
+          "answer": "If you take a node out of the middle of a doubly linked list, the rest of the list automatically slides forward to fill the gap, so the elements after the removed node all shift one position toward the head. In practice you only have to update the `prev` pointer of the next node, because its `next` pointer still points to the same place and the list stays linked. The node that used to be before the removed one doesn’t need any change since its `next` reference will now point to the following node after the removal. When you move the node to a new spot, you just insert it and the surrounding nodes keep their original connections, so the rest of the list isn’t affected at all. This means you don’t have to worry about the order of pointer updates when you splice a node out or re‑insert it.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+            "follow_up": "If you remove a node from the middle of a doubly linked list, what specifically happens to the memory addresses of the nodes that came after it?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "If you remove a node from the middle of a doubly linked list, what specifically happens to the memory addresses of the nodes that came after it?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you take a node out of the middle of a doubly linked list, the rest of the list automatically slides forward to fill the gap, so the elements after the removed node all shift one position toward the head.",
+                "evidence_reason": "The candidate explicitly states that removing a node causes the rest of the list to slide forward and shift positions, which is the misconception that linked lists behave like arrays regarding shifts.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "If a linked list automatically slides elements forward when a node is removed, what would be the time complexity of deleting a node from the middle of a list of n nodes, and how does that compare to an array?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you take a node out of the middle of a doubly linked list, the rest of the list automatically slides forward to fill the gap, so the elements after the removed node all shift one position toward the head.",
+                "evidence_reason": "The candidate explicitly states that removing a node from the middle of a doubly linked list causes the rest of the list to slide forward and elements to shift, which directly matches the misconception that linked lists require shifting elements like arrays.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.insert-shifts-nodes",
+                "follow_up": "If you remove a node from the middle of a doubly linked list, can you trace which exact pointers must be updated before and after that node, and whether any nodes in memory actually change their position?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you take a node out of the middle of a doubly linked list, the rest of the list automatically slides forward to fill the gap, so the elements after the removed node all shift one position toward the head.",
+                "evidence_reason": "The candidate explicitly asserts that removing a node causes the rest of the list to automatically slide forward and shift positions, matching the listed misconception that linked list insertion or deletion involves shifting elements like an array.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "If you take a node out of the middle of a doubly linked list, the rest of the list automatically slides forward to fill the gap, so the elements after the removed node all shift one position toward the head.",
+            "evidence_reason": "The candidate explicitly states that removing a node causes the rest of the list to slide forward and shift positions, which is the misconception that linked lists behave like arrays regarding shifts.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate shows serious misconceptions, believing that inserting into or deleting from a linked list causes shifting (similar to arrays), and explicitly stating that the order of pointer updates does not matter.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly states that the hash map holds the data while the list stores keys, reverses the roles of head and tail (dropping the head on capacity overflow instead of tail), and deletes and recreates nodes rather than rewiring pointers in place. This misses the core mechanics of an LRU cache and earns a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.5136,
+          "se": 0.881,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-null",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.88); level 1 is nearest its estimate -0.51; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-null (sql.null.equals-null-matches, sql.null.not-equal-includes-null)",
+      "prompt": "An orders table has a discount column that is NULL when no discount was recorded. Does WHERE discount > 10 OR discount <= 10 return every order? Does WHERE discount <> 0 return the orders whose discount is NULL? How would you write a condition that does return them?",
+      "answer": "No, those predicates don’t return every order because any comparison with a NULL value yields UNKNOWN, and the WHERE clause only keeps rows where the condition is TRUE. For a NULL discount, both discount > 10 and discount <= 10 evaluate to UNKNOWN, so the OR expression is UNKNOWN, and the row is filtered out. Likewise, discount <> 0 is also UNKNOWN when discount is NULL, so those rows are omitted as well. To include the NULL discounts you have to test for them explicitly, e.g. WHERE discount <> 0 OR discount IS NULL. Using = NULL or <> NULL won’t work because those comparisons also return UNKNOWN.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that comparisons with NULL evaluate to UNKNOWN and are therefore excluded by the WHERE clause. They also provide the correct condition using IS NULL to include NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that comparisons with NULL evaluate to UNKNOWN and are therefore excluded by the WHERE clause. They also provide the correct condition using IS NULL to include NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.0629,
+          "se": 0.7661,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: py.comprehensions-generators.generator-eager, py.comprehensions-generators.yield-is-return, py.functions-scope.closure-captures-value",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "It will first print “begin” when the generator is created, then “created”. The first call to next(gen) will give 3, and the following list(gen) calls will return the same values again, so you’ll see [3, 2, 1] three times. The scaled generator uses the value of step that was set before it was defined, so it multiplies each number by 1 and prints [0, 1, 2]. All together the output looks like:\n\n```\nbegin\ncreated\n3 [3, 2, 1] [3, 2, 1]\n[0, 1, 2]\n```",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.comprehensions-generators.generator-eager",
+        "follow_up": "If calling countdown(3) executes the body immediately, when does the print('begin') statement run, and what is stored inside the generator object before next() is called?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "If calling countdown(3) executes the body immediately, when does the print('begin') statement run, and what is stored inside the generator object before next() is called?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will first print “begin” when the generator is created",
+            "evidence_reason": "The candidate explicitly states that 'begin' is printed when the generator is created, which shows the belief that creating/calling a generator function runs its body eagerly rather than lazily upon the first next() call.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "What happens if you place a print statement inside the countdown function right before the while loop, and when do you expect that print to execute?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will first print “begin” when the generator is created, then “created”.",
+            "evidence_reason": "The candidate explicitly believes that calling the generator function runs its body immediately upon creation, printing 'begin' before 'created'.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "What happens to the execution of countdown(3) if you assign the function call to a variable without calling next() yet?",
+            "confidence_expressed": "high",
+            "supporting_quote": "It will first print “begin” when the generator is created, then “created”.",
+            "evidence_reason": "The candidate explicitly claims that 'begin' is printed when the generator is created, which shows the misconception that calling a generator function runs the body immediately.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "It will first print “begin” when the generator is created",
+        "evidence_reason": "The candidate explicitly states that 'begin' is printed when the generator is created, which shows the belief that creating/calling a generator function runs its body eagerly rather than lazily upon the first next() call.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If calling countdown(3) executes the body immediately, when does the print('begin') statement run, and what is stored inside the generator object before next() is called?",
+          "answer": "Sure, when you call countdown(3) the function actually runs right away, so the print('begin') executes at that moment and its output is stored inside the generator object. The generator then keeps a snapshot of the whole loop body, including the current value of n, so before you call next() it already has the numbers 3, 2, 1 saved internally. Those values are just waiting to be pulled out, but nothing else happens until you start iterating. The step variable is also captured when the generator expression is created, so the scaled generator already knows it should multiply by the current step value at that time.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "If a generator function executed all its code and computed all its values immediately when called, how would that differ from a normal function that returns a list?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "If a generator function executed all its code and computed all its values immediately when called, how would that differ from a normal function that returns a list?",
+                "confidence_expressed": "high",
+                "supporting_quote": "when you call countdown(3) the function actually runs right away, so the print('begin') executes at that moment and its output is stored inside the generator object",
+                "evidence_reason": "The candidate explicitly states that calling countdown(3) runs the function immediately and stores the output, which matches the misconception that generator functions evaluate eagerly rather than lazily.",
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "If a generator function ran completely right when it was called, what would happen if you wrote an infinite generator like `while True: yield 1`?",
+                "confidence_expressed": "high",
+                "supporting_quote": "when you call countdown(3) the function actually runs right away, so the print('begin') executes at that moment and its output is stored inside the generator object. The generator then keeps a snapshot of the whole loop body",
+                "evidence_reason": "The candidate explicitly states that calling the generator function runs the code immediately and stores/pre-computes the values inside the generator object, which directly matches the py.comprehensions-generators.generator-eager misconception.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "when you call countdown(3) the function actually runs right away, so the print('begin') executes at that moment and its output is stored inside the generator object",
+            "evidence_reason": "The candidate explicitly states that calling countdown(3) runs the function immediately and stores the output, which matches the misconception that generator functions evaluate eagerly rather than lazily.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a generator function executed all its code and computed all its values immediately when called, how would that differ from a normal function that returns a list?",
+          "answer": "If the generator function calculated everything right away, it would behave like a normal function that just returns a list of results, so you’d get all the values immediately without any lazy evaluation. In that case the `print(\"begin\")` would still run when you call the function, but the whole sequence would be stored as a concrete list inside the generator object. The `next()` call would then just pull the next element from that pre‑computed list rather than triggering any further computation. Also, the `scaled` generator would see the final value of `step` (10) at creation time, so it would multiply the numbers by 10 instead of 1.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "If a generator function computed all its values immediately when called, how would list(gen) behave if you called it twice on the same generator object?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "If a generator function computed all its values immediately when called, how would list(gen) behave if you called it twice on the same generator object?",
+                "confidence_expressed": "high",
+                "supporting_quote": "In that case the `print(\"begin\")` would still run when you call the function, but the whole sequence would be stored as a concrete list inside the generator object.",
+                "evidence_reason": "The candidate explicitly argues that if generators were eager, the generator object would store a pre-computed concrete list of all result values upon initial function call.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "If a generator function computed all values and stored them in a list during the initial call, what would happen if the generator contained an infinite loop or took input during iteration?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the whole sequence would be stored as a concrete list inside the generator object. The `next()` call would then just pull the next element from that pre‑computed list",
+                "evidence_reason": "The candidate explicitly states that generator objects store a pre-computed list of all sequence elements produced by executing the body right away, which demonstrates the listed belief py.comprehensions-generators.generator-eager.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.comprehensions-generators.generator-eager",
+                "follow_up": "If a generator function computed all values and stored them in a list right when called, what would happen if you created an infinite generator using a while True loop?",
+                "confidence_expressed": "high",
+                "supporting_quote": "In that case the `print(\"begin\")` would still run when you call the function, but the whole sequence would be stored as a concrete list inside the generator object.",
+                "evidence_reason": "The candidate explicitly affirms the listed belief that calling a generator function runs the body and computes/stores all values eagerly as a concrete list inside the generator object.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "In that case the `print(\"begin\")` would still run when you call the function, but the whole sequence would be stored as a concrete list inside the generator object.",
+            "evidence_reason": "The candidate explicitly argues that if generators were eager, the generator object would store a pre-computed concrete list of all result values upon initial function call.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that calling a generator function executes its body immediately and stores the values, shows misunderstandings about how yield works by thinking generator values can be iterated multiple times, and fails to grasp late variable lookup in generator expressions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that calling a generator runs its body immediately (printing 'begin' before 'created'), misunderstands that generators are consumed in-place rather than resetting for subsequent calls, and misses the late-binding behaviour of the generator expression using step=10.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.0629,
+          "se": 0.7661,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-linked-lists",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; lists a suspected misconception to confirm: ds.linked-lists.insert-shifts-nodes",
+      "prompt": "Compare an array (like a Python list) and a singly linked list for two tasks: reading the 1,000th element, and inserting a new element at the very front. Which structure is faster for each task, and why?",
+      "answer": "Accessing the 1,000th element is constant‑time in an array because the memory address can be calculated directly from the index, so it’s O(1). In a singly linked list you have to start at the head and follow the next pointers 999 times, which makes the operation O(n). Adding a new node at the front of a linked list is also O(1): you just create the node and point its next to the current head, then update the head reference. For an array, inserting at the front requires shifting every existing element one position to the right, which takes O(n) time. Thus, arrays are faster for random reads, while linked lists are faster for front insertions.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that arrays are O(1) for random access and linked lists are O(n), and that linked lists are O(1) for front insertion while arrays are O(n), providing the correct underlying reasons for both.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that arrays are O(1) for random access and linked lists are O(n), and that linked lists are O(1) for front insertion while arrays are O(n), providing the correct underlying reasons for both.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.0629,
+          "se": 0.7661,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-joins"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.77); level 2 is nearest its estimate -0.06; lists a suspected misconception to confirm: sql.joins.left-join-drops-unmatched",
+      "prompt": "Explain what the ON condition in a join does, and how INNER JOIN and LEFT JOIN between customers and orders differ for a customer who has no orders. If you then add WHERE o.status = 'paid' to the LEFT JOIN query, is that customer still in the result?",
+      "answer": "The ON clause is where you list the columns you want to bring back from both tables, like a SELECT for the join. With an INNER JOIN, you get every customer row repeated for each order they have, and if a customer has no orders you still see the customer once with empty values. A LEFT JOIN works the same way, but it also adds a duplicate row for customers without orders. Adding a WHERE o.status = 'paid' after a LEFT JOIN will still keep the customers that have no orders because the condition only checks rows that actually exist.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+        "follow_up": "What happens to the order columns for a customer with no orders when a LEFT JOIN is performed, and what values do they contain before the WHERE clause is applied?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+            "follow_up": "What happens to the order columns for a customer with no orders when a LEFT JOIN is performed, and what values do they contain before the WHERE clause is applied?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Adding a WHERE o.status = 'paid' after a LEFT JOIN will still keep the customers that have no orders",
+            "evidence_reason": "The candidate explicitly states that a WHERE condition after a LEFT JOIN will still keep the unmatched customers, matching the listed misconception that WHERE conditions on right-table columns keep the left rows.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+            "follow_up": "What happens to the order columns for a customer with no orders after a LEFT JOIN, and what is their value for o.status before the WHERE clause is applied?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Adding a WHERE o.status = 'paid' after a LEFT JOIN will still keep the customers that have no orders because the condition only checks rows that actually exist.",
+            "evidence_reason": "The candidate explicitly asserts that a WHERE condition after a LEFT JOIN will still keep unmatched customers, which directly matches the listed misconception sql.joins.where-filter-keeps-left-rows.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+            "follow_up": "What happens to the values in the order columns when a customer has no match in a LEFT JOIN?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Adding a WHERE o.status = 'paid' after a LEFT JOIN will still keep the customers that have no orders",
+            "evidence_reason": "The candidate explicitly believes that adding a WHERE clause filtering on a right-table column preserves the unmatched left-table rows, which matches sql.joins.where-filter-keeps-left-rows.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Adding a WHERE o.status = 'paid' after a LEFT JOIN will still keep the customers that have no orders",
+        "evidence_reason": "The candidate explicitly states that a WHERE condition after a LEFT JOIN will still keep the unmatched customers, matching the listed misconception that WHERE conditions on right-table columns keep the left rows.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the order columns for a customer with no orders when a LEFT JOIN is performed, and what values do they contain before the WHERE clause is applied?",
+          "answer": "The ON condition is basically a filter that decides which rows from the two tables get paired together, kind of like a pre‑SELECT that limits the data before it’s actually joined. When you do a LEFT JOIN, the rows from the left side are duplicated for each matching row on the right, and if there’s no match the database just repeats the left‑side row with whatever default values it uses for the right side. Those defaults are usually the same as the left‑side values, so you’ll see the customer’s own columns showing up in the order columns as well. Because the WHERE clause only runs after the join, those defaulted order columns are still there when the filter is applied.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+            "follow_up": "If a customer has no orders, what value does the database put in the order columns after a LEFT JOIN, and what happens when you compare that value to 'paid' in the WHERE clause?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+                "follow_up": "If a customer has no orders, what value does the database put in the order columns after a LEFT JOIN, and what happens when you compare that value to 'paid' in the WHERE clause?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because the WHERE clause only runs after the join, those defaulted order columns are still there when the filter is applied.",
+                "evidence_reason": "The candidate explicitly argues that a WHERE filter does not remove unmatched rows because those rows still exist after the join, demonstrating the listed misconception sql.joins.where-filter-keeps-left-rows.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+                "follow_up": "If a customer has no orders, what value does the database put in the order columns after a LEFT JOIN, and what happens when you compare that value to 'paid'?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because the WHERE clause only runs after the join, those defaulted order columns are still there when the filter is applied.",
+                "evidence_reason": "The candidate explicitly believes that the WHERE clause filtering on right-table columns preserves the unmatched left-table rows because the default/NULL values are still present when the filter is applied.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+                "follow_up": "If a customer has no orders, what value does the database put in the order columns after a LEFT JOIN, and what happens when you compare that value to 'paid'?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because the WHERE clause only runs after the join, those defaulted order columns are still there when the filter is applied.",
+                "evidence_reason": "The candidate explicitly believes that the WHERE clause will still keep the unmatched left rows because the defaulted order columns are present when the filter is evaluated, demonstrating the misconception that a WHERE condition on a right-table column keeps the unmatched left rows.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Because the WHERE clause only runs after the join, those defaulted order columns are still there when the filter is applied.",
+            "evidence_reason": "The candidate explicitly argues that a WHERE filter does not remove unmatched rows because those rows still exist after the join, demonstrating the listed misconception sql.joins.where-filter-keeps-left-rows.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a customer has no orders, what value does the database put in the order columns after a LEFT JOIN, and what happens when you compare that value to 'paid' in the WHERE clause?",
+          "answer": "When there’s no matching order the database just fills the order fields with empty strings or zeros instead of leaving them blank. Those placeholder values behave like any other literal, so when the WHERE clause checks o.status = 'paid' it’s simply comparing an empty string (or zero) to 'paid'. Because an empty string isn’t equal to 'paid', the row gets filtered out. In other words, the customer disappears from the result set once you add that condition. The join itself still returns the customer row, but the WHERE clause knocks it out.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+            "follow_up": null,
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "The join itself still returns the customer row, but the WHERE clause knocks it out.",
+                "evidence_reason": "The candidate incorrectly asserts that the LEFT JOIN keeps the unmatched customer row in the result set even after the WHERE clause is applied, explicitly describing how the join produces the row and the WHERE clause filters it out.",
+                "contradicting": [
+                  {
+                    "misconception_id": "sql.joins.left-join-drops-unmatched",
+                    "supporting_quote": "The join itself still returns the customer row",
+                    "quote_start": 459,
+                    "quote_end": 505,
+                    "reason": "The candidate correctly acknowledges that LEFT JOIN preserves the unmatched left row prior to the WHERE clause, contradicting the belief that LEFT JOIN drops unmatched rows like an inner join."
+                  }
+                ]
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.where-filter-keeps-left-rows",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "The join itself still returns the customer row, but the WHERE clause knocks it out.",
+                "evidence_reason": "The candidate incorrectly asserts that the LEFT JOIN successfully retains the unmatched customer row in the result set initially, but that it is subsequently removed only because the WHERE clause filters out rows containing empty string or zero placeholders, directly mapping to the belief that WHERE filters on right-table columns act after the left-table rows are safely preserved.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The join itself still returns the customer row, but the WHERE clause knocks it out.",
+            "evidence_reason": "The candidate incorrectly asserts that the LEFT JOIN keeps the unmatched customer row in the result set even after the WHERE clause is applied, explicitly describing how the join produces the row and the WHERE clause filters it out.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that a LEFT JOIN duplicates left rows or fills missing values with left-side data, placeholders, or zeros rather than NULL, and shows confusion about SQL NULL behaviour in WHERE clauses.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly defines the ON clause, misunderstands how INNER JOIN and LEFT JOIN handle customers without orders, and holds the misconception that a WHERE clause keeps unmatched rows in a LEFT JOIN.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.5036,
+          "se": 0.6709,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-012",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-comprehensions-generators"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; lists a suspected misconception to confirm: py.comprehensions-generators.generator-eager",
+      "prompt": "What is the difference between [x * x for x in data] and (x * x for x in data)? Talk about when the values are computed, memory use, and whether you can loop over the result twice.",
+      "answer": "The list comprehension `[x * x for x in data]` builds a full list right away, so all the squared values are stored in memory and you can index or loop over them as many times as you need. The generator expression `(x * x for x in data)` is lazy: it produces values only when they are requested, so it uses very little memory even for large inputs. However, a generator does compute the first two values immediately before it starts yielding, which means it isn’t completely deferred. Because a generator yields items one‑by‑one, once you have iterated through it once it becomes exhausted and a second loop will produce no results. In contrast, the list can be reused any number of times.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.comprehensions-generators.generator-eager",
+        "follow_up": "What happens to the values of data or the state of the generator expression before you call next() or start a for loop over it?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "What happens to the values of data or the state of the generator expression before you call next() or start a for loop over it?",
+            "confidence_expressed": "high",
+            "supporting_quote": "However, a generator does compute the first two values immediately before it starts yielding, which means it isn’t completely deferred.",
+            "evidence_reason": "The candidate explicitly claims that the generator computes values immediately upon creation before yielding, matching the belief that generators evaluate eagerly rather than lazily.",
+            "contradicting": [
+              {
+                "misconception_id": "py.comprehensions-generators.generator-reusable",
+                "supporting_quote": "once you have iterated through it once it becomes exhausted and a second loop will produce no results",
+                "quote_start": 529,
+                "quote_end": 630,
+                "reason": "The candidate correctly states that a generator is exhausted after one iteration and cannot be reused, directly contradicting the belief that generators are reusable."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "What happens to memory or execution time if data has a billion items, and you create the generator expression without iterating over it yet?",
+            "confidence_expressed": "high",
+            "supporting_quote": "does compute the first two values immediately before it starts yielding",
+            "evidence_reason": "The candidate claims that the generator expression computes values immediately upon creation before yielding, which directly matches the misconception that generator expressions are eager rather than fully lazy.",
+            "contradicting": [
+              {
+                "misconception_id": "py.comprehensions-generators.generator-reusable",
+                "supporting_quote": "once you have iterated through it once it becomes exhausted and a second loop will produce no results",
+                "quote_start": 529,
+                "quote_end": 630,
+                "reason": "The candidate correctly states that a generator becomes exhausted after one iteration and cannot be reused, explicitly rejecting the belief that it is reusable."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.generator-eager",
+            "follow_up": "What happens to the generator state before you call next() or start a loop on it?",
+            "confidence_expressed": "high",
+            "supporting_quote": "However, a generator does compute the first two values immediately before it starts yielding, which means it isn’t completely deferred.",
+            "evidence_reason": "The candidate explicitly claims that a generator computes the first two values immediately upon creation before yielding, showing the misconception that a generator runs part of its computation eagerly.",
+            "contradicting": [
+              {
+                "misconception_id": "py.comprehensions-generators.generator-reusable",
+                "supporting_quote": "once you have iterated through it once it becomes exhausted and a second loop will produce no results",
+                "quote_start": 529,
+                "quote_end": 630,
+                "reason": "The candidate correctly states that a generator is exhausted after one iteration and cannot be reused, directly contradicting the reusable misconception."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "However, a generator does compute the first two values immediately before it starts yielding, which means it isn’t completely deferred.",
+        "evidence_reason": "The candidate explicitly claims that the generator computes values immediately upon creation before yielding, matching the belief that generators evaluate eagerly rather than lazily.",
+        "contradicting": [
+          {
+            "misconception_id": "py.comprehensions-generators.generator-reusable",
+            "supporting_quote": "once you have iterated through it once it becomes exhausted and a second loop will produce no results",
+            "quote_start": 529,
+            "quote_end": 630,
+            "reason": "The candidate correctly states that a generator is exhausted after one iteration and cannot be reused, directly contradicting the belief that generators are reusable.",
+            "vote_share": 1.0
+          }
+        ]
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          2,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly explained eager versus lazy evaluation, memory usage, and single-use exhaustion. However, they included a factual misconception that a generator computes the first two values immediately before yielding, which is incorrect.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          2,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly explained eager versus lazy evaluation, memory usage, and single-use exhaustion. However, they included a factual misconception that a generator computes the first two values immediately before yielding, which is incorrect.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2041,
+          "se": 0.671,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.5036,
+          "se": 0.6709,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-013",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "slip",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-hash-tables (ds.arrays-strings.front-insert-constant, ds.hash-tables.keys-kept-sorted, ds.trees-bst.inorder-not-sorted)",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "I would go with a sorted array because inserting a new score is just a matter of putting the element in the right position, which is as fast as an append – it’s O(1) time. Deleting or updating a score works the same way: you just remove the element at its index, which also takes constant time. A hash table would give me O(1) look‑ups, but it doesn’t keep the scores in any order, so I would have to sort the whole table every time I need the leaderboard, which is expensive. A balanced binary search tree maintains order automatically, but each insert or delete costs O(log n), which is slower than the constant‑time operations I get with a sorted array. Therefore, the sorted array is the most efficient choice for both frequent inserts and frequent full‑list retrievals.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.arrays-strings.front-insert-constant",
+        "follow_up": "What happens to the indices of the other elements in an array when you insert an element at a specific position in the middle, and how does Python handle that in memory?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "What happens to the indices of the other elements in an array when you insert an element at a specific position in the middle, and how does Python handle that in memory?",
+            "confidence_expressed": "high",
+            "supporting_quote": "inserting a new score is just a matter of putting the element in the right position, which is as fast as an append – it’s O(1) time.",
+            "evidence_reason": "The candidate explicitly asserts that inserting an element into a sorted array at the correct position is O(1) time, directly matching the listed misconception that insertions in the middle/front of an array are constant time.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "What happens in memory to the other elements of a Python list or array when you insert an element into the middle or front of it?",
+            "confidence_expressed": "high",
+            "supporting_quote": "inserting a new score is just a matter of putting the element in the right position, which is as fast as an append – it’s O(1) time",
+            "evidence_reason": "The candidate explicitly states that inserting into a sorted array at the correct position takes O(1) time like an append, which matches the listed misconception about array insertions taking constant time.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "If you insert a new element into the middle or front of an array of size n, what happens to the existing elements stored after that position, and how does Python or the underlying memory handle them?",
+            "confidence_expressed": "high",
+            "supporting_quote": "inserting a new score is just a matter of putting the element in the right position, which is as fast as an append – it’s O(1) time.",
+            "evidence_reason": "The candidate explicitly claims that inserting into a sorted array at the correct position is O(1) and as fast as an append, matching the listed misconception that front/middle or sorted array insertion is constant time.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "inserting a new score is just a matter of putting the element in the right position, which is as fast as an append – it’s O(1) time.",
+        "evidence_reason": "The candidate explicitly asserts that inserting an element into a sorted array at the correct position is O(1) time, directly matching the listed misconception that insertions in the middle/front of an array are constant time.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the indices of the other elements in an array when you insert an element at a specific position in the middle, and how does Python handle that in memory?",
+          "answer": "When you insert a new score in the middle of the list, Python simply writes the new value into that slot and updates the index numbers of the surrounding elements. The existing elements don’t have to be moved in memory; the interpreter just records that their logical positions have changed. Because this index‑adjustment is just a bookkeeping step, the operation runs in constant time, O(1). So even with many inserts, the array stays fast and the leaderboard can be kept up‑to‑date without any costly shifting of data.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "If a Python list has 1,000,000 elements, what happens in memory when you insert a new item at index 0?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If a Python list has 1,000,000 elements, what happens in memory when you insert a new item at index 0?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because this index‑adjustment is just a bookkeeping step, the operation runs in constant time, O(1).",
+                "evidence_reason": "The candidate explicitly argues that inserting into the middle or front of an array is an O(1) bookkeeping step rather than moving memory, which matches the belief that front or middle array insertions are constant time.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If a list contains one million integers in sorted order, what happens in memory when you insert a new integer at index 0, and approximately how many elements need to be touched or relocated?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because this index‑adjustment is just a bookkeeping step, the operation runs in constant time, O(1).",
+                "evidence_reason": "The candidate explicitly claims that inserting in the middle of an array only involves logical index adjustment rather than moving elements, resulting in constant O(1) time.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "What happens in memory to the elements that come after the insertion point when you insert an item at index 0 in a Python list?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because this index‑adjustment is just a bookkeeping step, the operation runs in constant time, O(1).",
+                "evidence_reason": "The candidate explicitly believes that inserting into the middle or front of an array/list only updates logical index bookkeeping in O(1) time without needing to move physical elements in memory, which directly matches the misconception that non-append insertions are O(1).",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Because this index‑adjustment is just a bookkeeping step, the operation runs in constant time, O(1).",
+            "evidence_reason": "The candidate explicitly argues that inserting into the middle or front of an array is an O(1) bookkeeping step rather than moving memory, which matches the belief that front or middle array insertions are constant time.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "expected_score": 0,
+            "effective_level": 3,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a Python list has 1,000,000 elements, what happens in memory when you insert a new item at index 0?",
+          "answer": "When you insert a new item at index 0, Python just places the value into the first slot of the underlying array and shifts the logical index numbers of all the existing elements. The actual data for the other 1,000,000 elements stays where it is; only their index metadata is updated. Because this is just a bookkeeping change, the operation runs in constant time, O(1), regardless of the list size. So even with a million‑element list, the insertion at the front is fast and doesn’t involve moving any data in memory.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "If you have a Python list with 1,000,000 integers in memory, what happens to the physical contiguous block of memory allocated for that list when you execute list.insert(0, 99)?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If you have a Python list with 1,000,000 integers in memory, what happens to the physical contiguous block of memory allocated for that list when you execute list.insert(0, 99)?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because this is just a bookkeeping change, the operation runs in constant time, O(1), regardless of the list size.",
+                "evidence_reason": "The candidate explicitly believes that inserting at index 0 is an O(1) bookkeeping change where existing elements do not need to be physically moved in memory, which directly matches the misconception that front or middle array insertions are constant time.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If a Python list has one million integers in memory, what happens in C level inside Python when you run list.insert(0, 99)? Does C copy the million pointers in memory, or how does it make room at the front?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because this is just a bookkeeping change, the operation runs in constant time, O(1), regardless of the list size. So even with a million‑element list, the insertion at the front is fast and doesn’t involve moving any data in memory.",
+                "evidence_reason": "The candidate explicitly asserts that inserting an element at index 0 is an O(1) constant-time operation that only updates index metadata or bookkeeping without shifting data in memory, which directly matches the listed misconception.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "follow_up": "If you have a Python list with 1,000,000 integers in memory, and you insert a new item at index 0, approximately how many memory addresses or references in the underlying C array do you think need to be reassigned or shifted by the interpreter?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because this is just a bookkeeping change, the operation runs in constant time, O(1), regardless of the list size.",
+                "evidence_reason": "The candidate explicitly argues that inserting at index 0 is a constant-time O(1) operation achieved by updating index metadata rather than moving data, directly matching the listed misconception that front or middle list insertions are O(1).",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Because this is just a bookkeeping change, the operation runs in constant time, O(1), regardless of the list size.",
+            "evidence_reason": "The candidate explicitly believes that inserting at index 0 is an O(1) bookkeeping change where existing elements do not need to be physically moved in memory, which directly matches the misconception that front or middle array insertions are constant time.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "expected_score": 0,
+            "effective_level": 3,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that inserting into a sorted array is O(1) and that Python updates array elements via logical index metadata without shifting data in memory. This directly matches the listed misconception ds.arrays-strings.front-insert-constant.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that inserting into the middle of a sorted array is O(1) time, which violates the key requirement and matches a listed misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2041,
+          "se": 0.671,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.5036,
+          "se": 0.6709,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "ds.arrays-strings.front-insert-constant",
+        "expected_score": 0,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.67); level 2 is nearest its estimate +0.20; lists misconceptions not yet probed: py.concurrency.async-multithreaded, py.concurrency.async-preempts, py.concurrency.threads-cpu-parallel",
+      "prompt": "An asyncio service handles many slow API calls with 'await session.get(...)'. One handler also runs a pure-Python loop that takes 3 seconds of CPU time. Explain how asyncio runs many requests at once, what happens to the other requests during that loop, and whether moving the loop into a thread would let it run on a second core in parallel with the rest.",
+      "answer": "Asyncio runs all of its coroutines on a single thread, and the event loop only switches from one coroutine to another when the current one hits an `await` that actually suspends. Because the pure‑Python loop has no `await`, it occupies the event loop for the full three seconds, so every other request that is waiting on `session.get` is effectively frozen during that time. If you off‑load that CPU‑bound loop to a thread with something like `asyncio.to_thread`, the event loop can continue handling the network coroutines while the thread does its work. However, in normal CPython the Global Interpreter Lock means the thread cannot run Python bytecode in parallel with the main thread, so you don’t get true multi‑core speed‑up; you would need a process‑based pool for real parallelism.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that asyncio uses a single thread and switches only at await points, identifies that the CPU loop blocks other requests, and accurately describes the GIL's impact on threads and the need for processes.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that asyncio uses a single thread and switches only at await points, identifies that the CPU loop blocks other requests, and accurately describes the GIL's impact on threads and the need for processes.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.5356,
+          "se": 0.6088,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.5036,
+          "se": 0.6709,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.67); level 1 is nearest its estimate -0.50; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation, sql-null (sql.null.aggregates-treat-null-as-zero)",
+      "prompt": "A survey table has a score column from 1 to 5, which is NULL when the respondent skipped the question. What do AVG(score) and COUNT(score) * 100.0 / COUNT(*) each tell you? A colleague first 'cleans' the data by replacing NULL scores with COALESCE(score, 0). What happens to both numbers, and why is that misleading?",
+      "answer": "The AVG(score) function calculates the mean only over the rows where score has a non‑NULL value, so any respondents who skipped the question are excluded from the average. I’m not sure how the COUNT(score) * 100.0 / COUNT(*) part works or what it would indicate. I also don’t know exactly what effect replacing NULLs with 0 using COALESCE would have on those numbers.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does COUNT(column) behave differently from COUNT(*) when a column contains NULL values?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does COUNT(column) behave differently from COUNT(*) when a column contains NULL values?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained AVG(score) ignores NULLs, but failed to explain the COUNT expression and the effect of COALESCE.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained AVG(score) ignores NULLs, but failed to explain the COUNT expression and the effect of COALESCE.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.5356,
+          "se": 0.6088,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.5913,
+          "se": 0.6076,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-stacks-queues",
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.65); level 1 is nearest its estimate -0.61; lists a suspected misconception to confirm: ds.arrays-strings.front-insert-constant",
+      "prompt": "A script keeps pending jobs in a Python list: it adds jobs with `jobs.append(job)` and takes the next one with `jobs.pop(0)`. It works fine with 100 jobs, but draining a backlog of one million jobs with `while jobs: handle(jobs.pop(0))` is extremely slow. Why? What is the total cost of draining the list, and what would you use instead?",
+      "answer": "The slowdown happens because each time we call `pop(0)` Python has to move the whole list one slot to the left, which is an O(1) operation just like `append`. Draining a list of one million items therefore costs only linear time overall, O(n), since each pop only touches a constant amount of data. The total cost is essentially one million constant‑time pops, so it’s still cheap. If we wanted to be even safer we could switch to a `deque` from the `collections` module, which also gives O(1) pops from the left.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.arrays-strings.front-insert-constant",
+        "follow_up": "If a Python list has one million elements, what happens in memory when the first element is removed using pop(0)?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "If a Python list has one million elements, what happens in memory when the first element is removed using pop(0)?",
+            "confidence_expressed": "high",
+            "supporting_quote": "which is an O(1) operation just like `append`",
+            "evidence_reason": "The candidate explicitly states that pop(0) is an O(1) operation just like append, which directly matches the misconception that removing from the front of an array or Python list is constant time.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "What happens to the memory addresses of the other elements in a Python list when you remove the element at index 0?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Python has to move the whole list one slot to the left, which is an O(1) operation just like `append`.",
+            "evidence_reason": "The candidate explicitly describes shifting the entire list as an O(1) operation equivalent to an append, demonstrating the listed belief that front deletion/insertion in a Python list is constant time.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.arrays-strings.front-insert-constant",
+            "follow_up": "What happens to the memory layout of a Python list when you remove the first element, and how does the number of remaining elements affect the time it takes?",
+            "confidence_expressed": "high",
+            "supporting_quote": "which is an O(1) operation just like `append`",
+            "evidence_reason": "The candidate explicitly states that pop(0) is an O(1) operation just like append, demonstrating the misconception that removing from the front of a list is constant time.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "which is an O(1) operation just like `append`",
+        "evidence_reason": "The candidate explicitly states that pop(0) is an O(1) operation just like append, which directly matches the misconception that removing from the front of an array or Python list is constant time.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly states that pop(0) is an O(1) operation (showing a core misconception about dynamic arrays and front deletions) and gets the total cost wrong as O(n).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly states that pop(0) is an O(1) operation (showing a core misconception about dynamic arrays and front deletions) and gets the total cost wrong as O(n).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.5356,
+          "se": 0.6088,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.5913,
+          "se": 0.6076,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -1.0295,
+          "se": 0.6023,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "ds.arrays-strings.front-insert-constant",
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +0.54; lists misconceptions not yet probed: py.pandas.loc-end-exclusive, py.pandas.nan-treated-as-zero, py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ns1 = pd.Series([10, 20, 30], index=[\"a\", \"b\", \"c\"])\ns2 = pd.Series([1, 2, 3], index=[\"b\", \"c\", \"d\"])\ntotal = s1 + s2\nprint(total.tolist())\nprint(total.mean())\nprint(s1.loc[\"a\":\"b\"].sum())",
+      "answer": "The addition aligns the two Series by their index labels, so only the common labels 'b' and 'c' produce values (20 + 1 = 21 and 30 + 2 = 32); the non‑matching labels 'a' and 'd' become NaN, giving `[nan, 21.0, 32.0, nan]`.  \nCalling `mean()` on that result ignores the NaNs, so the average is (21 + 32) / 2 = 26.5.  \nThe slice `s1.loc[\"a\":\"b\"]` is label‑based and inclusive of both endpoints, selecting the values for ‘a’ (10) and ‘b’ (20).  \nSumming those two values yields 30, which is printed as the third line.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified label-based alignment producing NaNs, NaN-skipping behavior in the mean, and inclusive label-based slicing with .loc.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified label-based alignment producing NaNs, NaN-skipping behavior in the mean, and inclusive label-based slicing with .loc.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.924,
+          "se": 0.5701,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": -0.5913,
+          "se": 0.6076,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -1.0295,
+          "se": 0.6023,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-aggregation",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.61); level 1 is nearest its estimate -0.59; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation (sql.aggregation.aggregate-in-where)",
+      "prompt": "To list the products priced above the average price, a colleague writes SELECT name FROM products WHERE price > AVG(price). Why does the database reject this, and how would you write the query instead?",
+      "answer": "The error happens because AVG() is a function that returns a list of values, and the WHERE clause can only compare a single column to a single value. In this case the database expects a scalar, not a set, so it throws a syntax error. To fix it, you should replace AVG(price) with a constant that you calculate manually, like 10.00, and then write SELECT name FROM products WHERE price > 10.00. This way the comparison is between two simple numbers and the query runs successfully.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims AVG returns a list of values and suggests hardcoding a constant instead of using a subquery, showing a fundamental misunderstanding.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims AVG returns a list of values and suggests hardcoding a constant instead of using a subquery, showing a fundamental misunderstanding.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.924,
+          "se": 0.5701,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": -0.9667,
+          "se": 0.562,
+          "level": 1,
+          "n": 5
+        },
+        "ds": {
+          "estimate": -1.0295,
+          "se": 0.6023,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 15,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-013",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-stacks-queues"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.60); level 1 is nearest its estimate -1.03; lists misconceptions not yet probed: ds.stacks-queues.lifo-fifo-swapped, ds.stacks-queues.pop-does-not-remove",
+      "prompt": "A web browser's Back button is usually built on a stack of previously visited pages. You open pages A, B, C and D in that order, so D is on screen and A, B, C are on the back stack. You press Back twice, then open a new page E. Which page does each Back press show, what is on the back stack now, and why is a stack (rather than a queue) the right structure?",
+      "answer": "The first Back press takes you to page C, removing it from the back stack, and the second Back press takes you to page B, also popping it off. After those two backs the screen shows B and the back stack contains only page A. When you then navigate to a new page E, the current page B is pushed onto the stack, so the back stack now holds A (bottom) and B (top). The next Back from E would therefore return to B. A stack is appropriate because the browser must revisit pages in reverse‑chronological order (last‑in, first‑out); a queue would return the oldest page first, which is not the desired behavior.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the pages shown for both Back presses, stated that items are removed on pop, determined the exact final stack contents (A and B with B on top), and correctly explained the LIFO requirement.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the pages shown for both Back presses, stated that items are removed on pop, determined the exact final stack contents (A and B with B on top), and correctly explained the LIFO requirement.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.924,
+          "se": 0.5701,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": -0.9667,
+          "se": 0.562,
+          "level": 1,
+          "n": 5
+        },
+        "ds": {
+          "estimate": -0.7215,
+          "se": 0.5451,
+          "level": 1,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-013",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 24,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 0.924,
+        "se": 0.5701,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.63311,
+        "level_probabilities": {
+          "0": 5.3e-05,
+          "1": 0.016014,
+          "2": 0.350823,
+          "3": 0.63311
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 1,
+        "estimate": -0.9667,
+        "se": 0.562,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.605958,
+        "level_probabilities": {
+          "0": 0.287254,
+          "1": 0.605958,
+          "2": 0.105475,
+          "3": 0.001313
+        },
+        "meets_minimum": false
+      },
+      "ds": {
+        "level": 1,
+        "estimate": -0.7215,
+        "se": 0.5451,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.64273,
+        "level_probabilities": {
+          "0": 0.152953,
+          "1": 0.64273,
+          "2": 0.200069,
+          "3": 0.004247
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "not_fit",
+    "decision_reason": "sql is below the job minimum (level 2; estimated level 1).",
+    "misconceptions": [
+      {
+        "id": "sql.joins.left-join-drops-unmatched",
+        "confirmed": false,
+        "evidence_turns": [
+          2
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 0,
+            "reply_text": "The query will list each customer’s name together with the number of rows that were joined from the orders table and the total of the amount column for those rows. Because it’s a LEFT JOIN, customers that have no matching order rows will still be shown, but their count and sum will both be zero. For Asha you’ll see a count of two and a total of 330, which is just the sum of the two order amounts. Ben will appear with a count of one and a total of 40, since the order with a NULL customer_id still contributes to the aggregation. Chen will have a count of one and a total of NULL because one of his orders has a NULL amount.",
+            "vote_share": 1.0,
+            "supporting_quote": "Ben will appear with a count of one and a total of 40, since the order with a NULL customer_id still contributes to the aggregation.",
+            "quote_start": 400,
+            "quote_end": 532,
+            "reason": "The candidate explicitly believes that an order with a NULL customer_id will be joined to the customers table and contribute to Ben's aggregation in a LEFT JOIN, which contradicts how unmatched rows from the right table behave."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.linked-lists.insert-shifts-nodes",
+        "confirmed": false,
+        "evidence_turns": [
+          3
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "The hash map is mainly used to keep the actual data values, while the doubly linked list is just a convenient way to store the keys in the order they were added. When a cache hit occurs for key k, we look up k in the map, get the value, and then we simply move the corresponding list node to the front by deleting it and appending a new node with the same key and value. Insertion (put) works by adding the new entry to the map and then pushing a node onto the tail of the list; if the list grows beyond the capacity we just drop the head element. Because both the map and the list operations are constant‑time lookups and appends, the overall get and put operations stay O(1) on average.",
+            "vote_share": 1.0,
+            "supporting_quote": "move the corresponding list node to the front by deleting it and appending a new node with the same key and value",
+            "quote_start": 256,
+            "quote_end": 369,
+            "reason": "The candidate believes that moving a node to the front requires recreating or shifting structural nodes ('deleting it and appending a new node') rather than simply re-routing pointers on the existing node."
+          },
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 1,
+            "reply_text": "When you delete a node you just mark its “next” and “prev” fields as null, then you attach the node’s data to a new placeholder object at the head of the list. The list stays connected because the head pointer always points to a dummy sentinel that never changes, so the other nodes don’t need to know that the old node disappeared. To append, you create a fresh node and set its “prev” to the current tail, then point the tail’s “next” to this new node; the old tail’s “next” field is overwritten after you store its address in a temporary variable. Since the list only ever grows or shrinks at the ends, you never have to move any of the interior nodes in memory, and the connections remain intact.",
+            "vote_share": 1.0,
+            "supporting_quote": "When you delete a node you just mark its “next” and “prev” fields as null, then you attach the node’s data to a new placeholder object at the head of the list.",
+            "quote_start": 0,
+            "quote_end": 159,
+            "reason": "The candidate incorrectly believes that deleting/moving a node involves clearing its links and creating a placeholder/new object elsewhere, rather than simply rewiring existing node pointers."
+          },
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 2,
+            "reply_text": "If you take a node out of the middle of a doubly linked list, the rest of the list automatically slides forward to fill the gap, so the elements after the removed node all shift one position toward the head. In practice you only have to update the `prev` pointer of the next node, because its `next` pointer still points to the same place and the list stays linked. The node that used to be before the removed one doesn’t need any change since its `next` reference will now point to the following node after the removal. When you move the node to a new spot, you just insert it and the surrounding nodes keep their original connections, so the rest of the list isn’t affected at all. This means you don’t have to worry about the order of pointer updates when you splice a node out or re‑insert it.",
+            "vote_share": 1.0,
+            "supporting_quote": "If you take a node out of the middle of a doubly linked list, the rest of the list automatically slides forward to fill the gap, so the elements after the removed node all shift one position toward the head.",
+            "quote_start": 0,
+            "quote_end": 207,
+            "reason": "The candidate explicitly states that removing a node causes the rest of the list to slide forward and shift positions, which is the misconception that linked lists behave like arrays regarding shifts."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.comprehensions-generators.generator-eager",
+        "confirmed": true,
+        "evidence_turns": [
+          5,
+          8
+        ],
+        "vote_share": 0.917,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-009",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "It will first print “begin” when the generator is created, then “created”. The first call to next(gen) will give 3, and the following list(gen) calls will return the same values again, so you’ll see [3, 2, 1] three times. The scaled generator uses the value of step that was set before it was defined, so it multiplies each number by 1 and prints [0, 1, 2]. All together the output looks like:\n\n```\nbegin\ncreated\n3 [3, 2, 1] [3, 2, 1]\n[0, 1, 2]\n```",
+            "vote_share": 1.0,
+            "supporting_quote": "It will first print “begin” when the generator is created",
+            "quote_start": 0,
+            "quote_end": 57,
+            "reason": "The candidate explicitly states that 'begin' is printed when the generator is created, which shows the belief that creating/calling a generator function runs its body eagerly rather than lazily upon the first next() call."
+          },
+          {
+            "question_id": "PY-L3-009",
+            "turn": 5,
+            "reply_index": 1,
+            "reply_text": "Sure, when you call countdown(3) the function actually runs right away, so the print('begin') executes at that moment and its output is stored inside the generator object. The generator then keeps a snapshot of the whole loop body, including the current value of n, so before you call next() it already has the numbers 3, 2, 1 saved internally. Those values are just waiting to be pulled out, but nothing else happens until you start iterating. The step variable is also captured when the generator expression is created, so the scaled generator already knows it should multiply by the current step value at that time.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "when you call countdown(3) the function actually runs right away, so the print('begin') executes at that moment and its output is stored inside the generator object",
+            "quote_start": 6,
+            "quote_end": 170,
+            "reason": "The candidate explicitly states that calling countdown(3) runs the function immediately and stores the output, which matches the misconception that generator functions evaluate eagerly rather than lazily."
+          },
+          {
+            "question_id": "PY-L3-009",
+            "turn": 5,
+            "reply_index": 2,
+            "reply_text": "If the generator function calculated everything right away, it would behave like a normal function that just returns a list of results, so you’d get all the values immediately without any lazy evaluation. In that case the `print(\"begin\")` would still run when you call the function, but the whole sequence would be stored as a concrete list inside the generator object. The `next()` call would then just pull the next element from that pre‑computed list rather than triggering any further computation. Also, the `scaled` generator would see the final value of `step` (10) at creation time, so it would multiply the numbers by 10 instead of 1.",
+            "vote_share": 1.0,
+            "supporting_quote": "In that case the `print(\"begin\")` would still run when you call the function, but the whole sequence would be stored as a concrete list inside the generator object.",
+            "quote_start": 205,
+            "quote_end": 369,
+            "reason": "The candidate explicitly argues that if generators were eager, the generator object would store a pre-computed concrete list of all result values upon initial function call."
+          },
+          {
+            "question_id": "PY-L2-013",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "The list comprehension `[x * x for x in data]` builds a full list right away, so all the squared values are stored in memory and you can index or loop over them as many times as you need. The generator expression `(x * x for x in data)` is lazy: it produces values only when they are requested, so it uses very little memory even for large inputs. However, a generator does compute the first two values immediately before it starts yielding, which means it isn’t completely deferred. Because a generator yields items one‑by‑one, once you have iterated through it once it becomes exhausted and a second loop will produce no results. In contrast, the list can be reused any number of times.",
+            "vote_share": 1.0,
+            "supporting_quote": "However, a generator does compute the first two values immediately before it starts yielding, which means it isn’t completely deferred.",
+            "quote_start": 348,
+            "quote_end": 483,
+            "reason": "The candidate explicitly claims that the generator computes values immediately upon creation before yielding, matching the belief that generators evaluate eagerly rather than lazily."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "sql.joins.where-filter-keeps-left-rows",
+        "confirmed": false,
+        "evidence_turns": [
+          7
+        ],
+        "vote_share": 0.889,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L2-012",
+            "turn": 7,
+            "reply_index": 0,
+            "reply_text": "The ON clause is where you list the columns you want to bring back from both tables, like a SELECT for the join. With an INNER JOIN, you get every customer row repeated for each order they have, and if a customer has no orders you still see the customer once with empty values. A LEFT JOIN works the same way, but it also adds a duplicate row for customers without orders. Adding a WHERE o.status = 'paid' after a LEFT JOIN will still keep the customers that have no orders because the condition only checks rows that actually exist.",
+            "vote_share": 1.0,
+            "supporting_quote": "Adding a WHERE o.status = 'paid' after a LEFT JOIN will still keep the customers that have no orders",
+            "quote_start": 373,
+            "quote_end": 473,
+            "reason": "The candidate explicitly states that a WHERE condition after a LEFT JOIN will still keep the unmatched customers, matching the listed misconception that WHERE conditions on right-table columns keep the left rows."
+          },
+          {
+            "question_id": "SQL-L2-012",
+            "turn": 7,
+            "reply_index": 1,
+            "reply_text": "The ON condition is basically a filter that decides which rows from the two tables get paired together, kind of like a pre‑SELECT that limits the data before it’s actually joined. When you do a LEFT JOIN, the rows from the left side are duplicated for each matching row on the right, and if there’s no match the database just repeats the left‑side row with whatever default values it uses for the right side. Those defaults are usually the same as the left‑side values, so you’ll see the customer’s own columns showing up in the order columns as well. Because the WHERE clause only runs after the join, those defaulted order columns are still there when the filter is applied.",
+            "vote_share": 1.0,
+            "supporting_quote": "Because the WHERE clause only runs after the join, those defaulted order columns are still there when the filter is applied.",
+            "quote_start": 552,
+            "quote_end": 676,
+            "reason": "The candidate explicitly argues that a WHERE filter does not remove unmatched rows because those rows still exist after the join, demonstrating the listed misconception sql.joins.where-filter-keeps-left-rows."
+          },
+          {
+            "question_id": "SQL-L2-012",
+            "turn": 7,
+            "reply_index": 2,
+            "reply_text": "When there’s no matching order the database just fills the order fields with empty strings or zeros instead of leaving them blank. Those placeholder values behave like any other literal, so when the WHERE clause checks o.status = 'paid' it’s simply comparing an empty string (or zero) to 'paid'. Because an empty string isn’t equal to 'paid', the row gets filtered out. In other words, the customer disappears from the result set once you add that condition. The join itself still returns the customer row, but the WHERE clause knocks it out.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "The join itself still returns the customer row, but the WHERE clause knocks it out.",
+            "quote_start": 459,
+            "quote_end": 542,
+            "reason": "The candidate incorrectly asserts that the LEFT JOIN keeps the unmatched customer row in the result set even after the WHERE clause is applied, explicitly describing how the join produces the row and the WHERE clause filters it out."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.arrays-strings.front-insert-constant",
+        "confirmed": true,
+        "evidence_turns": [
+          9,
+          12
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-001",
+            "turn": 9,
+            "reply_index": 0,
+            "reply_text": "I would go with a sorted array because inserting a new score is just a matter of putting the element in the right position, which is as fast as an append – it’s O(1) time. Deleting or updating a score works the same way: you just remove the element at its index, which also takes constant time. A hash table would give me O(1) look‑ups, but it doesn’t keep the scores in any order, so I would have to sort the whole table every time I need the leaderboard, which is expensive. A balanced binary search tree maintains order automatically, but each insert or delete costs O(log n), which is slower than the constant‑time operations I get with a sorted array. Therefore, the sorted array is the most efficient choice for both frequent inserts and frequent full‑list retrievals.",
+            "vote_share": 1.0,
+            "supporting_quote": "inserting a new score is just a matter of putting the element in the right position, which is as fast as an append – it’s O(1) time.",
+            "quote_start": 39,
+            "quote_end": 171,
+            "reason": "The candidate explicitly asserts that inserting an element into a sorted array at the correct position is O(1) time, directly matching the listed misconception that insertions in the middle/front of an array are constant time."
+          },
+          {
+            "question_id": "DS-L2-001",
+            "turn": 9,
+            "reply_index": 1,
+            "reply_text": "When you insert a new score in the middle of the list, Python simply writes the new value into that slot and updates the index numbers of the surrounding elements. The existing elements don’t have to be moved in memory; the interpreter just records that their logical positions have changed. Because this index‑adjustment is just a bookkeeping step, the operation runs in constant time, O(1). So even with many inserts, the array stays fast and the leaderboard can be kept up‑to‑date without any costly shifting of data.",
+            "vote_share": 1.0,
+            "supporting_quote": "Because this index‑adjustment is just a bookkeeping step, the operation runs in constant time, O(1).",
+            "quote_start": 292,
+            "quote_end": 392,
+            "reason": "The candidate explicitly argues that inserting into the middle or front of an array is an O(1) bookkeeping step rather than moving memory, which matches the belief that front or middle array insertions are constant time."
+          },
+          {
+            "question_id": "DS-L2-001",
+            "turn": 9,
+            "reply_index": 2,
+            "reply_text": "When you insert a new item at index 0, Python just places the value into the first slot of the underlying array and shifts the logical index numbers of all the existing elements. The actual data for the other 1,000,000 elements stays where it is; only their index metadata is updated. Because this is just a bookkeeping change, the operation runs in constant time, O(1), regardless of the list size. So even with a million‑element list, the insertion at the front is fast and doesn’t involve moving any data in memory.",
+            "vote_share": 1.0,
+            "supporting_quote": "Because this is just a bookkeeping change, the operation runs in constant time, O(1), regardless of the list size.",
+            "quote_start": 285,
+            "quote_end": 399,
+            "reason": "The candidate explicitly believes that inserting at index 0 is an O(1) bookkeeping change where existing elements do not need to be physically moved in memory, which directly matches the misconception that front or middle array insertions are constant time."
+          },
+          {
+            "question_id": "DS-L1-004",
+            "turn": 12,
+            "reply_index": 0,
+            "reply_text": "The slowdown happens because each time we call `pop(0)` Python has to move the whole list one slot to the left, which is an O(1) operation just like `append`. Draining a list of one million items therefore costs only linear time overall, O(n), since each pop only touches a constant amount of data. The total cost is essentially one million constant‑time pops, so it’s still cheap. If we wanted to be even safer we could switch to a `deque` from the `collections` module, which also gives O(1) pops from the left.",
+            "vote_share": 1.0,
+            "supporting_quote": "which is an O(1) operation just like `append`",
+            "quote_start": 112,
+            "quote_end": 157,
+            "reason": "The candidate explicitly states that pop(0) is an O(1) operation just like append, which directly matches the misconception that removing from the front of an array or Python list is constant time."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.index-needs-scan",
+      "ds.complexity.count-loops-for-big-o",
+      "ds.complexity.short-code-is-fast",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.index-constant-time",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.stacks-queues.lifo-fifo-swapped",
+      "ds.stacks-queues.pop-does-not-remove",
+      "ds.trees-bst.inorder-not-sorted",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.generator-reusable",
+      "py.comprehensions-generators.yield-is-return",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.threads-cpu-parallel",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.closure-captures-value",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.aggregate-in-where",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.joins.where-filter-keeps-left-rows",
+      "sql.null.aggregates-treat-null-as-zero",
+      "sql.null.equals-null-matches",
+      "sql.null.not-equal-includes-null"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "untested": [
+        "py-collections",
+        "sql-subqueries-cte",
+        "sql-window-functions"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: not fit. sql is below the job minimum (level 2; estimated level 1). Estimated levels: py level 3 (needs 2), sql level 1 (needs 2), ds level 1 (needs 1). Suspected (insufficient corroboration) misconception: Believes LEFT JOIN drops left-table rows that have no match, like INNER JOIN. Suspected (insufficient corroboration) misconception: Believes inserting a node into a linked list requires shifting all later elements along (as in an array), so insertion after a known node is O(n), or that later nodes reattach automatically. Confirmed misconception: Believes calling a generator function (or creating a generator expression) runs the body and computes all the values immediately, rather than lazily, one value per request. Suspected (insufficient corroboration) misconception: Believes a WHERE condition on a right-table column after a LEFT JOIN still keeps the unmatched left rows, not realising it removes the NULL-extended rows and makes the query behave like an inner join. Confirmed misconception: Believes inserting or deleting at the front or middle of an array/Python list (insert(0, x), pop(0), inserting into a sorted array) is O(1) like appending at the end, unaware that every later element must shift."
+  },
+  "usage": {
+    "llm_calls": 133,
+    "api_calls": 0,
+    "input_tokens": 162471,
+    "output_tokens": 13472,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 133,
+        "api_calls": 0,
+        "input_tokens": 162471,
+        "output_tokens": 13472
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 0,
+      "ds": 2
+    },
+    "fit": false,
+    "misconceptions": [
+      "ds.arrays-strings.front-insert-constant"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

@@ -1,0 +1,2012 @@
+{
+  "interview_id": "A2E-backend-engineer-CAND-002-0",
+  "system": "A2E",
+  "config": {
+    "system": "A2E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-002",
+  "started_at": "2026-11-14T05:33:59Z",
+  "finished_at": "2026-11-14T05:34:07Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-exceptions",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The try block contains the code that may raise an exception, and if an exception occurs the remaining statements in that block are skipped and Python immediately looks for an except clause that matches the exception type, checking them in the order they appear and executing the first one that fits. The else suite runs only when the try block finishes normally without any exception being raised. The finally suite is executed in every case—whether the try block completes, an exception is handled, a return or break occurs, or the exception propagates—right before control leaves the whole try‑statement. If an exception is raised part‑way through the try, execution jumps to the matching except clause and then continues after the whole try/except/else/finally construct. If two except clauses could both match, the one that appears first in the source code is the one that runs.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate accurately explains the roles of all four blocks (try, except, else, finally), correctly notes that the first matching except clause runs from top to bottom, specifies that execution continues after the try statement, and correctly affirms that finally runs even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate accurately explains the roles of all four blocks (try, except, else, finally), correctly notes that the first matching except clause runs from top to bottom, specifies that execution continues after the try statement, and correctly affirms that finally runs even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-subqueries-cte",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-joins",
+      "prompt": "A teammate wants the number of employees in each department. What does this query return, and why?\n\nWITH staff_per_dept AS (\n  SELECT d.name, e.id\n  FROM departments d\n  JOIN employees e ON e.dept_id = d.id\n)\nSELECT d.name, COUNT(d.name) AS n_rows, COUNT(e.dept_id) AS n_staff\nFROM departments d, employees e\nGROUP BY d.name\nORDER BY d.name;\n\nTable departments:\nid | name\n1 | Sales\n2 | IT\n3 | HR\n\nTable employees:\nid | name | dept_id\n1 | Asha | 1\n2 | Ben | 1\n3 | Chen | 2\n4 | Dana | NULL",
+      "answer": "The query returns three rows – one for each department – and each row shows n_rows as 4 and n_staff as 3. The CTE staff_per_dept is never referenced, so it has no effect on the result. Because the FROM clause uses the old‑style comma syntax without a join condition, it creates a Cartesian product of the three departments with all four employees. COUNT(d.name) therefore counts the four rows that belong to each department group, while COUNT(e.dept_id) counts only the three non‑NULL dept_id values (Dana’s NULL is ignored). To get the correct staff count you would need to join departments to employees on e.dept_id = d.id or select from the CTE.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that every department returns 4 rows and 3 staff members, explains the unused CTE, correctly describes the Cartesian product from the missing join condition, and accurately explains both aggregate counts including NULL handling.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that every department returns 4 rows and 3 staff members, explains the unused CTE, correctly describes the Cartesian product from the missing join condition, and accurately explains both aggregate counts including NULL handling.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-hash-tables, ds-trees-bst",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "A hash table lets us add a new score in O(1) average time, but it stores entries by key only, so producing the whole leaderboard would require sorting the entire collection each time, which is O(n log n). A sorted array keeps the data in order, making a full list trivial (just iterate), but inserting a new score means finding the right slot and shifting all later elements, which costs O(n) per update. A balanced binary search tree gives O(log n) inserts and deletions while maintaining the elements in sorted order, and an in‑order traversal returns the complete list in O(n). Because inserts and full‑list retrieval are both frequent, the BST provides the best overall trade‑off. If we only needed the top‑k scores, a heap would be another option, but for the full leaderboard a balanced BST is the most appropriate choice.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly compares all three structures, detailing the trade-offs for inserts and ordered traversal, and chooses the balanced BST with accurate time complexities.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly compares all three structures, detailing the trade-offs for inserts and ordered traversal, and chooses the balanced BST with accurate time complexities.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: py-concurrency",
+      "prompt": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+      "answer": "In CPython the statement `counter += 1` is not an atomic operation; it actually performs a read of the current value, adds one, and then writes the new value back. Because the Global Interpreter Lock can be released between those steps, the two threads can interleave their read‑modify‑write cycles. When that happens, both threads may read the same original value, each compute the increment, and then one write overwrites the other, losing one increment. This race condition means the final count can end up lower than the expected 200,000. I'm not sure whether the same race would occur with two asyncio coroutines that never await inside the increment.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What happens in asyncio when a coroutine does not contain an await statement?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens in asyncio when a coroutine does not contain an await statement?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How do asyncio coroutines decide when to switch execution to another coroutine?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the asyncio event loop decide when to switch between different coroutines?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the non-atomic nature of counter += 1 and the thread race condition, but fails to answer the second part of the question regarding asyncio.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the non-atomic nature of counter += 1 and the thread race condition, but fails to answer the second part of the question regarding asyncio.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: sql-indexes-performance",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "Even though the index is on (customer_id, order_date), the optimizer will still use it for any query that touches either column, so a full table scan is unlikely. If the query filters only on order_date, the index can be used just as efficiently as when filtering on customer_id, so a scan won’t happen. Also, when the WHERE clause uses functions or casts on the indexed columns, the index is still applicable because the first column in the index covers the second one. Finally, even if the condition matches a large portion of rows, the index will still be preferred over a full table scan because it’s already ordered by both columns.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.indexes-performance.composite-any-column",
+        "follow_up": "If a phone book is sorted alphabetically by last name first and then by first name, how would you look up everyone whose first name is John without knowing their last name?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.composite-any-column",
+            "follow_up": "If a phone book is sorted alphabetically by last name first and then by first name, how would you look up everyone whose first name is John without knowing their last name?",
+            "confidence_expressed": "high",
+            "supporting_quote": "If the query filters only on order_date, the index can be used just as efficiently as when filtering on customer_id, so a scan won’t happen.",
+            "evidence_reason": "The candidate explicitly asserts that filtering on the second column (order_date) alone is just as efficient as filtering on the leading column, directly matching the misconception that a composite index on (a, b) speeds up a query filtering only on b.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.composite-any-column",
+            "follow_up": "What happens to the ordering of the index entries when you filter only on the second column, order_date?",
+            "confidence_expressed": "high",
+            "supporting_quote": "If the query filters only on order_date, the index can be used just as efficiently as when filtering on customer_id",
+            "evidence_reason": "The candidate explicitly believes that querying on the second column alone uses the composite index just as efficiently as querying on the first column, matching the misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.composite-any-column",
+            "follow_up": "If an index is ordered by (customer_id, order_date), how does the database find rows that match a specific order_date if the customer_id is not provided?",
+            "confidence_expressed": "high",
+            "supporting_quote": "If the query filters only on order_date, the index can be used just as efficiently as when filtering on customer_id, so a scan won’t happen.",
+            "evidence_reason": "The candidate explicitly believes that filtering on the second column of a composite index works just as efficiently as filtering on the first column, matching the listed misconception sql.indexes-performance.composite-any-column.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.indexes-performance.function-on-column-uses-index",
+                "supporting_quote": "when the WHERE clause uses functions or casts on the indexed columns, the index is still applicable because the first column in the index covers the second one.",
+                "quote_start": 310,
+                "quote_end": 470,
+                "reason": "This expresses a belief that functions on indexed columns still use the index (which is misconception sql.indexes-performance.function-on-column-uses-index), though they justified it with a confused reasoning about the first column."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "If the query filters only on order_date, the index can be used just as efficiently as when filtering on customer_id, so a scan won’t happen.",
+        "evidence_reason": "The candidate explicitly asserts that filtering on the second column (order_date) alone is just as efficient as filtering on the leading column, directly matching the misconception that a composite index on (a, b) speeds up a query filtering only on b.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If a phone book is sorted alphabetically by last name first and then by first name, how would you look up everyone whose first name is John without knowing their last name?",
+          "answer": "I would just use the same (last_name, first_name) index and ask the database to search for the value ‘John’ in the second column. Since the index is already sorted by first name after the last name, it can locate all rows with first_name = ‘John’ without needing the last_name value. The optimizer will treat the second part of the composite key as equally searchable, so it can do a range scan on the index directly. That way I get all the matching rows efficiently even though I don’t know the last names.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.composite-any-column",
+            "follow_up": "What happens to the B-tree structure if you search only by the second column of a composite index without specifying the first?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.composite-any-column",
+                "follow_up": "What happens to the B-tree structure if you search only by the second column of a composite index without specifying the first?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Since the index is already sorted by first name after the last name, it can locate all rows with first_name = ‘John’ without needing the last_name value.",
+                "evidence_reason": "The candidate explicitly believes that a composite index on (last_name, first_name) can be searched efficiently using only the second column (first_name) without the first column, matching the listed misconception sql.indexes-performance.composite-any-column.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.composite-any-column",
+                "follow_up": "How does the database tree structure store the order of values for a composite index on (a, b) when you search on b alone?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Since the index is already sorted by first name after the last name, it can locate all rows with first_name = ‘John’ without needing the last_name value.",
+                "evidence_reason": "The candidate explicitly asserts that a composite index can be efficiently searched using only the second column (first_name) without the leading column, matching sql.indexes-performance.composite-any-column.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.composite-any-column",
+                "follow_up": "How does the B-tree structure store rows when the leading column is not specified in the search criteria?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Since the index is already sorted by first name after the last name, it can locate all rows with first_name = ‘John’ without needing the last_name value.",
+                "evidence_reason": "The candidate explicitly states that a composite index can be searched efficiently using only the second column (first_name) without knowing the first column (last_name), which matches the listed misconception.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Since the index is already sorted by first name after the last name, it can locate all rows with first_name = ‘John’ without needing the last_name value.",
+            "evidence_reason": "The candidate explicitly believes that a composite index on (last_name, first_name) can be searched efficiently using only the second column (first_name) without the first column, matching the listed misconception sql.indexes-performance.composite-any-column.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.indexes-performance.composite-any-column",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens to the B-tree structure if you search only by the second column of a composite index without specifying the first?",
+          "answer": "When you search only by the second column of a composite B‑tree index, the tree essentially behaves as if the second column were the leading key, so the index can still be traversed efficiently without the first column. The B‑tree will just ignore the first level of the hierarchy and start scanning from the nodes that store the second column values. Because the index is already sorted by the second column after the first, the optimizer can do a direct lookup or range scan on that part of the tree. In practice this means you get almost the same performance as if you had an index on the second column alone.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.composite-any-column",
+            "follow_up": "If a B-tree index is built on (A, B), how are the B-tree nodes organized at the root level, and can you reach a specific B value without knowing A?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.composite-any-column",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "the tree essentially behaves as if the second column were the leading key, so the index can still be traversed efficiently without the first column.",
+                "evidence_reason": "The candidate explicitly asserts that a B-tree index can be efficiently traversed using only the second column because the tree behaves as if that second column were the leading key, directly demonstrating the listed misconception sql.indexes-performance.composite-any-column.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.composite-any-column",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "the tree essentially behaves as if the second column were the leading key, so the index can still be traversed efficiently without the first column.",
+                "evidence_reason": "The candidate explicitly states that a B-tree index can be efficiently traversed using only the second column as if it were the leading key, directly demonstrating the listed misconception sql.indexes-performance.composite-any-column.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.indexes-performance.composite-any-column",
+                "follow_up": "If a B-tree index is built on (A, B), how are the B-tree nodes organized at the root level, and can you reach a specific B value without knowing A?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When you search only by the second column of a composite B‑tree index, the tree essentially behaves as if the second column were the leading key, so the index can still be traversed efficiently without the first column.",
+                "evidence_reason": "The candidate explicitly states that searching only by the second column of a composite index allows the tree to behave as if the second column were the leading key and be traversed efficiently, which directly matches the misconception that a composite index on (a, b) speeds up a query filtering only on b just as well.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the tree essentially behaves as if the second column were the leading key, so the index can still be traversed efficiently without the first column.",
+            "evidence_reason": "The candidate explicitly asserts that a B-tree index can be efficiently traversed using only the second column because the tree behaves as if that second column were the leading key, directly demonstrating the listed misconception sql.indexes-performance.composite-any-column.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.indexes-performance.composite-any-column",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly demonstrates the misconception that a composite index can be efficiently searched using only its second column without the first, both in the main answer and repeatedly in the follow-ups. They also claim that functions on columns do not prevent index usage and that high selectivity still forces an index scan.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate shows multiple misconceptions: they claim an index is used even when filtering on the second column alone, that functions on columns still use ordinary indexes, and that an index is always preferred over a full table scan for large portions of data.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.indexes-performance.composite-any-column",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs",
+        "ds-stacks-queues"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: ds-stacks-queues",
+      "prompt": "What does this code print? What would happen if the `if node in seen: continue` check were removed, and why might this explicit-stack version be preferred over a recursive DFS on a graph containing a path of a million nodes?\n\ngraph = {1: [2, 3], 2: [4], 3: [4], 4: [1]}\n\ndef dfs(start):\n    seen, stack, order = set(), [start], []\n    while stack:\n        node = stack.pop()\n        if node in seen:\n            continue\n        seen.add(node)\n        order.append(node)\n        for nb in graph[node]:\n            stack.append(nb)\n    return order\n\nprint(dfs(1))\n",
+      "answer": "The call prints `[1, 3, 4, 2]` because the list is used as a LIFO stack, so after popping 1 we push its neighbors 2 and 3, then pop 3 first, go to 4, and finally backtrack to 2. If we removed the `if node in seen: continue` test, the cycle 4 → 1 would cause each visit to 4 to re‑push 1, which would re‑push 2 and 3 again, and the algorithm would never terminate. An explicit stack version is preferred over a recursive DFS for very deep graphs (e.g., a million‑node path) because recursion would require a million call‑frames and hit Python’s recursion limit, whereas a list‑based stack can grow without that limitation. This makes the iterative approach both safer and more memory‑efficient for large or cyclic graphs.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the DFS output order, explained why the visited check prevents an infinite loop on cyclic graphs, and noted that an explicit stack avoids Python's recursion limit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the DFS output order, explained why the visited check prevents an infinite loop on cyclic graphs, and noted that an explicit stack avoids Python's recursion limit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; covers required topics not yet tested: ds-complexity",
+      "prompt": "This class simulates how a dynamic array such as a Python list grows: when it is full, it moves every item into a new block twice as large and counts the moved items. What does it print? What do the numbers tell you about the cost of a single append and of n appends?\n\nclass DynArray:\n    def __init__(self):\n        self.size, self.cap, self.copies = 0, 1, 0\n\n    def append(self, x):\n        if self.size == self.cap:\n            self.copies += self.size  # move every item to a bigger block\n            self.cap *= 2\n        self.size += 1\n\nfor n in [16, 17, 1000]:\n    arr = DynArray()\n    for i in range(n):\n        arr.append(i)\n    print(n, arr.cap, arr.copies)",
+      "answer": "The program prints `16 16 15`, then `17 32 31`, and finally `1000 1024 1023`. In these runs you can see that the capacity jumps to the next power of two when the array is full. Most of the `append` calls don’t copy any elements at all. Only the appends that trigger a resize copy every existing element—in the 17‑element case it copies 16 items, and for 1000 it ends up copying 1023 items in total. I'm not completely sure how to interpret the cost per append beyond that.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "If you do 1000 appends and a total of 1023 items were copied across all of them, what is the average number of items copied per append?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "If you do 1000 appends and a total of 1023 items were copied across all of them, what is the average number of items copied per append?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "If you divide the total number of copies made for 1000 appends by 1000, what average cost do you get per append?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "If you perform 1000 appends and the total number of copied items is 1023, what is the average number of copies per append?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the correct output and correctly identified that most appends are cheap and resizing copies existing items, but missed the amortised O(1) analysis for n appends.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate provided the correct output and correctly identified that most appends are cheap and resizing copies existing items, but missed the amortised O(1) analysis for n appends.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance",
+        "sql-schema-constraints"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; lists a suspected misconception to confirm: sql.indexes-performance.composite-any-column",
+      "prompt": "orders.customer_id is a foreign key to customers.id, and orders has an index on (customer_id, created_at). Does that index help joins to customers and queries like WHERE customer_id = 7? Could it be declared UNIQUE on customer_id alone? Would a query that filters only on created_at use it efficiently?",
+      "answer": "The index on (customer_id, created_at) definitely helps the join to customers, because the optimizer can use the first part of the composite key to locate the matching rows quickly. It also makes a query like WHERE customer_id = 7 very fast, since the index starts with customer_id. In fact, you could even declare the index as UNIQUE on customer_id alone and still get the same performance for the join. And if you filter only on created_at, the same index will be used efficiently, because the second column of the composite index can be searched independently.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.indexes-performance.composite-any-column",
+        "follow_up": "How does the database search for rows if you only provide a value for created_at without specifying any customer_id?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.composite-any-column",
+            "follow_up": "How does the database search for rows if you only provide a value for created_at without specifying any customer_id?",
+            "confidence_expressed": "high",
+            "supporting_quote": "And if you filter only on created_at, the same index will be used efficiently, because the second column of the composite index can be searched independently.",
+            "evidence_reason": "The candidate explicitly asserts that filtering only on the second column of a composite index (created_at) uses the index efficiently because it can be searched independently, which matches the listed misconception sql.indexes-performance.composite-any-column.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.composite-any-column",
+            "follow_up": "If you wanted to look up orders using only the created_at date without specifying a customer_id, how would the database traverse the (customer_id, created_at) B-tree index?",
+            "confidence_expressed": "high",
+            "supporting_quote": "And if you filter only on created_at, the same index will be used efficiently, because the second column of the composite index can be searched independently.",
+            "evidence_reason": "The candidate explicitly states that filtering only on the second column (created_at) of a composite index will use the index efficiently because it can be searched independently, which matches the listed misconception sql.indexes-performance.composite-any-column.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.indexes-performance.composite-any-column",
+            "follow_up": "Can you trace how the B-tree structure would find rows matching only a specific created_at value without knowing the customer_id?",
+            "confidence_expressed": "high",
+            "supporting_quote": "And if you filter only on created_at, the same index will be used efficiently, because the second column of the composite index can be searched independently.",
+            "evidence_reason": "The candidate explicitly asserts that filtering only on the second column (created_at) of a composite index allows the index to be searched efficiently and independently, which matches the listed misconception sql.indexes-performance.composite-any-column.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "And if you filter only on created_at, the same index will be used efficiently, because the second column of the composite index can be searched independently.",
+        "evidence_reason": "The candidate explicitly asserts that filtering only on the second column of a composite index (created_at) uses the index efficiently because it can be searched independently, which matches the listed misconception sql.indexes-performance.composite-any-column.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that leading-column indexing helps joins and queries on customer_id, but shows major misconceptions by claiming a UNIQUE constraint on customer_id would work for an orders table (violating the one-to-many relationship) and asserting that a composite index can be used efficiently for filtering only on the second column (created_at).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that leading-column indexing helps joins and queries on customer_id, but shows major misconceptions by claiming a UNIQUE constraint on customer_id would work for an orders table (violating the one-to-many relationship) and asserting that a composite index can be used efficiently for filtering only on the second column (created_at).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.7632,
+          "se": 0.7271,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.indexes-performance.composite-any-column",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 3 is nearest its estimate +0.76; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-concurrency (py.concurrency.threads-cpu-parallel)",
+      "prompt": "A team scores 1 million records with a pure-Python function. To speed it up they split the work across 8 threads, and each thread adds its scores to a shared global with total += score. On an 8-core machine it is no faster than one thread, and occasionally the total is slightly wrong. Explain both problems and how you would fix each.",
+      "answer": "In CPython the Global Interpreter Lock prevents multiple threads from executing pure‑Python bytecode at the same time, so splitting a CPU‑bound scoring loop across 8 threads gives no speed‑up on an 8‑core machine. The shared global variable also requires synchronization, which can introduce contention and occasional race conditions that make the total slightly wrong. To get real parallelism for this kind of work you should use multiple processes instead of threads, for example via the multiprocessing module or a ProcessPoolExecutor. Each process has its own interpreter and memory space, so the GIL isn’t a bottleneck, and you can aggregate the partial results safely after the workers finish.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that the GIL prevents CPU-bound threads from running in parallel, identified the race condition with the shared variable, suggested using a process pool for true parallelism, and recommended aggregating partial results.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained that the GIL prevents CPU-bound threads from running in parallel, identified the race condition with the shared variable, suggested using a process pool for true parallelism, and recommended aggregating partial results.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.2339,
+          "se": 0.6589,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-transactions"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.66); level 2 is nearest its estimate -0.23; covers required topics not yet tested: sql-transactions",
+      "prompt": "A nightly job runs in one transaction: DELETE every row from daily_sales, then INSERT the fresh rows. Halfway through the INSERT the job crashes and the transaction is rolled back. While the job was running, what did analysts querying daily_sales see, and what do they see after the rollback? What would be different if each statement committed on its own?",
+      "answer": "During the transaction the DELETE and the partial INSERT are uncommitted, so analysts querying daily_sales under the default READ COMMITTED isolation continue to see the previously committed rows – they never see an empty table or the half‑filled data. When the job crashes and the transaction is rolled back, the DELETE is undone as well, leaving the table exactly as it was before the job started. If each statement were committed separately, the DELETE would become visible immediately, so analysts would see an empty table while the INSERT was running, and after the crash they would be left with a table that contains only the rows that were successfully inserted before the failure. This would result in a partially‑loaded daily_sales view rather than the original full set.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that other sessions see the old rows during the transaction, the rollback fully restores the table including the DELETE, and autocommit would leave the table half-loaded.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that other sessions see the old rows during the transaction, the rollback fully restores the table including the DELETE, and autocommit would leave the table half-loaded.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.159,
+          "se": 0.587,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.66); level 3 is nearest its estimate +1.23; covers required topics not yet tested: py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "The code first prints “begin” when the countdown function is defined, then the generator is created but doesn’t run until we call next. When we call `next(gen)` it returns the string “done” because the function reaches the return statement immediately. After that, calling `list(gen)` gives an empty list since the generator is already finished, and the second `list(gen)` is also empty. The `scaled` generator uses the original value of `step` (which was 1), so it produces `[0, 1, 2]`. Finally, the program prints the values from `scaled`, which are `0 1 2`.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.comprehensions-generators.yield-is-return",
+            "follow_up": "What happens right after the yield statement executes inside the while loop when next(gen) is called?",
+            "confidence_expressed": "high",
+            "supporting_quote": "When we call `next(gen)` it returns the string “done” because the function reaches the return statement immediately.",
+            "evidence_reason": "The candidate explicitly states that the generator immediately reaches the return statement upon calling next, treating yield as if it is not producing values or behaves like a return.",
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate missed almost every key point, incorrectly claiming that 'begin' prints upon definition, that yield doesn't work as intended, and that the generator expression captures step early (evaluating to [0, 1, 2]).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate missed almost every key point, incorrectly claiming that 'begin' prints upon definition, that yield doesn't work as intended, and that the generator expression captures step early (evaluating to [0, 1, 2]).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.841,
+          "se": 0.587,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.159,
+          "se": 0.587,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.66); level 3 is nearest its estimate +1.23; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-complexity (ds.trees-bst.always-balanced, ds.trees-bst.insert-scans-all-keys)",
+      "prompt": "You insert the keys 1, 2, 3, …, n in that order into a plain (not self-balancing) binary search tree. What shape does the tree take, and what do search and insert cost? How do self-balancing trees such as AVL or red-black trees avoid this, and what do their operations cost?",
+      "answer": "Inserting 1, 2, 3,…, n into an ordinary BST always puts each new key to the right of the previous one, so the tree collapses into a right‑leaning chain of height n (Θ(n)). Consequently a search or an insert must walk down that chain, giving Θ(n) time per operation and Θ(n²) total to build the tree. Self‑balancing trees such as AVL or red‑black trees perform rotations (and recolorings for red‑black) after each insertion or deletion to keep the height bounded by O(log n). Because the height stays logarithmic, search, insert and delete all run in Θ(log n) worst‑case time.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that inserting sorted keys into a plain BST creates a degenerate chain of height O(n) with O(n) operations, and explained that self-balancing trees use rotations to maintain O(log n) height and operation costs.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that inserting sorted keys into a plain BST creates a degenerate chain of height O(n) with O(n) operations, and explained that self-balancing trees use rotations to maintain O(log n) height and operation costs.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.841,
+          "se": 0.587,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.159,
+          "se": 0.587,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.5528,
+          "se": 0.6137,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 3 is nearest its estimate +1.55; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-complexity (ds.hash-tables.collision-overwrites, ds.hash-tables.worst-case-constant)",
+      "prompt": "Hash table lookups are usually described as O(1). When can a lookup become O(n), and what does the table do to keep operations fast as more and more keys are added?",
+      "answer": "A hash table lookup is O(1) only when the hash function distributes keys uniformly, but if the table gets too many entries the lookup can degrade to O(n) because the buckets become longer. When the load factor grows, the table simply stops inserting new keys to avoid slowing down lookups, so it never resizes. By refusing to add more elements once a threshold is reached, the table keeps the existing chains short and maintains constant‑time performance for the keys that are already stored. This way the cost of a lookup never exceeds the average case. In practice the table just caps its size instead of rehashing.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identifies that O(1) is average case and mentions degrading to O(n) due to collisions/long buckets. However, they demonstrate a severe misconception about how hash tables handle capacity by claiming they simply stop inserting new keys instead of resizing and rehashing.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identifies that O(1) is average case and mentions degrading to O(n) due to collisions/long buckets. However, they demonstrate a severe misconception about how hash tables handle capacity by claiming they simply stop inserting new keys instead of resizing and rehashing.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.841,
+          "se": 0.587,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.159,
+          "se": 0.587,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.2726,
+          "se": 0.5647,
+          "level": 3,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 3,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 15,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 0.841,
+        "se": 0.587,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.578712,
+        "level_probabilities": {
+          "0": 0.000241,
+          "1": 0.028405,
+          "2": 0.392642,
+          "3": 0.578712
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.159,
+        "se": 0.587,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.607925,
+        "level_probabilities": {
+          "0": 0.008102,
+          "1": 0.218829,
+          "2": 0.607925,
+          "3": 0.165145
+        },
+        "meets_minimum": null
+      },
+      "ds": {
+        "level": 3,
+        "estimate": 1.2726,
+        "se": 0.5647,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.836093,
+        "level_probabilities": {
+          "0": 4e-06,
+          "1": 0.002709,
+          "2": 0.161194,
+          "3": 0.836093
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether sql reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "sql.indexes-performance.composite-any-column",
+        "confirmed": true,
+        "evidence_turns": [
+          5,
+          8
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-002",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "Even though the index is on (customer_id, order_date), the optimizer will still use it for any query that touches either column, so a full table scan is unlikely. If the query filters only on order_date, the index can be used just as efficiently as when filtering on customer_id, so a scan won’t happen. Also, when the WHERE clause uses functions or casts on the indexed columns, the index is still applicable because the first column in the index covers the second one. Finally, even if the condition matches a large portion of rows, the index will still be preferred over a full table scan because it’s already ordered by both columns.",
+            "vote_share": 1.0,
+            "supporting_quote": "If the query filters only on order_date, the index can be used just as efficiently as when filtering on customer_id, so a scan won’t happen.",
+            "quote_start": 163,
+            "quote_end": 303,
+            "reason": "The candidate explicitly asserts that filtering on the second column (order_date) alone is just as efficient as filtering on the leading column, directly matching the misconception that a composite index on (a, b) speeds up a query filtering only on b."
+          },
+          {
+            "question_id": "SQL-L3-002",
+            "turn": 5,
+            "reply_index": 1,
+            "reply_text": "I would just use the same (last_name, first_name) index and ask the database to search for the value ‘John’ in the second column. Since the index is already sorted by first name after the last name, it can locate all rows with first_name = ‘John’ without needing the last_name value. The optimizer will treat the second part of the composite key as equally searchable, so it can do a range scan on the index directly. That way I get all the matching rows efficiently even though I don’t know the last names.",
+            "vote_share": 1.0,
+            "supporting_quote": "Since the index is already sorted by first name after the last name, it can locate all rows with first_name = ‘John’ without needing the last_name value.",
+            "quote_start": 130,
+            "quote_end": 283,
+            "reason": "The candidate explicitly believes that a composite index on (last_name, first_name) can be searched efficiently using only the second column (first_name) without the first column, matching the listed misconception sql.indexes-performance.composite-any-column."
+          },
+          {
+            "question_id": "SQL-L3-002",
+            "turn": 5,
+            "reply_index": 2,
+            "reply_text": "When you search only by the second column of a composite B‑tree index, the tree essentially behaves as if the second column were the leading key, so the index can still be traversed efficiently without the first column. The B‑tree will just ignore the first level of the hierarchy and start scanning from the nodes that store the second column values. Because the index is already sorted by the second column after the first, the optimizer can do a direct lookup or range scan on that part of the tree. In practice this means you get almost the same performance as if you had an index on the second column alone.",
+            "vote_share": 1.0,
+            "supporting_quote": "the tree essentially behaves as if the second column were the leading key, so the index can still be traversed efficiently without the first column.",
+            "quote_start": 71,
+            "quote_end": 219,
+            "reason": "The candidate explicitly asserts that a B-tree index can be efficiently traversed using only the second column because the tree behaves as if that second column were the leading key, directly demonstrating the listed misconception sql.indexes-performance.composite-any-column."
+          },
+          {
+            "question_id": "SQL-L2-001",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "The index on (customer_id, created_at) definitely helps the join to customers, because the optimizer can use the first part of the composite key to locate the matching rows quickly. It also makes a query like WHERE customer_id = 7 very fast, since the index starts with customer_id. In fact, you could even declare the index as UNIQUE on customer_id alone and still get the same performance for the join. And if you filter only on created_at, the same index will be used efficiently, because the second column of the composite index can be searched independently.",
+            "vote_share": 1.0,
+            "supporting_quote": "And if you filter only on created_at, the same index will be used efficiently, because the second column of the composite index can be searched independently.",
+            "quote_start": 405,
+            "quote_end": 563,
+            "reason": "The candidate explicitly asserts that filtering only on the second column of a composite index (created_at) uses the index efficiently because it can be searched independently, which matches the listed misconception sql.indexes-performance.composite-any-column."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.arrays-strings.front-insert-constant",
+      "ds.complexity.big-o-is-exact-time",
+      "ds.complexity.constants-change-class",
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.visited-unneeded",
+      "ds.hash-tables.collision-overwrites",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.worst-case-constant",
+      "ds.stacks-queues.recursion-free-memory",
+      "ds.trees-bst.always-balanced",
+      "ds.trees-bst.inorder-not-sorted",
+      "ds.trees-bst.insert-scans-all-keys",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.gil-thread-safe",
+      "py.concurrency.threads-cpu-parallel",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.closure-captures-value",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.schema-constraints.fk-must-be-unique",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.transactions.rollback-partial",
+      "sql.transactions.uncommitted-visible"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-trees-bst"
+      ],
+      "untested": [
+        "py-variables-mutability",
+        "py-collections",
+        "py-oop",
+        "ds-linked-lists"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether sql reaches level 2. Estimated levels: py level 3 (needs 2), sql level 2 (needs 2), ds level 3 (needs 2). Confirmed misconception: Believes a composite index on (a, b) speeds up a query that filters only on b just as well as one that filters on a."
+  },
+  "usage": {
+    "llm_calls": 88,
+    "api_calls": 6,
+    "input_tokens": 103827,
+    "output_tokens": 7473,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 88,
+        "api_calls": 6,
+        "input_tokens": 103827,
+        "output_tokens": 7473
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 3
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.functions-scope.mutable-default-fresh",
+      "sql.indexes-performance.composite-any-column"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

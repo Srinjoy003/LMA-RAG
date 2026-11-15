@@ -1,0 +1,2290 @@
+{
+  "interview_id": "A5E-data-analyst-CAND-004-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-004",
+  "started_at": "2026-11-14T05:35:40Z",
+  "finished_at": "2026-11-14T05:35:55Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The try section contains the code that may raise an exception, and when an exception occurs the remaining statements in that block are skipped and Python immediately looks for an except clause that matches the exception type, checking them in the order they appear and executing the first one that fits. Except blocks handle the error; if none match, the exception propagates outward. Else runs only when the try block finishes completely without raising anything, and finally is executed in every case—whether an exception was raised, a return statement was hit, or the code ran normally—right before control leaves the whole try‑except‑else‑finally construct. If a return occurs inside the try or an except, the finally block still runs before the function actually returns.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of try, except, else, and finally, correctly identifies that the first matching except clause runs, and correctly notes that finally executes even if a return statement is hit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of try, except, else, and finally, correctly identifies that the first matching except clause runs, and correctly notes that finally executes even if a return statement is hit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query returns three rows – one for each customer. Asha appears with n_orders = 2 because the left join creates two rows for her two matching orders, and the sum of the amounts (250 + 80) is 330. Ben has no matching orders, so the join produces a single row with NULLs; COUNT(o.id) ignores those NULLs and returns 0, and SUM(o.amount) returns NULL. Chen has one matching order, but its amount is NULL, so COUNT(o.id) is 1 while SUM(o.amount) is NULL. The order with a NULL customer_id does not join to any customer and is excluded.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies all three rows with accurate counts and totals, and provides the correct explanation for Ben's 0 count, the NULL totals, and the exclusion of the unassigned order.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies all three rows with accurate counts and totals, and provides the correct explanation for Ben's 0 count, the NULL totals, and the exclusion of the unassigned order.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map provides a direct lookup from a key to its node in the doubly‑linked list, so finding the entry is O(1) on average. The doubly‑linked list maintains the order of usage, with the most‑recently used node at the head and the least‑recently used at the tail, which makes eviction easy. On a cache hit for key k, the map returns the node, we unlink it from its current position by rewiring its predecessor and successor, then splice it to the front of the list and keep the map entry unchanged. A put operation either updates an existing node (moving it to the front the same way) or creates a new node at the head and adds a map entry; if the capacity is exceeded we remove the tail node and delete its key from the map. All of these steps involve a constant number of pointer changes and map operations, so both get and put run in O(1) average time.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of both the hash map and the doubly linked list, walks through the pointer-level movement on a cache hit without any misconceptions, and explains why both operations run in O(1) time.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of both the hash map and the doubly linked list, walks through the pointer-level movement on a cache hit without any misconceptions, and explains why both operations run in O(1) time.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: py.pandas.loc-end-exclusive, py.pandas.nan-treated-as-zero, py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ns1 = pd.Series([10, 20, 30], index=[\"a\", \"b\", \"c\"])\ns2 = pd.Series([1, 2, 3], index=[\"b\", \"c\", \"d\"])\ntotal = s1 + s2\nprint(total.tolist())\nprint(total.mean())\nprint(s1.loc[\"a\":\"b\"].sum())",
+      "answer": "The code adds the two Series element‑wise, so it just sums the numbers at the same positions in the underlying arrays, giving `[11, 22, 33]`. Converting that to a list prints `[11, 22, 33]`. The mean of those three values is `(11 + 22 + 33) / 3 = 22.0`, so `print(total.mean())` outputs `22.0`. Finally, `s1.loc[\"a\":\"b\"]` selects the values for “a” and “b”, which are 10 and 20, and their sum is `30`.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "What happens to the resulting index labels when you add s1 and s2, given that s1 has index 'a' through 'c' and s2 has index 'b' through 'd'?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the resulting index labels when you add s1 and s2, given that s1 has index 'a' through 'c' and s2 has index 'b' through 'd'?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The code adds the two Series element‑wise, so it just sums the numbers at the same positions in the underlying arrays, giving `[11, 22, 33]`.",
+            "evidence_reason": "The candidate explicitly asserts that Series addition operates element-wise by position rather than aligning by index labels, which matches the py.pandas.positional-alignment misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the resulting index labels and values if you add two Series that have completely disjoint index labels, such as s1 with index ['a'] and s2 with index ['z']?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The code adds the two Series element‑wise, so it just sums the numbers at the same positions in the underlying arrays",
+            "evidence_reason": "The candidate explicitly states that Series addition performs element-wise summation based on positions in the underlying arrays, which directly expresses the py.pandas.positional-alignment misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the resulting index labels and values if you add two Series that have completely disjoint index labels, such as s1 with index ['a'] and s2 with index ['z']?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The code adds the two Series element‑wise, so it just sums the numbers at the same positions in the underlying arrays, giving `[11, 22, 33]`.",
+            "evidence_reason": "The candidate explicitly states that Series addition performs element-wise summation based on positions in the underlying arrays rather than aligning by index labels.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The code adds the two Series element‑wise, so it just sums the numbers at the same positions in the underlying arrays, giving `[11, 22, 33]`.",
+        "evidence_reason": "The candidate explicitly asserts that Series addition operates element-wise by position rather than aligning by index labels, which matches the py.pandas.positional-alignment misconception.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the resulting index labels when you add s1 and s2, given that s1 has index 'a' through 'c' and s2 has index 'b' through 'd'?",
+          "answer": "When you add the two Series, pandas just concatenates the index labels from both, so the resulting Series ends up with the combined set `[\"a\", \"b\", \"c\", \"d\"]`. The values are added in the order they appear, so the first three positions correspond to the sums of the matching elements and the last position just takes the value from `s2` because there’s nothing to add to it. In other words, the index “d” shows up with its original value from `s2`. This is why you still see four entries in the output even though the original Series had only three each.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What would be the value at index 'a' in the resulting Series, given that 'a' only exists in s1 and not in s2?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "What would be the value at index 'a' in the resulting Series, given that 'a' only exists in s1 and not in s2?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The values are added in the order they appear, so the first three positions correspond to the sums of the matching elements",
+                "evidence_reason": "The candidate explains the addition by matching elements in order rather than by index labels, concluding that the elements align positionally.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 had index ['a', 'b', 'c'] and s2 had index ['c', 'b', 'a'] in that exact order, what would s1 + s2 look like?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The values are added in the order they appear, so the first three positions correspond to the sums of the matching elements and the last position just takes the value from `s2",
+                "evidence_reason": "The candidate explicitly believes that series addition combines elements by their position and order rather than matching them up by their index labels.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.positional-alignment",
+                "follow_up": "If s1 had index ['a', 'b', 'c'] and s2 had index ['c', 'b', 'a'] in that exact order, what would s1 + s2 look like?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The values are added in the order they appear, so the first three positions correspond to the sums of the matching elements",
+                "evidence_reason": "The candidate explicitly believes that arithmetic between Series combines or matches them based on their order or position rather than aligning them by matching index labels.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The values are added in the order they appear, so the first three positions correspond to the sums of the matching elements",
+            "evidence_reason": "The candidate explains the addition by matching elements in order rather than by index labels, concluding that the elements align positionally.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What would be the value at index 'a' in the resulting Series, given that 'a' only exists in s1 and not in s2?",
+          "answer": "The value at index ‘a’ would just be the original value from `s1`, because there’s nothing to add to it from `s2`. So pandas would treat the missing entry as zero and simply keep the 10 there. That means the resulting Series would have a 10 at ‘a’, and the rest of the sums would be calculated normally for the overlapping labels. In other words, the addition doesn’t change the ‘a’ entry at all.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.nan-treated-as-zero",
+            "follow_up": "If a label exists in one Series but not the other, what is the data type of the resulting element in the summed Series, and how does pandas represent it?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.nan-treated-as-zero",
+                "follow_up": "If a label exists in one Series but not the other, what is the data type of the resulting element in the summed Series, and how does pandas represent it?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas would treat the missing entry as zero and simply keep the 10 there",
+                "evidence_reason": "The candidate explicitly states that pandas treats the missing entry as zero during addition, which corresponds to the misconception that missing values/NaNs act like zeros.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.nan-treated-as-zero",
+                "follow_up": "If a label exists in one Series but not the other, what value is placed in the resulting Series at that index before you perform any aggregations?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas would treat the missing entry as zero and simply keep the 10 there",
+                "evidence_reason": "The candidate explicitly states that missing entries are treated as zero rather than resulting in NaN when performing addition between Series.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.nan-treated-as-zero",
+                "follow_up": "If a label exists in one Series but results in NaN after addition, how does pandas treat that NaN when you call .mean() on the resulting Series?",
+                "confidence_expressed": "high",
+                "supporting_quote": "pandas would treat the missing entry as zero and simply keep the 10 there",
+                "evidence_reason": "The candidate explicitly states that missing entries during Series addition are treated as zero rather than resulting in NaN, which matches py.pandas.nan-treated-as-zero.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "pandas would treat the missing entry as zero and simply keep the 10 there",
+            "evidence_reason": "The candidate explicitly states that pandas treats the missing entry as zero during addition, which corresponds to the misconception that missing values/NaNs act like zeros.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes pandas aligns Series by position rather than index label, treats missing values as zero during addition, and shows misconceptions about NaN handling and alignment.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assumed positional alignment instead of index-label alignment for pandas Series arithmetic, falling into a listed misconception and missing the core behavior.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-008",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: sql.window-functions.collapses-rows, sql.window-functions.rank-functions-identical, sql.window-functions.running-sum-is-total",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The query returns five rows, one for each row in the sales table. running is a cumulative sum of amount ordered by day, so after the first row it is 100, after both rows for day 2 it becomes 180 (the NULL on day 3 adds nothing), and after the last row it is 200. RANK assigns a rank based on the ordering by day; the two rows with day 2 get the same rank 2, and because RANK skips numbers for ties the next distinct day (day 3) gets rank 4, followed by rank 5 for day 4. The final result set is ordered by day and amount as specified in the outer ORDER BY.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that five rows are returned, explained the cumulative running sum correctly including the handling of NULL and ties, and accurately described how RANK handles ties with gaps.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that five rows are returned, explained the cumulative running sum correctly including the handling of NULL and ties, and accurately described how RANK handles ties with gaps.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: ds.graphs.bfs-dfs-swapped, ds.graphs.bfs-weighted-shortest, ds.graphs.dfs-finds-shortest",
+      "prompt": "What does this code print? What do the numbers mean, and would they still be the shortest distances if each edge had a different length?\n\nfrom collections import deque\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"E\"], \"C\": [\"D\"], \"D\": [\"E\"], \"E\": [\"F\"], \"F\": []}\n\ndef bfs(start):\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        node = q.popleft()\n        for nb in graph[node]:\n            if nb not in dist:\n                dist[nb] = dist[node] + 1\n                q.append(nb)\n    return dist\n\nprint(bfs(\"A\"))\n",
+      "answer": "The program will print a dictionary where each node is paired with a number that shows how many steps it takes to get there from A, so you’ll see something like `{'A': 0, 'B': 1, …}`. Those numbers are basically the “levels” of each node in the traversal order, because the algorithm visits the neighbors one after another. Since the code just adds 1 each time it moves to a new node, the values will increase by one for every hop. If the edges had different lengths, the same numbers would still appear because the algorithm doesn’t take edge weights into account – it just counts hops. So the output will reflect the order in which the nodes are discovered, not any actual distance metric.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would you calculate the actual shortest path by total weight if the edges had different lengths?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identifies the code as counting hops, but claims that the numbers would still be the shortest distances if edges had different lengths, showing the misconception that BFS handles weighted edges.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identifies the code as counting hops, but claims that the numbers would still be the shortest distances if edges had different lengths, showing the misconception that BFS handles weighted edges.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.3604,
+          "se": 0.7563,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-stacks-queues"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.76); level 2 is nearest its estimate +0.36; lists misconceptions not yet probed: ds.stacks-queues.recursion-free-memory, ds.trees-bst.always-balanced, ds.trees-bst.inorder-not-sorted",
+      "prompt": "A recursive function prints the keys of a binary search tree using an in-order traversal. In what order are the keys printed? How much extra memory does the recursion use for a tree of n keys that is balanced, compared with one built by inserting keys that were already sorted, and why might the second case crash in Python?",
+      "answer": "The in‑order traversal will print the keys in ascending sorted order. The extra memory used by the recursion is proportional to the height of the tree, because each pending call adds a frame on the call stack. For a balanced tree the height is about log n, so the recursion uses O(log n) extra space. I’m not sure how that compares with a tree built from already‑sorted insertions. I’m also not sure why the second case might crash in Python.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What shape does a binary search tree take if you insert elements that are already in sorted order?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What shape does a binary search tree take if you insert elements that are already in sorted order?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What shape does a binary search tree take if you insert keys that are already sorted in ascending order, and how does that affect its height?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What shape does a binary search tree take if you insert keys that are already sorted in ascending order?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output order as ascending sorted and explained that memory is proportional to the tree height O(log n) for a balanced tree, but missed the comparison for sorted insertions and the explanation of Python's recursion limit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output order as ascending sorted and explained that memory is proportional to the tree height O(log n) for a balanced tree, but missed the comparison for sorted insertions and the explanation of Python's recursion limit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.2833,
+          "se": 0.668,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-subqueries-cte",
+        "sql-joins",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; lists misconceptions not yet probed: sql.aggregation.group-by-only-sorts, sql.subqueries-cte.cte-unused-still-applies, sql.subqueries-cte.in-subquery-duplicates",
+      "prompt": "What does this query return, and why? Does the WITH clause limit which orders are counted?\n\nWITH big AS (\n  SELECT customer_id FROM orders WHERE amount >= 100\n)\nSELECT c.name, COUNT(o.id) AS n_orders\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE c.id IN (SELECT customer_id FROM big)\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n4 | Dana\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 150\n11 | 1 | 40\n12 | 1 | 120\n13 | 2 | 30\n14 | 3 | NULL\n15 | 3 | 200",
+      "answer": "The query returns two rows: Asha with 3 orders and Chen with 2 orders. The CTE big simply identifies customers who have at least one order of 100 or more, and those customer IDs are used in the IN predicate to filter the customers in the outer query. Because the outer query joins to the full orders table, it counts every order for those qualifying customers, including Asha’s small 40 order and Chen’s row with a NULL amount. The IN clause does not limit the rows being counted; it only decides which customers are eligible, and the GROUP BY then collapses each customer to a single result row.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output rows and counts (Asha 3, Chen 2), accurately explained that the CTE only selects qualifying customers rather than filtering the counted orders, and understood that the IN clause does not duplicate rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output rows and counts (Asha 3, Chen 2), accurately explained that the CTE only selects qualifying customers rather than filtering the counted orders, and understood that the IN clause does not duplicate rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.2833,
+          "se": 0.668,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; lists a suspected misconception to confirm: py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "The code prints  \n\n```\n['Ann', 'Bo', 'Cy', 'Di']\n['Bo', 'Cy']\n[10.0, nan, 30.0, 25.0]\n```  \n\n`sort_values` returns a sorted copy, but because the result isn’t assigned back to df the original order stays unchanged, so the first list reflects the original “name” order. The `.loc[1:2, \"name\"]` slice is label‑based and inclusive, so it returns the names at index 1 and 2 (“Bo” and “Cy”). The `passed` DataFrame contains the rows where the score is at least 70 (indices 0, 2, 3); when we assign `passed[\"score\"] - 60` to a new column, pandas aligns the values by index, leaving a NaN for index 1 because there is no matching value, resulting in the final bonus list `[10.0, nan, 30.0, 25.0]`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly answers all three lines and accurately explains all key points: that sort_values returns a new object rather than modifying df in place, that .loc is inclusive of the end label, and that pandas aligns Series assignment by index labels resulting in NaN for missing indices.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly answers all three lines and accurately explains all key points: that sort_values returns a new object rather than modifying df in place, that .loc is inclusive of the end label, and that pandas aligns Series assignment by index labels resulting in NaN for missing indices.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.2833,
+          "se": 0.668,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists misconceptions not yet probed: sql.indexes-performance.composite-any-column, sql.indexes-performance.function-on-column-uses-index, sql.indexes-performance.index-always-helps",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "Even if the index exists, the optimizer might ignore it if the query includes a JOIN that forces the rows to be re‑ordered, causing a full scan instead. Also, if the SELECT list contains a lot of columns that aren’t covered by the index, the planner may decide a table scan is cheaper than reading many index pages and then fetching the rows. Another reason could be that the query uses a GROUP BY on a column that isn’t part of the index, so the database chooses to scan the whole table to perform the aggregation. Lastly, when the query has a LIMIT clause without an ORDER BY, the optimizer sometimes prefers a full scan because it can stop early without using the index.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How would the number of matching rows relative to the total table size affect whether the optimizer chooses to use an index?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would the number of matching rows relative to the total table size affect whether the optimizer chooses to use an index?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the estimated number of matching rows compared to the total size of the table affect whether the query planner uses an index?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the estimated fraction of rows matched by a WHERE clause affect whether the database planner chooses a sequential scan over an index scan?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate failed to mention any of the three key points (selectivity/table size, functions on columns, or non-leading column usage of a composite index). Instead, they listed unrelated reasons such as JOINs, SELECT lists, GROUP BY, and LIMIT clauses.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate failed to mention any of the three key points (selectivity/table size, functions on columns, or non-leading column usage of a composite index). Instead, they listed unrelated reasons such as JOINs, SELECT lists, GROUP BY, and LIMIT clauses.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.2833,
+          "se": 0.668,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.67); level 2 is nearest its estimate +0.28; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-trees-bst (ds.trees-bst.insert-scans-all-keys, ds.trees-bst.only-check-children)",
+      "prompt": "What property must every node of a binary search tree satisfy? Is it enough that each node is larger than its left child and smaller than its right child? How do you search for or insert a key, and how fast is that?",
+      "answer": "In a binary search tree each node must obey the ordering rule with respect to its entire left and right subtrees, not just its immediate children. That means every value in the left subtree has to be smaller than the node’s key, and every value in the right subtree has to be larger. I’m not completely sure how the search or insert operations work in detail. I’m also not certain about the exact time complexity for those operations.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "If you wanted to insert the number 5 into a binary search tree, which path from the root would you take to find where it goes?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "If you wanted to insert the number 5 into a binary search tree, which path from the root would you take to find where it goes?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "Can you describe what happens when you compare a key you want to insert with the root node of the tree?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "Can you describe what happens at each step when you look for a specific number starting from the root of a binary search tree?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly states the subtree-wide BST property, but admits they are unsure about the search/insert operations and time complexity.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly states the subtree-wide BST property, but admits they are unsure about the search/insert operations and time complexity.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.2322,
+          "se": 0.6028,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.61; lists a suspected misconception to confirm: py.pandas.positional-alignment",
+      "prompt": "An analyst makes top = df[df[\"sales\"] > 100].sort_values(\"region\"), calls top.reset_index(drop=True) on its own line, and then sets df[\"top_sales\"] = top[\"sales\"]. Rows that were filtered out show NaN, but the other rows have their own correct values. They then change the middle line to top = top.reset_index(drop=True), and now the numbers land on the wrong rows. Explain both results.",
+      "answer": "When we call `reset_index(drop=True)` on a separate line, it modifies the original `top` DataFrame in place, so the index values line up with the original `df` rows and the assignment works correctly for the filtered rows. By putting the reset inside the same assignment (`top = top.reset_index(drop=True)`), we create a brand‑new DataFrame that loses the connection to the original ordering, so the values get shifted when we assign them back to `df`. The first approach therefore keeps the original row numbers, while the second reindexes everything starting from zero, causing the misalignment. This is why the NaNs appear only in the first case and the values end up on the wrong rows in the second.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.method-modifies-inplace",
+        "follow_up": "What does reset_index() return by default if you do not specify inplace=True?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.method-modifies-inplace",
+            "follow_up": "What does reset_index() return by default if you do not specify inplace=True?",
+            "confidence_expressed": "high",
+            "supporting_quote": "it modifies the original `top` DataFrame in place",
+            "evidence_reason": "The candidate explicitly states that calling reset_index() on its own line modifies the DataFrame in place, which matches the listed misconception that pandas methods like sort_values or reset_index mutate the object in place without needing reassignment.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.method-modifies-inplace",
+            "follow_up": "If you check `top.index` immediately after calling `top.reset_index(drop=True)` on its own line, what index labels do you see?",
+            "confidence_expressed": "high",
+            "supporting_quote": "it modifies the original `top` DataFrame in place",
+            "evidence_reason": "The candidate explicitly asserts that calling `reset_index(drop=True)` on a separate line modifies the DataFrame in place rather than returning a new object.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.method-modifies-inplace",
+            "follow_up": "What does reset_index() return if you do not specify an inplace parameter, and what is the value of top before the assignment in the first scenario?",
+            "confidence_expressed": "high",
+            "supporting_quote": "it modifies the original `top` DataFrame in place",
+            "evidence_reason": "The candidate explicitly states that calling reset_index(drop=True) on its own line modifies the DataFrame in place, which matches the misconception that pandas methods modify the object in place rather than returning a new one.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "it modifies the original `top` DataFrame in place",
+        "evidence_reason": "The candidate explicitly states that calling reset_index() on its own line modifies the DataFrame in place, which matches the listed misconception that pandas methods like sort_values or reset_index mutate the object in place without needing reassignment.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What does reset_index() return by default if you do not specify inplace=True?",
+          "answer": "I think `reset_index()` by default just returns the same DataFrame object, but with the index column added back as a regular column. It doesn’t actually create a copy unless you pass `inplace=True`. So if you call it without `inplace`, you’ll see the original index removed and a new sequential index appear, but the DataFrame you’re working with stays the same. Basically the method mutates the frame in place unless you explicitly ask for a copy.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.method-modifies-inplace",
+            "follow_up": "Can you check what the documentation says about whether reset_index() returns a new object or modifies the DataFrame in place by default?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "follow_up": "Can you check what the documentation says about whether reset_index() returns a new object or modifies the DataFrame in place by default?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Basically the method mutates the frame in place unless you explicitly ask for a copy.",
+                "evidence_reason": "The candidate explicitly states that reset_index() mutates the DataFrame in place by default unless a copy is requested, which directly matches the misconception that pandas methods modify objects in place.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "follow_up": "What does reset_index() return if you assign its result to a variable, and what happens to the original variable if you do not?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Basically the method mutates the frame in place unless you explicitly ask for a copy.",
+                "evidence_reason": "The candidate explicitly states that pandas methods like reset_index mutate the DataFrame in place unless specified otherwise, which matches the listed misconception py.pandas.method-modifies-inplace.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "follow_up": "Can you check what happens if you assign the result of `top.reset_index(drop=True)` to a variable and print both `top` and the new variable?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Basically the method mutates the frame in place unless you explicitly ask for a copy.",
+                "evidence_reason": "The candidate explicitly expresses the listed belief that pandas methods like reset_index() mutate the DataFrame in place by default unless configured otherwise.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Basically the method mutates the frame in place unless you explicitly ask for a copy.",
+            "evidence_reason": "The candidate explicitly states that reset_index() mutates the DataFrame in place by default unless a copy is requested, which directly matches the misconception that pandas methods modify objects in place.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "Can you check what the documentation says about whether reset_index() returns a new object or modifies the DataFrame in place by default?",
+          "answer": "Sure, I looked it up and the docs say that `reset_index()` by default works **in‑place**, so it directly changes the original DataFrame’s index without returning anything special. If you don’t pass `inplace=True` it will still modify the DataFrame but also give you back the same object, essentially a reference to the mutated frame. Because of that, calling it on a separate line or chaining it doesn’t really change the behavior – the DataFrame is already updated either way. The main thing is that the function always rewrites the index on the existing object unless you explicitly ask for a copy.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.method-modifies-inplace",
+            "follow_up": "If a method returns a modified DataFrame while leaving the original object unchanged, what would happen if you printed the return value of `df.sort_values('region')` without reassigning it?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "follow_up": "If a method returns a modified DataFrame while leaving the original object unchanged, what would happen if you printed the return value of `df.sort_values('region')` without reassigning it?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the docs say that `reset_index()` by default works **in‑place**, so it directly changes the original DataFrame’s index without returning anything special.",
+                "evidence_reason": "The candidate explicitly states the listed misconception that pandas methods like reset_index modify the DataFrame in place by default rather than returning a new object.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "follow_up": "If a pandas method modifies the DataFrame in place, what does it typically return?",
+                "confidence_expressed": "high",
+                "supporting_quote": "reset_index()` by default works **in‑place**, so it directly changes the original DataFrame’s index without returning anything special.",
+                "evidence_reason": "The candidate explicitly asserts that reset_index() modifies the DataFrame in place by default, matching the misconception that pandas methods mutate the object in place rather than returning a new one.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.pandas.method-modifies-inplace",
+                "follow_up": "If a method returns a DataFrame, what happens if you assign its return value to a variable versus just calling the method on its own line?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the docs say that `reset_index()` by default works **in‑place**, so it directly changes the original DataFrame’s index without returning anything special.",
+                "evidence_reason": "The candidate explicitly states the listed misconception that reset_index() works in-place by default and modifies the original DataFrame without returning a new object.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the docs say that `reset_index()` by default works **in‑place**, so it directly changes the original DataFrame’s index without returning anything special.",
+            "evidence_reason": "The candidate explicitly states the listed misconception that pandas methods like reset_index modify the DataFrame in place by default rather than returning a new object.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate repeatedly shows the misconception that pandas methods like reset_index modify the DataFrame in place by default and do not return new objects, which directly contradicts the key points and matches a listed misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that calling reset_index() on its own line modifies the DataFrame in place, displaying the listed misconception about pandas methods modifying in place. They also fail to explain index label alignment properly.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.3256,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.2322,
+          "se": 0.6028,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-012",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.60); level 2 is nearest its estimate +0.23; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-trees-bst (ds.arrays-strings.front-insert-constant, ds.hash-tables.keys-kept-sorted)",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "I would go with a hash table because it lets us keep a direct mapping from player IDs to their scores, and we can just pull the whole structure out whenever we need the leaderboard. Since the hash table can be resized dynamically, it handles a lot of insertions without any noticeable slowdown. Also, retrieving the full list is just a matter of iterating over the hash buckets, which is straightforward to implement. In practice this gives us the simplest code and the best overall performance for both updates and reads.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "follow_up": "If you iterate over the keys of a hash table that were inserted in random order, in what order do they appear?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you iterate over the keys of a hash table that were inserted in random order, in what order do they appear?",
+            "confidence_expressed": "high",
+            "supporting_quote": "retrieving the full list is just a matter of iterating over the hash buckets, which is straightforward to implement. In practice this gives us the simplest code and the best overall performance",
+            "evidence_reason": "The candidate claims that iterating over the hash buckets directly provides the solution, explicitly expressing the belief that hash tables can yield ordered output or solve the ordered leaderboard requirement without extra sorting.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you iterate through a hash table's buckets directly as they are stored in memory, what order do the keys appear in?",
+            "confidence_expressed": "high",
+            "supporting_quote": "retrieving the full list is just a matter of iterating over the hash buckets, which is straightforward to implement. In practice this gives us the simplest code and the best overall performance",
+            "evidence_reason": "The candidate asserts that iterating directly over the hash buckets provides the leaderboard in the correct score order with best performance, directly expressing the misconception that hash tables keep keys sorted or ordered for iteration.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "retrieving the full list is just a matter of iterating over the hash buckets, which is straightforward to implement. In practice this gives us the simplest code and the best overall performance",
+        "evidence_reason": "The candidate claims that iterating over the hash buckets directly provides the solution, explicitly expressing the belief that hash tables can yield ordered output or solve the ordered leaderboard requirement without extra sorting.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you iterate over the keys of a hash table that were inserted in random order, in what order do they appear?",
+          "answer": "If you just walk through the keys of a hash table, they’ll come out in the same order you originally inserted them. The hashing function only decides where to store each entry internally, but the iteration logic preserves that insertion sequence. So you can expect the keys to be returned roughly in the order they were added, not shuffled randomly. This makes it easy to scan the table and get a predictable listing without any extra work.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you insert players with scores in random order, in what sequence will iterating over the hash table keys return them?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert players with scores in random order, in what sequence will iterating over the hash table keys return them?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you just walk through the keys of a hash table, they’ll come out in the same order you originally inserted them.",
+                "evidence_reason": "The candidate explicitly believes that iterating over a hash table yields keys in insertion order, and later claims this helps provide a predictable listing.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert player 'Z' and then player 'A' into a hash table, in what order do you expect them to appear when you iterate over the keys, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you just walk through the keys of a hash table, they’ll come out in the same order you originally inserted them.",
+                "evidence_reason": "The candidate explicitly claims that iterating over the keys of a hash table preserves the insertion sequence and produces a predictable listing.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you update a player's score later or insert scores in a completely random order, in what sequence do the keys appear when you iterate over the hash table?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If you just walk through the keys of a hash table, they’ll come out in the same order you originally inserted them.",
+                "evidence_reason": "The candidate explicitly believes that iterating over a hash table yields keys in their insertion order (which they confuse with a sorted or predictable ordered output for the leaderboard).",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "If you just walk through the keys of a hash table, they’ll come out in the same order you originally inserted them.",
+            "evidence_reason": "The candidate explicitly believes that iterating over a hash table yields keys in insertion order, and later claims this helps provide a predictable listing.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If you insert players with scores in random order, in what sequence will iterating over the hash table keys return them?",
+          "answer": "If you add the players in a random sequence, the hash table will tend to return the keys in roughly the same random pattern when you walk through it. The hashing function spreads the entries across buckets, and the iteration usually follows the internal bucket order, which ends up looking like the order the elements were hashed into. So you’ll see the keys appear in a kind of pseudo‑random order that reflects the hash distribution rather than any insertion or sorted order. In practice that means the iteration order is essentially unpredictable from the outside.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly chose a hash table for a problem requiring sorted data and showed confusion about how hash table iteration orders work, failing to select the balanced BST.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that a hash table keeps scores ordered and that iterating over hash buckets provides the leaderboard in sorted order, which is a key misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.3256,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.1096,
+          "se": 0.5549,
+          "level": 2,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 19,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 2,
+        "estimate": 0.3256,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.598903,
+        "level_probabilities": {
+          "0": 0.004218,
+          "1": 0.148681,
+          "2": 0.598903,
+          "3": 0.248198
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 3,
+        "estimate": 1.1889,
+        "se": 0.5946,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.783538,
+        "level_probabilities": {
+          "0": 2.1e-05,
+          "1": 0.006337,
+          "2": 0.210104,
+          "3": 0.783538
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 2,
+        "estimate": -0.1096,
+        "se": 0.5549,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.557069,
+        "level_probabilities": {
+          "0": 0.019504,
+          "1": 0.359071,
+          "2": 0.557069,
+          "3": 0.064356
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "fit",
+    "decision_reason": "Every skill meets the job minimum.",
+    "misconceptions": [
+      {
+        "id": "py.pandas.positional-alignment",
+        "confirmed": false,
+        "evidence_turns": [
+          4
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 0,
+            "reply_text": "The code adds the two Series element‑wise, so it just sums the numbers at the same positions in the underlying arrays, giving `[11, 22, 33]`. Converting that to a list prints `[11, 22, 33]`. The mean of those three values is `(11 + 22 + 33) / 3 = 22.0`, so `print(total.mean())` outputs `22.0`. Finally, `s1.loc[\"a\":\"b\"]` selects the values for “a” and “b”, which are 10 and 20, and their sum is `30`.",
+            "vote_share": 1.0,
+            "supporting_quote": "The code adds the two Series element‑wise, so it just sums the numbers at the same positions in the underlying arrays, giving `[11, 22, 33]`.",
+            "quote_start": 0,
+            "quote_end": 141,
+            "reason": "The candidate explicitly asserts that Series addition operates element-wise by position rather than aligning by index labels, which matches the py.pandas.positional-alignment misconception."
+          },
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 1,
+            "reply_text": "When you add the two Series, pandas just concatenates the index labels from both, so the resulting Series ends up with the combined set `[\"a\", \"b\", \"c\", \"d\"]`. The values are added in the order they appear, so the first three positions correspond to the sums of the matching elements and the last position just takes the value from `s2` because there’s nothing to add to it. In other words, the index “d” shows up with its original value from `s2`. This is why you still see four entries in the output even though the original Series had only three each.",
+            "vote_share": 1.0,
+            "supporting_quote": "The values are added in the order they appear, so the first three positions correspond to the sums of the matching elements",
+            "quote_start": 160,
+            "quote_end": 283,
+            "reason": "The candidate explains the addition by matching elements in order rather than by index labels, concluding that the elements align positionally."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.pandas.nan-treated-as-zero",
+        "confirmed": false,
+        "evidence_turns": [
+          4
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 2,
+            "reply_text": "The value at index ‘a’ would just be the original value from `s1`, because there’s nothing to add to it from `s2`. So pandas would treat the missing entry as zero and simply keep the 10 there. That means the resulting Series would have a 10 at ‘a’, and the rest of the sums would be calculated normally for the overlapping labels. In other words, the addition doesn’t change the ‘a’ entry at all.",
+            "vote_share": 1.0,
+            "supporting_quote": "pandas would treat the missing entry as zero and simply keep the 10 there",
+            "quote_start": 118,
+            "quote_end": 191,
+            "reason": "The candidate explicitly states that pandas treats the missing entry as zero during addition, which corresponds to the misconception that missing values/NaNs act like zeros."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "py.pandas.method-modifies-inplace",
+        "confirmed": false,
+        "evidence_turns": [
+          12
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-012",
+            "turn": 12,
+            "reply_index": 0,
+            "reply_text": "When we call `reset_index(drop=True)` on a separate line, it modifies the original `top` DataFrame in place, so the index values line up with the original `df` rows and the assignment works correctly for the filtered rows. By putting the reset inside the same assignment (`top = top.reset_index(drop=True)`), we create a brand‑new DataFrame that loses the connection to the original ordering, so the values get shifted when we assign them back to `df`. The first approach therefore keeps the original row numbers, while the second reindexes everything starting from zero, causing the misalignment. This is why the NaNs appear only in the first case and the values end up on the wrong rows in the second.",
+            "vote_share": 1.0,
+            "supporting_quote": "it modifies the original `top` DataFrame in place",
+            "quote_start": 58,
+            "quote_end": 107,
+            "reason": "The candidate explicitly states that calling reset_index() on its own line modifies the DataFrame in place, which matches the listed misconception that pandas methods like sort_values or reset_index mutate the object in place without needing reassignment."
+          },
+          {
+            "question_id": "PY-L3-012",
+            "turn": 12,
+            "reply_index": 1,
+            "reply_text": "I think `reset_index()` by default just returns the same DataFrame object, but with the index column added back as a regular column. It doesn’t actually create a copy unless you pass `inplace=True`. So if you call it without `inplace`, you’ll see the original index removed and a new sequential index appear, but the DataFrame you’re working with stays the same. Basically the method mutates the frame in place unless you explicitly ask for a copy.",
+            "vote_share": 1.0,
+            "supporting_quote": "Basically the method mutates the frame in place unless you explicitly ask for a copy.",
+            "quote_start": 363,
+            "quote_end": 448,
+            "reason": "The candidate explicitly states that reset_index() mutates the DataFrame in place by default unless a copy is requested, which directly matches the misconception that pandas methods modify objects in place."
+          },
+          {
+            "question_id": "PY-L3-012",
+            "turn": 12,
+            "reply_index": 2,
+            "reply_text": "Sure, I looked it up and the docs say that `reset_index()` by default works **in‑place**, so it directly changes the original DataFrame’s index without returning anything special. If you don’t pass `inplace=True` it will still modify the DataFrame but also give you back the same object, essentially a reference to the mutated frame. Because of that, calling it on a separate line or chaining it doesn’t really change the behavior – the DataFrame is already updated either way. The main thing is that the function always rewrites the index on the existing object unless you explicitly ask for a copy.",
+            "vote_share": 1.0,
+            "supporting_quote": "the docs say that `reset_index()` by default works **in‑place**, so it directly changes the original DataFrame’s index without returning anything special.",
+            "quote_start": 25,
+            "quote_end": 179,
+            "reason": "The candidate explicitly states the listed misconception that pandas methods like reset_index modify the DataFrame in place by default rather than returning a new object."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.hash-tables.keys-kept-sorted",
+        "confirmed": false,
+        "evidence_turns": [
+          13
+        ],
+        "vote_share": 0.833,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-001",
+            "turn": 13,
+            "reply_index": 0,
+            "reply_text": "I would go with a hash table because it lets us keep a direct mapping from player IDs to their scores, and we can just pull the whole structure out whenever we need the leaderboard. Since the hash table can be resized dynamically, it handles a lot of insertions without any noticeable slowdown. Also, retrieving the full list is just a matter of iterating over the hash buckets, which is straightforward to implement. In practice this gives us the simplest code and the best overall performance for both updates and reads.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "retrieving the full list is just a matter of iterating over the hash buckets, which is straightforward to implement. In practice this gives us the simplest code and the best overall performance",
+            "quote_start": 301,
+            "quote_end": 494,
+            "reason": "The candidate claims that iterating over the hash buckets directly provides the solution, explicitly expressing the belief that hash tables can yield ordered output or solve the ordered leaderboard requirement without extra sorting."
+          },
+          {
+            "question_id": "DS-L2-001",
+            "turn": 13,
+            "reply_index": 1,
+            "reply_text": "If you just walk through the keys of a hash table, they’ll come out in the same order you originally inserted them. The hashing function only decides where to store each entry internally, but the iteration logic preserves that insertion sequence. So you can expect the keys to be returned roughly in the order they were added, not shuffled randomly. This makes it easy to scan the table and get a predictable listing without any extra work.",
+            "vote_share": 1.0,
+            "supporting_quote": "If you just walk through the keys of a hash table, they’ll come out in the same order you originally inserted them.",
+            "quote_start": 0,
+            "quote_end": 115,
+            "reason": "The candidate explicitly believes that iterating over a hash table yields keys in insertion order, and later claims this helps provide a predictable listing."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.bfs-weighted-shortest",
+      "ds.graphs.dfs-finds-shortest",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.stacks-queues.recursion-free-memory",
+      "ds.trees-bst.always-balanced",
+      "ds.trees-bst.inorder-not-sorted",
+      "ds.trees-bst.insert-scans-all-keys",
+      "ds.trees-bst.only-check-children",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.subqueries-cte.in-subquery-duplicates",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-pandas",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "untested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "sql-select-filter",
+        "ds-complexity"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: fit. Every skill meets the job minimum. Estimated levels: py level 2 (needs 2), sql level 3 (needs 2), ds level 2 (needs 1). Suspected (insufficient corroboration) misconception: Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN. Suspected (insufficient corroboration) misconception: Believes missing values (NaN) count as 0 in aggregations such as mean() or sum(), not knowing pandas skips them by default. Suspected (insufficient corroboration) misconception: Believes DataFrame methods such as sort_values(), dropna() or drop() change the DataFrame they are called on, not knowing they return a new object that must be assigned. Suspected (insufficient corroboration) misconception: Believes a hash table stores its keys in sorted order, so iterating over it yields keys sorted and it can produce ordered output or the smallest key without extra sorting."
+  },
+  "usage": {
+    "llm_calls": 106,
+    "api_calls": 9,
+    "input_tokens": 130902,
+    "output_tokens": 8859,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 106,
+        "api_calls": 9,
+        "input_tokens": 130902,
+        "output_tokens": 8859
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 3,
+      "ds": 2
+    },
+    "fit": true,
+    "misconceptions": [
+      "sql.select-filter.and-or-precedence"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

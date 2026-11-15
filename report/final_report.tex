@@ -97,7 +97,7 @@ research questions:
   the fixed interview passed one unfit candidate.
 \end{itemize}
 
-\section{Related work}
+\section{Literature review}
 
 \paragraph{Theory of mind.} Premack and Woodruff introduced the term for the capacity to attribute
 mental states, such as knowledge, belief and purpose, to others \cite{premack1978}. Rabinowitz et al.\
@@ -421,6 +421,7 @@ Interviewer LLM calls & \fCallsBOne{} & \fCallsAdapt{} & \fCallsFull{} & \fCalls
 \end{table}
 
 \subsection{RQ1: skill levels and length}
+\label{sec:rq1}
 
 \begin{figure}[h]
 \centering
@@ -464,6 +465,7 @@ human (between a third and 60\%), because the 0.8 rule demands a clear margin ab
 \end{figure}
 
 \subsection{RQ2: does the theory of mind help?}
+\label{sec:rq2}
 
 \begin{figure}[h]
 \centering
@@ -534,6 +536,7 @@ question when the estimate is close to a cut point, or requiring most of the pos
 level, would address this; the second rule was implemented (A2EB) but not run live.
 
 \subsection{Job-aware question choice}
+\label{sec:jobaware}
 
 A5E differs from A2E only in ignoring the job description when choosing questions. It tested fewer
 of the job's required topics (\fCoverageBlind{} against \fCoverageFull{}, a difference of
@@ -547,6 +550,44 @@ makes the interview cover the job, without a measurable effect on accuracy at th
 
 A2E made \fCallsFull{} interviewer-side LLM calls per interview against \fCallsBOne{} for B1: three
 grading and three diagnosis votes per answer, including correct ones. A4 needed \fCallsAfour{}.
+
+\section{Ablations}
+\label{sec:ablations}
+
+Three of the five systems are ablations: each removes one part of the full system (A2E) or of the
+adaptive engine and keeps everything else, so the difference measures that part alone. All run on
+the same \fN{} candidates.
+
+\begin{table}[h]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}l X X@{}}
+\toprule
+Ablation & Part removed & Effect of removing it \\
+\midrule
+A4 & The theory of mind: one diagnosis instead of three votes, no quote check, no belief testing on
+a second question, confirmation after one reply &
+Precision falls from \fPrecisionFull{} to \fPrecisionAfour{} (A2E ahead by \fFullVsAfourPrecisionDiff{}
+points, \ci{\fFullVsAfourPrecisionLow}{\fFullVsAfourPrecisionHigh}); recall rises from \fRecallFull{}
+to \fRecallAfour{}; skill levels improve from \fAccFull{} to \fAccAfour{} (Section~\ref{sec:levels-why}) \\
+ADAPT12 & Diagnosis, follow-ups and early stopping, keeping adaptive question choice at the fixed
+length of 12 &
+Against the fixed list B1 at equal length: \fAccAdapt{} against \fAccBOne{} of levels right
+(\fAdaptVsFixedSkillAccuracyDiff{} points, \ci{\fAdaptVsFixedSkillAccuracyLow}{\fAdaptVsFixedSkillAccuracyHigh}) \\
+A5E & Use of the job description when choosing questions &
+Required job topics tested fall from \fCoverageFull{} to \fCoverageBlind{}
+(\fBlindVsFullTopicCoverageDiff{} points, \ci{\fBlindVsFullTopicCoverageLow}{\fBlindVsFullTopicCoverageHigh}); no measurable change in
+levels or recall \\
+\bottomrule
+\end{tabularx}
+\caption{What each component contributes. Details in Sections~\ref{sec:rq1}, \ref{sec:rq2} and
+\ref{sec:jobaware}.}
+\label{tab:ablations}
+\end{table}
+
+\noindent Each part does what it was built for: the theory of mind makes belief attributions
+trustworthy, adaptive choice places candidates better at a fixed length, and job-aware retrieval
+covers the job. The A4 ablation also shows the one interaction that hurts: probing beliefs costs
+level accuracy.
 
 \section{Discussion}
 

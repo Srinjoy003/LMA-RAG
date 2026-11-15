@@ -1,0 +1,2103 @@
+{
+  "interview_id": "A5E-data-analyst-CAND-016-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-016",
+  "started_at": "2026-11-14T06:02:45Z",
+  "finished_at": "2026-11-14T06:03:37Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "`try` encloses the code that may raise an exception; when an exception occurs the rest of the `try` block is skipped and Python jumps to the first `except` clause (checked in order) whose type matches, executes that handler, then continues after the whole `try/except/else/finally` statement. `else` runs only if the `try` block finishes without any exception, and `finally` is executed every time—whether the block ends normally, raises, or returns—just before control actually leaves the `try` statement.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, including the execution flow after a raise, the top-to-bottom first-match order for except clauses, the condition for else, and that finally runs even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, including the execution flow after a raise, the top-to-bottom first-match order for except clauses, the condition for else, and that finally runs even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "It will list Asha with 2 orders totaling 330 and Chen with 1 order (the NULL amount), but Ben won’t appear at all because he has no matching rows in orders.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.left-join-drops-unmatched",
+        "follow_up": "What does a LEFT JOIN do with rows from the left table that do not find a match in the right table?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "What does a LEFT JOIN do with rows from the left table that do not find a match in the right table?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Ben won’t appear at all because he has no matching rows in orders.",
+            "evidence_reason": "The candidate explicitly states that a customer with no matching orders will not appear in the result of a LEFT JOIN, which matches the listed misconception that LEFT JOIN drops unmatched left-table rows.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "What does a LEFT JOIN do when a row from the left table has no matching record in the right table?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Ben won’t appear at all because he has no matching rows in orders.",
+            "evidence_reason": "The candidate explicitly states that Ben will not appear because he has no matching orders, which directly demonstrates the belief that LEFT JOIN drops unmatched rows from the left table.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "What does a LEFT JOIN do with rows from the left table that do not find a match in the right table?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Ben won’t appear at all because he has no matching rows in orders.",
+            "evidence_reason": "The candidate explicitly states that Ben will not appear because he has no matching rows, which directly matches the misconception that LEFT JOIN drops left-table rows without a match.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Ben won’t appear at all because he has no matching rows in orders.",
+        "evidence_reason": "The candidate explicitly states that a customer with no matching orders will not appear in the result of a LEFT JOIN, which matches the listed misconception that LEFT JOIN drops unmatched left-table rows.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What does a LEFT JOIN do with rows from the left table that do not find a match in the right table?",
+          "answer": "A LEFT JOIN removes any rows from the left table that don’t find a matching row in the right table, effectively behaving like an INNER JOIN for those unmatched rows.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "If a customer in the left table has no matching rows in the right table, what does a LEFT JOIN output for the columns coming from the right table?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.left-join-drops-unmatched",
+                "follow_up": "If a customer in the left table has no matching rows in the right table, what does a LEFT JOIN output for the columns coming from the right table?",
+                "confidence_expressed": "high",
+                "supporting_quote": "A LEFT JOIN removes any rows from the left table that don’t find a matching row in the right table, effectively behaving like an INNER JOIN for those unmatched rows.",
+                "evidence_reason": "The candidate explicitly states that a LEFT JOIN removes unmatched rows from the left table, which directly matches the misconception sql.joins.left-join-drops-unmatched.",
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.left-join-drops-unmatched",
+                "follow_up": "What does a LEFT JOIN do with rows from the left table that have no matching rows in the right table?",
+                "confidence_expressed": "high",
+                "supporting_quote": "A LEFT JOIN removes any rows from the left table that don’t find a matching row in the right table",
+                "evidence_reason": "The candidate explicitly states that a LEFT JOIN removes unmatched rows from the left table, which directly matches the misconception sql.joins.left-join-drops-unmatched.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "A LEFT JOIN removes any rows from the left table that don’t find a matching row in the right table, effectively behaving like an INNER JOIN for those unmatched rows.",
+            "evidence_reason": "The candidate explicitly states that a LEFT JOIN removes unmatched rows from the left table, which directly matches the misconception sql.joins.left-join-drops-unmatched.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a customer in the left table has no matching rows in the right table, what does a LEFT JOIN output for the columns coming from the right table?",
+          "answer": "If a customer has no matching row in orders, the LEFT JOIN drops that customer entirely, so the columns from the right table simply don’t appear (they’re omitted) in the result.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "What happens to the columns from the right table for a customer who has no matching orders when using a LEFT JOIN?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.left-join-drops-unmatched",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "the LEFT JOIN drops that customer entirely",
+                "evidence_reason": "The candidate explicitly states that a LEFT JOIN drops unmatched rows from the left table, which directly matches the listed misconception sql.joins.left-join-drops-unmatched.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.left-join-drops-unmatched",
+                "follow_up": "What happens to the columns from the right table for a customer who has no matching orders when using a LEFT JOIN?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If a customer has no matching row in orders, the LEFT JOIN drops that customer entirely",
+                "evidence_reason": "The candidate explicitly states that a LEFT JOIN drops unmatched rows from the left table entirely, directly matching the listed misconception sql.joins.left-join-drops-unmatched.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.left-join-drops-unmatched",
+                "follow_up": "What does 'left' in LEFT JOIN signify about which table's rows are guaranteed to be in the final result?",
+                "confidence_expressed": "high",
+                "supporting_quote": "If a customer has no matching row in orders, the LEFT JOIN drops that customer entirely",
+                "evidence_reason": "The candidate explicitly states that a customer with no matching row in orders is dropped entirely by the LEFT JOIN, matching the misconception that LEFT JOIN drops unmatched left-table rows.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the LEFT JOIN drops that customer entirely",
+            "evidence_reason": "The candidate explicitly states that a LEFT JOIN drops unmatched rows from the left table, which directly matches the listed misconception sql.joins.left-join-drops-unmatched.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claimed that a LEFT JOIN removes unmatched rows from the left table, explicitly showing the misconception that LEFT JOIN drops unmatched rows. According to the rubric and listed misconceptions, this warrants a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claimed that Ben will not appear because of the LEFT JOIN, which demonstrates a fundamental misconception about left joins dropping unmatched rows.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.joins.left-join-drops-unmatched",
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map stores the cached items for fast key‑based retrieval while the doubly linked list maintains a sequence that we can scan to find the oldest entry, and on a hit we simply move the accessed element to the front of that list, which lets both get and put appear to run in constant time on average.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does the list help you find the oldest entry in O(1) time without scanning?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the list help you find the oldest entry in O(1) time without scanning?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the linked list help us find the oldest entry in O(1) time without scanning through the sequence?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.lookup-is-linear",
+            "follow_up": "How does the hash map find the correct entry for a given key, and does it need to examine other entries to do so?",
+            "confidence_expressed": "medium",
+            "supporting_quote": "while the doubly linked list maintains a sequence that we can scan to find the oldest entry",
+            "evidence_reason": "The candidate asserts that the purpose of the linked list is to scan it to find the oldest entry, implying a linear scan approach rather than directly accessing the tail in O(1) time.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the roles of both the hash map and the doubly linked list, including moving an accessed element to the front on a hit, but misses the pointer-level details of how the list manipulation works and why the operations achieve O(1) time without scanning.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the roles of both the hash map and the doubly linked list, including moving an accessed element to the front on a hit, but misses the pointer-level details of how the list manipulation works and why the operations achieve O(1) time without scanning.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: py.pandas.loc-end-exclusive, py.pandas.nan-treated-as-zero, py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ns1 = pd.Series([10, 20, 30], index=[\"a\", \"b\", \"c\"])\ns2 = pd.Series([1, 2, 3], index=[\"b\", \"c\", \"d\"])\ntotal = s1 + s2\nprint(total.tolist())\nprint(total.mean())\nprint(s1.loc[\"a\":\"b\"].sum())",
+      "answer": "The addition aligns the Series by their index labels, so only “b” (20 + 1 = 21) and “c” (30 + 2 = 32) have values while “a” and “d” become NaN, giving `[nan, 21.0, 32.0, nan]`; the mean skips NaNs and returns (21 + 32)/2 = 26.5; and `s1.loc[\"a\":\"b\"]` includes both endpoints, so the sum is 10 + 20 = 30.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained index alignment resulting in NaNs, the NaN-skipping behavior for the mean calculation, and the inclusive nature of label-based slicing with .loc.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained index alignment resulting in NaNs, the NaN-skipping behavior for the mean calculation, and the inclusive nature of label-based slicing with .loc.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-null",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-null (sql.null.equals-null-matches, sql.null.not-equal-includes-null)",
+      "prompt": "A colleague wrote this query to list every customer who is not in Pune, including customers with no city recorded. What does it return, and why?\n\nSELECT name\nFROM customers\nWHERE city <> 'Pune' OR city = NULL\nORDER BY name;\n\nTable customers:\nid | name | city\n1 | Asha | Pune\n2 | Ben | NULL\n3 | Chen | Delhi\n4 | Dana | Mumbai\n5 | Eli | NULL",
+      "answer": "The query returns only “Chen” and “Dana”. For rows where city is NULL, the expression city <> 'Pune' evaluates to UNKNOWN and city = NULL is never true, so those rows are filtered out; only the non‑NULL cities that are not “Pune” satisfy the WHERE clause.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the returned rows as Chen and Dana, and accurately explained that comparisons with NULL evaluate to UNKNOWN or are never true, meeting all key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the returned rows as Chen and Dana, and accurately explained that comparisons with NULL evaluate to UNKNOWN or are never true, meeting all key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.8273,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.83); level 2 is nearest its estimate +0.00; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-hash-tables (ds.arrays-strings.front-insert-constant, ds.hash-tables.keys-kept-sorted, ds.trees-bst.inorder-not-sorted)",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "I’d use a hash table because it keeps the keys in sorted order automatically, so iterating over it gives the players from lowest to highest score without any extra work. This makes both inserting new scores and listing the whole leaderboard fast and simple.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "follow_up": "What happens to the internal layout or positions of existing keys in a hash table when many new entries are added, and how does that relate to their order?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "What happens to the internal layout or positions of existing keys in a hash table when many new entries are added, and how does that relate to their order?",
+            "confidence_expressed": "high",
+            "supporting_quote": "I’d use a hash table because it keeps the keys in sorted order automatically",
+            "evidence_reason": "The candidate explicitly asserts that a hash table automatically maintains its keys in sorted order, which directly matches the misconception ds.hash-tables.keys-kept-sorted.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "What order does a standard hash table return keys in when you iterate over it?",
+            "confidence_expressed": "high",
+            "supporting_quote": "I’d use a hash table because it keeps the keys in sorted order automatically",
+            "evidence_reason": "The candidate explicitly asserts that a hash table automatically stores and keeps its keys in sorted order, which directly matches the listed misconception ds.hash-tables.keys-kept-sorted.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "What happens to the internal order of keys in a standard hash table when new elements are inserted, and how does Python's dictionary handle order?",
+            "confidence_expressed": "high",
+            "supporting_quote": "a hash table because it keeps the keys in sorted order automatically",
+            "evidence_reason": "The candidate explicitly states the belief that a hash table automatically maintains its keys in sorted order, which matches misconception ds.hash-tables.keys-kept-sorted.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "I’d use a hash table because it keeps the keys in sorted order automatically",
+        "evidence_reason": "The candidate explicitly asserts that a hash table automatically maintains its keys in sorted order, which directly matches the misconception ds.hash-tables.keys-kept-sorted.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the internal layout or positions of existing keys in a hash table when many new entries are added, and how does that relate to their order?",
+          "answer": "When many new entries are added, the hash table simply places each new key in its own bucket based on the hash value, but the existing keys stay in the same positions, so their relative order remains unchanged.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would you get the full sorted list of players from the hash table after inserting several new scores?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": "How would you get the full sorted list of players from the hash table after inserting several new scores?",
+                "confidence_expressed": "medium",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "What happens to the order of keys when you iterate over a standard hash table in Python?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the existing keys stay in the same positions, so their relative order remains unchanged",
+                "evidence_reason": "The candidate asserts that hash tables maintain key positions and relative order, which directly expresses the listed misconception that hash tables store their keys in a sorted or stable relative order that facilitates ordered output.",
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": "How would you implement listing all players in score order from a hash table?",
+                "confidence_expressed": "medium",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "medium",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly claimed that a hash table keeps keys in sorted order automatically, which is a listed misconception (ds.hash-tables.keys-kept-sorted) and failed to correct this view in the follow-up.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate chose a hash table and claimed it keeps keys in sorted order automatically, which is a core misconception listed in the rubric resulting in a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; lists misconceptions not yet probed: py.concurrency.async-multithreaded, py.concurrency.async-preempts, py.concurrency.gil-thread-safe",
+      "prompt": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+      "answer": "`counter += 1` isn’t atomic: each thread reads the current value, adds one and writes it back, and the interpreter can switch between those steps, so two threads can read the same value and one increment gets lost (the final result can be as low as 199,999). The GIL does not prevent this; you need a `threading.Lock`. With asyncio, all coroutines run on a single thread and only switch on an `await`, so an increment that contains no await cannot be interrupted and no race occurs.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that counter += 1 is not atomic and subject to a race condition in multithreading despite the GIL, mentions the lock solution, and accurately explains that asyncio runs on a single thread and only yields control at await points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that counter += 1 is not atomic and subject to a race condition in multithreading despite the GIL, mentions the lock solution, and accurately explains that asyncio runs on a single thread and only yields control at await points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "slip",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-joins"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; lists a suspected misconception to confirm: sql.joins.left-join-drops-unmatched",
+      "prompt": "Explain what the ON condition in a join does, and how INNER JOIN and LEFT JOIN between customers and orders differ for a customer who has no orders. If you then add WHERE o.status = 'paid' to the LEFT JOIN query, is that customer still in the result?",
+      "answer": "The ON clause tells the database how to match rows from the two tables, and a LEFT JOIN works just like an INNER JOIN in that it only returns rows where the join condition finds a match—so a customer with no orders won’t show up at all. Adding WHERE o.status = 'paid' doesn’t change that; the customer still isn’t included in the result.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.left-join-drops-unmatched",
+        "follow_up": "What happens to the columns from the orders table for a customer who has no matching orders when you use a LEFT JOIN instead of an INNER JOIN?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "What happens to the columns from the orders table for a customer who has no matching orders when you use a LEFT JOIN instead of an INNER JOIN?",
+            "confidence_expressed": "high",
+            "supporting_quote": "a LEFT JOIN works just like an INNER JOIN in that it only returns rows where the join condition finds a match—so a customer with no orders won’t show up at all.",
+            "evidence_reason": "The candidate explicitly states that a LEFT JOIN works just like an INNER JOIN and drops rows with no match, which matches the misconception sql.joins.left-join-drops-unmatched.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "What would you expect the output columns and rows to look like for a customer with no orders when using a LEFT JOIN versus an INNER JOIN?",
+            "confidence_expressed": "high",
+            "supporting_quote": "a LEFT JOIN works just like an INNER JOIN in that it only returns rows where the join condition finds a match—so a customer with no orders won’t show up at all",
+            "evidence_reason": "The candidate explicitly states that LEFT JOIN works just like an INNER JOIN and drops unmatched rows, directly matching the listed misconception.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "What happens to the columns from the orders table if you select from a LEFT JOIN between customers and orders for a customer who has no matching orders?",
+            "confidence_expressed": "high",
+            "supporting_quote": "a LEFT JOIN works just like an INNER JOIN in that it only returns rows where the join condition finds a match—so a customer with no orders won’t show up at all",
+            "evidence_reason": "The candidate explicitly states that a LEFT JOIN works just like an INNER JOIN and drops rows with no match, which matches the misconception that LEFT JOIN drops unmatched rows.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "a LEFT JOIN works just like an INNER JOIN in that it only returns rows where the join condition finds a match—so a customer with no orders won’t show up at all.",
+        "evidence_reason": "The candidate explicitly states that a LEFT JOIN works just like an INNER JOIN and drops rows with no match, which matches the misconception sql.joins.left-join-drops-unmatched.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that a LEFT JOIN works like an INNER JOIN and drops rows with no match, demonstrating a fundamental misunderstanding of LEFT JOIN behavior. They also show the misconception that the WHERE filter keeps unmatched rows because they believe the row was already excluded.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that a LEFT JOIN works like an INNER JOIN and drops rows with no match, demonstrating a fundamental misunderstanding of LEFT JOIN behavior. They also show the misconception that the WHERE filter keeps unmatched rows because they believe the row was already excluded.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.5168,
+          "se": 0.7264,
+          "level": 1,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "sql.joins.left-join-drops-unmatched",
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 1 is nearest its estimate -0.52; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-arrays-strings (ds.arrays-strings.strings-mutable, ds.sorting-searching.sort-not-stable)",
+      "prompt": "What does this code print, and why? Pay attention to the words that have the same length.\n\nwords = [\"kiwi\", \"fig\", \"apple\", \"pear\", \"date\"]\nwords.sort(key=len)\nfirst = words[0]\nfirst.upper()\nprint(words)\nprint(first)\n",
+      "answer": "It prints `['fig', 'kiwi', 'pear', 'date', 'apple']` followed by `fig` because sorting by length puts the 3‑letter word “fig” first, the 5‑letter “apple” last, and the three 4‑letter words stay in their original order (the sort is stable); `first.upper()` creates a new string but does not modify `first`, so `first` remains “fig”.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the sorted list order, the stability of Python's sort for equal-length words, and the immutability of strings explaining why `first` remains unchanged.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the sorted list order, the stability of Python's sort for equal-length words, and the immutability of strings explaining why `first` remains unchanged.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists misconceptions not yet probed: py.comprehensions-generators.generator-eager, py.comprehensions-generators.yield-is-return, py.functions-scope.closure-captures-value",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "It will print “created” followed by “3 [2, 1]” and then a list of three zeros, because the generator yields the numbers and the scaled comprehension multiplies each by the initial step value of 1, which results in zeros when the range is empty.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.functions-scope.closure-captures-value",
+        "follow_up": "What value does step have when print(list(scaled)) actually executes?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.functions-scope.closure-captures-value",
+            "follow_up": "What value does step have when print(list(scaled)) actually executes?",
+            "confidence_expressed": "high",
+            "supporting_quote": "multiplies each by the initial step value of 1",
+            "evidence_reason": "The candidate explicitly asserts that the generator expression uses the initial step value of 1 rather than the updated value.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.functions-scope.closure-captures-value",
+            "follow_up": "What value does step have at the moment list(scaled) actually runs?",
+            "confidence_expressed": "high",
+            "supporting_quote": "multiplies each by the initial step value of 1",
+            "evidence_reason": "The candidate explicitly believes the generator expression uses the value of step from when it was initially defined (1) rather than looking it up when it is consumed.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.functions-scope.closure-captures-value",
+            "follow_up": "What value does step have at the exact moment list(scaled) is evaluated?",
+            "confidence_expressed": "high",
+            "supporting_quote": "multiplies each by the initial step value of 1",
+            "evidence_reason": "The candidate explicitly believes that the generator expression captured the initial value of step (1) when it was created, rather than looking it up dynamically when evaluated.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "multiplies each by the initial step value of 1",
+        "evidence_reason": "The candidate explicitly asserts that the generator expression uses the initial step value of 1 rather than the updated value.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What value does step have when print(list(scaled)) actually executes?",
+          "answer": "When `print(list(scaled))` runs, `step` is still 1, because the generator expression captured the value of `step` at the time it was defined.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "py.functions-scope.closure-captures-value",
+            "follow_up": "What happens to the output of list(scaled) if you change step = 10 to step = 5 before printing?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "py.functions-scope.closure-captures-value",
+                "follow_up": "What happens to the output of list(scaled) if you change step = 10 to step = 5 before printing?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the generator expression captured the value of `step` at the time it was defined.",
+                "evidence_reason": "The candidate explicitly asserts that the generator expression captured the value of step when it was defined rather than looking it up when consumed.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.functions-scope.closure-captures-value",
+                "follow_up": "What happens if you change the value of `step` right before calling `print(list(scaled))` versus when it was defined, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the generator expression captured the value of `step` at the time it was defined.",
+                "evidence_reason": "The candidate explicitly states that the generator expression captures the value of step at definition time, which matches the misconception about deferred lookup / closure value binding.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.functions-scope.closure-captures-value",
+                "follow_up": "What happens to the output of `list(scaled)` if you change `step = 10` before printing it?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the generator expression captured the value of `step` at the time it was defined",
+                "evidence_reason": "The candidate explicitly states that the generator expression captures the value of step at definition time, which matches the belief that free variables in closures or generator expressions are evaluated immediately rather than dynamically looked up when consumed.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the generator expression captured the value of `step` at the time it was defined.",
+            "evidence_reason": "The candidate explicitly asserts that the generator expression captured the value of step when it was defined rather than looking it up when consumed.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens to the output of list(scaled) if you change step = 10 to step = 5 before printing?",
+          "answer": "If you change `step` to 5, the `scaled` generator will now multiply each value by 5, so `list(scaled)` will output `[0, 5, 10]` instead of the original list.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "py.functions-scope.closure-captures-value",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "the `scaled` generator will now multiply each value by 5, so `list(scaled)` will output `[0, 5, 10]` instead of the original list.",
+                "evidence_reason": "The candidate asserts that changing step to 5 makes the output use 5 instead of 10, which relies on the misconception that the generator expression captured the value of step when it was defined (now assumed to be 5 instead of the earlier 1).",
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the generator output parts, but in the follow-up replies clearly demonstrated the misconception that generator expressions capture variables eagerly when defined rather than looking them up lazily when evaluated.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          0,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate incorrectly stated that the scaled comprehension uses the initial step value of 1 (resulting in zeros) rather than the updated value of 10, and gave an incomplete final output.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.6097,
+          "se": 0.6501,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-schema-constraints",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.65); level 1 is nearest its estimate -0.61; lists misconceptions not yet probed: sql.schema-constraints.fk-must-be-unique, sql.schema-constraints.pk-needs-distinct, sql.select-filter.distinct-per-column",
+      "prompt": "orders.id is the primary key and orders.customer_id is a foreign key to customers.id. What does this query return, and why? Would SELECT DISTINCT id FROM orders return fewer rows than SELECT id FROM orders?\n\nSELECT DISTINCT customer_id, status\nFROM orders\nORDER BY customer_id, status;\n\nTable orders:\nid | customer_id | status\n101 | 1 | paid\n102 | 1 | paid\n103 | 2 | refunded\n104 | 1 | refunded\n105 | 3 | paid",
+      "answer": "The query returns four rows – (1, paid), (1, refunded), (2, refunded) and (3, paid) – because DISTINCT removes only the duplicate (customer_id, status) pair (the two “paid” rows for customer 1) while still showing customer 1 twice since its status differs; a foreign‑key value can appear many times, so customer_id is not unique, whereas SELECT DISTINCT id would return the same five rows as SELECT id because id is already a primary key and therefore unique.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all four rows returned by the query, explained that DISTINCT applies to the combination of columns, noted that foreign keys can repeat while primary keys cannot, and correctly stated that SELECT DISTINCT id returns all five rows because the id is unique.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified all four rows returned by the query, explained that DISTINCT applies to the combination of columns, noted that foreign keys can repeat while primary keys cannot, and correctly stated that SELECT DISTINCT id returns all five rows because the id is unique.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.1907,
+          "se": 0.6469,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-004",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.65); level 2 is nearest its estimate -0.19; lists a suspected misconception to confirm: ds.hash-tables.keys-kept-sorted",
+      "prompt": "You keep a Python dict that maps about 100,000 product names to their prices. What does it cost to (a) get one product's price, (b) list all products in alphabetical order, and (c) find the cheapest product? Explain each.",
+      "answer": "Getting a single price is O(1) because the dict is a hash table. Listing all products alphabetically is just a linear scan, O(n), since the keys are already stored in sorted order. Finding the cheapest product is also O(1) because the smallest key is directly accessible.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "follow_up": "If you add a product with a name that starts with 'Z' to the dictionary first and then add a product starting with 'A', what order do the keys appear in when you loop over the dictionary?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you add a product with a name that starts with 'Z' to the dictionary first and then add a product starting with 'A', what order do the keys appear in when you loop over the dictionary?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Listing all products alphabetically is just a linear scan, O(n), since the keys are already stored in sorted order.",
+            "evidence_reason": "The candidate explicitly claims that the keys are already stored in sorted order in the hash table.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you add products with names in random order, in what order do they come out when you loop over the dictionary?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Listing all products alphabetically is just a linear scan, O(n), since the keys are already stored in sorted order.",
+            "evidence_reason": "The candidate explicitly states that the keys are already stored in sorted order, which directly matches the misconception that a hash table keeps its keys sorted.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you insert 'banana' and then 'apple' into a fresh dictionary, what order do they appear in when you iterate over the dictionary keys?",
+            "confidence_expressed": "high",
+            "supporting_quote": "Listing all products alphabetically is just a linear scan, O(n), since the keys are already stored in sorted order.",
+            "evidence_reason": "The candidate explicitly states that keys are stored in sorted order, which directly matches the listed misconception ds.hash-tables.keys-kept-sorted.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "Listing all products alphabetically is just a linear scan, O(n), since the keys are already stored in sorted order.",
+        "evidence_reason": "The candidate explicitly claims that the keys are already stored in sorted order in the hash table.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that dictionary keys are stored in sorted order, leading to misconceptions for both listing alphabetically and finding the cheapest product. Although lookup is correctly identified as O(1), the presence of the listed misconception ds.hash-tables.keys-kept-sorted results in a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that dictionary keys are stored in sorted order, leading to misconceptions for both listing alphabetically and finding the cheapest product. Although lookup is correctly identified as O(1), the presence of the listed misconception ds.hash-tables.keys-kept-sorted results in a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -0.3256,
+          "se": 0.5914,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.5046,
+          "se": 0.5905,
+          "level": 1,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-004",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 17,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 1.1889,
+        "se": 0.5946,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.783538,
+        "level_probabilities": {
+          "0": 2.1e-05,
+          "1": 0.006337,
+          "2": 0.210104,
+          "3": 0.783538
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 1,
+        "estimate": -0.3256,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.483581,
+        "level_probabilities": {
+          "0": 0.052999,
+          "1": 0.483581,
+          "2": 0.424654,
+          "3": 0.038767
+        },
+        "meets_minimum": null
+      },
+      "ds": {
+        "level": 1,
+        "estimate": -0.5046,
+        "se": 0.5905,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.554589,
+        "level_probabilities": {
+          "0": 0.095779,
+          "1": 0.554589,
+          "2": 0.331734,
+          "3": 0.017897
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "needs_review",
+    "decision_reason": "Not enough evidence: cannot tell whether sql reaches level 2.",
+    "misconceptions": [
+      {
+        "id": "sql.joins.left-join-drops-unmatched",
+        "confirmed": true,
+        "evidence_turns": [
+          2,
+          8
+        ],
+        "vote_share": 0.917,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 0,
+            "reply_text": "It will list Asha with 2 orders totaling 330 and Chen with 1 order (the NULL amount), but Ben won’t appear at all because he has no matching rows in orders.",
+            "vote_share": 1.0,
+            "supporting_quote": "Ben won’t appear at all because he has no matching rows in orders.",
+            "quote_start": 90,
+            "quote_end": 156,
+            "reason": "The candidate explicitly states that a customer with no matching orders will not appear in the result of a LEFT JOIN, which matches the listed misconception that LEFT JOIN drops unmatched left-table rows."
+          },
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 1,
+            "reply_text": "A LEFT JOIN removes any rows from the left table that don’t find a matching row in the right table, effectively behaving like an INNER JOIN for those unmatched rows.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "A LEFT JOIN removes any rows from the left table that don’t find a matching row in the right table, effectively behaving like an INNER JOIN for those unmatched rows.",
+            "quote_start": 0,
+            "quote_end": 165,
+            "reason": "The candidate explicitly states that a LEFT JOIN removes unmatched rows from the left table, which directly matches the misconception sql.joins.left-join-drops-unmatched."
+          },
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 2,
+            "reply_text": "If a customer has no matching row in orders, the LEFT JOIN drops that customer entirely, so the columns from the right table simply don’t appear (they’re omitted) in the result.",
+            "vote_share": 1.0,
+            "supporting_quote": "the LEFT JOIN drops that customer entirely",
+            "quote_start": 45,
+            "quote_end": 87,
+            "reason": "The candidate explicitly states that a LEFT JOIN drops unmatched rows from the left table, which directly matches the listed misconception sql.joins.left-join-drops-unmatched."
+          },
+          {
+            "question_id": "SQL-L2-012",
+            "turn": 8,
+            "reply_index": 0,
+            "reply_text": "The ON clause tells the database how to match rows from the two tables, and a LEFT JOIN works just like an INNER JOIN in that it only returns rows where the join condition finds a match—so a customer with no orders won’t show up at all. Adding WHERE o.status = 'paid' doesn’t change that; the customer still isn’t included in the result.",
+            "vote_share": 1.0,
+            "supporting_quote": "a LEFT JOIN works just like an INNER JOIN in that it only returns rows where the join condition finds a match—so a customer with no orders won’t show up at all.",
+            "quote_start": 76,
+            "quote_end": 236,
+            "reason": "The candidate explicitly states that a LEFT JOIN works just like an INNER JOIN and drops rows with no match, which matches the misconception sql.joins.left-join-drops-unmatched."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "ds.hash-tables.keys-kept-sorted",
+        "confirmed": true,
+        "evidence_turns": [
+          6,
+          12
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-001",
+            "turn": 6,
+            "reply_index": 0,
+            "reply_text": "I’d use a hash table because it keeps the keys in sorted order automatically, so iterating over it gives the players from lowest to highest score without any extra work. This makes both inserting new scores and listing the whole leaderboard fast and simple.",
+            "vote_share": 1.0,
+            "supporting_quote": "I’d use a hash table because it keeps the keys in sorted order automatically",
+            "quote_start": 0,
+            "quote_end": 76,
+            "reason": "The candidate explicitly asserts that a hash table automatically maintains its keys in sorted order, which directly matches the misconception ds.hash-tables.keys-kept-sorted."
+          },
+          {
+            "question_id": "DS-L2-004",
+            "turn": 12,
+            "reply_index": 0,
+            "reply_text": "Getting a single price is O(1) because the dict is a hash table. Listing all products alphabetically is just a linear scan, O(n), since the keys are already stored in sorted order. Finding the cheapest product is also O(1) because the smallest key is directly accessible.",
+            "vote_share": 1.0,
+            "supporting_quote": "Listing all products alphabetically is just a linear scan, O(n), since the keys are already stored in sorted order.",
+            "quote_start": 65,
+            "quote_end": 180,
+            "reason": "The candidate explicitly claims that the keys are already stored in sorted order in the hash table."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "py.functions-scope.closure-captures-value",
+        "confirmed": false,
+        "evidence_turns": [
+          10
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-009",
+            "turn": 10,
+            "reply_index": 0,
+            "reply_text": "It will print “created” followed by “3 [2, 1]” and then a list of three zeros, because the generator yields the numbers and the scaled comprehension multiplies each by the initial step value of 1, which results in zeros when the range is empty.",
+            "vote_share": 1.0,
+            "supporting_quote": "multiplies each by the initial step value of 1",
+            "quote_start": 149,
+            "quote_end": 195,
+            "reason": "The candidate explicitly asserts that the generator expression uses the initial step value of 1 rather than the updated value."
+          },
+          {
+            "question_id": "PY-L3-009",
+            "turn": 10,
+            "reply_index": 1,
+            "reply_text": "When `print(list(scaled))` runs, `step` is still 1, because the generator expression captured the value of `step` at the time it was defined.",
+            "vote_share": 1.0,
+            "supporting_quote": "the generator expression captured the value of `step` at the time it was defined.",
+            "quote_start": 60,
+            "quote_end": 141,
+            "reason": "The candidate explicitly asserts that the generator expression captured the value of step when it was defined rather than looking it up when consumed."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.strings-mutable",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.sorting-searching.sort-not-stable",
+      "ds.trees-bst.inorder-not-sorted",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.gil-thread-safe",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.closure-captures-value",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.joins.where-filter-keeps-left-rows",
+      "sql.null.equals-null-matches",
+      "sql.null.not-equal-includes-null",
+      "sql.schema-constraints.fk-must-be-unique",
+      "sql.schema-constraints.pk-needs-distinct",
+      "sql.select-filter.distinct-per-column"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "untested": [
+        "py-collections",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: needs review. Not enough evidence: cannot tell whether sql reaches level 2. Estimated levels: py level 3 (needs 2), sql level 1 (needs 2), ds level 1 (needs 1). Confirmed misconception: Believes LEFT JOIN drops left-table rows that have no match, like INNER JOIN. Confirmed misconception: Believes a hash table stores its keys in sorted order, so iterating over it yields keys sorted and it can produce ordered output or the smallest key without extra sorting. Suspected (insufficient corroboration) misconception: Believes a closure (e.g. a lambda defined in a loop) captures the value a variable had when the function was created, rather than looking the variable up when the function is called."
+  },
+  "usage": {
+    "llm_calls": 97,
+    "api_calls": 39,
+    "input_tokens": 105318,
+    "output_tokens": 8305,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 97,
+        "api_calls": 39,
+        "input_tokens": 105318,
+        "output_tokens": 8305
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 2,
+      "ds": 1
+    },
+    "fit": true,
+    "misconceptions": [
+      "ds.hash-tables.keys-kept-sorted",
+      "sql.joins.left-join-drops-unmatched"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

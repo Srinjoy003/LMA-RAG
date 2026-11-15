@@ -1,0 +1,2305 @@
+{
+  "interview_id": "A2E-backend-engineer-CAND-005-0",
+  "system": "A2E",
+  "config": {
+    "system": "A2E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-aware",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-005",
+  "started_at": "2026-11-14T05:35:55Z",
+  "finished_at": "2026-11-14T05:36:17Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: py-exceptions",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The `try` block contains the code that may raise an exception, and each `except` clause catches a specific type of exception; when an exception occurs the rest of the `try` block is skipped and Python looks for the first `except` whose exception type matches, executing that handler and then continuing after the whole try‑statement. The optional `else` block runs only if the `try` block finishes without any exception. The `finally` block is executed in every case—whether the code ran normally, an exception was caught, or a `return` (or other control‑flow statement) was executed inside the `try` or an `except`. If two `except` clauses could both match, the one that appears first in the source code is the one that runs.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of all four blocks, identifies that the first matching except clause in order executes, correctly notes that the rest of the try block is skipped after an exception, and states that finally runs even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of all four blocks, identifies that the first matching except clause in order executes, correctly notes that the rest of the try block is skipped after an exception, and states that finally runs even on return.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-subqueries-cte",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: sql-joins",
+      "prompt": "A teammate wants the number of employees in each department. What does this query return, and why?\n\nWITH staff_per_dept AS (\n  SELECT d.name, e.id\n  FROM departments d\n  JOIN employees e ON e.dept_id = d.id\n)\nSELECT d.name, COUNT(d.name) AS n_rows, COUNT(e.dept_id) AS n_staff\nFROM departments d, employees e\nGROUP BY d.name\nORDER BY d.name;\n\nTable departments:\nid | name\n1 | Sales\n2 | IT\n3 | HR\n\nTable employees:\nid | name | dept_id\n1 | Asha | 1\n2 | Ben | 1\n3 | Chen | 2\n4 | Dana | NULL",
+      "answer": "The query first builds a CTE that lists every employee together with the name of their department, but then it never uses that CTE in the final SELECT. In the main query it cross‑joins the departments and employees tables, so each department is paired with every employee row. Because of that, the COUNT of d.name will be the same for every department, reflecting the total number of employee rows in the result set. The COUNT of e.dept_id will count only the rows where the employee actually has a department, so departments that have no employees will show a lower number. The ORDER BY simply sorts the output alphabetically by department name.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the CTE is unused, explained the cross join between departments and employees, and noted how COUNT handles NULLs in e.dept_id. They successfully hit all key points required for full credit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that the CTE is unused, explained the cross join between departments and employees, and noted how COUNT handles NULLs in e.dept_id. They successfully hit all key points required for full credit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; covers required topics not yet tested: ds-hash-tables, ds-trees-bst",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "A hash table lets us insert new scores in O(1) on average, but it does not keep any ordering, so producing the full leaderboard would require sorting the whole collection each time, which is O(n log n). A sorted array stores the scores in order, making it trivial to output the list, but inserting a new score means finding its position and shifting all later elements, which costs O(n). A balanced binary search tree gives O(log n) insertion and deletion while maintaining the elements in sorted order, and an in‑order traversal can output the entire leaderboard in O(n). Because both inserts and full ordered listings are frequent, the balanced BST provides the best overall trade‑off. If we only needed the top‑k scores, a heap would be another option, but for the full list the BST is preferable.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly evaluated all three data structures, noting the hash table's sorting overhead, the sorted array's O(n) insert cost due to shifting, and the balanced BST's O(log n) inserts with O(n) in-order traversal, successfully choosing the BST.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly evaluated all three data structures, noting the hash table's sorting overhead, the sorted array's O(n) insert cost due to shifting, and the balanced BST's O(log n) inserts with O(n) in-order traversal, successfully choosing the BST.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: py-concurrency",
+      "prompt": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+      "answer": "The reason the final value can be less than 200 000 is that the statement `counter += 1` is not an atomic operation; it is performed as a read of the current value, an addition, and then a write back. In CPython the Global Interpreter Lock (GIL) ensures that only one thread executes Python bytecode at a time, so the two threads cannot interleave their increments and no updates are lost. Because the GIL serialises the execution, you would get exactly 200 000 without needing any additional synchronization. If you rewrote the same logic with asyncio, the two coroutines would also run on the same thread and, since there is no `await` inside the increment, they would never be pre‑empted, giving the same correct result.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.concurrency.gil-thread-safe",
+        "follow_up": "If the GIL ensures that only one thread executes Python bytecode at a time, what happens if the bytecode interpreter switches threads right between the read and write steps of `counter += 1`?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.concurrency.gil-thread-safe",
+            "follow_up": "If the GIL ensures that only one thread executes Python bytecode at a time, what happens if the bytecode interpreter switches threads right between the read and write steps of `counter += 1`?",
+            "confidence_expressed": "high",
+            "supporting_quote": "In CPython the Global Interpreter Lock (GIL) ensures that only one thread executes Python bytecode at a time, so the two threads cannot interleave their increments and no updates are lost.",
+            "evidence_reason": "The candidate explicitly states that because of the GIL, the two threads cannot interleave their increments and no updates are lost, which matches the listed misconception that the GIL makes multithreaded Python code thread-safe for shared updates.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.concurrency.gil-thread-safe",
+            "follow_up": "Can a thread be interrupted by the GIL switch between reading a variable and writing it back?",
+            "confidence_expressed": "high",
+            "supporting_quote": "In CPython the Global Interpreter Lock (GIL) ensures that only one thread executes Python bytecode at a time, so the two threads cannot interleave their increments and no updates are lost.",
+            "evidence_reason": "The candidate explicitly claims that the GIL prevents threads from interleaving their increments of counter += 1, reflecting the listed misconception that the GIL makes multithreaded Python code thread-safe for shared updates.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.concurrency.gil-thread-safe",
+            "follow_up": "If the GIL ensures that only one thread executes Python bytecode at a time, what happens if a thread is interrupted between the bytecode instruction that reads the variable and the one that writes it back?",
+            "confidence_expressed": "high",
+            "supporting_quote": "In CPython the Global Interpreter Lock (GIL) ensures that only one thread executes Python bytecode at a time, so the two threads cannot interleave their increments and no updates are lost.",
+            "evidence_reason": "The candidate explicitly states that because the GIL allows only one thread to execute at a time, the threads cannot interleave their increments and no updates are lost, demonstrating the listed misconception that the GIL makes multithreaded updates thread-safe.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "In CPython the Global Interpreter Lock (GIL) ensures that only one thread executes Python bytecode at a time, so the two threads cannot interleave their increments and no updates are lost.",
+        "evidence_reason": "The candidate explicitly states that because of the GIL, the two threads cannot interleave their increments and no updates are lost, which matches the listed misconception that the GIL makes multithreaded Python code thread-safe for shared updates.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If the GIL ensures that only one thread executes Python bytecode at a time, what happens if the bytecode interpreter switches threads right between the read and write steps of `counter += 1`?",
+          "answer": "`counter += 1` compiles to a few separate bytecode instructions: load the current value, perform the addition, and store the result back. The GIL is only held while a single bytecode instruction runs, and the interpreter may release and reacquire it between those instructions, allowing another thread to run. If a thread is switched after the load but before the store, both threads can read the same original value, compute the same increment, and then one store overwrites the other, so one increment is lost. Therefore the final count can be below 200 000. In asyncio, all coroutines share the same thread and only yield control at an `await`; since the increment contains no `await`, it cannot be pre‑empted and no race occurs.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "correct",
+            "misconception_id": null,
+            "expected_score": 2,
+            "effective_level": 3,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate initially had a misconception about the GIL preventing race conditions, but completely corrected their understanding in the follow-up, correctly explaining the bytecode-level interleaving, the need for locks, and why asyncio without an await is safe.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that counter += 1 is non-atomic and that asyncio coroutines without an await will not be pre-empted, but they falsely claim the GIL prevents the thread race and ensures 200,000 without a lock (falling under the listed misconception py.concurrency.gil-thread-safe).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-011",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-002",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-indexes-performance"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: sql-indexes-performance",
+      "prompt": "A teammate says: 'orders has an index on (customer_id, order_date), so every query on orders uses it.' Give three different reasons EXPLAIN might still show a full table scan: think about how many rows the condition matches, how the WHERE clause is written, and which columns it filters on.",
+      "answer": "Even if the index exists, the planner may still choose a sequential scan when the predicate matches a large proportion of rows or the table is tiny, because reading the whole table is cheaper than many random index lookups. If the WHERE clause applies a function or arithmetic expression to a indexed column—e.g., EXTRACT(YEAR FROM order_date) or customer_id + 0—the plain index cannot be used unless an expression index is defined. Also, querying only on the second column of the composite key (order_date) skips the leading column, so the index on (customer_id, order_date) cannot be efficiently leveraged. Finally, mismatched data types or implicit casts in the predicate can prevent the index from being considered, forcing a full scan.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly provided all three required reasons (selectivity/table size, function or expression on the column, and querying only the non-leading column of a composite index) along with how to fix them or why they fail, even adding a bonus valid reason.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly provided all three required reasons (selectivity/table size, function or expression on the column, and querying only the non-leading column of a composite index) along with how to fix them or why they fail, even adding a bonus valid reason.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-002",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs",
+        "ds-stacks-queues"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; covers required topics not yet tested: ds-stacks-queues",
+      "prompt": "What does this code print? What would happen if the `if node in seen: continue` check were removed, and why might this explicit-stack version be preferred over a recursive DFS on a graph containing a path of a million nodes?\n\ngraph = {1: [2, 3], 2: [4], 3: [4], 4: [1]}\n\ndef dfs(start):\n    seen, stack, order = set(), [start], []\n    while stack:\n        node = stack.pop()\n        if node in seen:\n            continue\n        seen.add(node)\n        order.append(node)\n        for nb in graph[node]:\n            stack.append(nb)\n    return order\n\nprint(dfs(1))\n",
+      "answer": "The call prints `[1, 3, 4, 2]`. Because the list is used as a LIFO stack, the neighbor that is pushed last (3) is popped first, so the traversal goes 1 → 3 → 4 before back‑tracking to explore 2. If we removed the `if node in seen: continue` test, the cycle 4 → 1 would keep re‑adding already‑visited nodes, causing the stack to never empty and the loop to run forever. An explicit stack is preferred over a recursive DFS for very deep graphs (e.g., a million‑node path) because recursion would require a million call‑frames and hit Python’s recursion limit, whereas a list‑based stack can grow without that limitation.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the DFS output order, explained the infinite loop caused by cycles when omitting the seen check, and correctly noted that an explicit stack avoids the Python recursion limit encountered in deep recursive DFS.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the DFS output order, explained the infinite loop caused by cycles when omitting the seen check, and correctly noted that an explicit stack avoids the Python recursion limit encountered in deep recursive DFS.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; lists a suspected misconception to confirm: py.concurrency.gil-thread-safe",
+      "prompt": "A team scores 1 million records with a pure-Python function. To speed it up they split the work across 8 threads, and each thread adds its scores to a shared global with total += score. On an 8-core machine it is no faster than one thread, and occasionally the total is slightly wrong. Explain both problems and how you would fix each.",
+      "answer": "In CPython the global interpreter lock allows only one thread to execute Python bytecode at a time, so splitting a CPU‑bound pure‑Python scoring loop into eight threads does not give any parallelism on an 8‑core machine. The second problem is that the statement `total += score` is not atomic; while one thread is reading, adding and writing the value another thread can be scheduled in between, causing lost updates and a slightly wrong final sum. The usual fix is to move the work out of threads and use separate processes (e.g., multiprocessing or ProcessPoolExecutor), which run truly in parallel and each return a partial sum. Then you can safely combine the partial results in the main process, or, if you stay with threads, protect the update with a `threading.Lock` (or use a thread‑safe accumulator).",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the GIL limitation for CPU-bound threads, explained the non-atomic nature of total += score causing a race condition, and correctly suggested both ProcessPoolExecutor and locks/partial sums as fixes.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the GIL limitation for CPU-bound threads, explained the non-atomic nature of total += score causing a race condition, and correctly suggested both ProcessPoolExecutor and locks/partial sums as fixes.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-005",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-transactions"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; covers required topics not yet tested: sql-transactions",
+      "prompt": "Two transactions run at the same time under READ COMMITTED. Both read the product's stock (10) before either writes; each then subtracts 1 in the application, writes back 9 and commits. What is the final stock, why, and how could you prevent this?",
+      "answer": "The final stock will be 9 because both transactions read the initial value 10, each subtracts 1 in the application, and then each writes back 9, so the second write overwrites the first – a classic lost‑update problem. READ COMMITTED does not prevent this since uncommitted changes are invisible and there is no write‑write conflict detection. To avoid it you should perform the decrement in a single atomic statement, e.g. `UPDATE products SET stock = stock - 1 WHERE id = …`. Alternatively you can lock the row first with `SELECT … FOR UPDATE` or run the transaction at SERIALIZABLE and retry on conflict.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the final stock as 9 due to a lost update, explains why it occurs under READ COMMITTED, and provides multiple valid fixes including an atomic UPDATE and SELECT ... FOR UPDATE.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the final stock as 9 due to a lost update, explains why it occurs under READ COMMITTED, and provides multiple valid fixes including an atomic UPDATE and SELECT ... FOR UPDATE.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-005",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; covers required topics not yet tested: ds-complexity",
+      "prompt": "This class simulates how a dynamic array such as a Python list grows: when it is full, it moves every item into a new block twice as large and counts the moved items. What does it print? What do the numbers tell you about the cost of a single append and of n appends?\n\nclass DynArray:\n    def __init__(self):\n        self.size, self.cap, self.copies = 0, 1, 0\n\n    def append(self, x):\n        if self.size == self.cap:\n            self.copies += self.size  # move every item to a bigger block\n            self.cap *= 2\n        self.size += 1\n\nfor n in [16, 17, 1000]:\n    arr = DynArray()\n    for i in range(n):\n        arr.append(i)\n    print(n, arr.cap, arr.copies)",
+      "answer": "The program prints:\n\n```\n16 16 15\n17 32 31\n1000 1024 1023\n```\n\nWhen the array is not full, an append doesn’t copy any elements, so most appends have zero copy cost. When the array is full, the append triggers a resize and copies every existing element, which is why the copy count jumps to size‑1 at those points. The numbers show that a single append is cheap most of the time, but the occasional resize costs proportional to the current size. Over many appends, the total number of copies grows linearly with n, so the amortized cost per append stays constant.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output and explained both the amortised O(1) cost per append and the occasional expensive resize operation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output and explained both the amortised O(1) cost per append and the occasional expensive resize operation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists a suspected misconception to confirm: py.concurrency.gil-thread-safe",
+      "prompt": "A withdraw function does 'if balance >= amount: balance -= amount'. Two threads call it at the same moment on a balance of 100, each withdrawing 80. How can the account end up overdrawn, and how do you prevent it? If you rewrite it with asyncio and there is an 'await audit_log()' between the check and the subtraction, can the same bug happen? What if there is no await in between?",
+      "answer": "When two threads run `if balance >= amount: balance -= amount` at the same time, each can read the balance as 100 before either one performs the subtraction, so both pass the check and each subtracts 80, leaving the balance at ‑60. The fix is to protect the whole check‑and‑update sequence with a `threading.Lock` (or another atomic operation) so only one thread can execute it at a time. In an asyncio version, a context switch only occurs at an `await`; if you place an `await audit_log()` between the check and the subtraction, another coroutine can run in that gap and the same race condition appears, which you can avoid by using an `asyncio.Lock`. If there is no `await` between the two statements, the coroutine runs to completion without yielding, so the race cannot happen and the balance stays consistent.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the thread race condition, the threading.Lock fix, and both asyncio cases (with await vs without await). All key points are accurately addressed.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the thread race condition, the threading.Lock fix, and both asyncio cases (with await vs without await). All key points are accurately addressed.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists misconceptions not yet probed: sql.window-functions.collapses-rows, sql.window-functions.rank-functions-identical, sql.window-functions.running-sum-is-total",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The query will give you a list of each sale day together with the amount sold, a column called running that shows the total amount for all rows up to that point, and a column rnk that simply numbers the rows sequentially based on the day value. Because the window functions are applied without any partitioning, the running total resets for each new day, so you’ll see the sum start over at 0 for day 2 and day 3. The rnk column will give a unique rank for every row, even if the days are the same, so the two rows with day 2 will get different ranks. The NULL amount on day 3 is treated as zero, so it contributes to the running total as if it were a regular 0 value.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.window-functions.rank-functions-identical",
+        "follow_up": "How many rows would RANK() assign to two rows that have the exact same day value?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.rank-functions-identical",
+            "follow_up": "How many rows would RANK() assign to two rows that have the exact same day value?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The rnk column will give a unique rank for every row, even if the days are the same, so the two rows with day 2 will get different ranks.",
+            "evidence_reason": "The candidate explicitly states that RANK gives unique ranks to rows with the same day value, which directly matches the misconception that RANK does not handle ties correctly (confusing it with ROW_NUMBER).",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.rank-functions-identical",
+            "follow_up": "How many rows does the output have, and what are the specific rnk values assigned to the two rows where day is 2?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The rnk column will give a unique rank for every row, even if the days are the same, so the two rows with day 2 will get different ranks.",
+            "evidence_reason": "The candidate explicitly states that RANK assigns unique ranks to tied rows as if they were different (confusing RANK with ROW_NUMBER).",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.rank-functions-identical",
+            "follow_up": "How does RANK handle rows with the exact same value in the ORDER BY clause compared to ROW_NUMBER?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The rnk column will give a unique rank for every row, even if the days are the same, so the two rows with day 2 will get different ranks.",
+            "evidence_reason": "The candidate explicitly claims that RANK assigns unique ranks to tied rows, confusing its behavior with ROW_NUMBER.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The rnk column will give a unique rank for every row, even if the days are the same, so the two rows with day 2 will get different ranks.",
+        "evidence_reason": "The candidate explicitly states that RANK gives unique ranks to rows with the same day value, which directly matches the misconception that RANK does not handle ties correctly (confusing it with ROW_NUMBER).",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How many rows would RANK() assign to two rows that have the exact same day value?",
+          "answer": "Sure, the RANK() function will still give each row its own position even when the day values are identical, so the two rows with the same day will get consecutive ranks. In this case they would be numbered 2 and 3 because the first row (day 1) gets rank 1. The ranking continues linearly without any gaps for ties. So you end up with two different rank numbers for those duplicate day values.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.rank-functions-identical",
+            "follow_up": "How many rows in the output would have the same value in the rnk column if two rows have an identical day?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "follow_up": "How many rows in the output would have the same value in the rnk column if two rows have an identical day?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The ranking continues linearly without any gaps for ties. So you end up with two different rank numbers for those duplicate day values.",
+                "evidence_reason": "The candidate explicitly states that RANK() produces consecutive different numbers without any gaps for ties, which corresponds to the misconception that RANK functions do not create ties with identical values.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "follow_up": "How many rows would have the same rank if two rows had the exact same day and amount?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The ranking continues linearly without any gaps for ties. So you end up with two different rank numbers for those duplicate day values.",
+                "evidence_reason": "The candidate explicitly states that the ranking continues linearly without gaps and assigns different numbers to rows with duplicate day values, directly expressing the misconception that RANK does not produce ties.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "follow_up": "What rank values would RANK() assign if there are two rows with identical ordering values?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The ranking continues linearly without any gaps for ties. So you end up with two different rank numbers for those duplicate day values.",
+                "evidence_reason": "The candidate explicitly states that RANK() assigns consecutive/different numbers to duplicate day values without gaps, reflecting the misconception that RANK() does not handle ties by giving them the same rank.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The ranking continues linearly without any gaps for ties. So you end up with two different rank numbers for those duplicate day values.",
+            "evidence_reason": "The candidate explicitly states that RANK() produces consecutive different numbers without any gaps for ties, which corresponds to the misconception that RANK functions do not create ties with identical values.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "How many rows in the output would have the same value in the rnk column if two rows have an identical day?",
+          "answer": "If two rows share the same day value, the RANK() window will give them the exact same rank number, so you’ll see duplicate values in the rnk column. In this case the two rows for day 2 would both get a rank of 2, while the other days keep their own distinct ranks. That means you’ll end up with three rows that have unique rank numbers and two rows that share the same rank. So the output will contain a pair of rows with identical rnk values.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          0,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate eventually corrected their understanding of RANK regarding ties (matching level 2 on rank tie behavior), and although they initially misunderstood the running total partition reset, the final explanation shows a mostly sound grasp of window function behaviors. However, they missed some details about NULL handling and frame peers, so score 1 is appropriate.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly claims that the running total resets for each new day, misinterprets RANK as giving unique ranks to tied rows, and incorrectly states that NULL is treated as zero.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.5907,
+          "se": 0.6349,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.6827,
+          "se": 0.6829,
+          "level": 3,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs",
+        "ds-heaps"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.68); level 3 is nearest its estimate +1.68; lists misconceptions not yet probed: ds.graphs.bfs-weighted-shortest, ds.graphs.dfs-finds-shortest, ds.heaps.pop-min-constant",
+      "prompt": "This is Dijkstra's algorithm with `heapq` as the priority queue. What does it print? Why is the distance to C 3 and not 5, even though there is a direct edge A -> C? Would BFS, or a DFS that keeps the first path it finds, give the same distances? What does each `heappop` cost?\n\nimport heapq\ngraph = {\"A\": [(\"C\", 5), (\"B\", 1)], \"B\": [(\"D\", 1)], \"C\": [(\"E\", 1)], \"D\": [(\"C\", 1)], \"E\": []}\n\ndef dijkstra(src):\n    dist, pq = {src: 0}, [(0, src)]\n    while pq:\n        d, u = heapq.heappop(pq)\n        if d > dist[u]:\n            continue\n        for v, w in graph[u]:\n            if d + w < dist.get(v, float(\"inf\")):\n                dist[v] = d + w\n                heapq.heappush(pq, (d + w, v))\n    return dist\nprint(dijkstra(\"A\"))",
+      "answer": "It prints `{'A': 0, 'B': 1, 'D': 2, 'C': 3, 'E': 4}`. Even though there is a direct edge A→C of weight 5, the cheaper route A→B→D→C costs 1+1+1 = 3; Dijkstra always extracts the vertex with the smallest current distance, so it settles B (1) and D (2) before C, updates C’s distance to 3, and later discards the stale (5, 'C') entry when it is popped. A plain BFS would only minimise the number of edges, so it would record C via the direct edge with cost 5 (and E would become 6), and a DFS that stops at the first found path would behave similarly, depending on the adjacency order. Each `heappop` operation runs in O(log n) time because the heap must sift‑down to restore the heap property after removing the root.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly gives the output dictionary, explains why the path through B and D yields a smaller weight for C than the direct edge, correctly distinguishes Dijkstra from BFS and DFS on weighted graphs, and states that heappop is O(log n) due to the sift-down operation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly gives the output dictionary, explains why the path through B and D yields a smaller weight for C than the direct edge, correctly distinguishes Dijkstra from BFS and DFS on weighted graphs, and states that heappop is O(log n) due to the sift-down operation.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 1.5907,
+          "se": 0.6349,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.64); level 3 is nearest its estimate +1.95; covers required topics not yet tested: py-functions-scope",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "The code first prints “created” because calling countdown(3) only creates the generator and does not execute its body. When next(gen) is called, the function runs up to the first yield, printing “begin” and yielding 3, so the first value printed is 3. The subsequent list(gen) consumes the remaining yields, returning [2, 1] and leaving the generator exhausted, so the next list(gen) produces an empty list. The generator expression scaled captures the variable step by reference, so when it is finally iterated after step has been set to 10, it yields 0, 10, 20. Thus the output sequence is:\n\n```\ncreated\nbegin\n3 [2, 1] [] \n[0, 10, 20]\n```",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the lazy start of the generator, how yield pauses and resumes execution, the exhaustion of the generator, and the late variable lookup in the generator expression leading to the correct output.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the lazy start of the generator, how yield pauses and resumes execution, the exhaustion of the generator, and the late variable lookup in the generator expression leading to the correct output.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 2.1444,
+          "se": 0.6105,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 1.5907,
+          "se": 0.6349,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.9461,
+          "se": 0.641,
+          "level": 3,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-015",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-heaps"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.64); level 3 is nearest its estimate +1.95; lists misconceptions not yet probed: ds.heaps.heap-is-sorted, ds.heaps.max-at-last-index",
+      "prompt": "This code keeps the three largest latencies seen so far in a min-heap. What does it print, and why?\n\nimport heapq\n\nlatencies = [120, 45, 300, 80, 250, 95, 410, 60]\ntop = []\nfor x in latencies:\n    if len(top) < 3:\n        heapq.heappush(top, x)\n    elif x > top[0]:\n        heapq.heapreplace(top, x)\nprint(top)\nprint(top[0], top[-1], max(top))",
+      "answer": "The code prints a list containing the three largest latencies, which ends up as `[250, 300, 410]`. The smallest of these three values is at index 0, so `top[0]` is 250. Because the underlying list isn’t sorted, the last element `top[-1]` happens to be 300, while the maximum value in the heap is 410. Therefore the second line outputs `250 300 410`. This behaviour comes from the heap property that each parent node is less than or equal to its children, not from a fully sorted order.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the second output and explains why top[-1] is not the maximum, but mistakenly states the final heap list is [250, 300, 410] instead of [250, 410, 300].",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the second output and explains why top[-1] is not the maximum, but mistakenly states the final heap list is [250, 300, 410] instead of [250, 410, 300].",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 2.1444,
+          "se": 0.6105,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 1.5907,
+          "se": 0.6349,
+          "level": 3,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 1.7881,
+          "se": 0.5829,
+          "level": 3,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-015",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "slip",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 15,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-subqueries-cte"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.63); level 3 is nearest its estimate +1.59; lists a suspected misconception to confirm: sql.window-functions.rank-functions-identical",
+      "prompt": "The goal is exactly one current address per customer: the most recent one. What does this query return, and why? Would ROW_NUMBER() fix it?\n\nWITH ranked AS (\n  SELECT customer_id, city,\n         RANK() OVER (PARTITION BY customer_id\n                      ORDER BY updated_on DESC NULLS LAST) AS rk\n  FROM addresses\n)\nSELECT customer_id, city\nFROM ranked\nWHERE rk = 1\nORDER BY customer_id, city;\n\nTable addresses:\ncustomer_id | city | updated_on\n1 | Pune | 2024-01-10\n1 | Delhi | 2024-03-02\n1 | Goa | 2024-03-02\n2 | Agra | 2023-12-01\n2 | Kochi | NULL\n3 | Surat | 2024-02-14",
+      "answer": "The query uses RANK, so if there are ties on the most recent updated_on it will return multiple rows for that customer. Using ROW_NUMBER instead of RANK would guarantee exactly one row per customer, because it assigns a unique sequential number within each partition. However, ROW_NUMBER still needs a deterministic tie‑breaker in the ORDER BY clause (for example, a secondary column) to decide which of the tied rows is chosen. Without that additional ordering, the result could be nondeterministic when there are equal timestamps.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that RANK causes ties to return multiple rows, explained how ROW_NUMBER assigns a unique number per partition, and correctly noted that a deterministic tie-breaker is still needed for ROW_NUMBER to avoid arbitrary selection.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that RANK causes ties to return multiple rows, explained how ROW_NUMBER assigns a unique number per partition, and correctly noted that a deterministic tie-breaker is still needed for ROW_NUMBER to avoid arbitrary selection.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 2.1444,
+          "se": 0.6105,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": 1.8351,
+          "se": 0.6011,
+          "level": 3,
+          "n": 5
+        },
+        "ds": {
+          "estimate": 1.7881,
+          "se": 0.5829,
+          "level": 3,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 18,
+  "stop_reason": "max_questions",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 2.1444,
+        "se": 0.6105,
+        "confident": false,
+        "minimum": 2,
+        "level_probability": 0.993032,
+        "level_probabilities": {
+          "0": 0.0,
+          "1": 9e-06,
+          "2": 0.006959,
+          "3": 0.993032
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 3,
+        "estimate": 1.8351,
+        "se": 0.6011,
+        "confident": false,
+        "minimum": 2,
+        "level_probability": 0.972526,
+        "level_probabilities": {
+          "0": 0.0,
+          "1": 0.0001,
+          "2": 0.027374,
+          "3": 0.972526
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 3,
+        "estimate": 1.7881,
+        "se": 0.5829,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.970852,
+        "level_probabilities": {
+          "0": 0.0,
+          "1": 9.2e-05,
+          "2": 0.029056,
+          "3": 0.970852
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "fit",
+    "decision_reason": "Every skill meets the job minimum.",
+    "misconceptions": [
+      {
+        "id": "py.concurrency.gil-thread-safe",
+        "confirmed": false,
+        "evidence_turns": [
+          4
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-011",
+            "turn": 4,
+            "reply_index": 0,
+            "reply_text": "The reason the final value can be less than 200 000 is that the statement `counter += 1` is not an atomic operation; it is performed as a read of the current value, an addition, and then a write back. In CPython the Global Interpreter Lock (GIL) ensures that only one thread executes Python bytecode at a time, so the two threads cannot interleave their increments and no updates are lost. Because the GIL serialises the execution, you would get exactly 200 000 without needing any additional synchronization. If you rewrote the same logic with asyncio, the two coroutines would also run on the same thread and, since there is no `await` inside the increment, they would never be pre‑empted, giving the same correct result.",
+            "vote_share": 1.0,
+            "supporting_quote": "In CPython the Global Interpreter Lock (GIL) ensures that only one thread executes Python bytecode at a time, so the two threads cannot interleave their increments and no updates are lost.",
+            "quote_start": 201,
+            "quote_end": 389,
+            "reason": "The candidate explicitly states that because of the GIL, the two threads cannot interleave their increments and no updates are lost, which matches the listed misconception that the GIL makes multithreaded Python code thread-safe for shared updates."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.window-functions.rank-functions-identical",
+        "confirmed": false,
+        "evidence_turns": [
+          11
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 11,
+            "reply_index": 0,
+            "reply_text": "The query will give you a list of each sale day together with the amount sold, a column called running that shows the total amount for all rows up to that point, and a column rnk that simply numbers the rows sequentially based on the day value. Because the window functions are applied without any partitioning, the running total resets for each new day, so you’ll see the sum start over at 0 for day 2 and day 3. The rnk column will give a unique rank for every row, even if the days are the same, so the two rows with day 2 will get different ranks. The NULL amount on day 3 is treated as zero, so it contributes to the running total as if it were a regular 0 value.",
+            "vote_share": 1.0,
+            "supporting_quote": "The rnk column will give a unique rank for every row, even if the days are the same, so the two rows with day 2 will get different ranks.",
+            "quote_start": 414,
+            "quote_end": 551,
+            "reason": "The candidate explicitly states that RANK gives unique ranks to rows with the same day value, which directly matches the misconception that RANK does not handle ties correctly (confusing it with ROW_NUMBER)."
+          },
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 11,
+            "reply_index": 1,
+            "reply_text": "Sure, the RANK() function will still give each row its own position even when the day values are identical, so the two rows with the same day will get consecutive ranks. In this case they would be numbered 2 and 3 because the first row (day 1) gets rank 1. The ranking continues linearly without any gaps for ties. So you end up with two different rank numbers for those duplicate day values.",
+            "vote_share": 1.0,
+            "supporting_quote": "The ranking continues linearly without any gaps for ties. So you end up with two different rank numbers for those duplicate day values.",
+            "quote_start": 257,
+            "quote_end": 392,
+            "reason": "The candidate explicitly states that RANK() produces consecutive different numbers without any gaps for ties, which corresponds to the misconception that RANK functions do not create ties with identical values."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.append-always-copies",
+      "ds.arrays-strings.front-insert-constant",
+      "ds.complexity.big-o-is-exact-time",
+      "ds.complexity.constants-change-class",
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.bfs-weighted-shortest",
+      "ds.graphs.dfs-finds-shortest",
+      "ds.graphs.visited-unneeded",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.heaps.heap-is-sorted",
+      "ds.heaps.max-at-last-index",
+      "ds.heaps.pop-min-constant",
+      "ds.stacks-queues.recursion-free-memory",
+      "ds.trees-bst.inorder-not-sorted",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.gil-thread-safe",
+      "py.concurrency.threads-cpu-parallel",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.closure-captures-value",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.indexes-performance.composite-any-column",
+      "sql.indexes-performance.function-on-column-uses-index",
+      "sql.indexes-performance.index-always-helps",
+      "sql.joins.auto-join-on-shared-column",
+      "sql.subqueries-cte.cte-unused-still-applies",
+      "sql.transactions.default-isolation-prevents-all",
+      "sql.transactions.uncommitted-visible",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-trees-bst"
+      ],
+      "untested": [
+        "py-variables-mutability",
+        "py-collections",
+        "py-oop",
+        "sql-schema-constraints",
+        "ds-linked-lists"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: fit. Every skill meets the job minimum. Estimated levels: py level 3 (needs 2), sql level 3 (needs 2), ds level 3 (needs 2). Suspected (insufficient corroboration) misconception: Believes the GIL makes multithreaded Python code thread-safe, so shared updates such as counter += 1 never need a lock. Suspected (insufficient corroboration) misconception: Believes ROW_NUMBER, RANK and DENSE_RANK treat tied rows the same way (for example that RANK never leaves gaps, or that ROW_NUMBER gives tied rows the same number)."
+  },
+  "usage": {
+    "llm_calls": 106,
+    "api_calls": 15,
+    "input_tokens": 132066,
+    "output_tokens": 7824,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 106,
+        "api_calls": 15,
+        "input_tokens": 132066,
+        "output_tokens": 7824
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 3,
+      "sql": 2,
+      "ds": 3
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.collections.sort-returns-list"
+    ],
+    "profile_type": "uneven"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

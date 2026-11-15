@@ -1,0 +1,2451 @@
+{
+  "interview_id": "A5E-data-analyst-CAND-013-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "data-analyst",
+  "candidate_id": "CAND-013",
+  "started_at": "2026-11-14T05:48:00Z",
+  "finished_at": "2026-11-14T05:50:31Z",
+  "required_topics": [
+    "py-functions-scope",
+    "py-collections",
+    "py-comprehensions-generators",
+    "py-pandas",
+    "sql-select-filter",
+    "sql-null",
+    "sql-joins",
+    "sql-aggregation",
+    "sql-subqueries-cte",
+    "sql-window-functions",
+    "ds-complexity",
+    "ds-arrays-strings",
+    "ds-hash-tables"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "The try section contains the code that may raise an exception, except clauses catch a matching error (the first one in the list whose type fits), and after handling it execution continues after the whole try‑except‑else‑finally construct; the rest of the try block is skipped. else runs only when the try block finishes without any exception, while finally is executed in every case—whether an exception occurred, a return happened inside try or except, or the block completed normally.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, including the first-match order for except clauses, the behavior of else, and that finally executes even when a return statement is used.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, including the first-match order for except clauses, the behavior of else, and that finally executes even when a return statement is used.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query returns three rows – one for each customer. Asha has two matching orders, so the count is 2 and the sum of the amounts (250 + 80) is 330; Ben has no orders, so the left‑joined row contains NULLs, giving a count of 0 and a SUM of NULL; Chen matches one order whose amount is NULL, so the count is 1 but the total is NULL. The row for order 13 is excluded because it has no customer_id.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies all three rows (Asha, Ben, Chen) with the exact correct counts and totals, and properly explains why Ben gets a count of 0 with a NULL sum and why Chen's total is NULL.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies all three rows (Asha, Ben, Chen) with the exact correct counts and totals, and properly explains why Ben gets a count of 0 with a NULL sum and why Chen's total is NULL.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map is used just to keep a quick list of which keys are currently stored, while the doubly linked list holds the actual values in the order they were inserted. When a key k is accessed, we look it up in the map, then move its node to the front of the list by detaching it and re‑attaching it, which keeps the most recent items near the head. Because both structures let us find and relocate an element without scanning the whole cache, the get and put operations end up taking constant time on average.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of both the hash map and the doubly linked list, describes the pointer-level move to the front on a hit without any misconceptions, and explains why both operations run in O(1) time.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the roles of both the hash map and the doubly linked list, describes the pointer-level move to the front on a hit without any misconceptions, and explains why both operations run in O(1) time.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: py.pandas.loc-end-exclusive, py.pandas.nan-treated-as-zero, py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ns1 = pd.Series([10, 20, 30], index=[\"a\", \"b\", \"c\"])\ns2 = pd.Series([1, 2, 3], index=[\"b\", \"c\", \"d\"])\ntotal = s1 + s2\nprint(total.tolist())\nprint(total.mean())\nprint(s1.loc[\"a\":\"b\"].sum())",
+      "answer": "The addition aligns the two Series by their index labels, so only “b” (20 + 1) and “c” (30 + 2) produce values, while “a” and “d” become NaN, giving `[nan, 21.0, 32.0, nan]`. Calling `mean()` ignores the NaNs, so the average is (21 + 32)/2 = 26.5. The slice `s1.loc[\"a\":\"b\"]` is inclusive of both endpoints, so it sums 10 + 20 and returns 30.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified index alignment resulting in NaNs, the NaN-skipping behavior of mean(), and the inclusive nature of .loc label slicing, meeting all key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified index alignment resulting in NaNs, the NaN-skipping behavior of mean(), and the inclusive nature of .loc label slicing, meeting all key points.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-008",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 3,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-window-functions",
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: sql.window-functions.collapses-rows, sql.window-functions.rank-functions-identical, sql.window-functions.running-sum-is-total",
+      "prompt": "What does this query return? Explain the values in the running and rnk columns.\n\nSELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running,\n       RANK() OVER (ORDER BY day) AS rnk\nFROM sales\nORDER BY day, amount;\n\nTable sales:\nday | amount\n1 | 100\n2 | 50\n2 | 30\n3 | NULL\n4 | 20",
+      "answer": "The query will give you a total column that shows the overall sum of all amounts for every row, so each row ends up with the same grand‑total value. The rnk column simply numbers the rows sequentially based on the day, so the first day gets 1, the second day gets 2, and so on, without any gaps for ties.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.window-functions.running-sum-is-total",
+        "follow_up": "If you have multiple rows with the same day value, what cumulative sum does each of those rows receive in the running column?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If you have multiple rows with the same day value, what cumulative sum does each of those rows receive in the running column?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The query will give you a total column that shows the overall sum of all amounts for every row, so each row ends up with the same grand‑total value.",
+            "evidence_reason": "The candidate explicitly states that the window sum function produces the overall grand-total value for every row, which matches the listed misconception sql.window-functions.running-sum-is-total.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "What would be the difference in output if you removed the ORDER BY clause from inside the OVER parenthesis?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The query will give you a total column that shows the overall sum of all amounts for every row, so each row ends up with the same grand‑total value.",
+            "evidence_reason": "The candidate explicitly asserts that the sum column displays the overall grand-total value on every row rather than a running cumulative total.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "supporting_quote": "without any gaps for ties",
+                "quote_start": 278,
+                "quote_end": 303,
+                "reason": "The candidate explicitly claims there are no gaps for ties in the rnk column, rejecting the behavior of RANK which creates gaps after ties."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "How would the output of the running column change if you added a WHERE clause to filter for a specific day, or what value do you expect to see on the very first row versus the last row?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The query will give you a total column that shows the overall sum of all amounts for every row, so each row ends up with the same grand‑total value.",
+            "evidence_reason": "The candidate explicitly states that the running sum column displays the overall grand total repeated on every row, which directly matches the misconception sql.window-functions.running-sum-is-total.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.window-functions.rank-functions-identical",
+                "supporting_quote": "The rnk column simply numbers the rows sequentially based on the day, so the first day gets 1, the second day gets 2, and so on, without any gaps for ties.",
+                "quote_start": 149,
+                "quote_end": 304,
+                "reason": "The candidate explicitly mentions that there are no gaps for ties in the rnk column, demonstrating a misunderstanding of RANK specifically regarding gaps."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The query will give you a total column that shows the overall sum of all amounts for every row, so each row ends up with the same grand‑total value.",
+        "evidence_reason": "The candidate explicitly states that the window sum function produces the overall grand-total value for every row, which matches the listed misconception sql.window-functions.running-sum-is-total.",
+        "contradicting": [
+          {
+            "misconception_id": "sql.window-functions.rank-functions-identical",
+            "supporting_quote": "without any gaps for ties",
+            "quote_start": 278,
+            "quote_end": 303,
+            "reason": "The candidate explicitly claims there are no gaps for ties in the rnk column, rejecting the behavior of RANK which creates gaps after ties.",
+            "vote_share": 0.6666666666666666
+          }
+        ]
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you have multiple rows with the same day value, what cumulative sum does each of those rows receive in the running column?",
+          "answer": "If there are two rows with the same day, the window frame treats each one separately, so the first occurrence adds its amount to the running total and the second one starts the sum over again from the previous day’s total. In other words, the second row for day 2 would show the same running value as the first row for day 1, and then the sum continues from there for the following rows.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If a window function has an ORDER BY clause in the OVER part, does the default frame start over at the beginning of each partition or include previous rows?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.running-sum-is-total",
+                "follow_up": "If a window function has an ORDER BY clause in the OVER part, does the default frame start over at the beginning of each partition or include previous rows?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the second row for day 2 would show the same running value as the first row for day 1, and then the sum continues from there",
+                "evidence_reason": "The candidate incorrectly describes the running sum frame as resetting or not accumulating correctly across rows with the same day, confusing how running totals behave with ties.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.window-functions.running-sum-is-total",
+                "follow_up": "If day 1 has 100 and day 2 has two rows of 50 and 30, what do you expect the running sum value to be for each of those three individual rows?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the second row for day 2 would show the same running value as the first row for day 1",
+                "evidence_reason": "The candidate incorrectly believes that rows with the same day (tied rows) are treated separately in a way that resets or behaves like individual cumulative steps where the second day 2 row goes back to or matches the first day 1 row, reflecting confusion about how running sums with ORDER BY accumulate tied values.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the second row for day 2 would show the same running value as the first row for day 1, and then the sum continues from there",
+            "evidence_reason": "The candidate incorrectly describes the running sum frame as resetting or not accumulating correctly across rows with the same day, confusing how running totals behave with ties.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If a window function has an ORDER BY clause in the OVER part, does the default frame start over at the beginning of each partition or include previous rows?",
+          "answer": "The default frame for a window function with an ORDER BY is reset for each partition, so the calculation starts over at the first row of that partition and doesn’t carry any values from the rows that came before it. In other words, the frame only looks at rows within the current partition and ignores any preceding rows outside of it.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate shows major misconceptions about window functions by claiming ORDER BY inside OVER produces a grand total instead of a running total, stating that rank has no gaps, and misunderstanding default window frames.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes the window function returns the grand total on every row and misinterprets RANK as sequential numbering without gaps, falling under listed misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-010",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 3,
+      "question_id": "DS-L3-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-graphs"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: ds.graphs.bfs-dfs-swapped, ds.graphs.bfs-weighted-shortest, ds.graphs.dfs-finds-shortest",
+      "prompt": "What does this code print? What do the numbers mean, and would they still be the shortest distances if each edge had a different length?\n\nfrom collections import deque\ngraph = {\"A\": [\"B\", \"C\"], \"B\": [\"E\"], \"C\": [\"D\"], \"D\": [\"E\"], \"E\": [\"F\"], \"F\": []}\n\ndef bfs(start):\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        node = q.popleft()\n        for nb in graph[node]:\n            if nb not in dist:\n                dist[nb] = dist[node] + 1\n                q.append(nb)\n    return dist\n\nprint(bfs(\"A\"))\n",
+      "answer": "It will output a dictionary showing each node with a number that represents how many steps away it is from A, so you’ll see something like A:0, B:1, C:1, D:2, E:2, F:3. The numbers are just the count of edges you have to travel, and if the edges had different lengths those counts wouldn’t change—they’d still be the same values.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.graphs.bfs-weighted-shortest",
+        "follow_up": "If one path from A to E had a weight of 10 and another path had a weight of 2, would the BFS distance of 2 still represent the shortest path by total weight?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.bfs-weighted-shortest",
+            "follow_up": "If one path from A to E had a weight of 10 and another path had a weight of 2, would the BFS distance of 2 still represent the shortest path by total weight?",
+            "confidence_expressed": "high",
+            "supporting_quote": "if the edges had different lengths those counts wouldn’t change—they’d still be the same values",
+            "evidence_reason": "The candidate explicitly states that if edge lengths changed, the resulting values would remain the same, which demonstrates the belief that BFS hop-counts still serve as the shortest distances in a weighted graph.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.bfs-weighted-shortest",
+            "follow_up": "If one path from A to E had a weight of 10 and another path had a weight of 2, would BFS still find the path with the smaller total weight?",
+            "confidence_expressed": "high",
+            "supporting_quote": "if the edges had different lengths those counts wouldn’t change—they’d still be the same values.",
+            "evidence_reason": "The candidate explicitly asserts that the distance values would remain the same even if edges had different lengths, indicating a belief that the edge-count metric calculated by BFS remains the shortest distance in weighted graphs.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.graphs.bfs-weighted-shortest",
+            "follow_up": "If one path from A to E took 2 steps with a total weight of 10, and another path took 3 steps with a total weight of 5, which one would BFS find and would it be the one with the shortest total length?",
+            "confidence_expressed": "high",
+            "supporting_quote": "if the edges had different lengths those counts wouldn’t change—they’d still be the same values",
+            "evidence_reason": "The candidate explicitly asserts that the distance values would remain the same even if edges had different lengths, indicating they believe BFS hop-count results still represent the correct shortest distances in a weighted graph.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "if the edges had different lengths those counts wouldn’t change—they’d still be the same values",
+        "evidence_reason": "The candidate explicitly states that if edge lengths changed, the resulting values would remain the same, which demonstrates the belief that BFS hop-counts still serve as the shortest distances in a weighted graph.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If one path from A to E had a weight of 10 and another path had a weight of 2, would the BFS distance of 2 still represent the shortest path by total weight?",
+          "answer": "The BFS will still report a distance of 2 for E because it just counts how many hops it took, not how heavy those hops are. So even if one route costs 10 and the other only 2, the algorithm will keep the 2‑hop count as the “distance.”",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 0.3333333333333333,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.graphs.bfs-weighted-shortest",
+                "follow_up": "If a graph has edges with different weights, what algorithm should you use instead of BFS to find the true shortest distance to a node, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "The BFS will still report a distance of 2 for E because it just counts how many hops it took, not how heavy those hops are. So even if one route costs 10 and the other only 2, the algorithm will keep the 2‑hop count as the “distance.”",
+                "evidence_reason": "The candidate clearly asserts that BFS will still correctly track or serve as 'the distance' despite different edge costs ('even if one route costs 10 and the other only 2'), illustrating the misconception that BFS handles weighted shortest paths.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          1,
+          0
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified the output and the meaning of the numbers as hop counts, but in the follow-up failed to recognise that BFS does not yield the shortest path by total weight when edges have different lengths (subscribing to the misconception that BFS distances represent the shortest path in weighted graphs).",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate gives the correct output and identifies that the numbers represent edge counts, but incorrectly claims that these counts would still be the shortest distances if edges had different lengths, falling into the weighted graph misconception.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.3604,
+          "se": 0.7563,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L3-014",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-stacks-queues"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.76); level 2 is nearest its estimate +0.36; lists misconceptions not yet probed: ds.stacks-queues.recursion-free-memory, ds.trees-bst.always-balanced, ds.trees-bst.inorder-not-sorted",
+      "prompt": "A recursive function prints the keys of a binary search tree using an in-order traversal. In what order are the keys printed? How much extra memory does the recursion use for a tree of n keys that is balanced, compared with one built by inserting keys that were already sorted, and why might the second case crash in Python?",
+      "answer": "The function will print the keys in the order they appear from left to right in the tree, basically following the structure of the tree as it’s built. For a balanced tree the recursion only needs a constant amount of extra space, while a tree created from sorted input will need space that grows linearly with the number of nodes because the calls pile up. In the worst case the deep recursion can overflow Python’s stack and cause a crash.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.trees-bst.inorder-not-sorted",
+        "follow_up": "If you insert the numbers 3, 1, and 5 into an initially empty BST in that order, what sequence of keys will an in-order traversal visit?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.trees-bst.inorder-not-sorted",
+            "follow_up": "If you insert the numbers 3, 1, and 5 into an initially empty BST in that order, what sequence of keys will an in-order traversal visit?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The function will print the keys in the order they appear from left to right in the tree, basically following the structure of the tree as it’s built.",
+            "evidence_reason": "The candidate explicitly states that keys are printed in the order they appear structurally in the tree as built (insertion or level-like order), failing to recognize that an in-order traversal of a BST always yields sorted order regardless of insertion shape.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.trees-bst.inorder-not-sorted",
+            "follow_up": "What would be the output of an in-order traversal on a BST containing the numbers 5, 2, and 8 inserted in that order?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The function will print the keys in the order they appear from left to right in the tree, basically following the structure of the tree as it’s built.",
+            "evidence_reason": "The candidate explicitly states the traversal follows the tree's insertion structure from left to right rather than recognizing that in-order traversal always produces sorted order regardless of insertion order.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.trees-bst.inorder-not-sorted",
+            "follow_up": "If you insert the numbers 3, 1, and 5 into an initially empty BST in that order, what sequence of values does an in-order traversal visit?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The function will print the keys in the order they appear from left to right in the tree, basically following the structure of the tree as it’s built.",
+            "evidence_reason": "The candidate states that keys are printed based on how they appear from left to right in the tree structure rather than recognizing that an in-order traversal always visits keys in sorted order regardless of insertion shape.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The function will print the keys in the order they appear from left to right in the tree, basically following the structure of the tree as it’s built.",
+        "evidence_reason": "The candidate explicitly states that keys are printed in the order they appear structurally in the tree as built (insertion or level-like order), failing to recognize that an in-order traversal of a BST always yields sorted order regardless of insertion shape.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you insert the numbers 3, 1, and 5 into an initially empty BST in that order, what sequence of keys will an in-order traversal visit?",
+          "answer": "If we insert 3, then 1, then 5, the in‑order walk will first go down to the left child, print that node, come back up to the root and then go to the right side. So the traversal would visit the keys in the order 1, 3, 5. In this tiny tree the recursion only has to handle three calls, one for each node.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that an in-order traversal visits keys in ascending sorted order (1, 3, 5). However, they incorrectly state that a balanced tree uses constant extra space O(1) instead of O(log n), failing the full memory analysis.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          0,
+          1,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that sorted insertion creates a deep tree leading to a RecursionError, and correctly noted linear space for the degenerate tree. However, they incorrectly claimed that balanced trees use constant space rather than logarithmic space, and failed to state that in-order traversal prints keys in ascending sorted order.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.3032,
+          "se": 0.7451,
+          "level": 3,
+          "n": 2
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.2833,
+          "se": 0.668,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-012",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.75); level 3 is nearest its estimate +1.30; lists misconceptions not yet probed: py.concurrency.async-multithreaded, py.concurrency.async-preempts, py.concurrency.gil-thread-safe",
+      "prompt": "In standard (GIL-enabled) CPython, two threads each run counter += 1 100,000 times on a shared global counter, with no lock. Why can the final value be less than 200,000? Would the same race happen if you wrote it with asyncio as two coroutines on the same event loop that never await inside the increment?",
+      "answer": "`counter += 1` is a read‑modify‑write operation, so each thread can read the same value before either writes it back, causing some increments to be lost. I'm not sure whether the same race would occur with asyncio coroutines that never await inside the increment.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does asyncio decide when to switch between different coroutines?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does asyncio decide when to switch between different coroutines?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens in an asyncio program if two coroutines run on the same event loop without any await statements between them?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens to the execution of coroutines on an event loop if none of them ever use the await keyword?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the thread race caused by the non-atomic read-modify-write operation, but leaves the asyncio question unanswered.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the thread race caused by the non-atomic read-modify-write operation, but leaves the asyncio question unanswered.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "ds": {
+          "estimate": 0.2833,
+          "se": 0.668,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-aggregation"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-aggregation (sql.aggregation.aggregate-in-where, sql.aggregation.count-group-column-is-one, sql.aggregation.group-by-only-sorts)",
+      "prompt": "To find cities with at least two stores, a colleague starts from SELECT city, COUNT(city) FROM stores GROUP BY city. What does GROUP BY do to the rows, and what does COUNT(city) give for each group? Should the 'at least two stores' condition go in WHERE or HAVING, and why?",
+      "answer": "GROUP BY gathers all rows that share the same city value into a single result row for that city. COUNT(city) then returns the number of rows in each group (ignoring NULL city values), which is the number of stores in that city. To keep only cities with at least two stores you must use a HAVING clause – HAVING COUNT(city) >= 2 – because the filter depends on the aggregate result and is applied after the groups are formed, whereas WHERE filters rows before grouping.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained GROUP BY, the purpose of COUNT(city), the necessity of HAVING for aggregate conditions, and the difference between WHERE and HAVING.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained GROUP BY, the purpose of COUNT(city), the necessity of HAVING for aggregate conditions, and the difference between WHERE and HAVING.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": 0.2833,
+          "se": 0.668,
+          "level": 2,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-trees-bst",
+        "ds-hash-tables",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.67); level 2 is nearest its estimate +0.28; lists a suspected misconception to confirm: ds.trees-bst.inorder-not-sorted",
+      "prompt": "A game leaderboard receives frequent new scores and must often list all players in score order; both operations are equally frequent and the full ordered list is needed, not just the top few. Compare a hash table, a sorted array and a balanced binary search tree for storing the scores. Which would you choose, and why?",
+      "answer": "A hash table lets you insert new scores in constant time and you can also retrieve the whole list in order without extra work, because the hash structure maintains the elements sorted by their values. A sorted array also supports O(1) inserts by just appending to the end and then reading the array gives you the scores in order. A balanced binary search tree gives O(log n) inserts, and an in-order traversal lists the scores in sorted order.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.hash-tables.keys-kept-sorted",
+        "follow_up": "How does a hash function determine where keys are placed in the table, and does that process guarantee that adjacent keys in memory or iteration are in numerical or alphabetical order?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "How does a hash function determine where keys are placed in the table, and does that process guarantee that adjacent keys in memory or iteration are in numerical or alphabetical order?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the hash structure maintains the elements sorted by their values.",
+            "evidence_reason": "The candidate explicitly states that the hash table structure maintains elements in sorted order, which directly matches the listed misconception ds.hash-tables.keys-kept-sorted.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "What happens to the internal layout of a standard hash table when multiple new key-value pairs are added, and how does it determine where each key is stored?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the hash structure maintains the elements sorted by their values.",
+            "evidence_reason": "The candidate explicitly claims that the hash structure keeps elements sorted by their values, which directly matches the misconception that hash tables maintain their keys in sorted order.",
+            "contradicting": [
+              {
+                "misconception_id": "ds.arrays-strings.front-insert-constant",
+                "supporting_quote": "A sorted array also supports O(1) inserts by just appending to the end",
+                "quote_start": 201,
+                "quote_end": 271,
+                "reason": "The candidate claims the insert is O(1) due to appending, but in a sorted array, the element must be placed in its correct sorted position rather than simply appended to the end to maintain sorted order."
+              }
+            ]
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "What happens to the order of keys when you add new elements to a standard hash table?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the hash structure maintains the elements sorted by their values",
+            "evidence_reason": "The candidate explicitly asserts that hash tables maintain elements in sorted order by their values, which matches the listed misconception ds.hash-tables.keys-kept-sorted.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "the hash structure maintains the elements sorted by their values.",
+        "evidence_reason": "The candidate explicitly states that the hash table structure maintains elements in sorted order, which directly matches the listed misconception ds.hash-tables.keys-kept-sorted.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How does a hash function determine where keys are placed in the table, and does that process guarantee that adjacent keys in memory or iteration are in numerical or alphabetical order?",
+          "answer": "The hash function basically takes the key’s characters, turns them into a number and then uses that number as an index, so keys that are close alphabetically or numerically tend to end up next to each other in the table. Because the function spreads the keys evenly, the table naturally preserves the original ordering when you iterate over it.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you insert two keys with hash values that map to the exact same index in the table, how does the table handle them, and what happens to their relative order?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert two keys with hash values that map to the exact same index in the table, how does the table handle them, and what happens to their relative order?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because the function spreads the keys evenly, the table naturally preserves the original ordering when you iterate over it.",
+                "evidence_reason": "The candidate explicitly states that a hash table preserves the original ordering of keys when iterated over, which directly matches the belief that hash tables keep keys sorted or in a specific preserved order.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert two keys into a hash table that hash to adjacent table indices, what happens when a third key hashes to an index between them?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the table naturally preserves the original ordering when you iterate over it.",
+                "evidence_reason": "The candidate explicitly states that the hash table naturally preserves ordering when iterating over it, which matches the misconception that hash tables store keys in sorted or ordered sequences.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert 'apple' and then 'banana' into a fresh hash table, what order will they appear in when you iterate over the keys, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the table naturally preserves the original ordering when you iterate over it.",
+                "evidence_reason": "The candidate explicitly states that the hash table preserves the original ordering of keys when iterating, reflecting the listed misconception that hash tables store or yield keys in a sorted/ordered manner.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Because the function spreads the keys evenly, the table naturally preserves the original ordering when you iterate over it.",
+            "evidence_reason": "The candidate explicitly states that a hash table preserves the original ordering of keys when iterated over, which directly matches the belief that hash tables keep keys sorted or in a specific preserved order.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If you insert two keys with hash values that map to the exact same index in the table, how does the table handle them, and what happens to their relative order?",
+          "answer": "When two keys hash to the same slot, the table usually chains them together in a little list at that index, and it keeps that list in the order they were inserted, so the first one you added will appear before the later one. Because the chain preserves insertion order, iterating over the bucket will give you the keys in the same relative sequence they were added.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.hash-tables.keys-kept-sorted",
+            "follow_up": "If you insert the keys 5, 2, and 8 into an empty hash table in that order, what exact sequence of values would you expect when you iterate through the table?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert the keys 5, 2, and 8 into an empty hash table in that order, what exact sequence of values would you expect when you iterate through the table?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because the chain preserves insertion order, iterating over the bucket will give you the keys in the same relative sequence they were added.",
+                "evidence_reason": "The candidate asserts that hash chains preserve the sequence in which keys were added and suggests this allows them to be retrieved in that relative order, continuing to exhibit the belief that hash tables maintain usable internal ordering.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert the keys 'Z', 'A', and 'M' into a hash table in that order, what order will they appear in if you iterate through the table's entries, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because the chain preserves insertion order, iterating over the bucket will give you the keys in the same relative sequence they were added.",
+                "evidence_reason": "The candidate asserts that the hash table structure or its chaining preserves insertion order and implies that this allows ordered iteration over the keys.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.hash-tables.keys-kept-sorted",
+                "follow_up": "If you insert the keys 5, then 2, and then 8 into a hash table, what order do they come out in when you iterate over the table, and why?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Because the chain preserves insertion order, iterating over the bucket will give you the keys in the same relative sequence they were added.",
+                "evidence_reason": "The candidate asserts that the hash table buckets preserve the insertion sequence of keys, reinforcing their belief that the data structure maintains a useful ordering properties related to keys.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Because the chain preserves insertion order, iterating over the bucket will give you the keys in the same relative sequence they were added.",
+            "evidence_reason": "The candidate asserts that hash chains preserve the sequence in which keys were added and suggests this allows them to be retrieved in that relative order, continuing to exhibit the belief that hash tables maintain usable internal ordering.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly claimed that a hash table maintains elements sorted by their values and that numerical/alphabetical keys end up next to each other, demonstrating the misconception that hash tables keep keys sorted.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate's answer exhibits multiple critical misconceptions: claiming that a hash table keeps elements sorted and that a sorted array supports O(1) inserts anywhere, violating the rubric level-0 rules.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.2338,
+          "se": 0.6586,
+          "level": 3,
+          "n": 3
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.132,
+          "se": 0.6064,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-001",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misread",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-concurrency"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.66); level 3 is nearest its estimate +1.23; probes a topic where an earlier answer was weak, for a misconception not yet probed: py-concurrency (py.concurrency.threads-cpu-parallel)",
+      "prompt": "A team scores 1 million records with a pure-Python function. To speed it up they split the work across 8 threads, and each thread adds its scores to a shared global with total += score. On an 8-core machine it is no faster than one thread, and occasionally the total is slightly wrong. Explain both problems and how you would fix each.",
+      "answer": "In CPython the Global Interpreter Lock prevents true parallel execution of CPU‑bound pure‑Python code, so using multiple threads won’t make the scoring faster. To get real speed‑up you’d need to run the work in separate processes (e.g., via multiprocessing or a ProcessPoolExecutor) instead of threads.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "Can you explain why the final total occasionally ended up slightly wrong?",
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "Can you explain why the final total occasionally ended up slightly wrong?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens to the final total when multiple threads update the shared variable at the same time, and why might it be incorrect?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the GIL limitation for CPU-bound pure-Python code and suggests using a process pool for the speed fix, but completely misses the second problem regarding the race condition and lost updates on the shared total.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains the GIL limitation for CPU-bound pure-Python code and suggests using a process pool for the speed fix, but completely misses the second problem regarding the race condition and lost updates on the shared total.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.132,
+          "se": 0.6064,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "sql",
+      "level": 3,
+      "question_id": "SQL-L3-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-window-functions"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.61; lists a suspected misconception to confirm: sql.window-functions.running-sum-is-total",
+      "prompt": "A daily_sales table has one row per day. Explain what SUM(amount) OVER (ORDER BY day) returns on each row, and how AVG(amount) OVER (ORDER BY day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) differs. How many rows does each query return compared with the table?",
+      "answer": "The first query will give the total amount for the whole table on every row, basically the same number repeated. The second query will calculate the average of all rows up to the current one, ignoring any limit on how many rows are considered. Both queries will still output the same number of rows as the original daily_sales table.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.window-functions.running-sum-is-total",
+        "follow_up": "If there are three rows with amounts 10, 20, and 30 ordered by day, what exact value would you expect the running sum query to show on the second row?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If there are three rows with amounts 10, 20, and 30 ordered by day, what exact value would you expect the running sum query to show on the second row?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The first query will give the total amount for the whole table on every row, basically the same number repeated.",
+            "evidence_reason": "The candidate explicitly states that SUM with an ORDER BY clause in OVER returns the total amount for the whole table repeated on every row, which matches the misconception that running sums are grand totals.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "If you have a table with amounts 10, 20, and 30 across three consecutive days, what value would you expect SUM(amount) OVER (ORDER BY day) to show for the second day?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The first query will give the total amount for the whole table on every row, basically the same number repeated.",
+            "evidence_reason": "The candidate explicitly states that SUM with an ORDER BY clause returns the total amount for the whole table on every row, which matches the misconception that running sums are grand totals.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.window-functions.running-sum-is-total",
+            "follow_up": "What would you expect the running sum query to return for the very first row compared to the very last row if amounts are positive?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The first query will give the total amount for the whole table on every row, basically the same number repeated.",
+            "evidence_reason": "The candidate explicitly states that SUM() OVER (ORDER BY day) returns the grand total on every row, which directly matches the misconception that a running sum is the total.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The first query will give the total amount for the whole table on every row, basically the same number repeated.",
+        "evidence_reason": "The candidate explicitly states that SUM with an ORDER BY clause in OVER returns the total amount for the whole table repeated on every row, which matches the misconception that running sums are grand totals.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that SUM(amount) OVER (ORDER BY day) returns the grand total on every row and misinterprets the sliding window frame as averaging all rows up to the current one. Because these explanations match listed misconceptions, the score is 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that SUM(amount) OVER (ORDER BY day) returns the grand total on every row and misinterprets the sliding window frame as averaging all rows up to the current one. Because these explanations match listed misconceptions, the score is 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.3256,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.132,
+          "se": 0.6064,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L3-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-trees-bst"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 2 is nearest its estimate -0.13; lists a suspected misconception to confirm: ds.trees-bst.inorder-not-sorted",
+      "prompt": "`ok` is meant to check whether a tree, stored as nested `(key, left, right)` tuples, is a valid binary search tree. What does this print, and is the tree actually a valid BST?\n\ndef ok(node):\n    if node is None:\n        return True\n    key, left, right = node\n    if left and left[0] > key:\n        return False\n    if right and right[0] < key:\n        return False\n    return ok(left) and ok(right)\n\ndef inorder(node):\n    return inorder(node[1]) + [node[0]] + inorder(node[2]) if node else []\n\ntree = (50, (30, (20, None, None), (60, None, None)), (70, None, None))\nprint(ok(tree), inorder(tree))\n",
+      "answer": "It will print `False` and the inorder list `[20, 30, 50, 60, 70]`. The tree isn’t a proper BST because the left subtree contains a node (60) that’s larger than its parent, breaking the BST property.",
+      "diagnosis": {
+        "cause": "misread",
+        "misconception_id": null,
+        "follow_up": "Could you trace what happens specifically when `ok` checks the left child of the root node `(30, (20, None, None), (60, None, None))`?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "Could you trace what happens specifically when `ok` checks the left child of the root node `(30, (20, None, None), (60, None, None))`?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "Could you trace what `ok(tree)` evaluates to by looking at the root node (50) and its left child (30)?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "Could you trace what `ok(tree)` returns step by step for the root and its left child, specifically looking at the condition `left[0] > key`?",
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "Could you trace what happens specifically when `ok` checks the left child of the root node `(30, (20, None, None), (60, None, None))`?",
+          "answer": "When `ok` reaches the left child `(30, (20, None, None), (60, None, None))`, it first compares the left grand‑child `20` with `30` and sees that `20` is less, so that check passes. Then it looks at the right grand‑child `60` and notices that `60` is greater than `30`, which also satisfies the condition that a right child must be larger than its parent, so it returns `True` for that subtree and continues recursion.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.trees-bst.only-check-children",
+            "follow_up": "What happens when `ok` finally evaluates the root node 50 and its left child 30? Does `ok` check whether 60 is smaller than 50?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.trees-bst.only-check-children",
+                "follow_up": "What happens when `ok` finally evaluates the root node 50 and its left child 30? Does `ok` check whether 60 is smaller than 50?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Then it looks at the right grand‑child `60` and notices that `60` is greater than `30`, which also satisfies the condition that a right child must be larger than its parent, so it returns `True` for that subtree",
+                "evidence_reason": "The candidate asserts that the local check of 60 being larger than its parent 30 satisfies the condition for that subtree to pass, which explicitly matches the belief that local parent-child comparisons are sufficient for BST validity without checking ancestral bounds.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.trees-bst.only-check-children",
+                "follow_up": "What happens when `ok` finally evaluates the root node `50` against its left child `30` and its right child `70`?",
+                "confidence_expressed": "high",
+                "supporting_quote": "Then it looks at the right grand‑child `60` and notices that `60` is greater than `30`, which also satisfies the condition that a right child must be larger than its parent, so it returns `True` for that subtree",
+                "evidence_reason": "The candidate explicitly demonstrates the belief that verifying the BST property consists purely of checking whether children/grandchildren satisfy local parent-child inequalities (right child greater than parent, left smaller), ignoring global subtree boundaries.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.trees-bst.only-check-children",
+                "follow_up": "What happens when `ok` finally evaluates the root node 50 and its left child 30? Does `ok` check whether 60 is smaller than 50?",
+                "confidence_expressed": "high",
+                "supporting_quote": "satisfies the condition that a right child must be larger than its parent",
+                "evidence_reason": "The candidate explicitly demonstrates the belief that local parent-child comparisons are all that is required for a valid BST, focusing entirely on whether child nodes are correctly ordered relative to their immediate parent (60 is greater than its parent 30).",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "Then it looks at the right grand‑child `60` and notices that `60` is greater than `30`, which also satisfies the condition that a right child must be larger than its parent, so it returns `True` for that subtree",
+            "evidence_reason": "The candidate asserts that the local check of 60 being larger than its parent 30 satisfies the condition for that subtree to pass, which explicitly matches the belief that local parent-child comparisons are sufficient for BST validity without checking ancestral bounds.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What happens when `ok` finally evaluates the root node 50 and its left child 30? Does `ok` check whether 60 is smaller than 50?",
+          "answer": "When `ok` gets to the root (50) it only looks at its immediate left child (30) and sees that 30 < 50, so that part passes. It doesn’t go any deeper at that point, because the recursive calls for the left subtree have already been made earlier, and the function just returns the combined result of those calls. Hence the check at the root never directly compares the 60 node with 50.",
+          "diagnosis": {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "vote_share": 0.3333333333333333,
+            "votes": [
+              {
+                "cause": "correct",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.trees-bst.only-check-children",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "Hence the check at the root never directly compares the 60 node with 50.",
+                "evidence_reason": "The candidate incorrectly believes that a valid BST only requires comparing a node directly with its children rather than respecting global sub-tree bounds, stating that the root only needs to check its immediate children and misses why 60 violates the BST property relative to 50.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          2,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that the function only checks immediate parent-child relationships and thus misses that 60 violates the BST property relative to the root (50), but got the initial print output and in-order list wrong (thought it printed False and a sorted list). After follow-ups, they understood how `ok` works and why the check failed, but the initial misconception about the output prevents full credit.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly predicts the output of `ok` as False (it actually returns True) and incorrectly computes the inorder traversal. They also misidentify the BST violation by stating 60 is larger than its parent 30, whereas 60 is actually in the left subtree of 50.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.1889,
+          "se": 0.5946,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": 0.3256,
+          "se": 0.5914,
+          "level": 2,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.1162,
+          "se": 0.5707,
+          "level": 2,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-008",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 21,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 1.1889,
+        "se": 0.5946,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.783538,
+        "level_probabilities": {
+          "0": 2.1e-05,
+          "1": 0.006337,
+          "2": 0.210104,
+          "3": 0.783538
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 2,
+        "estimate": 0.3256,
+        "se": 0.5914,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.598903,
+        "level_probabilities": {
+          "0": 0.004218,
+          "1": 0.148681,
+          "2": 0.598903,
+          "3": 0.248198
+        },
+        "meets_minimum": true
+      },
+      "ds": {
+        "level": 2,
+        "estimate": -0.1162,
+        "se": 0.5707,
+        "confident": true,
+        "minimum": 1,
+        "level_probability": 0.545845,
+        "level_probabilities": {
+          "0": 0.02287,
+          "1": 0.363144,
+          "2": 0.545845,
+          "3": 0.068141
+        },
+        "meets_minimum": true
+      }
+    },
+    "decision": "fit",
+    "decision_reason": "Every skill meets the job minimum.",
+    "misconceptions": [
+      {
+        "id": "sql.window-functions.running-sum-is-total",
+        "confirmed": true,
+        "evidence_turns": [
+          5,
+          12
+        ],
+        "vote_share": 0.889,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "The query will give you a total column that shows the overall sum of all amounts for every row, so each row ends up with the same grand‑total value. The rnk column simply numbers the rows sequentially based on the day, so the first day gets 1, the second day gets 2, and so on, without any gaps for ties.",
+            "vote_share": 1.0,
+            "supporting_quote": "The query will give you a total column that shows the overall sum of all amounts for every row, so each row ends up with the same grand‑total value.",
+            "quote_start": 0,
+            "quote_end": 148,
+            "reason": "The candidate explicitly states that the window sum function produces the overall grand-total value for every row, which matches the listed misconception sql.window-functions.running-sum-is-total."
+          },
+          {
+            "question_id": "SQL-L3-010",
+            "turn": 5,
+            "reply_index": 1,
+            "reply_text": "If there are two rows with the same day, the window frame treats each one separately, so the first occurrence adds its amount to the running total and the second one starts the sum over again from the previous day’s total. In other words, the second row for day 2 would show the same running value as the first row for day 1, and then the sum continues from there for the following rows.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "the second row for day 2 would show the same running value as the first row for day 1, and then the sum continues from there",
+            "quote_start": 239,
+            "quote_end": 363,
+            "reason": "The candidate incorrectly describes the running sum frame as resetting or not accumulating correctly across rows with the same day, confusing how running totals behave with ties."
+          },
+          {
+            "question_id": "SQL-L3-001",
+            "turn": 12,
+            "reply_index": 0,
+            "reply_text": "The first query will give the total amount for the whole table on every row, basically the same number repeated. The second query will calculate the average of all rows up to the current one, ignoring any limit on how many rows are considered. Both queries will still output the same number of rows as the original daily_sales table.",
+            "vote_share": 1.0,
+            "supporting_quote": "The first query will give the total amount for the whole table on every row, basically the same number repeated.",
+            "quote_start": 0,
+            "quote_end": 112,
+            "reason": "The candidate explicitly states that SUM with an ORDER BY clause in OVER returns the total amount for the whole table repeated on every row, which matches the misconception that running sums are grand totals."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "ds.graphs.bfs-weighted-shortest",
+        "confirmed": false,
+        "evidence_turns": [
+          6
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L3-014",
+            "turn": 6,
+            "reply_index": 0,
+            "reply_text": "It will output a dictionary showing each node with a number that represents how many steps away it is from A, so you’ll see something like A:0, B:1, C:1, D:2, E:2, F:3. The numbers are just the count of edges you have to travel, and if the edges had different lengths those counts wouldn’t change—they’d still be the same values.",
+            "vote_share": 1.0,
+            "supporting_quote": "if the edges had different lengths those counts wouldn’t change—they’d still be the same values",
+            "quote_start": 233,
+            "quote_end": 328,
+            "reason": "The candidate explicitly states that if edge lengths changed, the resulting values would remain the same, which demonstrates the belief that BFS hop-counts still serve as the shortest distances in a weighted graph."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.trees-bst.inorder-not-sorted",
+        "confirmed": false,
+        "evidence_turns": [
+          7
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-012",
+            "turn": 7,
+            "reply_index": 0,
+            "reply_text": "The function will print the keys in the order they appear from left to right in the tree, basically following the structure of the tree as it’s built. For a balanced tree the recursion only needs a constant amount of extra space, while a tree created from sorted input will need space that grows linearly with the number of nodes because the calls pile up. In the worst case the deep recursion can overflow Python’s stack and cause a crash.",
+            "vote_share": 1.0,
+            "supporting_quote": "The function will print the keys in the order they appear from left to right in the tree, basically following the structure of the tree as it’s built.",
+            "quote_start": 0,
+            "quote_end": 150,
+            "reason": "The candidate explicitly states that keys are printed in the order they appear structurally in the tree as built (insertion or level-like order), failing to recognize that an in-order traversal of a BST always yields sorted order regardless of insertion shape."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.hash-tables.keys-kept-sorted",
+        "confirmed": false,
+        "evidence_turns": [
+          10
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-001",
+            "turn": 10,
+            "reply_index": 0,
+            "reply_text": "A hash table lets you insert new scores in constant time and you can also retrieve the whole list in order without extra work, because the hash structure maintains the elements sorted by their values. A sorted array also supports O(1) inserts by just appending to the end and then reading the array gives you the scores in order. A balanced binary search tree gives O(log n) inserts, and an in-order traversal lists the scores in sorted order.",
+            "vote_share": 1.0,
+            "supporting_quote": "the hash structure maintains the elements sorted by their values.",
+            "quote_start": 135,
+            "quote_end": 200,
+            "reason": "The candidate explicitly states that the hash table structure maintains elements in sorted order, which directly matches the listed misconception ds.hash-tables.keys-kept-sorted."
+          },
+          {
+            "question_id": "DS-L2-001",
+            "turn": 10,
+            "reply_index": 1,
+            "reply_text": "The hash function basically takes the key’s characters, turns them into a number and then uses that number as an index, so keys that are close alphabetically or numerically tend to end up next to each other in the table. Because the function spreads the keys evenly, the table naturally preserves the original ordering when you iterate over it.",
+            "vote_share": 1.0,
+            "supporting_quote": "Because the function spreads the keys evenly, the table naturally preserves the original ordering when you iterate over it.",
+            "quote_start": 221,
+            "quote_end": 344,
+            "reason": "The candidate explicitly states that a hash table preserves the original ordering of keys when iterated over, which directly matches the belief that hash tables keep keys sorted or in a specific preserved order."
+          },
+          {
+            "question_id": "DS-L2-001",
+            "turn": 10,
+            "reply_index": 2,
+            "reply_text": "When two keys hash to the same slot, the table usually chains them together in a little list at that index, and it keeps that list in the order they were inserted, so the first one you added will appear before the later one. Because the chain preserves insertion order, iterating over the bucket will give you the keys in the same relative sequence they were added.",
+            "vote_share": 1.0,
+            "supporting_quote": "Because the chain preserves insertion order, iterating over the bucket will give you the keys in the same relative sequence they were added.",
+            "quote_start": 225,
+            "quote_end": 365,
+            "reason": "The candidate asserts that hash chains preserve the sequence in which keys were added and suggests this allows them to be retrieved in that relative order, continuing to exhibit the belief that hash tables maintain usable internal ordering."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.trees-bst.only-check-children",
+        "confirmed": false,
+        "evidence_turns": [
+          13
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-008",
+            "turn": 13,
+            "reply_index": 1,
+            "reply_text": "When `ok` reaches the left child `(30, (20, None, None), (60, None, None))`, it first compares the left grand‑child `20` with `30` and sees that `20` is less, so that check passes. Then it looks at the right grand‑child `60` and notices that `60` is greater than `30`, which also satisfies the condition that a right child must be larger than its parent, so it returns `True` for that subtree and continues recursion.",
+            "vote_share": 1.0,
+            "supporting_quote": "Then it looks at the right grand‑child `60` and notices that `60` is greater than `30`, which also satisfies the condition that a right child must be larger than its parent, so it returns `True` for that subtree",
+            "quote_start": 181,
+            "quote_end": 392,
+            "reason": "The candidate asserts that the local check of 60 being larger than its parent 30 satisfies the condition for that subtree to pass, which explicitly matches the belief that local parent-child comparisons are sufficient for BST validity without checking ancestral bounds."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.graphs.bfs-dfs-swapped",
+      "ds.graphs.bfs-weighted-shortest",
+      "ds.graphs.dfs-finds-shortest",
+      "ds.hash-tables.keys-kept-sorted",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.stacks-queues.recursion-free-memory",
+      "ds.trees-bst.always-balanced",
+      "ds.trees-bst.inorder-not-sorted",
+      "ds.trees-bst.only-check-children",
+      "py.concurrency.async-multithreaded",
+      "py.concurrency.async-preempts",
+      "py.concurrency.gil-thread-safe",
+      "py.concurrency.threads-cpu-parallel",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.aggregate-in-where",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.aggregation.count-group-column-is-one",
+      "sql.aggregation.group-by-only-sorts",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.window-functions.collapses-rows",
+      "sql.window-functions.rank-functions-identical",
+      "sql.window-functions.running-sum-is-total"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "py-pandas",
+        "sql-select-filter",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-subqueries-cte",
+        "sql-window-functions",
+        "ds-complexity",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "tested": [
+        "py-pandas",
+        "sql-null",
+        "sql-joins",
+        "sql-aggregation",
+        "sql-window-functions",
+        "ds-arrays-strings",
+        "ds-hash-tables"
+      ],
+      "untested": [
+        "py-functions-scope",
+        "py-collections",
+        "py-comprehensions-generators",
+        "sql-select-filter",
+        "sql-subqueries-cte",
+        "ds-complexity"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: fit. Every skill meets the job minimum. Estimated levels: py level 3 (needs 2), sql level 2 (needs 2), ds level 2 (needs 1). Confirmed misconception: Believes SUM(x) OVER (ORDER BY y) returns the grand total on every row, not knowing that ORDER BY inside OVER produces a running total in which tied rows share a value. Suspected (insufficient corroboration) misconception: Believes BFS finds shortest paths in weighted graphs, equating the route with the fewest edges with the route of least total weight. Suspected (insufficient corroboration) misconception: Does not know that an in-order traversal of a valid BST visits keys in sorted order; believes it returns keys in insertion order or level order. Suspected (insufficient corroboration) misconception: Believes a hash table stores its keys in sorted order, so iterating over it yields keys sorted and it can produce ordered output or the smallest key without extra sorting. Suspected (insufficient corroboration) misconception: Believes the BST property only requires each node to be greater than its left child and smaller than its right child, rather than greater than every key in its left subtree and smaller than every key in its right subtree."
+  },
+  "usage": {
+    "llm_calls": 118,
+    "api_calls": 108,
+    "input_tokens": 138552,
+    "output_tokens": 11066,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 118,
+        "api_calls": 108,
+        "input_tokens": 138552,
+        "output_tokens": 11066
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 3,
+      "sql": 2,
+      "ds": 1
+    },
+    "fit": true,
+    "misconceptions": [
+      "py.comprehensions-generators.yield-is-return"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}

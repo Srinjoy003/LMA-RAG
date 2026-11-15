@@ -1,0 +1,2549 @@
+{
+  "interview_id": "A5E-backend-engineer-CAND-020-0",
+  "system": "A5E",
+  "config": {
+    "system": "A5E",
+    "driver": "code",
+    "mode": "adaptive",
+    "retrieval": "job-blind",
+    "fixed_levels": [
+      1,
+      2,
+      2,
+      3
+    ],
+    "skill_order": [
+      "py",
+      "sql",
+      "ds"
+    ],
+    "start_level": 2,
+    "stop_rule": "uncertainty",
+    "uncertainty_threshold": 0.6,
+    "level_probability_threshold": 0.7,
+    "max_questions": 15,
+    "fixed_count": 12,
+    "diagnosis": "structured",
+    "generic_follow_up": true,
+    "max_follow_ups": 2,
+    "diagnosis_votes": 3,
+    "misconception_confirmations": 2,
+    "misconception_confirmation_unit": "question",
+    "diagnostic_evidence": true,
+    "probe_missed_topics": true,
+    "max_agent_steps": 150,
+    "grader_votes": 3,
+    "sql_verification": false,
+    "allow_generated_questions": true,
+    "generated_weight": 0.5,
+    "use_topic_extraction": true,
+    "models": {
+      "interviewer": "gemini-3.5-flash-lite",
+      "diagnoser": "gemini-3.5-flash-lite",
+      "topic_extractor": "gemini-3.5-flash-lite",
+      "grader": "finetuned-grader",
+      "simulator": "gpt-oss-120b"
+    },
+    "seed": 0,
+    "diagnosis_prompt_version": "evidence-v1"
+  },
+  "job_id": "backend-engineer",
+  "candidate_id": "CAND-020",
+  "started_at": "2026-11-14T06:21:58Z",
+  "finished_at": "2026-11-14T06:24:19Z",
+  "required_topics": [
+    "py-variables-mutability",
+    "py-functions-scope",
+    "py-collections",
+    "py-oop",
+    "py-exceptions",
+    "py-concurrency",
+    "sql-joins",
+    "sql-indexes-performance",
+    "sql-schema-constraints",
+    "sql-transactions",
+    "ds-complexity",
+    "ds-hash-tables",
+    "ds-stacks-queues",
+    "ds-linked-lists",
+    "ds-trees-bst"
+  ],
+  "turns": [
+    {
+      "index": 1,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-exceptions"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: py.exceptions.finally-skipped-on-return, py.exceptions.most-specific-except-wins, py.exceptions.resumes-after-raise",
+      "prompt": "Explain the roles of try, except, else and finally. If an exception is raised halfway through the try block, where does execution go next? If two except clauses could both match, which one runs? Does finally run if the try block executes return?",
+      "answer": "`try` contains the code that may raise an exception; if an exception occurs, the remaining statements in the `try` are skipped and Python looks for the first `except` clause, in order, whose type matches and executes that handler. The `else` block runs only when the `try` finishes without any exception, and the `finally` block runs no matter what—whether an exception was raised, a `return` happened in the `try` or an `except`, or the code completed normally. If two `except` clauses could both match, the one that appears first is the one that is executed.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, the first-match order of except clauses, and that finally runs even when return is executed, meeting all level 2 criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explained all four blocks, the first-match order of except clauses, and that finally runs even when return is executed, meeting all level 2 criteria.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 2,
+      "skill": "sql",
+      "level": 2,
+      "question_id": "SQL-L2-014",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-joins",
+        "sql-aggregation",
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: sql.aggregation.count-column-counts-nulls, sql.joins.join-never-duplicates, sql.joins.left-join-drops-unmatched",
+      "prompt": "What does this query return, and why?\n\nSELECT c.name, COUNT(o.id) AS n_orders, SUM(o.amount) AS total\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name\nORDER BY c.name;\n\nTable customers:\nid | name\n1 | Asha\n2 | Ben\n3 | Chen\n\nTable orders:\nid | customer_id | amount\n10 | 1 | 250\n11 | 1 | 80\n12 | 3 | NULL\n13 | NULL | 40",
+      "answer": "The query will list each customer’s name together with the number of rows returned from the join and the sum of the order amounts, so you’ll see a row for Asha with two orders, a row for Ben showing one order of 40, and a row for Chen showing one order with a total of NULL. The ORDER BY just sorts the result alphabetically by the customer name.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.joins.left-join-drops-unmatched",
+        "follow_up": "What order ID and customer ID are associated with the order amount of 40 in the orders table?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "What order ID and customer ID are associated with the order amount of 40 in the orders table?",
+            "confidence_expressed": "high",
+            "supporting_quote": "a row for Ben showing one order of 40",
+            "evidence_reason": "The candidate assigns the unmatched order with customer_id NULL (order 13, amount 40) to Ben, believing the LEFT JOIN or grouping matches it or includes it for Ben, demonstrating a misunderstanding of how unmatched rows or unassociated rows behave in joins.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "Can you check which customer ID order 13 belongs to and whether that customer exists in the customers table?",
+            "confidence_expressed": "high",
+            "supporting_quote": "a row for Ben showing one order of 40",
+            "evidence_reason": "The candidate assigns the unmatched order with ID 13 (amount 40) to Ben, which treats the LEFT JOIN as if it associates unmatched rows or drops unmatched handling, attributing an unjoined order to a customer who has no orders.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "What are the customer IDs in the orders table, and which customer row does order id 13 join with?",
+            "confidence_expressed": "high",
+            "supporting_quote": "a row for Ben showing one order of 40",
+            "evidence_reason": "The candidate assigns the unassigned order (id 13, amount 40, customer_id NULL) to Ben, which shows they believe the LEFT JOIN or the query matches unmatched right-table rows to the left table or retains them via Ben instead of dropping them or keeping them separate, aligning with confusion around how unmatched rows or LEFT JOIN behave.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "a row for Ben showing one order of 40",
+        "evidence_reason": "The candidate assigns the unmatched order with customer_id NULL (order 13, amount 40) to Ben, believing the LEFT JOIN or grouping matches it or includes it for Ben, demonstrating a misunderstanding of how unmatched rows or unassociated rows behave in joins.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What order ID and customer ID are associated with the order amount of 40 in the orders table?",
+          "answer": "The row with amount 40 comes from the order that has ID 13, and since its customer_id column is NULL it isn’t linked to any customer – so the customer ID is also NULL. In other words, that 40 belongs to an “orphan” order with no associated customer.",
+          "diagnosis": {
+            "cause": "misread",
+            "misconception_id": null,
+            "follow_up": "Can you check how the LEFT JOIN condition compares the customer ID in the orders table with the customers table for that order with ID 13?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "Can you check how the LEFT JOIN condition compares the customer ID in the orders table with the customers table for that order with ID 13?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "Can you check how the LEFT JOIN condition connects the customers and orders tables for each customer in the result?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misread",
+                "misconception_id": null,
+                "follow_up": "How does the LEFT JOIN treat an order whose customer_id is NULL when matching against the customers table?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "Can you check how the LEFT JOIN condition compares the customer ID in the orders table with the customers table for that order with ID 13?",
+          "answer": "The join condition checks whether the order’s customer_id value equals the id of a row in customers, so for order 13 it tries to match NULL to each customer’s id and fails. Because the comparison with NULL doesn’t succeed, that row ends up with no matching customer and the LEFT JOIN keeps the order’s columns but leaves the customer fields empty.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.joins.left-join-drops-unmatched",
+            "follow_up": "In a LEFT JOIN between customers and orders, which table determines the base set of rows that appear in the output?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.left-join-drops-unmatched",
+                "follow_up": "In a LEFT JOIN between customers and orders, which table determines the base set of rows that appear in the output?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the LEFT JOIN keeps the order’s columns but leaves the customer fields empty",
+                "evidence_reason": "The candidate asserts that the LEFT JOIN keeps the unmatched order row and leaves the customer fields empty, which reverses the direction of the LEFT JOIN (treating orders as the preserved left table rather than customers), demonstrating the belief that unmatched rows from the right table are retained rather than unmatched rows from the left table.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.left-join-drops-unmatched",
+                "follow_up": "In this LEFT JOIN query, which table is on the left and which is on the right, and does a LEFT JOIN keep rows from the left or the right table when they have no match?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the LEFT JOIN keeps the order’s columns but leaves the customer fields empty",
+                "evidence_reason": "The candidate states that the LEFT JOIN keeps the unmatched order's columns and leaves the customer fields empty, which reverses the direction of LEFT JOIN (treating orders as the preserved table instead of customers). This directly aligns with the misconception that LEFT JOIN drops unmatched rows from the left table or treats the right table as the primary retained set.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.joins.left-join-drops-unmatched",
+                "follow_up": "In a LEFT JOIN, which table acts as the source for all rows that must be preserved in the result, the left table or the right table?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the LEFT JOIN keeps the order’s columns but leaves the customer fields empty.",
+                "evidence_reason": "The candidate incorrectly asserts that the LEFT JOIN preserves rows from the right table (orders) when they have no match, rather than preserving rows from the left table (customers). This aligns with the idea of a right join or a misunderstood direction.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the LEFT JOIN keeps the order’s columns but leaves the customer fields empty",
+            "evidence_reason": "The candidate asserts that the LEFT JOIN keeps the unmatched order row and leaves the customer fields empty, which reverses the direction of the LEFT JOIN (treating orders as the preserved left table rather than customers), demonstrating the belief that unmatched rows from the right table are retained rather than unmatched rows from the left table.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assigned the orphan order (amount 40, customer_id NULL) to Ben in the main answer, showing a misunderstanding of how LEFT JOIN works with unmatched rows. Although the follow-up correctly identified the nature of the orphan order, the fundamental row count and aggregation logic for Ben was wrong, meeting the rubric criteria for a score of 0.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assigned the unassociated order to Ben, giving Ben a count of 1 instead of 0, and missed the correct behavior of LEFT JOIN and aggregation on NULL values.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": 0.0,
+          "se": 0.9995,
+          "level": 2,
+          "n": 0
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L2-014",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 3,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-006",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 1.00); level 2 is nearest its estimate +0.00; lists misconceptions not yet probed: ds.hash-tables.lookup-is-linear, ds.linked-lists.insert-shifts-nodes, ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "A least-recently-used (LRU) cache with a fixed capacity is often built from a hash map plus a doubly linked list of entries ordered by last use. What does each part contribute? Walk through what happens on a cache hit for key k, and explain why both get and put can run in O(1) time on average.",
+      "answer": "The hash map gives us O(1) lookup of a key to its node, while the doubly‑linked list keeps the nodes in order of recent use so we can evict the tail when needed. On a cache hit we find the node via the map, then move it to the front by setting p.next = n and n.next = p.next; the exact order of those pointer updates doesn’t matter because we just rewire the links. Since both the map operations and the pointer rewiring are constant‑time, get and put run in O(1) on average.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+        "follow_up": "If you update `p.next = n` first, what happens to the node that `p.next` originally pointed to?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+            "follow_up": "If you update `p.next = n` first, what happens to the node that `p.next` originally pointed to?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the exact order of those pointer updates doesn’t matter because we just rewire the links",
+            "evidence_reason": "The candidate explicitly states that the order of pointer updates does not matter, which matches the misconception ds.linked-lists.pointer-order-irrelevant.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+            "follow_up": "If you update p.next = n first, what happens to the reference that used to be at p.next when you try to access the rest of the list?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the exact order of those pointer updates doesn’t matter because we just rewire the links",
+            "evidence_reason": "The candidate explicitly asserts that the order of pointer updates does not matter, which matches the listed misconception ds.linked-lists.pointer-order-irrelevant.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+            "follow_up": "If you update p.next to point to the new node before saving the old next pointer elsewhere, what happens to the remainder of the list attached after p?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the exact order of those pointer updates doesn’t matter because we just rewire the links",
+            "evidence_reason": "The candidate explicitly asserts that the order of pointer updates does not matter when rewiring links.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "the exact order of those pointer updates doesn’t matter because we just rewire the links",
+        "evidence_reason": "The candidate explicitly states that the order of pointer updates does not matter, which matches the misconception ds.linked-lists.pointer-order-irrelevant.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "If you update `p.next = n` first, what happens to the node that `p.next` originally pointed to?",
+          "answer": "If you set p.next = n first, the reference that p used to have is overwritten, but that’s fine because we don’t need to keep a separate pointer to the old next node – we’ll re‑attach it later when we set n.next. In other words, the original p.next node is effectively lost at that moment, but the subsequent pointer update restores the correct links, so the order of those two assignments doesn’t matter.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+            "follow_up": "If p.next is overwritten before you save it in another variable, how can you reach the rest of the list nodes that used to follow p?",
+            "vote_share": 0.6666666666666666,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+                "follow_up": "If p.next is overwritten before you save it in another variable, how can you reach the rest of the list nodes that used to follow p?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the original p.next node is effectively lost at that moment, but the subsequent pointer update restores the correct links, so the order of those two assignments doesn’t matter.",
+                "evidence_reason": "The candidate explicitly argues that overwriting a pointer before saving it and losing reference to the rest of the list is harmless and that pointer update order does not matter, which matches the listed misconception ds.linked-lists.pointer-order-irrelevant.",
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+                "follow_up": "If you overwrite p.next first before saving that node in a temporary variable, how can you reach the rest of the list that used to be after p?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the original p.next node is effectively lost at that moment, but the subsequent pointer update restores the correct links, so the order of those two assignments doesn’t matter.",
+                "evidence_reason": "The candidate explicitly argues that losing the reference to the original p.next node temporarily is fine and that the order of pointer assignments does not matter.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "the original p.next node is effectively lost at that moment, but the subsequent pointer update restores the correct links, so the order of those two assignments doesn’t matter.",
+            "evidence_reason": "The candidate explicitly argues that overwriting a pointer before saving it and losing reference to the rest of the list is harmless and that pointer update order does not matter, which matches the listed misconception ds.linked-lists.pointer-order-irrelevant.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "If p.next is overwritten before you save it in another variable, how can you reach the rest of the list nodes that used to follow p?",
+          "answer": "Even if we overwrite p.next first, we don’t need to keep a separate reference to the old next node because the next pointer will be restored when we assign n.next later. The original portion of the list is effectively re‑linked through n.next, so the order of those two assignments doesn’t affect correctness.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+            "follow_up": null,
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "The original portion of the list is effectively re‑linked through n.next, so the order of those two assignments doesn’t affect correctness.",
+                "evidence_reason": "The candidate explicitly argues that overwriting p.next first does not cause issues because n.next will magically or automatically restore access to the rest of the list, which matches the belief that pointer update order does not matter.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "The original portion of the list is effectively re‑linked through n.next, so the order of those two assignments doesn’t affect correctness.",
+                "evidence_reason": "The candidate explicitly asserts that overwriting p.next first does not cause issues because n.next will automatically re-link or restore the lost part of the list, which directly matches the listed belief that pointer update order does not matter and nodes reattach automatically.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+                "follow_up": null,
+                "confidence_expressed": "high",
+                "supporting_quote": "Even if we overwrite p.next first, we don’t need to keep a separate reference to the old next node because the next pointer will be restored when we assign n.next later.",
+                "evidence_reason": "The candidate explicitly argues that overwriting p.next first does not lose the rest of the list because it will be restored by a later assignment, demonstrating the listed belief that pointer update order is irrelevant.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "The original portion of the list is effectively re‑linked through n.next, so the order of those two assignments doesn’t affect correctness.",
+            "evidence_reason": "The candidate explicitly argues that overwriting p.next first does not cause issues because n.next will magically or automatically restore access to the rest of the list, which matches the belief that pointer update order does not matter.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "misconception",
+            "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+            "expected_score": 0,
+            "effective_level": 2,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explicitly shows the listed misconception ds.linked-lists.pointer-order-irrelevant, arguing that overwriting a pointer before saving it does not lose the rest of the list.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate explains the roles of both the hash map and doubly linked list correctly, but claims that the order of pointer updates when moving a node does not matter, which matches the listed misconception ds.linked-lists.pointer-order-irrelevant.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6914,
+          "se": 0.8396,
+          "level": 2,
+          "n": 1
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-006",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 4,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.84); level 3 is nearest its estimate +0.69; lists misconceptions not yet probed: py.pandas.loc-end-exclusive, py.pandas.nan-treated-as-zero, py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ns1 = pd.Series([10, 20, 30], index=[\"a\", \"b\", \"c\"])\ns2 = pd.Series([1, 2, 3], index=[\"b\", \"c\", \"d\"])\ntotal = s1 + s2\nprint(total.tolist())\nprint(total.mean())\nprint(s1.loc[\"a\":\"b\"].sum())",
+      "answer": "The addition aligns the two Series by position, so it just adds the first three elements: [10+1, 20+2, 30+3] giving [11, 22, 33]. The mean of that list is (11 + 22 + 33) / 3 = 22, and the sum of the slice from “a” to “b” in the first Series is 10 + 20 = 30.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "py.pandas.positional-alignment",
+        "follow_up": "What happens to the resulting index labels and values if you add two Series with completely non-overlapping index labels?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the resulting index labels and values if you add two Series with completely non-overlapping index labels?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The addition aligns the two Series by position, so it just adds the first three elements",
+            "evidence_reason": "The candidate explicitly states that Series addition aligns by position rather than index labels.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the resulting index labels and values if you add s1 and s2 when s2 has index labels ['x', 'y', 'z'] instead?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The addition aligns the two Series by position, so it just adds the first three elements",
+            "evidence_reason": "The candidate explicitly states that Series addition aligns the series by position instead of by index label.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "What happens to the resulting index labels if s1 and s2 have completely disjoint index labels, like s1 with index ['a'] and s2 with index ['z']?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The addition aligns the two Series by position, so it just adds the first three elements",
+            "evidence_reason": "The candidate explicitly states that Series addition aligns elements by position rather than index labels, matching the listed misconception py.pandas.positional-alignment.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The addition aligns the two Series by position, so it just adds the first three elements",
+        "evidence_reason": "The candidate explicitly states that Series addition aligns by position rather than index labels.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "What happens to the resulting index labels and values if you add two Series with completely non-overlapping index labels?",
+          "answer": "If the indexes don’t overlap at all, pandas will just concatenate the two series side‑by‑side, creating a new series whose index is the union of both original indexes and whose values are simply the values from each series in the order they appeared. So you’d end up with a longer series where the first part contains the values from the first series and the second part contains the values from the second one, without any NaNs or missing entries.",
+          "diagnosis": {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "Can you try writing out what `s1 + s2` produces if you align them by their matching index labels 'a', 'b', 'c', and 'd'?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": null,
+                "confidence_expressed": "medium",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": "Can you try writing out what `s1 + s2` produces if you align them by their matching index labels 'a', 'b', 'c', and 'd'?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              },
+              {
+                "cause": "gap",
+                "misconception_id": null,
+                "follow_up": "What happens when you add two pandas Series that share some index labels but have others that are unique to each?",
+                "confidence_expressed": "high",
+                "supporting_quote": null,
+                "evidence_reason": null,
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 1,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that pandas Series addition aligns by position rather than index label, and also fails to understand that non-overlapping indexes result in NaNs.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly assumed positional alignment for pandas Series addition and treated missing values incorrectly, which matches the listed misconception about positional alignment.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-008",
+            "n_follow_ups": 1
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 5,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-008",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "sql-null",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; probes a topic where an earlier answer was weak, for a misconception not yet probed: sql-null (sql.null.equals-null-matches, sql.null.not-equal-includes-null)",
+      "prompt": "A colleague wrote this query to list every customer who is not in Pune, including customers with no city recorded. What does it return, and why?\n\nSELECT name\nFROM customers\nWHERE city <> 'Pune' OR city = NULL\nORDER BY name;\n\nTable customers:\nid | name | city\n1 | Asha | Pune\n2 | Ben | NULL\n3 | Chen | Delhi\n4 | Dana | Mumbai\n5 | Eli | NULL",
+      "answer": "The query will list every customer whose city isn’t Pune, plus the ones where the city column is NULL, so it ends up returning Ben, Eli, Chen and Dana. Asha is excluded because her city matches ‘Pune’. The result is then sorted alphabetically by name.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "sql.null.not-equal-includes-null",
+        "follow_up": "How does the comparison city <> 'Pune' evaluate for a row where city is NULL?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.null.not-equal-includes-null",
+            "follow_up": "How does the comparison city <> 'Pune' evaluate for a row where city is NULL?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The query will list every customer whose city isn’t Pune, plus the ones where the city column is NULL, so it ends up returning Ben, Eli, Chen and Dana.",
+            "evidence_reason": "The candidate explicitly believes that the inequality check city <> 'Pune' successfully includes rows where the city is NULL by assuming missing values are considered 'not equal' to a specific string.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.null.not-equal-includes-null",
+            "follow_up": "What does SQL return when you evaluate NULL <> 'Pune' in a WHERE clause?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The query will list every customer whose city isn’t Pune, plus the ones where the city column is NULL, so it ends up returning Ben, Eli, Chen and Dana.",
+            "evidence_reason": "The candidate explicitly asserts that rows with a NULL city satisfy the condition because they aren't Pune, demonstrating the listed misconception that <> includes NULL values.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "sql.null.not-equal-includes-null",
+            "follow_up": "What does city <> 'Pune' evaluate to for a row where the city is NULL in SQL?",
+            "confidence_expressed": "high",
+            "supporting_quote": "The query will list every customer whose city isn’t Pune, plus the ones where the city column is NULL",
+            "evidence_reason": "The candidate explicitly believes that the inequality condition city <> 'Pune' successfully includes rows where the city is NULL.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.null.equals-null-matches",
+                "supporting_quote": "plus the ones where the city column is NULL",
+                "quote_start": 58,
+                "quote_end": 101,
+                "reason": "The candidate attributes the inclusion of NULL rows to the inequality condition rather than city = NULL."
+              }
+            ]
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "The query will list every customer whose city isn’t Pune, plus the ones where the city column is NULL, so it ends up returning Ben, Eli, Chen and Dana.",
+        "evidence_reason": "The candidate explicitly believes that the inequality check city <> 'Pune' successfully includes rows where the city is NULL by assuming missing values are considered 'not equal' to a specific string.",
+        "contradicting": []
+      },
+      "follow_ups": [
+        {
+          "prompt": "How does the comparison city <> 'Pune' evaluate for a row where city is NULL?",
+          "answer": "When the city column is NULL, the `city <> 'Pune'` condition actually evaluates to true because NULL is treated as “no value” and any comparison with it is considered not equal. So those rows with a NULL city will satisfy the `<>` test and be included in the result set.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.null.not-equal-includes-null",
+            "follow_up": "What does the SQL standard say the result of comparing a NULL value with any normal value using operators like = or <> is?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.null.not-equal-includes-null",
+                "follow_up": "What does the SQL standard say the result of comparing a NULL value with any normal value using operators like = or <> is?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When the city column is NULL, the `city <> 'Pune'` condition actually evaluates to true because NULL is treated as “no value” and any comparison with it is considered not equal.",
+                "evidence_reason": "The candidate explicitly states that a comparison involving NULL evaluates to true because missing values are considered not equal to a specific string.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.null.not-equal-includes-null",
+                "follow_up": "Can you evaluate what `NULL <> 'Pune'` results in according to SQL three-valued logic?",
+                "confidence_expressed": "high",
+                "supporting_quote": "the `city <> 'Pune'` condition actually evaluates to true because NULL is treated as “no value” and any comparison with it is considered not equal.",
+                "evidence_reason": "The candidate explicitly states that city <> 'Pune' evaluates to true when city is NULL because missing values are considered not equal to 'Pune', directly matching the listed misconception sql.null.not-equal-includes-null.",
+                "contradicting": []
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.null.not-equal-includes-null",
+                "follow_up": "Can you evaluate what `NULL <> 'Pune'` evaluates to in SQL logic (TRUE, FALSE, or UNKNOWN)?",
+                "confidence_expressed": "high",
+                "supporting_quote": "When the city column is NULL, the `city <> 'Pune'` condition actually evaluates to true because NULL is treated as “no value” and any comparison with it is considered not equal.",
+                "evidence_reason": "The candidate explicitly states that a comparison involving NULL evaluates to true because missing values are considered not equal to a specific string, which directly matches the misconception sql.null.not-equal-includes-null.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "When the city column is NULL, the `city <> 'Pune'` condition actually evaluates to true because NULL is treated as “no value” and any comparison with it is considered not equal.",
+            "evidence_reason": "The candidate explicitly states that a comparison involving NULL evaluates to true because missing values are considered not equal to a specific string.",
+            "contradicting": []
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        },
+        {
+          "prompt": "What does the SQL standard say the result of comparing a NULL value with any normal value using operators like = or <> is?",
+          "answer": "The SQL standard treats any comparison with NULL as a regular boolean result, so `city <> 'Pune'` will simply be false when city is NULL, and `city = NULL` will be true only when the column actually contains the literal string “NULL”. Therefore rows with a NULL city won’t match the `<>` condition but will be picked up by the `city = NULL` part.",
+          "diagnosis": {
+            "cause": "misconception",
+            "misconception_id": "sql.null.equals-null-matches",
+            "follow_up": "Can you check what happens in SQL when you run WHERE city = NULL versus WHERE city IS NULL?",
+            "vote_share": 1.0,
+            "votes": [
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.null.equals-null-matches",
+                "follow_up": "Can you check what happens in SQL when you run WHERE city = NULL versus WHERE city IS NULL?",
+                "confidence_expressed": "high",
+                "supporting_quote": "and `city = NULL` will be true only when the column actually contains the literal string “NULL”. Therefore rows with a NULL city won’t match the `<>` condition but will be picked up by the `city = NULL` part.",
+                "evidence_reason": "The candidate explicitly believes that city = NULL can match rows where the column contains NULL, conflating standard equality with IS NULL semantics.",
+                "contradicting": [
+                  {
+                    "misconception_id": "sql.null.not-equal-includes-null",
+                    "supporting_quote": "rows with a NULL city won’t match the `<>` condition",
+                    "quote_start": 245,
+                    "quote_end": 297,
+                    "reason": "The candidate correctly states that city <> 'Pune' does not match rows with a NULL city, directly rejecting the notion that column <> 'x' includes NULL values."
+                  }
+                ]
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.null.equals-null-matches",
+                "follow_up": "What happens in SQL when you evaluate 5 = NULL or NULL = NULL?",
+                "confidence_expressed": "high",
+                "supporting_quote": "and `city = NULL` will be true only when the column actually contains the literal string “NULL”. Therefore rows with a NULL city won’t match the `<>` condition but will be picked up by the `city = NULL` part.",
+                "evidence_reason": "The candidate believes that city = NULL can be true (in this case, if the column contains the literal string 'NULL', demonstrating a fundamental misunderstanding of NULL as a SQL value versus missing data, and thinking city = NULL functions as an equality check against missing values).",
+                "contradicting": [
+                  {
+                    "misconception_id": "sql.null.not-equal-includes-null",
+                    "supporting_quote": "rows with a NULL city won’t match the `<>` condition",
+                    "quote_start": 245,
+                    "quote_end": 297,
+                    "reason": "The candidate correctly states that city <> 'Pune' does not match when city is NULL, directly contradicting the misconception that city <> 'x' includes NULL."
+                  }
+                ]
+              },
+              {
+                "cause": "misconception",
+                "misconception_id": "sql.null.equals-null-matches",
+                "follow_up": "What does city = NULL evaluate to in standard SQL when the cell contains an actual NULL value?",
+                "confidence_expressed": "high",
+                "supporting_quote": "and `city = NULL` will be true only when the column actually contains the literal string “NULL",
+                "evidence_reason": "The candidate believes that city = NULL can evaluate to true if the column contains a literal string 'NULL' or that SQL equality with NULL matches something, rather than understanding that comparison with NULL always evaluates to UNKNOWN.",
+                "contradicting": []
+              }
+            ],
+            "confidence_expressed": "high",
+            "prompt_version": "evidence-v1",
+            "supporting_quote": "and `city = NULL` will be true only when the column actually contains the literal string “NULL”. Therefore rows with a NULL city won’t match the `<>` condition but will be picked up by the `city = NULL` part.",
+            "evidence_reason": "The candidate explicitly believes that city = NULL can match rows where the column contains NULL, conflating standard equality with IS NULL semantics.",
+            "contradicting": [
+              {
+                "misconception_id": "sql.null.not-equal-includes-null",
+                "supporting_quote": "rows with a NULL city won’t match the `<>` condition",
+                "quote_start": 245,
+                "quote_end": 297,
+                "reason": "The candidate correctly states that city <> 'Pune' does not match rows with a NULL city, directly rejecting the notion that column <> 'x' includes NULL values.",
+                "vote_share": 0.6666666666666666
+              }
+            ]
+          },
+          "truth": {
+            "outcome": "wrong",
+            "misconception_id": null,
+            "expected_score": 0,
+            "effective_level": 0,
+            "attack": null
+          }
+        }
+      ],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that comparing a NULL value with <> evaluates to true and that = NULL matches NULL, demonstrating key SQL null comparison misconceptions.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          0
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate incorrectly believes that city <> 'Pune' or city = NULL matches rows with a NULL city, showing the listed misconception about how SQL handles NULL comparisons.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.6914,
+          "se": 0.8396,
+          "level": 1,
+          "n": 1
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-008",
+            "n_follow_ups": 2
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 6,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-003",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-linked-lists",
+        "ds-arrays-strings"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.84); level 1 is nearest its estimate -0.69; probes a topic where an earlier answer was weak, for a misconception not yet probed: ds-linked-lists (ds.arrays-strings.front-insert-constant, ds.arrays-strings.index-needs-scan, ds.linked-lists.index-constant-time)",
+      "prompt": "You need to delete the item at position k from a sequence of n items. Compare doing this on a Python list (`del lst[k]`) and on a singly linked list that you walk from the head. In each case, how much work goes into reaching position k, and how much into removing the item?",
+      "answer": "In a Python list the element at index k can be accessed in constant time, O(1), but deleting it requires shifting all elements after k one slot left, which costs O(n − k) (worst‑case O(n)). In a singly linked list you must traverse from the head to the node just before k, which takes O(k) time (O(1) if k = 0), and the actual removal is just a pointer update, so it is O(1).",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that a Python list allows O(1) index access with O(n - k) removal cost due to shifting, and that a singly linked list requires an O(k) traversal followed by an O(1) pointer update for deletion.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that a Python list allows O(1) index access with O(n - k) removal cost due to shifting, and that a singly linked list requires an O(k) traversal followed by an O(1) pointer update for deletion.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.3032,
+          "se": 0.7451,
+          "level": 0,
+          "n": 2
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-003",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 7,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-null"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.75); level 1 is nearest its estimate -1.30; lists a suspected misconception to confirm: sql.null.equals-null-matches, sql.null.not-equal-includes-null",
+      "prompt": "How do you find rows where a column has no value (is NULL)? Why does WHERE phone = NULL not find them, and does WHERE city <> 'Pune' return the rows where city is NULL?",
+      "answer": "In SQL any comparison with NULL doesn’t return true; it yields UNKNOWN, so a predicate like WHERE phone = NULL will never match rows. Because of that, you need to use IS NULL or IS NOT NULL to test for null values. I’m not sure about the behavior of WHERE city <> 'Pune' with nulls.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What happens if you run a query with city <> 'Pune' on a table where one of the rows has a NULL city?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens if you run a query with city <> 'Pune' on a table where one of the rows has a NULL city?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens in a WHERE clause when a condition evaluates to UNKNOWN instead of true or false?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens in a WHERE clause when a condition evaluates to UNKNOWN instead of true?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the use of IS NULL and explains why = NULL fails using three-valued logic, but is unsure about the behavior of the <> operator with nulls, meeting the criteria for a score of 1.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies the use of IS NULL and explains why = NULL fails using three-valued logic, but is unsure about the behavior of the <> operator with nulls, meeting the criteria for a score of 1.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        },
+        "sql": {
+          "estimate": -1.2338,
+          "se": 0.6586,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 8,
+      "skill": "py",
+      "level": 2,
+      "question_id": "PY-L2-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.73); level 2 is nearest its estimate +0.24; lists a suspected misconception to confirm: py.pandas.positional-alignment",
+      "prompt": "What does this code print, and why?\n\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ann\", \"Bo\", \"Cy\", \"Di\"],\n                   \"score\": [70, 55, 90, 85]})\ndf.sort_values(\"score\")\nprint(df[\"name\"].tolist())\nprint(df.loc[1:2, \"name\"].tolist())\npassed = df[df[\"score\"] >= 70]\ndf[\"bonus\"] = passed[\"score\"] - 60\nprint(df[\"bonus\"].tolist())",
+      "answer": "It will first print the list `['Ann', 'Bo', 'Cy', 'Di']` because the DataFrame stays in its original order. Then `df.loc[1:2, \"name\"]` will give `['Bo', 'Cy']`. Finally, the `bonus` column will contain `[10, NaN, 30, 25]`, so the last print outputs `[10, None, 30, 25]`.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output of all three print statements and demonstrated a clear understanding of all three key points: that sort_values returns a new object leaving the original DataFrame unchanged, that .loc slicing is inclusive of the end label, and that assignment aligns by index label resulting in NaN for Bo.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the output of all three print statements and demonstrated a clear understanding of all three key points: that sort_values returns a new object leaving the original DataFrame unchanged, that .loc slicing is inclusive of the end label, and that assignment aligns by index label resulting in NaN for Bo.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -1.2338,
+          "se": 0.6586,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.2368,
+          "se": 0.7272,
+          "level": 2,
+          "n": 2
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L2-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 9,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-010",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-linked-lists"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.73); level 2 is nearest its estimate -0.24; lists a suspected misconception to confirm: ds.linked-lists.pointer-order-irrelevant",
+      "prompt": "`reverse` is meant to reverse a singly linked list in place and return the new head. What does this code print, what went wrong, and how would you fix the loop?\n\nclass Node:\n    def __init__(self, val, nxt=None):\n        self.val, self.next = val, nxt\n\ndef reverse(head):\n    prev, node = None, head\n    while node:\n        node.next = prev\n        prev, node = node, node.next\n    return prev\n\nhead = Node(1, Node(2, Node(3)))\nsecond = head.next\nnew_head = reverse(head)\nprint(new_head.val, new_head.next, second.next.val)",
+      "answer": "The code prints `1 None 2` because after the first iteration `node.next` is set to `prev` and then `prev` and `node` are swapped, so the original second node’s `next` pointer gets overwritten and the list gets cut off. The loop logic is fine; you just need to make sure you assign `node.next = prev` after you’ve stored the original `next` reference, but the order of those assignments doesn’t actually matter.",
+      "diagnosis": {
+        "cause": "misconception",
+        "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+        "follow_up": "Can you trace step by step what happens to the second node if you execute `node.next = prev` before saving `node.next`?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+            "follow_up": "Can you trace step by step what happens to the second node if you execute `node.next = prev` before saving `node.next`?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the order of those assignments doesn’t actually matter.",
+            "evidence_reason": "The candidate explicitly claims that the order of the pointer assignments does not matter, which directly matches the listed misconception ds.linked-lists.pointer-order-irrelevant.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+            "follow_up": "Can you trace step-by-step what happens to node 2's reference if you do `node.next = prev` before saving `node.next`?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the order of those assignments doesn’t actually matter",
+            "evidence_reason": "The candidate explicitly states that the order of pointer assignments does not matter, which matches the listed misconception ds.linked-lists.pointer-order-irrelevant.",
+            "contradicting": []
+          },
+          {
+            "cause": "misconception",
+            "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+            "follow_up": "If you assign node.next = prev before saving node.next, what value does the right-hand side of the subsequent assignment see?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the order of those assignments doesn’t actually matter.",
+            "evidence_reason": "The candidate explicitly claims that the order of the assignments does not matter despite having just explained that overwriting the pointer cuts off the list.",
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": "the order of those assignments doesn’t actually matter.",
+        "evidence_reason": "The candidate explicitly claims that the order of the pointer assignments does not matter, which directly matches the listed misconception ds.linked-lists.pointer-order-irrelevant.",
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that the list gets cut off early and that the next pointer is overwritten, leading to the incorrect output and orphaned nodes. However, they contradicted themselves by saying 'the order of those assignments doesn't actually matter', which falls under the listed misconception about pointer order.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 0,
+        "votes": [
+          0,
+          0,
+          1
+        ],
+        "agreement": 0.6666666666666666,
+        "rationale": "The candidate correctly identified that the list gets cut off early and that the next pointer is overwritten, leading to the incorrect output and orphaned nodes. However, they contradicted themselves by saying 'the order of those assignments doesn't actually matter', which falls under the listed misconception about pointer order.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 0.6667,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -1.2338,
+          "se": 0.6586,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.5036,
+          "se": 0.6709,
+          "level": 1,
+          "n": 3
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-010",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "misconception",
+        "misconception_id": "ds.linked-lists.pointer-order-irrelevant",
+        "expected_score": 0,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 10,
+      "skill": "ds",
+      "level": 1,
+      "question_id": "DS-L1-007",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "ds-arrays-strings",
+        "ds-sorting-searching"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.67); level 1 is nearest its estimate -0.50; lists misconceptions not yet probed: ds.arrays-strings.strings-mutable, ds.sorting-searching.sort-not-stable",
+      "prompt": "What does this code print, and why? Pay attention to the words that have the same length.\n\nwords = [\"kiwi\", \"fig\", \"apple\", \"pear\", \"date\"]\nwords.sort(key=len)\nfirst = words[0]\nfirst.upper()\nprint(words)\nprint(first)\n",
+      "answer": "It prints `['fig', 'kiwi', 'pear', 'date', 'apple']` followed by `fig`. The list is sorted by length, so the 3‑letter word “fig” comes first and the 5‑letter “apple” last; the three 4‑letter words keep their original order because Python’s sort is stable. The call to `first.upper()` creates a new string but does not modify `first`, so `first` remains “fig”.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the sorted list output, explained the stable sorting for equal-length words, and correctly noted that strings are immutable so `first` remains lowercase.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified the sorted list output, explained the stable sorting for equal-length words, and correctly noted that strings are immutable so `first` remains lowercase.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -1.2338,
+          "se": 0.6586,
+          "level": 1,
+          "n": 3
+        },
+        "ds": {
+          "estimate": -0.2205,
+          "se": 0.6123,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L1-007",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 11,
+      "skill": "sql",
+      "level": 1,
+      "question_id": "SQL-L1-001",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "sql-null",
+        "sql-select-filter"
+      ],
+      "selection_reason": "sql has the highest uncertainty (SE 0.66); level 1 is nearest its estimate -1.23; lists a suspected misconception to confirm: sql.null.equals-null-matches, sql.null.not-equal-includes-null",
+      "prompt": "An orders table has a discount column that is NULL when no discount was recorded. Does WHERE discount > 10 OR discount <= 10 return every order? Does WHERE discount <> 0 return the orders whose discount is NULL? How would you write a condition that does return them?",
+      "answer": "Comparisons with NULL evaluate to UNKNOWN, not true or false. So any condition using `>`, `<=`, or `<>` with a NULL value will not be true. I'm not sure about the exact behavior of those specific WHERE clauses.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "How does the WHERE clause handle rows where the condition evaluates to UNKNOWN?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How does the WHERE clause handle rows where the condition evaluates to UNKNOWN?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would you write a condition to include rows where the discount column is NULL?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "How would you write a condition to select rows where discount is null?",
+            "confidence_expressed": "low",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "low",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that comparisons with NULL evaluate to UNKNOWN and will not be true, but fails to complete the analysis for the specific WHERE clauses and does not provide the correct IS NULL fix.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that comparisons with NULL evaluate to UNKNOWN and will not be true, but fails to complete the analysis for the specific WHERE clauses and does not provide the correct IS NULL fix.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 0.6097,
+          "se": 0.6501,
+          "level": 2,
+          "n": 3
+        },
+        "sql": {
+          "estimate": -1.1889,
+          "se": 0.5946,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.2205,
+          "se": 0.6123,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "SQL-L1-001",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 0,
+        "attack": null
+      }
+    },
+    {
+      "index": 12,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-012",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "py-pandas"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.65); level 3 is nearest its estimate +0.61; lists a suspected misconception to confirm: py.pandas.positional-alignment",
+      "prompt": "An analyst makes top = df[df[\"sales\"] > 100].sort_values(\"region\"), calls top.reset_index(drop=True) on its own line, and then sets df[\"top_sales\"] = top[\"sales\"]. Rows that were filtered out show NaN, but the other rows have their own correct values. They then change the middle line to top = top.reset_index(drop=True), and now the numbers land on the wrong rows. Explain both results.",
+      "answer": "The first version works because `reset_index(drop=True)` is called on a separate line, so the original index of `top` stays the same as in `df`, and when you assign `top[\"sales\"]` to `df[\"top_sales\"]` the values line up with the rows that were filtered. When you chain the reset with `top = top.reset_index(drop=True)`, the index gets re‑numbered before the assignment, so the sales numbers are no longer matched to the original rows and end up in the wrong places.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 0.6666666666666666,
+        "votes": [
+          {
+            "cause": "misconception",
+            "misconception_id": "py.pandas.positional-alignment",
+            "follow_up": "If a DataFrame has rows with index labels [5, 10, 15] and you assign a Series with index labels [0, 1, 2] to a new column, which labels in the DataFrame do you think receive the values?",
+            "confidence_expressed": "high",
+            "supporting_quote": "the values line up with the rows that were filtered. When you chain the reset with `top = top.reset_index(drop=True)`, the index gets re‑numbered before the assignment, so the sales numbers are no longer matched to the original rows",
+            "evidence_reason": "The candidate explains the second outcome by saying that re-numbering the index makes the sales numbers no longer match the original rows, implying that when the index was 0, 1, 2, pandas was matching the values to rows by their position (or sequential index order) rather than matching them by index labels.",
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that the first reset_index was unassigned so the original index stayed the same, and that assigning a Series to a DataFrame aligns by index labels rather than row order. They fully understand why the unassigned method had no effect and why reassigning the reset index caused positional misalignment.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly explains that the first reset_index was unassigned so the original index stayed the same, and that assigning a Series to a DataFrame aligns by index labels rather than row order. They fully understand why the unassigned method had no effect and why reassigning the reset index caused positional misalignment.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.0295,
+          "se": 0.6023,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -1.1889,
+          "se": 0.5946,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": -0.2205,
+          "se": 0.6123,
+          "level": 2,
+          "n": 4
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-012",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "wrong",
+        "misconception_id": null,
+        "expected_score": 0,
+        "effective_level": 1,
+        "attack": null
+      }
+    },
+    {
+      "index": 13,
+      "skill": "ds",
+      "level": 2,
+      "question_id": "DS-L2-011",
+      "question_source": "bank",
+      "question_type": "explain",
+      "topics": [
+        "ds-sorting-searching",
+        "ds-complexity"
+      ],
+      "selection_reason": "ds has the highest uncertainty (SE 0.61); level 2 is nearest its estimate -0.22; lists misconceptions not yet probed: ds.sorting-searching.binary-search-half-of-linear, ds.sorting-searching.binary-search-unsorted, ds.sorting-searching.sorting-is-linear",
+      "prompt": "You have an unsorted list of n product prices. If you only need to check once whether a given price is present, should you sort the list and then use binary search, or just scan it? What changes if you need to answer thousands of such queries?",
+      "answer": "For a single lookup it’s cheaper to just scan the unsorted list, since a linear scan is O(n) while sorting first costs O(n log n) before you could even do a binary search. If you have thousands of queries, you should sort the list once (or build a hash set) and then answer each query with binary search in O(log n) (or O(1) with a set), because the initial O(n log n) cost is amortized over many fast lookups.",
+      "diagnosis": {
+        "cause": "correct",
+        "misconception_id": null,
+        "follow_up": null,
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "correct",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "high",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "high",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that a linear scan is best for a single query due to sorting overhead, recommended sorting or using a hash set for multiple queries, and accurately cited the time complexities.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 2,
+        "votes": [
+          2,
+          2,
+          2
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identified that a linear scan is best for a single query due to sorting overhead, recommended sorting or using a hash set for multiple queries, and accurately cited the time complexities.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.0295,
+          "se": 0.6023,
+          "level": 3,
+          "n": 4
+        },
+        "sql": {
+          "estimate": -1.1889,
+          "se": 0.5946,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.1321,
+          "se": 0.5722,
+          "level": 2,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "DS-L2-011",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "correct",
+        "misconception_id": null,
+        "expected_score": 2,
+        "effective_level": 2,
+        "attack": null
+      }
+    },
+    {
+      "index": 14,
+      "skill": "py",
+      "level": 3,
+      "question_id": "PY-L3-009",
+      "question_source": "bank",
+      "question_type": "read-code",
+      "topics": [
+        "py-comprehensions-generators",
+        "py-functions-scope"
+      ],
+      "selection_reason": "py has the highest uncertainty (SE 0.60); level 3 is nearest its estimate +1.03; lists misconceptions not yet probed: py.comprehensions-generators.generator-eager, py.comprehensions-generators.yield-is-return, py.functions-scope.closure-captures-value",
+      "prompt": "What does this code print, and why?\n\ndef countdown(n):\n    print(\"begin\")\n    while n > 0:\n        yield n\n        n -= 1\n    return \"done\"\n\nstep = 1\ngen = countdown(3)\nscaled = (x * step for x in range(3))\nstep = 10\nprint(\"created\")\nprint(next(gen), list(gen), list(gen))\nprint(list(scaled))",
+      "answer": "Calling a generator function doesn’t execute its body right away; the code inside runs only when you advance it with next() or iterate over it. Beyond that, I’m not sure how the rest of the code behaves.",
+      "diagnosis": {
+        "cause": "gap",
+        "misconception_id": null,
+        "follow_up": "What happens when you call next(gen) for the first time, and what does it print?",
+        "vote_share": 1.0,
+        "votes": [
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens when you call next(gen) for the first time, and what does it print?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": null,
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          },
+          {
+            "cause": "gap",
+            "misconception_id": null,
+            "follow_up": "What happens when you call next(gen) for the first time, and in what order do 'begin', 'created', and the numbers get printed?",
+            "confidence_expressed": "medium",
+            "supporting_quote": null,
+            "evidence_reason": null,
+            "contradicting": []
+          }
+        ],
+        "confidence_expressed": "medium",
+        "prompt_version": "evidence-v1",
+        "supporting_quote": null,
+        "evidence_reason": null,
+        "contradicting": []
+      },
+      "follow_ups": [],
+      "grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that generator functions are lazy and do not execute until advanced, but fails to explain the rest of the code, including the generator output, exhaustion, return values, and late variable binding.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "provisional_grade": {
+        "score": 1,
+        "votes": [
+          1,
+          1,
+          1
+        ],
+        "agreement": 1.0,
+        "rationale": "The candidate correctly identifies that generator functions are lazy and do not execute until advanced, but fails to explain the rest of the code, including the generator output, exhaustion, return values, and late variable binding.",
+        "grader": "gemini-3.5-flash-lite"
+      },
+      "evidence_weight": 1.0,
+      "scorecard_after": {
+        "py": {
+          "estimate": 1.0216,
+          "se": 0.552,
+          "level": 3,
+          "n": 5
+        },
+        "sql": {
+          "estimate": -1.1889,
+          "se": 0.5946,
+          "level": 1,
+          "n": 4
+        },
+        "ds": {
+          "estimate": 0.1321,
+          "se": 0.5722,
+          "level": 2,
+          "n": 5
+        }
+      },
+      "tool_calls": [
+        {
+          "name": "search_question_bank",
+          "args": {},
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "update_scorecard",
+          "args": {
+            "question_id": "PY-L3-009",
+            "n_follow_ups": 0
+          },
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "end_interview",
+          "args": {},
+          "ok": true,
+          "error": null
+        }
+      ],
+      "truth": {
+        "outcome": "partial",
+        "misconception_id": null,
+        "expected_score": 1,
+        "effective_level": 2,
+        "attack": null
+      }
+    }
+  ],
+  "exchanges": 21,
+  "stop_reason": "confident",
+  "report": {
+    "levels": {
+      "py": {
+        "level": 3,
+        "estimate": 1.0216,
+        "se": 0.552,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.703706,
+        "level_probabilities": {
+          "0": 1.8e-05,
+          "1": 0.008635,
+          "2": 0.28764,
+          "3": 0.703706
+        },
+        "meets_minimum": true
+      },
+      "sql": {
+        "level": 1,
+        "estimate": -1.1889,
+        "se": 0.5946,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.503907,
+        "level_probabilities": {
+          "0": 0.436657,
+          "1": 0.503907,
+          "2": 0.058818,
+          "3": 0.000618
+        },
+        "meets_minimum": false
+      },
+      "ds": {
+        "level": 2,
+        "estimate": 0.1321,
+        "se": 0.5722,
+        "confident": true,
+        "minimum": 2,
+        "level_probability": 0.613199,
+        "level_probabilities": {
+          "0": 0.006022,
+          "1": 0.232417,
+          "2": 0.613199,
+          "3": 0.148362
+        },
+        "meets_minimum": null
+      }
+    },
+    "decision": "not_fit",
+    "decision_reason": "sql is below the job minimum (level 2; estimated level 1).",
+    "misconceptions": [
+      {
+        "id": "sql.joins.left-join-drops-unmatched",
+        "confirmed": false,
+        "evidence_turns": [
+          2
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 0,
+            "reply_text": "The query will list each customer’s name together with the number of rows returned from the join and the sum of the order amounts, so you’ll see a row for Asha with two orders, a row for Ben showing one order of 40, and a row for Chen showing one order with a total of NULL. The ORDER BY just sorts the result alphabetically by the customer name.",
+            "vote_share": 1.0,
+            "supporting_quote": "a row for Ben showing one order of 40",
+            "quote_start": 177,
+            "quote_end": 214,
+            "reason": "The candidate assigns the unmatched order with customer_id NULL (order 13, amount 40) to Ben, believing the LEFT JOIN or grouping matches it or includes it for Ben, demonstrating a misunderstanding of how unmatched rows or unassociated rows behave in joins."
+          },
+          {
+            "question_id": "SQL-L2-014",
+            "turn": 2,
+            "reply_index": 2,
+            "reply_text": "The join condition checks whether the order’s customer_id value equals the id of a row in customers, so for order 13 it tries to match NULL to each customer’s id and fails. Because the comparison with NULL doesn’t succeed, that row ends up with no matching customer and the LEFT JOIN keeps the order’s columns but leaves the customer fields empty.",
+            "vote_share": 1.0,
+            "supporting_quote": "the LEFT JOIN keeps the order’s columns but leaves the customer fields empty",
+            "quote_start": 270,
+            "quote_end": 346,
+            "reason": "The candidate asserts that the LEFT JOIN keeps the unmatched order row and leaves the customer fields empty, which reverses the direction of the LEFT JOIN (treating orders as the preserved left table rather than customers), demonstrating the belief that unmatched rows from the right table are retained rather than unmatched rows from the left table."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "ds.linked-lists.pointer-order-irrelevant",
+        "confirmed": true,
+        "evidence_turns": [
+          3,
+          9
+        ],
+        "vote_share": 0.917,
+        "confirmation_unit": "question",
+        "confirmation_count": 2,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 0,
+            "reply_text": "The hash map gives us O(1) lookup of a key to its node, while the doubly‑linked list keeps the nodes in order of recent use so we can evict the tail when needed. On a cache hit we find the node via the map, then move it to the front by setting p.next = n and n.next = p.next; the exact order of those pointer updates doesn’t matter because we just rewire the links. Since both the map operations and the pointer rewiring are constant‑time, get and put run in O(1) on average.",
+            "vote_share": 1.0,
+            "supporting_quote": "the exact order of those pointer updates doesn’t matter because we just rewire the links",
+            "quote_start": 276,
+            "quote_end": 364,
+            "reason": "The candidate explicitly states that the order of pointer updates does not matter, which matches the misconception ds.linked-lists.pointer-order-irrelevant."
+          },
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 1,
+            "reply_text": "If you set p.next = n first, the reference that p used to have is overwritten, but that’s fine because we don’t need to keep a separate pointer to the old next node – we’ll re‑attach it later when we set n.next. In other words, the original p.next node is effectively lost at that moment, but the subsequent pointer update restores the correct links, so the order of those two assignments doesn’t matter.",
+            "vote_share": 0.6666666666666666,
+            "supporting_quote": "the original p.next node is effectively lost at that moment, but the subsequent pointer update restores the correct links, so the order of those two assignments doesn’t matter.",
+            "quote_start": 228,
+            "quote_end": 404,
+            "reason": "The candidate explicitly argues that overwriting a pointer before saving it and losing reference to the rest of the list is harmless and that pointer update order does not matter, which matches the listed misconception ds.linked-lists.pointer-order-irrelevant."
+          },
+          {
+            "question_id": "DS-L2-006",
+            "turn": 3,
+            "reply_index": 2,
+            "reply_text": "Even if we overwrite p.next first, we don’t need to keep a separate reference to the old next node because the next pointer will be restored when we assign n.next later. The original portion of the list is effectively re‑linked through n.next, so the order of those two assignments doesn’t affect correctness.",
+            "vote_share": 1.0,
+            "supporting_quote": "The original portion of the list is effectively re‑linked through n.next, so the order of those two assignments doesn’t affect correctness.",
+            "quote_start": 170,
+            "quote_end": 309,
+            "reason": "The candidate explicitly argues that overwriting p.next first does not cause issues because n.next will magically or automatically restore access to the rest of the list, which matches the belief that pointer update order does not matter."
+          },
+          {
+            "question_id": "DS-L2-010",
+            "turn": 9,
+            "reply_index": 0,
+            "reply_text": "The code prints `1 None 2` because after the first iteration `node.next` is set to `prev` and then `prev` and `node` are swapped, so the original second node’s `next` pointer gets overwritten and the list gets cut off. The loop logic is fine; you just need to make sure you assign `node.next = prev` after you’ve stored the original `next` reference, but the order of those assignments doesn’t actually matter.",
+            "vote_share": 1.0,
+            "supporting_quote": "the order of those assignments doesn’t actually matter.",
+            "quote_start": 355,
+            "quote_end": 410,
+            "reason": "The candidate explicitly claims that the order of the pointer assignments does not matter, which directly matches the listed misconception ds.linked-lists.pointer-order-irrelevant."
+          }
+        ],
+        "status": "confirmed",
+        "contradicting": []
+      },
+      {
+        "id": "py.pandas.positional-alignment",
+        "confirmed": false,
+        "evidence_turns": [
+          4
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "PY-L3-008",
+            "turn": 4,
+            "reply_index": 0,
+            "reply_text": "The addition aligns the two Series by position, so it just adds the first three elements: [10+1, 20+2, 30+3] giving [11, 22, 33]. The mean of that list is (11 + 22 + 33) / 3 = 22, and the sum of the slice from “a” to “b” in the first Series is 10 + 20 = 30.",
+            "vote_share": 1.0,
+            "supporting_quote": "The addition aligns the two Series by position, so it just adds the first three elements",
+            "quote_start": 0,
+            "quote_end": 88,
+            "reason": "The candidate explicitly states that Series addition aligns by position rather than index labels."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      },
+      {
+        "id": "sql.null.not-equal-includes-null",
+        "confirmed": false,
+        "evidence_turns": [
+          5
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L1-008",
+            "turn": 5,
+            "reply_index": 0,
+            "reply_text": "The query will list every customer whose city isn’t Pune, plus the ones where the city column is NULL, so it ends up returning Ben, Eli, Chen and Dana. Asha is excluded because her city matches ‘Pune’. The result is then sorted alphabetically by name.",
+            "vote_share": 1.0,
+            "supporting_quote": "The query will list every customer whose city isn’t Pune, plus the ones where the city column is NULL, so it ends up returning Ben, Eli, Chen and Dana.",
+            "quote_start": 0,
+            "quote_end": 151,
+            "reason": "The candidate explicitly believes that the inequality check city <> 'Pune' successfully includes rows where the city is NULL by assuming missing values are considered 'not equal' to a specific string."
+          },
+          {
+            "question_id": "SQL-L1-008",
+            "turn": 5,
+            "reply_index": 1,
+            "reply_text": "When the city column is NULL, the `city <> 'Pune'` condition actually evaluates to true because NULL is treated as “no value” and any comparison with it is considered not equal. So those rows with a NULL city will satisfy the `<>` test and be included in the result set.",
+            "vote_share": 1.0,
+            "supporting_quote": "When the city column is NULL, the `city <> 'Pune'` condition actually evaluates to true because NULL is treated as “no value” and any comparison with it is considered not equal.",
+            "quote_start": 0,
+            "quote_end": 177,
+            "reason": "The candidate explicitly states that a comparison involving NULL evaluates to true because missing values are considered not equal to a specific string."
+          }
+        ],
+        "status": "disputed",
+        "contradicting": [
+          {
+            "misconception_id": "sql.null.not-equal-includes-null",
+            "supporting_quote": "rows with a NULL city won’t match the `<>` condition",
+            "quote_start": 245,
+            "quote_end": 297,
+            "reason": "The candidate correctly states that city <> 'Pune' does not match rows with a NULL city, directly rejecting the notion that column <> 'x' includes NULL values.",
+            "vote_share": 0.6666666666666666,
+            "question_id": "SQL-L1-008",
+            "turn": 5,
+            "reply_index": 2,
+            "reply_text": "The SQL standard treats any comparison with NULL as a regular boolean result, so `city <> 'Pune'` will simply be false when city is NULL, and `city = NULL` will be true only when the column actually contains the literal string “NULL”. Therefore rows with a NULL city won’t match the `<>` condition but will be picked up by the `city = NULL` part."
+          }
+        ]
+      },
+      {
+        "id": "sql.null.equals-null-matches",
+        "confirmed": false,
+        "evidence_turns": [
+          5
+        ],
+        "vote_share": 1.0,
+        "confirmation_unit": "question",
+        "confirmation_count": 1,
+        "required_confirmations": 2,
+        "evidence": [
+          {
+            "question_id": "SQL-L1-008",
+            "turn": 5,
+            "reply_index": 2,
+            "reply_text": "The SQL standard treats any comparison with NULL as a regular boolean result, so `city <> 'Pune'` will simply be false when city is NULL, and `city = NULL` will be true only when the column actually contains the literal string “NULL”. Therefore rows with a NULL city won’t match the `<>` condition but will be picked up by the `city = NULL` part.",
+            "vote_share": 1.0,
+            "supporting_quote": "and `city = NULL` will be true only when the column actually contains the literal string “NULL”. Therefore rows with a NULL city won’t match the `<>` condition but will be picked up by the `city = NULL` part.",
+            "quote_start": 138,
+            "quote_end": 346,
+            "reason": "The candidate explicitly believes that city = NULL can match rows where the column contains NULL, conflating standard equality with IS NULL semantics."
+          }
+        ],
+        "status": "suspected",
+        "contradicting": []
+      }
+    ],
+    "probed_misconceptions": [
+      "ds.arrays-strings.front-insert-constant",
+      "ds.arrays-strings.index-needs-scan",
+      "ds.arrays-strings.strings-mutable",
+      "ds.hash-tables.lookup-is-linear",
+      "ds.linked-lists.index-constant-time",
+      "ds.linked-lists.insert-shifts-nodes",
+      "ds.linked-lists.pointer-order-irrelevant",
+      "ds.sorting-searching.binary-search-half-of-linear",
+      "ds.sorting-searching.binary-search-unsorted",
+      "ds.sorting-searching.sort-not-stable",
+      "ds.sorting-searching.sorting-is-linear",
+      "py.comprehensions-generators.generator-eager",
+      "py.comprehensions-generators.yield-is-return",
+      "py.exceptions.finally-skipped-on-return",
+      "py.exceptions.most-specific-except-wins",
+      "py.exceptions.resumes-after-raise",
+      "py.functions-scope.closure-captures-value",
+      "py.pandas.loc-end-exclusive",
+      "py.pandas.method-modifies-inplace",
+      "py.pandas.nan-treated-as-zero",
+      "py.pandas.positional-alignment",
+      "sql.aggregation.count-column-counts-nulls",
+      "sql.joins.join-never-duplicates",
+      "sql.joins.left-join-drops-unmatched",
+      "sql.null.equals-null-matches",
+      "sql.null.not-equal-includes-null"
+    ],
+    "topic_coverage": {
+      "required": [
+        "py-variables-mutability",
+        "py-functions-scope",
+        "py-collections",
+        "py-oop",
+        "py-exceptions",
+        "py-concurrency",
+        "sql-joins",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-stacks-queues",
+        "ds-linked-lists",
+        "ds-trees-bst"
+      ],
+      "tested": [
+        "py-functions-scope",
+        "py-exceptions",
+        "sql-joins",
+        "ds-complexity",
+        "ds-hash-tables",
+        "ds-linked-lists"
+      ],
+      "untested": [
+        "py-variables-mutability",
+        "py-collections",
+        "py-oop",
+        "py-concurrency",
+        "sql-indexes-performance",
+        "sql-schema-constraints",
+        "sql-transactions",
+        "ds-stacks-queues",
+        "ds-trees-bst"
+      ]
+    },
+    "confidence_style": null,
+    "flags": [],
+    "summary": "Recommendation: not fit. sql is below the job minimum (level 2; estimated level 1). Estimated levels: py level 3 (needs 2), sql level 1 (needs 2), ds level 2 (needs 2). Suspected (insufficient corroboration) misconception: Believes LEFT JOIN drops left-table rows that have no match, like INNER JOIN. Confirmed misconception: Believes the order of pointer updates when inserting a node does not matter, not realising that overwriting prev.next before saving the old next node loses the rest of the list. Suspected (insufficient corroboration) misconception: Believes arithmetic and assignment between Series or columns match values by position, not knowing pandas aligns them by index label and fills unmatched labels with NaN. Disputed (contradictory evidence; not confirmed) misconception: Believes a row whose column is NULL satisfies col <> 'x', because a missing value is 'not equal' to 'x'. Suspected (insufficient corroboration) misconception: Believes col = NULL (or col <> NULL) tests whether a value is missing, the same way IS NULL / IS NOT NULL does."
+  },
+  "usage": {
+    "llm_calls": 118,
+    "api_calls": 105,
+    "input_tokens": 133476,
+    "output_tokens": 10369,
+    "by_model": {
+      "gemini-3.5-flash-lite": {
+        "llm_calls": 118,
+        "api_calls": 105,
+        "input_tokens": 133476,
+        "output_tokens": 10369
+      }
+    }
+  },
+  "errors": [],
+  "truth": {
+    "levels": {
+      "py": 2,
+      "sql": 0,
+      "ds": 2
+    },
+    "fit": false,
+    "misconceptions": [
+      "ds.linked-lists.pointer-order-irrelevant",
+      "sql.joins.auto-join-on-shared-column"
+    ],
+    "profile_type": "even"
+  },
+  "simulator": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b"
+  },
+  "run": {
+    "name": "reviewed-main-v2",
+    "fingerprint": "c5665d1fcae754a9311f3b6d9079b198f18cc62265fc02313eb8acf3c9fb621c"
+  }
+}
